@@ -1,0 +1,20 @@
+% !TEX root=../Matematica discreta.tex
+
+\begin{table}[h]
+\centering
+\caption{Tabella di verità dell'\ref{eq:formula_1}}\label{tab:T-F_formula_1}
+\begin{tabular}[t]{ c c c c c c c c c } \toprule
+    \(p\) & \(q\) & \(r\)
+        & \(p \longrightarrow r\) & \(p \land (q \longrightarrow r)\)
+            & \(\neg q\) & \(\neg r\) & \(\neg q \lor \neg r\)
+                & \(\big(p \land (q \longrightarrow r)\big) \longleftrightarrow (\neg q \lor \neg r)\) \\ \midrule
+    \true[b]  &\true[b]  &\true[b]  &\true[b]  &\true[b]  &\false[b] &\false[b] &\false[b] &\false[b] \\
+    \true[b]  &\true[b]  &\false[b] &\false[b] &\false[b] &\false[b] &\true[b]  &\true[b]  &\false[b] \\
+    \true[b]  &\false[b] &\true[b]  &\true[b]  &\true[b]  &\true[b]  &\false[b] &\true[b]  &\true[b]  \\
+    \true[b]  &\false[b] &\false[b] &\true[b]  &\true[b]  &\true[b]  &\true[b]  &\true[b]  &\true[b]  \\
+    \false[b] &\true[b]  &\true[b]  &\true[b]  &\false[b] &\false[b] &\false[b] &\false[b] &\true[b]  \\
+    \false[b] &\true[b]  &\false[b] &\false[b] &\false[b] &\false[b] &\true[b]  &\true[b]  &\false[b] \\
+    \false[b] &\false[b] &\true[b]  &\true[b]  &\false[b] &\true[b]  &\false[b] &\true[b]  &\false[b] \\
+    \false[b] &\false[b] &\false[b] &\true[b]  &\false[b] &\true[b]  &\true[b]  &\true[b]  &\false[b] \\ \bottomrule
+\end{tabular}
+\end{table}

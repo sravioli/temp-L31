@@ -1,0 +1,23 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                xmin = -2.5,   xmax = 2.5,
+                ymin = -2.5,   ymax = 2.5,
+                x post scale=0.5,
+                y post scale=0.5,
+                axis lines=center,
+                axis on top=true,
+                domain=-2:2,
+                xticklabels={,,},
+                yticklabels={,,},
+                ticks=none,
+            ]
+
+            \addplot[color = black] {(\x)};
+        \end{axis}
+    \end{tikzpicture}
+\caption{Bisettrice del \(1^\text{\!o}\) e \(3^\text{o}\) quadrante}\label{fig:bisettrice_1-3_quadr}
+\end{figure}

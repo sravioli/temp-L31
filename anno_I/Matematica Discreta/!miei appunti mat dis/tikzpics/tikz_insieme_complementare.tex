@@ -1,0 +1,20 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}
+        \node (A) at (-2.5, 1.5) {\(A\)};
+        \node (B) at (1, 0)      {\(B\)};
+
+        \draw
+        [
+            pattern = north west lines,
+            even odd rule
+        ]
+        (0, 0) ellipse (3cm and 2cm)
+        (1, 0) circle  (1cm);
+
+        \node[preaction={fill, white}, rounded corners=3mm] (C-ab) at (-1, 0.5) {\(\complement_A(B)\)};
+    \end{tikzpicture}
+\caption{Insieme \(\complement_A(B)\), complementare di \(B\) rispetto ad \(A\)}\label{fig:insieme_complementare}
+\end{figure}

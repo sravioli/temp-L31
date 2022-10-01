@@ -1,0 +1,19 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}
+
+        \node (A)   at (-2.7, +1)  {\(A\)};
+        \node (B)   at (+2.7, +1)  {\(B\)};
+
+        \draw (+1, 0) ellipse (2cm and 1cm);
+        \draw (-1, 0) ellipse (2cm and 1cm);
+
+        \clip (+1, 0) ellipse (2cm and 1cm);
+        \fill[dashed, pattern=north west lines] (-1, 0) ellipse (2cm and 1cm);
+
+        \node[preaction={fill, white}, rounded corners=3mm] (AuB) at (0.0, 0.0) {\(A \cap B\)};
+    \end{tikzpicture}
+\caption{Rappresentazione dell'insieme intersezione}\label{fig:insieme_intersezione}
+\end{figure}

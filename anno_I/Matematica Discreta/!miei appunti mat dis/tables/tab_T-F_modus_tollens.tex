@@ -1,0 +1,16 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{table}[h]
+\centering
+    \begin{tabular}[t]{ c c c c c c c }                                            \toprule
+        \(P\) & \(Q\)
+            & \(\neg P\) & \(\neg Q\)
+                & \(P \longrightarrow Q\) & \((P \longrightarrow Q) \land \neg Q\)
+                    & \([(P \longrightarrow Q) \land \neg Q] \longrightarrow \neg P\)   \\ \midrule
+
+        \true  & \true  & \false & \false & \true  & \false & \true             \\ 
+        \true  & \false & \false & \true  & \false & \false & \true             \\ 
+        \false & \true  & \true  & \false & \true  & \false & \true             \\ 
+        \false & \false & \true  & \true  & \true  & \true  & \true             \\ \bottomrule
+    \end{tabular}
+\end{table}

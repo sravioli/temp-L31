@@ -1,0 +1,30 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{table}[h]
+\centering
+\caption{Tabella di verità della \textsc{doppia implicazione} (\(\longleftrightarrow\))}\label{tab:T-F_doppia_implicazione}
+\hspace*{1cm}
+    \begin{minipage}[t]{0.5\textwidth}
+    \centering
+        \begin{tabular}[t]{ c c c c c }                                                      \toprule
+            \(a\) & \(b\)
+                & \(a \longrightarrow b\) & \(b \longrightarrow a\)
+                    & \((a \longrightarrow b) \land (b\longrightarrow a)\)                        \\ \midrule
+            \true[b]{}    & \true[b]{}    & \true[b]{}    & \true[b]{}    & \true[b]{}    \\
+            \true[b]{}    & \false[b]{}   & \false[b]{}   & \true[b]{}    & \false[b]{}   \\
+            \false[b]{}   & \true[b]{}    & \true[b]{}    & \false[b]{}   & \false[b]{}   \\
+            \false[b]{}   & \false[b]{}   & \true[b]{}    & \true[b]{}    & \true[b]{}    \\ \bottomrule 
+        \end{tabular}%
+    \end{minipage}%
+\hspace*{-1cm}%
+    \begin{minipage}[t]{0.5\textwidth}
+    \centering
+        \begin{tabular}[t]{ c c c }                          \toprule
+            \(a\) & \(b\) & \(a \longleftrightarrow b\)   \\ \midrule
+            \true[b]{}    & \true[b]{}   & \true[b]{}     \\
+            \true[b]{}    & \false[b]{}  & \false[b]{}    \\
+            \false[b]{}   & \true[b]{}   & \false[b]{}    \\
+            \false[b]{}   & \false[b]{}  & \true[b]{}     \\ \bottomrule 
+        \end{tabular}     
+    \end{minipage}%
+\end{table}

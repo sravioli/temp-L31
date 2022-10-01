@@ -1,0 +1,15 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}[t]{ c c c c c c c c }  \toprule
+        \(a\) & \(b\) & \(a \land b\) & \(\neg (a \land b)\)
+            & \(\neg a\) & \(\neg b\) & \(\neg a \lor \neg b\)
+                & \(\neg(a \land b) \longleftrightarrow \neg a \lor \neg b\) \\ \midrule
+        \true[b]  & \true[b]  & \true[b]  & \false[b] & \false[b] & \false[b] & \false[b] & \true[b] \\
+        \true[b]  & \false[b] & \false[b] & \true[b]  & \false[b] & \true[b]  & \true[b]  & \true[b] \\
+        \false[b] & \true[b]  & \false[b] & \true[b]  & \true[b]  & \false[b] & \true[b]  & \true[b] \\
+        \false[b] & \false[b] & \false[b] & \true[b]  & \true[b]  & \true[b]  & \true[b]  & \true[b] \\ \bottomrule
+    \end{tabular}
+
+\end{table}
