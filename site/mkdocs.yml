@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: Informatica – L31
+repo_url: https://github.com/sRavioli/L31
+repo_name: sRavioli/L31
+edit_uri: edit/main/site/docs/
 
 theme:
   name: material
@@ -11,7 +14,9 @@ theme:
 
   language: it
 
-  # icon:
+  icon:
+    repo: fontawesome/brands/git
+    edit: material/file-edit-outline
   #   logo: bootstrap/envelope-paper
 
   palette:
@@ -37,22 +42,81 @@ theme:
     - navigation.tabs # tabs rendered below header
     - navigation.tabs.sticky # tabs are sticky
     - navigation.sections # sections are rendered as groups in the navigation
-    - toc.follow #
-    # - toc.integrate
-    - navigation.top
+    # - toc.integrate # integrate the table of contents into the page
+    - toc.follow # sidebar gets scrolled so that active anchor is visible
+    - navigation.top # back to top button
+    - search.suggest # search suggestions
+    - search.share # deep link to the current search query and result
+    - header.autohide # hide header when scrolling down
 
+  plugins:
+    - search # multilingual client-side search w/ lunr.js
+    - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
 
-  # extra:
-  # consent:
-  #   title: Cookie consent
-  #   description: >-
-  #     We use cookies to recognize your repeated visits and preferences, as well
-  #     as to measure the effectiveness of our documentation and whether users
-  #     find what they're searching for. With your consent, you're helping us to
-  #     make our documentation better.
+markdown_extensions:
+  # Python Markdown
+  - abbr # add small tooltip to element
+  - admonition # add call-outs blocks !!! class, ??? class
+  - attr_list # add HTML attributes to CSS classes
+  - def_list # add definition lists (dl in HTML)
+  - footnotes # add footnotes
+  - md_in_html # allow Markdown inside HTML blocks
 
-  # actions:
-  #   - accept
-  #   - manage
-  #   - reject
+  # auto-generate TOC
+  - toc:
+      permalink: ⚓︎ # change permalink symbol
+      permalink_title: Link permanente a questo paragrafo
 
+  # Python Markdown Extensions
+  # render LaTeX math
+  - pymdownx.arithmatex:
+      generic: true
+
+  # improve markup detection
+  - pymdownx.betterem:
+      smart_enable: all
+
+  # highlight text and define sub/sup-scripts
+  - pymdownx.mark # ^^mark^^ ==insert== ~~delete~~
+  - pymdownx.caret # ^superscript^
+  - pymdownx.tilde # ~subscript~
+
+  # supercharge admonition making them collapsible
+  - pymdownx.details
+
+  # keyboard keys
+  - pymdownx.keys # ++key+key++
+
+  # adds support for syntax highlighting of code blocks and inline code
+  - pymdownx.highlight:
+      use_pygments: true
+      linenums: true
+      linenums_style: table
+      anchor_linenums: true
+
+  # allows for arbitrary nesting of code and content blocks
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  - pymdownx.inlinehilite # highlight inline code
+
+  # convert some sequences of characters into symbols
+  - pymdownx.smartsymbols
+
+  # Embed content from arbitrary files
+  - pymdownx.snippets
+
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
