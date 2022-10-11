@@ -1,4 +1,26 @@
 {
-  "cSpell.words": ["mkdocs"],
-  "cSpell.ignoreWords": ["Fira"]
+  "cSpell.words": [
+    "fontawesome",
+    "inlines",
+    "javascripts",
+    "mathjax",
+    "mkdocs",
+    "Neumann",
+    "pymdownx",
+    "twemoji"
+  ],
+  "cSpell.ignoreWords": [
+    "Fira",
+    "arithmatex",
+    "autohide",
+    "betterem",
+    "inlinehilite",
+    "linenums",
+    "lunr",
+    "materialx",
+    "pygments",
+    "smartsymbols",
+    "superfences",
+    "tasklist"
+  ]
 }
