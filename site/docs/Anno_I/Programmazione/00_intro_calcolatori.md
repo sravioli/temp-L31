@@ -124,21 +124,31 @@ che equivale a $30$ nel sistema decimale.
 
 La conversione di un numero da base $10$ a base $2$ è un processo iterativo che consiste nel dividere il numero per $2$ e prendere il resto della divisione. Il risultato della divisione viene utilizzato come nuovo numero da dividere per $2$ e così via fino a quando il risultato della divisione non è $0$. I resti delle divisioni vengono riportati in ordine inverso.
 
-Ad esempio:
+<!-- markdownlint-disable MD046 -->
 
-```py title="Conversione del numero 7"
-7/2 = 3, resto 1
-3/2 = 1, resto 1
-1/2 = 0, resto 1
-```
+!!! example "Esempio"
 
-Il numero $7$ in binario è $111$
+    Convertiamo:
 
-```txt title="Conversione del numero 14"
-14/2 = 7 resto 0
-7/2 = 3 resto 1
-3/2 = 1 resto 1
-1/2 = 0 resto 1
-```
+    === "Numero $7$"
 
-Il numero $14$ in binario è $1110$.
+        ```txt
+        7/2 = 3, resto 1
+        3/2 = 1, resto 1
+        1/2 = 0, resto 1
+        ```
+
+        Il numero $7$ in binario è $111$
+
+    === "Numero $14$"
+
+        ```txt
+        14/2 = 7 resto 0
+        7/2 = 3 resto 1
+        3/2 = 1 resto 1
+        1/2 = 0 resto 1
+        ```
+
+        Il numero $14$ in binario è $1110$.
+
+<!-- markdownlint-enable MD046 -->
