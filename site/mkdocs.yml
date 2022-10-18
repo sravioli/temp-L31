@@ -41,7 +41,7 @@ theme:
     - navigation.tracking # URL gets updated when highlighting anchor
     - navigation.tabs # tabs rendered below header
     - navigation.tabs.sticky # tabs are sticky
-    - navigation.sections # sections are rendered as groups in the navigation
+    # - navigation.sections # sections are rendered as groups in the navigation
     # - toc.integrate # integrate the table of contents into the page
     - toc.follow # sidebar gets scrolled so that active anchor is visible
     - navigation.top # back to top button
