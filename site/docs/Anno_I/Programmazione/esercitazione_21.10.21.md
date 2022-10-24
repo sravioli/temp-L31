@@ -1,0 +1,129 @@
+# Esercitazione del 21.10.21
+
+Esercizio 1
+Leggere in input due interi n > 0 e k > 0, e calcolare i primi n multipli di k.
+Realizzare l’algoritmo in pseudo-codice, considerando i controlli sugli input.
+Esempio:
+n = 3, k = 4
+I primi 3 multipli di 4 sono 4, 8, 12
+
+INPUT
+
+N — numero di multipli di k da calcolare — naturale — maggiore di 0
+
+K — numero di cui calcolare n multipli — naturale — maggiore di 0
+
+OUTPUT
+
+Multipli - Insieme di n multipli di k - insieme di naturali - cardinalità n
+
+LAVORO
+...
+
+ALGORITMO
+
+```txt title="-alg v1"
+Leggere n
+Leggere k
+Controllare n e k >> si può operare in due modi
+Calcolare i multipli
+```
+
+```txt title="-alg v2"
+Leggere n
+Leggere k
+SE n e k soddisfano i vincoli
+    ALLORA Calcolare i multipli
+FINE
+```
+
+```txt title="-alg v2b"
+1. Leggere n
+2. Leggere k
+SE (n e k non soddisfano i vincoli)
+   ALLORA torna a 1
+   ALTRIMENTI Calcolare i multipli
+FINE
+```
+
+rendere chiari i vincoli.
+
+```txt title="-alg v2c"
+Leggere n
+SE (n non soddisfa il vincolo)
+    ALLORA torna a 1
+FINE
+Leggere k
+SE ( k non soddisfa il vincolo)
+    ALLORA torna a 3
+FINE
+Calcolare i multipli
+```
+
+con i mentre
+
+```txt title="-alg v3a"
+n := 0
+MENTRE (n <= 0)
+   Scrivere messaggio
+   Leggere n
+FINE
+
+k := 0
+MENTRE (k <= 0)
+    Scrivere messaggio
+    Leggere k
+FINE
+
+Calcolare i multipli
+```
+
+usando procedure più chiare
+
+```txt title="-alg v3b"
+ESEGUI
+    Scrivere messaggio
+   Leggere n
+FINCHÉ (n <= 0)
+FINE
+
+ESEGUI
+   Scrivere messaggio
+   Leggere k
+FINCHÉ (k <= 0)
+FINE
+
+Calcolare i multipli
+```
+
+vediamo come calcolare i multipli adesso
+
+```txt title="-alg v4"
+Contatore := 1
+MENTRE (contatore <= n)
+    Multipli in posizione contatore := k * contatore
+    Contatore := contatore + 1
+FINE
+```
+
+mettiamo tutto insieme
+
+```txt title="-alg v5"
+ESEGUI
+    ScrivereAVideo(Inserire iI numero di multipli da calcolare, maggiore di 0)
+    n := LeggereDaTastiera() I
+FINCHÉ (n<=0)
+FINE
+
+ESEGUI
+    ScrivereAVideo(Inserire il valore di cui calcolare i multipli, maggiore di 0)
+    k := LeggereDaTastiera()
+FINCHÉ (k<=0)
+FINE
+
+Contatore := 1
+MENTRE (contatore <= n)
+    multipli in posizione contatore := k * contatore
+    contatore := contatore + 1
+FINE
+```
