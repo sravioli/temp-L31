@@ -40,6 +40,5 @@ Operazioni su insiemi
 
 ## Operazioni su insiemi
 
-```txt title="Operazioni su insiemi"
-printf("Inserisci la cardinalità di I1: ");
-```
+
+### Leggere l'insieme $I_1$
