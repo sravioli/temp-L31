@@ -21,5 +21,14 @@ jobs:
         env:
           OUTPUT: CHANGELOG.md
 
+      - name: Commit changes
+        uses: actions/checkout@v3
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add CHANGELOG.md
+          git commit -m "feat(auto) 💚 generate changelog"
+          git push
+
       - name: Print the changelog
         run: cat "${{ steps.git-cliff.outputs.changelog }}"
