@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 
 ### Ci
 
+- :green_heart:  fix commit message
 - :green_heart:  fix conflict
 - :green_heart:  test push
 - :green_heart:  changelog
