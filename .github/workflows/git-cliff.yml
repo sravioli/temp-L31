@@ -1,21 +1,29 @@
 jobs:
-  changelog:
+  generate-changelog:
     name: Generate changelog
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    outputs:
+      release_body: ${{ steps.release.outputs.release_body }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: git-cliff - Changelog Generator
-        uses: orhun/git-cliff-action@v1.1.7
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
         id: git-cliff
         with:
-          config: cliff.toml
-          args: --verbose
+          config: config/cliff.toml
+          args: -vv --latest --strip header
         env:
-          OUTPUT: CHANGELOG.md
-
-      - name: Print the changelog
-        run: cat "${{ steps.git-cliff.outputs.changelog }}"
+          OUTPUT: CHANGES.md
+      - name: Set the release body
+        id: release
+        shell: bash
+        run: |
+          r=$(cat ${{ steps.git-cliff.outputs.changelog }})
+          r="$(printf "$r" | tail -n +3)"
+          r="${r//'%'/'%25'}"
+          r="${r//$'\n'/'%0A'}"
+          r="${r//$'\r'/'%0D'}"
+          echo "::set-output name=release_body::$r"
