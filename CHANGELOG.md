@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :tada:  create new exercise
 - :tada:  create changelog
 - :tada:  create action for changelog and config
 - :truck:  move from temp folder
