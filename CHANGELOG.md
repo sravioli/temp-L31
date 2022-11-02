@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :truck:  rename files to just the date of the exercise
 - :bug:  change file extension
 - :truck:  rename folder, move files
 - :page_facing_up:  add licence
