@@ -17,7 +17,6 @@ theme:
   icon:
     repo: fontawesome/brands/git
     edit: material/file-edit-outline
-  #   logo: bootstrap/envelope-paper
 
   palette:
     # Palette toggle for dark mode
