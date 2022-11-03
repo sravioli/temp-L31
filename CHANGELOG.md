@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :art:  improve format and spelling
+- :fire:  remove latex `\newcommand`
+- :truck:  move to correct folder
 - :fire:  remove comment
 - :fire:  remove files, moved to other folder
 - :rotating_light:  respect line lenght of 80
@@ -20,6 +23,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :sparkles:  create some math macros
 - :truck:  rename to double digit and add files
 - :tada:  create new exercise
 - :tada:  create changelog
