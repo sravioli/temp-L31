@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :fire:  remove comment
+- :fire:  remove files, moved to other folder
+- :rotating_light:  respect line lenght of 80
+- :rotating_light:  respect line lenght of 80
 - :truck:  rename files to just the date of the exercise
 - :bug:  change file extension
 - :truck:  rename folder, move files
@@ -16,6 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :truck:  rename to double digit and add files
 - :tada:  create new exercise
 - :tada:  create changelog
 - :tada:  create action for changelog and config
