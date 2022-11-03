@@ -1,8 +1,8 @@
 # Algoritmo di Euclide
 
-$\newcommand{\mcd}{\mathop{\rm mcd}\nolimits}$L'algoritmo di Euclide è un
-algoritmo per calcolare il massimo comun divisore di due numeri interi positivi.
-Dunque, dati due -int $a, b$ calcolare $\mcd(a, b)$.
+L'algoritmo di Euclide è un algoritmo per calcolare il massimo comun divisore
+di due numeri interi positivi. Dunque, dati due -int $a, b$ calcolare
+$\mcd(a, b)$.
 
 **Input**
 : $a, b$ – coppia di -int maggiori di zero
