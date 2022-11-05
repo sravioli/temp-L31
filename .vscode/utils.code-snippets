@@ -18,7 +18,7 @@
 
   "Insert data list for algorithm": {
     "scope": "markdown,md",
-    "prefix": "data",
+    "prefix": "dt",
     "body": [
       "**INPUT**:",
       ": $1",
@@ -33,5 +33,47 @@
       ""
     ],
     "description": "Insert data list for algorithm"
+  },
+
+  "Insert while/for": {
+    "scope": "markdown,md",
+    "prefix": ["while", "for", "mentre", "per"],
+    "body": ["MENTRE ($1)", "\t$2", "FINE $0"],
+    "description": "Insert iteration"
+  },
+
+  "Insert do..until": {
+    "scope": "markdown,md",
+    "prefix": ["do", "esegui"],
+    "body": ["ESEGUI", "\t$1", "FINCHÉ ($2)", "FINE $0"],
+    "description": "Insert do..until"
+  },
+
+  "Insert if": {
+    "scope": "markdown,md",
+    "prefix": ["if", "se"],
+    "body": ["SE ($1)", "\tALLORA $2", "FINE $0"],
+    "description": "Insert if"
+  },
+
+  "Insert if/else": {
+    "scope": "markdown,md",
+    "prefix": ["ifelse", "sealtrimenti", "ife", "seal"],
+    "body": ["SE ($1)", "\tALLORA $2", "\tALTRIMENTI $3", "FINE $0"],
+    "description": "Insert if-else"
+  },
+
+  "Disable line numbers for current code block": {
+    "scope": "markdown,md",
+    "prefix": "noln",
+    "body": ["linenums=\"0\""],
+    "description": "Disable line numbers for current code block"
+  },
+
+  "Insert titled code block": {
+    "scope": "markdown,md",
+    "prefix": "tcode",
+    "body": ["```$1 title=\"$2\"", "$3", "```"],
+    "description": "Insert titled code block"
   }
 }
