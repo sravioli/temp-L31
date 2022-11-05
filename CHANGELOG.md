@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :fire:  remove extra comment
 - :fire:  remove `index.md`, useless
 - :art:  improve format and spelling
 - :fire:  remove latex `\newcommand`
