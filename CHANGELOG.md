@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :fire:  remove `index.md`, useless
 - :art:  improve format and spelling
 - :fire:  remove latex `\newcommand`
 - :truck:  move to correct folder
@@ -23,6 +24,9 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :tada:  create exercise file
+- :speech_balloon:  update .vscode settings
+- :art:  improve format, remove linter warnings & blank lines
 - :sparkles:  create some math macros
 - :truck:  rename to double digit and add files
 - :tada:  create new exercise
