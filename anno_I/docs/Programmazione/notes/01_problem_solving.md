@@ -143,15 +143,21 @@ Per poter risolvere il problema è necessario conoscere la relazione esistente t
 
 Un algoritmo iniziale potrebbe essere simile al seguente:
 
+<!-- markdownlint-disable MD046 -->
+
 ```txt title="Algoritmo iniziale"
 Acquisire la distanza in miglia
 Convertire la distanza in chilometri
 Visualizzare la distanza in chilometri
 ```
 
+<!-- markdownlint-enable MD046-->
+
 Il primo e ultimo passo non necessitano di ulteriori raffinamenti, però il
 secondo passo può essere migliorato. È possibile scrivere: la distanza in
 chilometri è uguale a $1.609$ volte la distanza in miglia.
+
+<!-- markdownlint-disable MD046-->
 
 ```txt title="Algoritmo con raffinamenti"
 Acquisire la distanza in miglia
@@ -159,6 +165,8 @@ Convertire la distanza in chilometri
     La distanza in chilometri è uguale a 1.609 volte la distanza in miglia
 Visualizzare la distanza in chilometri
 ```
+
+<!-- markdownlint-enable MD046-->
 
 (Esercizio analisi e progettazione di come cucinare la pasta al forno)
 
