@@ -124,7 +124,7 @@ int CalcolarePositivi(int v[], int dim)
 /*
  * Calcola il numero di valori negativi presenti in Valori
  *
- * */
+ *
  */
 int CalcolareNegativi(int v[], int dim)
 {
