@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :rotating_light:  remove markdownlint warnings
+- :art:  update file structure, remove linter warnings
 - :fire:  remove extra comment
 - :fire:  remove `index.md`, useless
 - :art:  improve format and spelling
@@ -25,6 +27,9 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :sparkles:  complete document
+- :truck:  move examples pdf to `examples` dir
+- :speech_balloon:  update settings, create snippet file
 - :tada:  create exercise file
 - :speech_balloon:  update .vscode settings
 - :art:  improve format, remove linter warnings & blank lines
