@@ -5,21 +5,22 @@ window.MathJax = {
     processEscapes: true,
     processEnvironments: true,
     macros: {
-      mcd: "{\\mathop{\\rm mcd}\\nolimits}",
       N: "{\\mathbb{N}}",
       Z: "{\\mathbb{Z}}",
       Q: "{\\mathbb{Q}}",
       R: "{\\mathbb{R}}",
       I: "{\\mathbb{I}}",
       C: "{\\mathbb{C}}",
+      mcd: "{\\mathop{\\rm mcd}\\nolimits}",
+      set: ["\\left\\{\\, #1 \\,\\right\\}", 1],
     },
   },
   options: {
     ignoreHtmlClass: ".*|",
-    processHtmlClass: "arithmatex"
-  }
+    processHtmlClass: "arithmatex",
+  },
 };
 
 document$.subscribe(() => {
-  MathJax.typesetPromise()
-})
+  MathJax.typesetPromise();
+});
