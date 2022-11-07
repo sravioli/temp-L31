@@ -19,6 +19,7 @@
   "Insert data list for algorithm": {
     "scope": "markdown,md",
     "prefix": "dt",
+    "description": "Insert data list for algorithm",
     "body": [
       "**INPUT**:",
       ": $1",
@@ -31,49 +32,94 @@
       "",
       "**ALGORITMO**:",
       ""
-    ],
-    "description": "Insert data list for algorithm"
+    ]
   },
 
-  "Insert while/for": {
+  "Insert while": {
     "scope": "markdown,md",
-    "prefix": ["while", "for", "mentre", "per"],
-    "body": ["MENTRE ($1)", "\t$2", "FINE $0"],
-    "description": "Insert iteration"
+    "prefix": ["while", "mentre"],
+    "description": "Insert iteration",
+    "body": ["MENTRE ($1)", "\t$2", "FINE $0"]
+  },
+
+  "Insert for": {
+    "scope": "markdown,md",
+    "prefix": ["for", "per"],
+    "description": "Insert iteration",
+    "body": [
+      "${1:var} := 1",
+      "MENTRE (${1:var} <= ${2:cont})",
+      "\t$3",
+      "\t${1:var} := ${1:var} + 1",
+      "FINE $0"
+    ]
   },
 
   "Insert do..until": {
     "scope": "markdown,md",
     "prefix": ["do", "esegui"],
-    "body": ["ESEGUI", "\t$1", "FINCHÉ ($2)", "FINE $0"],
-    "description": "Insert do..until"
+    "description": "Insert do..until",
+    "body": ["ESEGUI", "\t$1", "FINCHÉ ($2)", "FINE $0"]
   },
 
   "Insert if": {
     "scope": "markdown,md",
     "prefix": ["if", "se"],
-    "body": ["SE ($1)", "\tALLORA $2", "FINE $0"],
-    "description": "Insert if"
+    "description": "Insert if",
+    "body": ["SE ($1)", "\tALLORA $2", "FINE $0"]
   },
 
   "Insert if/else": {
     "scope": "markdown,md",
     "prefix": ["ifelse", "sealtrimenti", "ife", "seal"],
-    "body": ["SE ($1)", "\tALLORA $2", "\tALTRIMENTI $3", "FINE $0"],
-    "description": "Insert if-else"
+    "description": "Insert if-else",
+    "body": ["SE ($1)", "\tALLORA $2", "\tALTRIMENTI $3", "FINE $0"]
   },
 
   "Disable line numbers for current code block": {
     "scope": "markdown,md",
     "prefix": "noln",
-    "body": ["linenums=\"0\""],
-    "description": "Disable line numbers for current code block"
+    "description": "Disable line numbers for current code block",
+    "body": ["linenums=\"0\""]
   },
 
   "Insert titled code block": {
     "scope": "markdown,md",
     "prefix": "tcode",
-    "body": ["```$1 title=\"$2\"", "$3", "```"],
-    "description": "Insert titled code block"
+    "description": "Insert titled code block",
+    "body": ["```$1 title=\"$2\"", "$3", "```"]
+  },
+
+  "Insert logical NOT": {
+    "scope": "markdown,md",
+    "prefix": "not",
+    "description": "Insert logical NOT",
+    "body": ["¬"]
+  },
+
+  "Insert logical AND": {
+    "scope": "markdown,md",
+    "prefix": "and",
+    "description": "Insert logical AND",
+    "body": ["∧"]
+  },
+
+  "Insert logical OR": {
+    "scope": "markdown,md",
+    "prefix": "or",
+    "description": "Insert logical OR",
+    "body": ["∨"]
+  },
+
+  "Insert variable Increment": {
+    "prefix": "inc",
+    "description": "Increment variable",
+    "body": ["${1:var} := ${1:var} + 1"]
+  },
+
+  "Insert variable Decrement": {
+    "prefix": "dec",
+    "description": "Decrement variable",
+    "body": ["${1:var} := ${1:var} - 1"]
   }
 }

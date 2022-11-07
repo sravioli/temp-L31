@@ -8,6 +8,7 @@
     "mkdocs",
     "Neumann",
     "pymdownx",
+    "sull",
     "twemoji"
   ],
   "cSpell.ignoreWords": [
