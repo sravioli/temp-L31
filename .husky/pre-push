@@ -62,9 +62,17 @@ check_diff() {
     return
 }
 
+pull_refs() {
+    # pull refs
+    printf "\n${INFO} Pulling refs\n"
+    git pull origin main
+    return
+}
+
 main() {
     # check if files inside .vscode/ have been updated
     check_diff
+    pull_refs
     return
 }
 
