@@ -4,11 +4,11 @@
 # vars
 OVERWRITE="\e[1A\e[K"
 INFO=" \033[1;34m\033[0m "
-CHECK_MARK=" \033[0;32m\033[0m "
-CROSS_MARK=" \033[0;31m\033[0m "
+DONE=" \033[0;32m\033[0m "
+ERROR=" \033[0;31m\033[0m "
 WARNING=" \033[1;33m\033[0m "
-ADD_MARK=" \033[0;34m\033[0m "
-COMMIT_MARK=" \033[1;35m\033[0m "
+ADDING=" \033[0;34m\033[0m "
+COMMITTING=" \033[1;35m\033[0m "
 
 # get user input to decide whether to push even if file differs
 push_or_stop() {
@@ -27,20 +27,20 @@ push_or_stop() {
         # check input
         case "$yn" in
         [Yy])
-            printf "${ADD_MARK}  Tracking changes\n" &&
+            printf "${ADDING}  Tracking changes\n" &&
                 git add .vscode/*
 
-            printf "${COMMIT_MARK}  Committing changes\n" &&
-                git commit -m "feat(auto) :gear:  update .vscode/\n"
+            printf "${COMMITTING}  Committing changes\n" &&
+                git commit -m "feat(auto) ⚙️  update \`.vscode\`"
 
             return
             ;;
         [Nn])
-            printf "${CROSS_MARK} Exiting\n" # Denying push, throw error
-            exit 126                         # "command not executable"
+            printf "${ERROR} Exiting\n" # Denying push, throw error
+            exit 126                    # "command not executable"
             ;;
         *)
-            echo "Please answer \"Y\" or \"N\"."
+            printf "Please answer \"Y\" or \"N\"."
             ;;
         esac
     done
@@ -54,7 +54,7 @@ check_diff() {
     printf "\n${INFO} Checking for updates to .vscode/*\n"
 
     if git diff --exit-code --quiet .vscode/*; then
-        printf "${CHECK_MARK} No updates detected!\n"
+        printf "${DONE} No updates detected!\n"
     else
         printf "${WARNING} Updates detected!\n"
         push_or_stop
@@ -70,4 +70,4 @@ main() {
 
 main
 
-exit 1
+# exit 1 # throw error to stop hook
