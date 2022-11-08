@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :recycle:  refactor to change variables names
+- :fire:  remove gh action
 - :rotating_light:  remove markdownlint warnings
 - :art:  update file structure, remove linter warnings
 - :fire:  remove extra comment
@@ -27,6 +29,8 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- ✨  update `README.md`
+- :construction_worker:  add pull before push
 - :sparkles:  complete document
 - :truck:  move examples pdf to `examples` dir
 - :speech_balloon:  update settings, create snippet file
