@@ -61,7 +61,7 @@
     "scope": "markdown,md",
     "prefix": ["do", "esegui"],
     "description": "Insert do..until",
-    "body": ["ESEGUI", "\t$1", "FINCHÉ ($2)", "FINE $0"]
+    "body": ["ESEGUI", "\t$2", "FINCHÉ ($2)", "FINE $0"]
   },
 
   "Insert if": {
@@ -90,6 +90,186 @@
     "prefix": "tcode",
     "description": "Insert titled code block",
     "body": ["```$1 title=\"$2\"", "$3", "```"]
+  },
+
+  "Insert note block": {
+    "scope": "markdown,md",
+    "prefix": ["note", "nota"],
+    "description": "Insert note block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} note \"Nota\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert abstract block": {
+    "scope": "markdown,md",
+    "prefix": ["abstract", "riassunto", "riass", "sommario"],
+    "description": "Insert abstract block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} abstract \"Sommario\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert info block": {
+    "scope": "markdown,md",
+    "prefix": ["info", "informazione", "ii"],
+    "description": "Insert info block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} info \"Informazioni\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert tip block": {
+    "scope": "markdown,md",
+    "prefix": ["tip", "suggerimento", "sugg"],
+    "description": "Insert tip block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} tip \"Suggerimento\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert success block": {
+    "scope": "markdown,md",
+    "prefix": ["success", "successo"],
+    "description": "Insert success block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} success \"Successo\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert question block": {
+    "scope": "markdown,md",
+    "prefix": ["question", "domanda", "??"],
+    "description": "Insert question block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} question \"Domanda\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert warning block": {
+    "scope": "markdown,md",
+    "prefix": ["warning", "attenzione", "!!"],
+    "description": "Insert warning block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} warning \"Attenzione\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert failure block": {
+    "scope": "markdown,md",
+    "prefix": ["failure", "errore", "XX"],
+    "description": "Insert failure block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} failure \"Errore\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert danger block": {
+    "scope": "markdown,md",
+    "prefix": ["danger", "pericolo", "zap"],
+    "description": "Insert danger block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} danger \"Pericolo\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert bug block": {
+    "scope": "markdown,md",
+    "prefix": "bug",
+    "description": "Insert bug block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} bug",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert example block": {
+    "scope": "markdown,md",
+    "prefix": ["ex", "example", "es", "esempio"],
+    "description": "Insert example block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} example \"Esempio\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
+  },
+
+  "Insert quote block": {
+    "scope": "markdown,md",
+    "prefix": ["quote", "citazione", ">"],
+    "description": "Insert quote block",
+    "body": [
+      "<!-- markdownlint-disable MD046-->",
+      "",
+      "${1|!!!,???,???+|} quote \"$1\"",
+      "",
+      "\t$2",
+      "",
+      "<!-- markdownlint-enable MD046-->"
+    ]
   },
 
   "Insert logical NOT": {
