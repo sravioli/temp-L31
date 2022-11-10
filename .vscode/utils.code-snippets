@@ -92,6 +92,13 @@
     "body": ["```$1 title=\"$2\"", "$3", "```"]
   },
 
+  "Insert mermaid code block": {
+    "scope": "markdown,md",
+    "prefix": ["mermaid", "mmd"],
+    "description": "Insert mermaid code block",
+    "body": ["```mermaid", "$1", "```"]
+  },
+
   "Insert note block": {
     "scope": "markdown,md",
     "prefix": ["note", "nota"],
