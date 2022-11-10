@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :truck:  rename to `.txt`
 - :recycle:  refactor to change variables names
 - :fire:  remove gh action
 - :rotating_light:  remove markdownlint warnings
