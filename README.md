@@ -65,7 +65,7 @@ modifiche e poi aprire una pull request. Gli step sono gli stessi effettuati
 per sfogliare il sito, le uniche differenze sono che è molto più comodo
 utilizzare `mkdocs serve --dirtyreload` per avviare il server, in modo da
 evitare di dover aggiornare ogni singola pagina, ma solo quella modificata.
-Inoltre sarebbe opportuno creare una nuova branch per ogni modifica, es.
+Inoltre sarebbe opportuno creare un branch per ogni modifica, es.
 `git checkout -b feat/ex-prog` per aggiungere un esercizio di programmazione.
 
 ## Licenza
