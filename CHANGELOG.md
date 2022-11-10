@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 Loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Commit messages should follow the [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/#summary).
 
-## [unreleased]
+## \[unreleased\]
 
 ### Bug Fixes
 
