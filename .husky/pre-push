@@ -64,8 +64,7 @@ check_diff() {
 
 pull_refs() {
     # pull refs
-    printf "\n${INFO} Pulling refs\n"
-    git pull origin main
+    printf "\n${INFO} Pulling refs\n" && git pull origin main
     return
 }
 
