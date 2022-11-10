@@ -61,7 +61,7 @@
     "scope": "markdown,md",
     "prefix": ["do", "esegui"],
     "description": "Insert do..until",
-    "body": ["ESEGUI", "\t$2", "FINCHÉ ($2)", "FINE $0"]
+    "body": ["ESEGUI", "\t$1", "FINCHÉ ($2)", "FINE $0"]
   },
 
   "Insert if": {

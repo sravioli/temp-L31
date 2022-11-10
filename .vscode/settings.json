@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "dirtyreload",
     "fontawesome",
     "inlines",
     "javascripts",
@@ -8,11 +9,13 @@
     "mkdocs",
     "Neumann",
     "pymdownx",
+    "sottoproblema",
     "sull",
     "twemoji"
   ],
   "cSpell.ignoreWords": [
     "Fira",
+    "Wirth",
     "arithmatex",
     "autohide",
     "betterem",
