@@ -1,8 +1,8 @@
 # Problem Solving
 
-## Il metodo di sviluppo del SW
+## Il metodo di sviluppo del Software
 
-Per sviluppare SW è necessario seguire i seguenti passaggi:
+Per sviluppare Software è necessario seguire i seguenti passaggi:
 
 1. Specificare i requisiti del problema;
 2. Analizzare il problema;

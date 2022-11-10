@@ -10,19 +10,19 @@ Gli elementi principali di un sistema di calcolo si suddividono in 2 categorie:
 **Software**
 : Tutti i programmi che consentono all'Hardware di realizzare specifici compiti
 
-Senza HW il SW è inutile e viceversa. Questi si completano.
+Senza Hardware il Software è inutile e viceversa. Questi si completano.
 
 ## Software
 
-I SW sono di due tipi
+I Software sono di due tipi
 
-**SW di base**
+**Software di base**
 : Funzionale all'utilizzo dell'elaboratore e di tutte le sue periferiche, questo comprende sia il sistema operativo, che i programmi che traducono i linguaggi di programmazione.
 
-**SW applicativo**
+**Software applicativo**
 : Mostra all'utente il calcolatore come una macchina virtuale che è possibile utilizzare per la risoluzione di problemi specifici.
 
-Il SW applicativo comprende tutte le applicazioni che l'utente utilizza come giochi, fogli elettronici, editor di testo, etc.
+Il Software applicativo comprende tutte le applicazioni che l'utente utilizza come giochi, fogli elettronici, editor di testo, etc.
 
 È necessario saper utilizzare correttamente il SO poiché saper impostare la macchina al meglio è fondamentale.
 
