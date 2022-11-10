@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :art:  add blank line
 - :pencil:  change `HW` for `Hardware` and `SW` for `Software`
 - :art:  use `&&` to combine operations
 - :pencil2:  fix typo
@@ -33,6 +34,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- :pencil:  create notes about top-down
 - ✨  update `README.md`
 - :construction_worker:  add pull before push
 - :sparkles:  complete document
