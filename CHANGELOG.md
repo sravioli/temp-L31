@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- :pencil:  change `HW` for `Hardware` and `SW` for `Software`
+- :art:  use `&&` to combine operations
+- :pencil2:  fix typo
 - :truck:  rename to `.txt`
 - :recycle:  refactor to change variables names
 - :fire:  remove gh action
