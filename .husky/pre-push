@@ -27,10 +27,10 @@ get_input() {
         # check input
         case "$yn" in
         [Yy])
-            val=0
+            return 0
             ;;
         [Nn])
-            val=1
+            return 1
             ;;
         *)
             printf "Please answer with \"Y\" or \"N\"."
@@ -39,71 +39,85 @@ get_input() {
     done
 
     exec <&- # close STDIN
-    return val
 }
 
-track_commmit() {
-    value=get_input
+# check if user wants to track and commit changes automatically, then
+# either exits (1) or commits (0)
+function commit() {
+    to_track=$(get_input)
+    directory=$1
 
-    # check if user wants to track changes
-    if [ $value -eq 0 ]; then
-        printf "${ADD}  Tracking changes...\n"
-        git add ./.vscode/*
-
-        printf "${COMMIT}  Committing changes...\n"
-        git commit -m "feat(vscde) :robot:  update \`./.vscode/*\`"
-
-    elif [ $value -eq 1 ]; then
-        printf "${ERROR} Exiting...\n"
+    # Exiting is kind of an exception, so we check for it first
+    if [ $to_track -eq 1 ]; then
+        printf "${ERROR} Exiting\n"
+        return 1
     fi
 
+    # it's assumed that the user wants to commit and push automatically
+    printf "${ADD} Tracking changes...\n" &&
+        git add ./$directory
+
+    printf "${COMMIT} Committing changes\n" &&
+        git commit -m "feat($directory): :robot:  update \`./$directory\`"
     return
 }
 
-# check if files inside .vscode/ have been updated
-check_diff() {
-    # check if .vscode/ has been updated
-    printf "\n${INFO} Checking for updates to .vscode/*\n"
+# given a directory/file it will check if it has been modified since the last
+# commit. If it has, it will invoke commit()
+function diff() {
+    directory="\e[1;34;1;40m./$1\e[0m"
 
-    if git diff --exit-code --quiet .vscode/*; then
-        printf "${DONE} No updates detected!\n"
-    else
-        printf "${WARNING} Updates detected!\n"
-        track_commmit
-    fi
-}
+    printf "\n${INFO} Checking for changes in ${directory}\n"
 
-# generate automatically a changelog
-generate_changelog() {
-    printf "\n${INFO} Generating changelog...\n"
-    git-cliff.exe --output ./CHANGELOG.md
-
-    # track and commit changes
-    printf "${ADD} Tracking changes...\n"
-    git add ./CHANGELOG.md
-
-    printf "${COMMIT} Committing changes...\n"
-    git commit -m "docs(changelog) :robot:  update \`./CHANGELOG.md\`"
-
-    return
-}
-
-# check if user can push
-can_push() {
-    # check if user can push
-    # printf "\n${INFO} Checking if you can push...\n"
-
-    if ! [ git push --dry-run --quiet ]; then
-        printf "${ERROR} There is nothing to push!\n"
+    # check if given directory has been updated
+    if git diff --quiet --exit-code -- ./$1/*; then
+        printf "${DONE} No changes to ${directory}\n"
         return
     fi
 
+    printf "${WARNING} Changes in ${directory}\n" &&
+        commit $1
+    return
 }
 
+# generates a changelog based on the commits since the last tag. track and
+# commit changes only if file contents have been modified
+function changelog() {
+    changelog="\e[1;34;1;40m./CHANGELOG.md\e[0m"
+    # generate changelog first
+    printf "\n${INFO} Generating changelog\n" &&
+        git-cliff --config ./cliff.toml --output ./CHANGELOG.md
+
+    diff "CHANGELOG.md"
+
+    return
+}
+
+# generate automatically a changelog
+# generate_changelog() {
+#     printf "\n${INFO} Generating changelog...\n"
+#     git-cliff.exe --output ./CHANGELOG.md
+
+#     # track and commit changes
+#     printf "${ADD} Tracking changes...\n"
+#     git add ./CHANGELOG.md
+
+#     printf "${COMMIT} Committing changes...\n"
+#     git commit -m "docs(changelog) :robot:  update \`./CHANGELOG.md\`"
+
+#     return
+# }
+
+# check if user can push
+
 main() {
-    check_diff
-    generate_changelog
-    can_push
+    # # check_diff
+    # diff ".vscode"
+    # generate_changelog
+    # # can_push
+
+    diff ".vscode"
+    changelog
 }
 
 main
