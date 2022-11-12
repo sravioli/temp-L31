@@ -1,89 +1,40 @@
 #!/bin/sh
 source "$(dirname "$0")/_/husky.sh"
 
-# require user input to proceed with script or throw error (cmd not executable)
-function proceed() {
-    exec </dev/tty # open STDIN
+# check diff
+function check() {
+    local name="$code ./$1 \e[0m"
 
-    # read input
-    while true; do
-        #? TODO maybe change to a more generic question eg. "Continue?"
-        read -p $' \033[1;36m\033[0m  Continue? [Y/n] ' answer
+    printf "\n \e[1;34m\e[0m  Checking $name for changes\n"
+    if git diff --quiet --exit-code ./$1; then
+        printf " \e[1;32m\e[0m  No changes detected to $name since last commit\n"
+    else
+        printf " \e[1;33m\e[0m  Detected changes to $name since last commit\n"
+        printf " \e[1;35m\e[0m  Traking and committing changes...\n "
+        git add ./$1
+        git commit -m "feat(auto): :robot:  update \`./$1\`"
 
-        # accept blank as "y"
-        if [ "$answer" = "" ]; then
-            answer="y"
-        fi
-
-        # it's either yes or no
-        case $answer in
-        [Yy])
-            return 0
-            ;;
-        [Nn])
-            exit 126
-            ;;
-        *) ;; # loop again
-        esac
-    done
-    exec <&- # close STDIN
-}
-
-# check if any files in ./.vscode/ have been modified in any way, if so call
-# proceed() and continue or exit
-function check_vscode() {
-    printf "\n$info Checking for changes in $code./.vscode/*$clr\n"
-
-    # check for changes, then commit (ask to)
-    if ! git diff --exit-code --quiet ./.vscode/*; then
-        printf "$error Changes were made to $code./.vscode/*$clr\n\n"
-        # user preference! uncomment if user input is preferred, leave commented
-        # if you want proceed automatically
-        # proceed
-        printf "$add Tracking changes\n" &&
-            git add ./.vscode/
-        printf "$commit Committing changes\n" &&
-            git commit -m "feat(auto) :robot:  update \`.vscode/\`"
-        return
     fi
-
-    printf "$good No changes made to $code./.vscode/*$clr\n"
-
+    return
 }
 
 # generate and commit changelog automatically
 function changelog() {
-    printf "\n$info Generating $code./CHANGELOG.md$clr\n" &&
-        git-cliff --config ./cliff.toml --output ./CHANGELOG.md
-
-    # check if ./CHANGELOG.md has been updated by git-cliff, by doing this
-    # two useless operation (git add/commit) are avoided (time save).
-    # if it has been updated, then proceed to add and commit the changes
-    printf "$info Checking for changes in $code./CHANGELOG.md$clr\n"
-    if ! git diff --exit-code --quiet ./CHANGELOG.md; then
-        printf "$add Tracking changes\n" &&
-            git add --update --renormalize ./CHANGELOG.md
-        printf "$commit Committing changes\n" &&
-            git commit -m "docs(auto) :robot:  update \`CHANGELOG.md\`"
-        return
-    fi
+    local name="$code ./CHANGELOG.md \e[0m"
+    printf "\n \e[1;35m\e[0m  Generating $name"
+    git cliff --output ./CHANGELOG.md
+    return
 }
 
 function main() {
-    # declare read-only variables for icons and colors
-    declare -r overwrite="\e[1A\e[K"
-    declare -r info=" \033[1;34m\033[0m "
-    declare -r good=" \033[1;32m\033[0m "
-    declare -r error=" \033[0;31m\033[0m "
-    declare -r warning=" \033[1;33m\033[0m "
-    declare -r track=" \033[0;34m\033[0m "
-    declare -r commit=" \033[1;35m\033[0m "
-    declare -r clr="\033[0m"
-    declare -r code="\033[1;34;1;40m"
+    declare code="\e[38;2;237;86;122;48;2;60;60;60m"
 
-    # call the fuctions
-    check_vscode
+    check ".vscode/*"
     changelog
+    check "CHANGELOG.md"
+
+    printf "\n \e[1;32m\e[0m  All done!\n"
+    return
 }
 
 main
