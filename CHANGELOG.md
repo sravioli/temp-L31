@@ -28,6 +28,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- :bento: ignore automatic commits from husky hook
 - :pencil: create notes about top-down
 - ✨ update `README.md`
 - :construction_worker: add pull before push
@@ -47,6 +48,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Refactor
 
+- [**BREAKING**] :recycle: hook is faster s/ half the lines
 - [**BREAKING**] :recycle: rewrite hook to re-use functions and have better checks
 - :recycle: change file structure, generate changelog automatically
 - :recycle: change header, add parsers, customize settings
