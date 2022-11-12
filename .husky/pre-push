@@ -18,7 +18,7 @@ function check() {
     return
 }
 
-# generate and commit changelog automatically
+# generate changelog
 function changelog() {
     local name="$code ./CHANGELOG.md \e[0m"
     printf "\n \e[1;35m\e[0m  Generating $name"
