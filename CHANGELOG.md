@@ -30,6 +30,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- :pencil: update readme to include more infos on hook and project structure
 - :recycle: actually use half the loC for the hook
 - :bento: ignore automatic commits from husky hook
 - :pencil: create notes about top-down
