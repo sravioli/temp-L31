@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- :pencil2: correct comments
 - :pencil2: fix name error for `LICENSE.md`
 - :art: add blank line
 - :pencil: change `HW` for `Hardware` and `SW` for `Software`
@@ -29,6 +30,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- :recycle: actually use half the loC for the hook
 - :bento: ignore automatic commits from husky hook
 - :pencil: create notes about top-down
 - ✨ update `README.md`
