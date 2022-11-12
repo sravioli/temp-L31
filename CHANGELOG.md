@@ -48,7 +48,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Refactor
 
-- [**BREAKING**] :recycle: hook is faster s/ half the lines;
+- [**BREAKING**] :recycle: hook is faster s/ half the lines
 - [**BREAKING**] :recycle: rewrite hook to re-use functions and have better checks
 - :recycle: change file structure, generate changelog automatically
 - :recycle: change header, add parsers, customize settings
