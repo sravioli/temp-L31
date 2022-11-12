@@ -7,13 +7,8 @@ vari corsi di Informatica, corso A-L.
 
 La struttura della repository è la seguente:
 
-- `📂 .github\workflows`: contiene una GitHub Action che genera automaticamente
-  un changelog ogni volta che viene effettuato un push su `main`;
-- `📂 .husky`: contiene un pre-push hook che controlla se la cartella `.vscode` è
-  stata modificata, dopodiché o effettua il commit o interrompe il push (viene
-  chiesto all'utente in input);
-- `📂 .vscode`: contiene opzioni e qualche snippet che facilitano la scrittura
-  degli appunti;
+- `📂 .husky`: contiene uno script che viene eseguito prima di ogni push[^1].
+- `📂 .vscode`: contiene le impostazioni di VSCode e qualche snippet;
 - `📂 docs`: la cartella principale, che contiene sia i files di appunti, che
   slides, che esercizi, etc.;
   - `📂 docs\javascripts`: cartella contenente i file JavaScript;
@@ -24,7 +19,7 @@ La struttura della repository è la seguente:
 ## Come consultare gli appunti
 
 ~~Per sfogliare gli appunti, è possibile utilizzare il sito web~~
-~~[https://l31.github.io/informatica/](https://l31.github.io/informatica/)[^1].~~
+~~[https://l31.github.io/informatica/](https://l31.github.io/informatica/)[^2].~~
 
 Per consultare gli appunti bisogna clonare la repository
 
@@ -70,6 +65,15 @@ Inoltre sarebbe opportuno creare un branch per ogni modifica, es.
 
 ## Licenza
 
-Il progetto è sotto licenza [Creative Commons Attribution 4.0 International](LICENCE.md).
+Il progetto è sotto licenza [Creative Commons Attribution 4.0 International](LICENSE.md).
 
-[^1]: Non è ancora stato effettuato il deploy del sito web.
+[^1]:
+    Lo script controlla se ci sono cambiamenti nella cartella `.vscode` e effettua
+    automaticamente il commit di questi, in modo da non doverlo fare manualmente.
+    Inoltre genera automaticamente un changelog tramite [git-cliff](https://www.github.com/orhun/git-cliff)
+    e anche di questo effettua il commit automaticamente.
+    Per poter utilizzare Husky è necessario installare [Node.js](https://nodejs.org/it/)
+    e ovviamente [Husky](https://typicode.github.io/husky/#/?id=install). Per
+    ovviare, basta effettuare il commit con la flag `--no-verify`.
+
+[^2]: Non è ancora stato effettuato il deploy del sito web.
