@@ -8,6 +8,7 @@
     "mathbb",
     "mathjax",
     "mkdocs",
+    "nell'array",
     "Neumann",
     "pymdownx",
     "sottoproblema",
@@ -35,5 +36,9 @@
     "smartsymbols",
     "superfences",
     "tasklist"
-  ]
+  ],
+  "docwriter.hotkey.windows": "Alt + .",
+  "docwriter.style": "Auto-detect",
+  "docwriter.progress.trackFunctions": true,
+  "docwriter.progress.trackClasses": true
 }
