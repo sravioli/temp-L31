@@ -40,5 +40,9 @@
   "docwriter.hotkey.windows": "Alt + .",
   "docwriter.style": "Auto-detect",
   "docwriter.progress.trackFunctions": true,
-  "docwriter.progress.trackClasses": true
+  "docwriter.progress.trackClasses": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": false,
+  "python.linting.banditEnabled": true
 }
