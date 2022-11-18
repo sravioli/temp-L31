@@ -45,7 +45,6 @@ lessons/
 *.dylib
 
 # Executables
-binaries/
 *.exe
 *.out
 *.app
