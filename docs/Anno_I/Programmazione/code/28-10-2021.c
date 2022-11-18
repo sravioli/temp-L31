@@ -9,30 +9,6 @@
 // Considerare i controlli su dati di input.
 // Realizzare come prima cosa la decomposizione funzionale.
 
-/*
-   Operazioni su insiemi
-     Leggere insieme I1
-       leggere cardinalità n di I1
-       verificare i vincoli di n
-       leggere i valori di I1
-       verificare i vincoli di I1
-     Leggere insieme I2
-       leggere cardinalità m di I2
-       verificare i vincoli di m
-       leggere i valori di I2
-       verificare i vincoli di I2
-     Calcolare intersezione
-       ricercare elemento in insieme
-     Calcolare unione
-       ricercare elemento in insieme
-     Calcolare Differenza
-       ricercare elemento in insieme
-     Stampare i risultati
-       stampare l'insieme intersezione
-       stampare l'insieme unione
-       stampare l'insieme differenza
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #define DIM 50
@@ -40,11 +16,9 @@
 // Dichiarazione delle funzioni
 void readArray(int array[], int card);
 int readCard(int *card);
-
 int calcIntersection(int arr1[], int arr2[], int intrs[], int card1, int card2);
 int calcUnion(int arr1[], int arr2[], int unn[], int card1, int card2);
 int calcDifference(int arr1[], int arr2[], int diff[], int card1, int card2);
-
 void printArray(int array[], int card);
 
 int main(void)
@@ -74,20 +48,19 @@ int main(void)
     card_diff = calcDifference(I1, I2, diff, card_I1, card_I2);
 
     // stampare i risultati
-
-    printf("I1: ");
+    printf("I1 = ");
     printArray(I1, card_I1);
 
-    printf("I2: ");
+    printf("I2 = ");
     printArray(I2, card_I2);
 
-    printf("Intersezione: ");
+    printf("Intersezione = ");
     printArray(intrs, card_intrs);
 
-    printf("Unione: ");
+    printf("Unione = ");
     printArray(unn, card_unn);
 
-    printf("Differenza: ");
+    printf("Differenza = ");
     printArray(diff, card_diff);
 }
 
@@ -97,7 +70,7 @@ int readCard(int *card)
     // continua a chiedere di inserire un valore
     do
     {
-        printf("Inserire la cardinalita' dell'insieme: ");
+        printf("Inserire la cardinalità dell'insieme: ");
         scanf("%d", card);
     } while (*card < 0 || *card > DIM);
     return *card;
