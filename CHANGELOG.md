@@ -32,6 +32,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- :wrench: add `.editorconfig`
+- :heavy_plus_sign: add husky and commitizen dependencies
 - [**BREAKING**] :truck: use `-` as digit separator (`.` is confusing)
 - :see_no_evil: updated gitignore for `.c` files
 - :pencil: update readme to include more infos on hook and project structure
