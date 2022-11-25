@@ -33,6 +33,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- :see_no_evil: update `.gitignore` to include python
 - :wrench: add `.editorconfig`
 - :heavy_plus_sign: add husky and commitizen dependencies
 - [**BREAKING**] :truck: use `-` as digit separator (`.` is confusing)
