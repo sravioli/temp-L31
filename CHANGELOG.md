@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- :bug: correct `.editorconfig` syntax
 - :memo: rewrite README.md
 - :see_no_evil: remove `binaries/` from gitignore
 - :ok_hand: change condition of while loop to `>=`
