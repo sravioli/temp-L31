@@ -55,7 +55,7 @@ partire il server mkdocs. Di seguito la struttura della del corso di Programmazi
 │       │   └───exercises             Esercizi fatti a lezione (dal prof) [PDF]
 │       └───notes                     Appunti in formato Markdown
 │           └───exercises             Esercizi fatti a lezione con soluzione [MD]
-└───javascripts
+└───javascripts                       Implementazione di MathJax
 ```
 
 **Extra**:
@@ -65,8 +65,6 @@ partire il server mkdocs. Di seguito la struttura della del corso di Programmazi
   automaticamente un changelog con [git-cliff](https://www.github.com/orhun/git-cliff);
 - `📂 .vscode` – impostazioni, snippets e estensioni consigliate per
   [VSCode](https://github.com/microsoft/vscode);
-- `📂 docs/javascripts` – javascripts per mkdocs, in particolare l'integrazione
-  di MathJax e macro LaTeX[^3].
 
 ## Come contribuire
 
