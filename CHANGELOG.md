@@ -9,6 +9,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Reformat code using clang_format, fix linter warnings
+- Rewrite project tree structure comments, remove unused footnote
+- :pencil2: fix typo
 - 🐛 move javascript explanation to file tree
 - 🐛 rewrite file structure, update footnotes
 - :bug: correct `.editorconfig` syntax
