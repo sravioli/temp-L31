@@ -10,7 +10,7 @@ function check() {
         printf " \e[1;32m\e[0m  No changes detected to $name since last commit\n"
     else
         printf " \e[1;33m\e[0m  Detected changes to $name since last commit\n"
-        printf " \e[1;35m\e[0m  Traking and committing changes...\n "
+        printf " \e[1;35m\e[0m  Tracking and committing changes...\n "
         git add ./$1
         git commit -m "feat(auto): :robot:  update \`./$1\`"
 
