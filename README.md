@@ -42,20 +42,21 @@ Per interrompere il server basta premere <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 ## Struttura
 
 È possibile consultare gli appunti o le slides direttamente, senza dover far
-partire il server mkdocs. Di seguito la struttura della del corso di Programmazione:
+partire il server mkdocs. Segue la struttura degli appunti di Programmazione
+come esempio:
 
 ```txt
 ./L31/DOCS/
 ├───Anno_I
 │   └───Programmazione
-│       ├───code                      Codice degli esercizi
-│       ├───handouts                  File PDF con gli appunti
-│       │   ├───articles              Articoli di approfondimento (dal prof)
-│       │   ├───examples              Esempi fatti a lezione (dal prof) [PDF]
-│       │   └───exercises             Esercizi fatti a lezione (dal prof) [PDF]
-│       └───notes                     Appunti in formato Markdown
-│           └───exercises             Esercizi fatti a lezione con soluzione [MD]
-└───javascripts                       Implementazione di MathJax
+│       ├───code                      [C]   Codice degli esercizi
+│       ├───handouts                  [PDF] File di appunti
+│       │   ├───articles              [PDF] Articoli di approfondimento
+│       │   ├───examples              [PDF] Esempi fatti a lezione
+│       │   └───exercises             [PDF] Esercizi fatti a lezione
+│       └───notes                     [MD]  File di appunti
+│           └───exercises             [MD]  Esercizi fatti a lezione con soluzione
+└───javascripts
 ```
 
 **Extra**:
@@ -85,5 +86,3 @@ Il progetto è sotto licenza [Creative Commons Attribution 4.0 International](LI
     richiede [Node.js](https://nodejs.org/it/). Per ignorare l'hook (se non si
     vuole installare husky o per altri motivi) bisogna effettuare il push con
     la flag `--no-verify`.
-[^3]:
-    Più informazioni su come definirle [qui](https://docs.mathjax.org/en/latest/input/tex/macros.html#defining-tex-macros)
