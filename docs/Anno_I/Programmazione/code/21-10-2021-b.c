@@ -16,17 +16,16 @@
 int getNaturalNum(int *num);
 void isDivisible(int n, int k);
 
-int main(void)
-{
-    int n; // numero da verificare
-    int k; // numero per cui verificare la divisibilità
+int main(void) {
+  int n; // numero da verificare
+  int k; // numero per cui verificare la divisibilità
 
-    // leggo n
-    n = getNaturalNum(&n);
-    k = getNaturalNum(&k);
+  // leggo n
+  n = getNaturalNum(&n);
+  k = getNaturalNum(&k);
 
-    // verifico se n è divisibile per k
-    isDivisible(n, k);
+  // verifico se n è divisibile per k
+  isDivisible(n, k);
 }
 
 /**
@@ -36,13 +35,12 @@ int main(void)
  *
  * @return il numero letto
  */
-int getNaturalNum(int *num)
-{
-    do
-    {
-        printf("Inserisci un numero naturale: ");
-        scanf("%d", num);
-    } while (*num <= 0);
+int getNaturalNum(int *num) {
+  do {
+    printf("Inserisci un numero naturale: ");
+    scanf("%d", num);
+  } while (*num <= 0);
+  return *num;
 }
 
 /**
@@ -51,15 +49,14 @@ int getNaturalNum(int *num)
  * @param n numero da verificare
  * @param k numero per cui verificare la divisibilità
  */
-void isDivisible(int n, int k)
-{
-    int i = n;
+void isDivisible(int n, int k) {
+  int i = n;
 
-    while (i >= k)
-        i = i - k;
+  while (i >= k)
+    i = i - k;
 
-    if (i == 0)
-        printf("%d divisibile per %d", n, k);
-    else
-        printf("%d non divisibile per %d", n, k);
+  if (i == 0)
+    printf("%d divisibile per %d", n, k);
+  else
+    printf("%d non divisibile per %d", n, k);
 }

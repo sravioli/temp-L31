@@ -13,33 +13,32 @@ void populateArray(int v[], int n, char name);
 int calcIntersection(int v[], int w[], int intersezione[], int n, int m);
 void printArray(int v[], int n, char name);
 
-int main(void)
-{
-    int n; // Cardinalità del primo insieme
-    int m; // Cardinalità del secondo insieme
-    int k; // Cardinalità dell'insieme intersezione
+int main(void) {
+  int n; // Cardinalità del primo insieme
+  int m; // Cardinalità del secondo insieme
+  int k; // Cardinalità dell'insieme intersezione
 
-    int v[DIM];            // Primo insieme
-    int w[DIM];            // Secondo insieme
-    int intersezione[DIM]; // Insieme intersezione
+  int v[DIM];            // Primo insieme
+  int w[DIM];            // Secondo insieme
+  int intersezione[DIM]; // Insieme intersezione
 
-    // Input
-    n = askCard(&n, 'v');
-    m = askCard(&m, 'w');
+  // Input
+  n = askCard(&n, 'v');
+  m = askCard(&m, 'w');
 
-    // Popolamento vettori
-    populateArray(v, n, 'v');
-    populateArray(w, m, 'w');
+  // Popolamento vettori
+  populateArray(v, n, 'v');
+  populateArray(w, m, 'w');
 
-    // Stampa vettori iniziali (solo per controllo)
-    printArray(v, n, 'v');
-    printArray(w, m, 'w');
+  // Stampa vettori iniziali (solo per controllo)
+  printArray(v, n, 'v');
+  printArray(w, m, 'w');
 
-    // Calcolo intersezione
-    k = calcIntersection(v, w, intersezione, n, m);
+  // Calcolo intersezione
+  k = calcIntersection(v, w, intersezione, n, m);
 
-    // stampa risultato
-    printArray(intersezione, k, 'i');
+  // stampa risultato
+  printArray(intersezione, k, 'i');
 }
 
 /**
@@ -50,11 +49,10 @@ int main(void)
  *
  * @return il valore del puntatore c
  */
-int askCard(int *c, char name)
-{
-    printf("Inserisci la cardinalità dell'insieme %c: ", name);
-    scanf("%d", c);
-    return *c;
+int askCard(int *c, char name) {
+  printf("Inserisci la cardinalità dell'insieme %c: ", name);
+  scanf("%d", c);
+  return *c;
 }
 
 /**
@@ -64,15 +62,13 @@ int askCard(int *c, char name)
  * @param n la dimensione dell'array v
  * @param name il nome dell'array
  */
-void populateArray(int v[], int n, char name)
-{
-    int i = 0;
-    printf("Inserisci gli elementi dell'insieme %c: ", name);
-    while (i < n)
-    {
-        scanf("%d", &v[i]);
-        i++;
-    }
+void populateArray(int v[], int n, char name) {
+  int i = 0;
+  printf("Inserisci gli elementi dell'insieme %c: ", name);
+  while (i < n) {
+    scanf("%d", &v[i]);
+    i++;
+  }
 }
 
 /**
@@ -86,26 +82,22 @@ void populateArray(int v[], int n, char name)
  *
  * @return la cardinalità dell'insieme intersezione
  */
-int calcIntersection(int v[], int w[], int intersezione[], int n, int m)
-{
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    while (i < n)
-    {
-        while (j < m)
-        {
-            if (v[i] == w[j])
-            {
-                intersezione[k] = v[i];
-                k = k + 1;
-            }
-            j = j + 1;
-        }
-        i = i + 1;
-        j = 0;
+int calcIntersection(int v[], int w[], int intersezione[], int n, int m) {
+  int i = 0;
+  int j = 0;
+  int k = 0;
+  while (i < n) {
+    while (j < m) {
+      if (v[i] == w[j]) {
+        intersezione[k] = v[i];
+        k = k + 1;
+      }
+      j = j + 1;
     }
-    return k;
+    i = i + 1;
+    j = 0;
+  }
+  return k;
 }
 
 /**
@@ -115,21 +107,16 @@ int calcIntersection(int v[], int w[], int intersezione[], int n, int m)
  * @param n la dimensione dell'array
  * @param name il nome dell'array
  */
-void printArray(int v[], int n, char name)
-{
-    int i = 0;
-    printf("Insieme %c = {", name);
-    while (i < n)
-    {
-        if (i == n - 1)
-        {
-            printf("%d", v[i]);
-        }
-        else
-        {
-            printf("%d, ", v[i]);
-        }
-        i = i + 1;
+void printArray(int v[], int n, char name) {
+  int i = 0;
+  printf("Insieme %c = {", name);
+  while (i < n) {
+    if (i == n - 1) {
+      printf("%d", v[i]);
+    } else {
+      printf("%d, ", v[i]);
     }
-    printf("}\n");
+    i = i + 1;
+  }
+  printf("}\n");
 }

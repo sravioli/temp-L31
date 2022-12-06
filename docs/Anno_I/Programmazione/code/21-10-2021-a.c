@@ -17,17 +17,16 @@ void printMult(int n, int k);
 /**
  * Richiede due numeri e calcola i primi n multipli di k
  */
-int main(void)
-{
-    int n; // numero di multipli da calcolare
-    int k; // numero di cui calcolare i multipli
+int main(void) {
+  int n; // numero di multipli da calcolare
+  int k; // numero di cui calcolare i multipli
 
-    // leggo n
-    n = getNaturalNum(&n);
-    k = getNaturalNum(&k);
+  // leggo n
+  n = getNaturalNum(&n);
+  k = getNaturalNum(&k);
 
-    // calcolo i multipli
-    printMult(n, k);
+  // calcolo i multipli
+  printMult(n, k);
 }
 
 /**
@@ -37,13 +36,12 @@ int main(void)
  *
  * @return il numero letto
  */
-int getNaturalNum(int *num)
-{
-    do
-    {
-        printf("Inserisci un numero naturale: ");
-        scanf("%d", num);
-    } while (*num <= 0);
+int getNaturalNum(int *num) {
+  do {
+    printf("Inserisci un numero naturale: ");
+    scanf("%d", num);
+  } while (*num <= 0);
+  return *num;
 }
 
 /**
@@ -52,19 +50,17 @@ int getNaturalNum(int *num)
  * @param n numero di multipli da calcolare
  * @param k numero di cui calcolare i multipli
  */
-void printMult(int n, int k)
-{
-    int i = 1;
+void printMult(int n, int k) {
+  int i = 1;
 
-    printf("I primi %d multipli di %d sono: {", n, k);
-    while (i <= n)
-    {
-        if (i == n)
-            printf("%d", i * k);
-        else
-            printf("%d, ", i * k);
+  printf("I primi %d multipli di %d sono: {", n, k);
+  while (i <= n) {
+    if (i == n)
+      printf("%d", i * k);
+    else
+      printf("%d, ", i * k);
 
-        i = i + 1;
-    }
-    printf("}\n");
+    i = i + 1;
+  }
+  printf("}\n");
 }
