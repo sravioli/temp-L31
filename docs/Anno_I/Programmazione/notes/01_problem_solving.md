@@ -126,9 +126,12 @@ convertire da miglia a chilometri.
 
 **Analisi**:
 
-È necessario capire cosa fare: dobbiamo convertire dei valori da un sistema di misura ad un altro, ovvero da miglia a chilometri. Il dato da elaborare è quindi una distanza in miglia. Il risultato desiderato è la distanza in chilometri.
+È necessario capire cosa fare: dobbiamo convertire dei valori da un sistema di
+misura ad un altro, ovvero da miglia a chilometri. Il dato da elaborare è
+quindi una distanza in miglia. Il risultato desiderato è la distanza in chilometri.
 
-Per poter risolvere il problema è necessario conoscere la relazione esistente tra miglia e chilometri: $1\,{\rm mi} = 1.609\,{\rm km}$.
+Per poter risolvere il problema è necessario conoscere la relazione esistente
+tra miglia e chilometri: $1\,{\rm mi} = 1.609\,{\rm km}$.
 
 **INPUT**
 : miglio, la distanza espressa in miglia
