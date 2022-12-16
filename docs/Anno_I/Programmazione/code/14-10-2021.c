@@ -1,3 +1,5 @@
+// Copyright (c) 2022 Simone Fidanza. All Rights Reserved.
+
 // ESERCIZIO DEL 14/10/21
 //
 // Dati due insiemi di elementi I1, I1, di cardinalità rispettivamente n, m,
@@ -67,7 +69,7 @@ void populateArray(int v[], int n, char name) {
   printf("Inserisci gli elementi dell'insieme %c: ", name);
   while (i < n) {
     scanf("%d", &v[i]);
-    i++;
+    i = i + 1;
   }
 }
 
