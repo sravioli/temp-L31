@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- :art: change `i++` to `i = i + 1`
 - Reformat code using clang_format, fix linter warnings
 - Rewrite project tree structure comments, remove unused footnote
 - :pencil2: fix typo
