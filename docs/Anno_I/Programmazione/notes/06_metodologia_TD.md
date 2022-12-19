@@ -4,13 +4,14 @@ La metodologia di sviluppo di un programma Top-Down riguarda i metodi di
 risoluzione di un problema, basati sulla decomposizione del problema.
 
 Lo _stepwise_ refinement (ovvero raffinamento per passi successivi), è una
-strategia di sviluppo Top-Down proposta da N. Wirth nell'ambito della programmazione
-strutturata, nell'articolo "Program Development by Stepwise Refinement", 1971.
+strategia di sviluppo Top-Down proposta da N. Wirth nell'ambito della
+programmazione strutturata, nell'articolo "Program Development by Stepwise
+Refinement", 1971.
 
 ## Metodologia Top-Down nell'analisi del problema
 
-L'analisi Top-Down prevede la scomposizione del problema generale da risolvere in
-più sotto-problemi.
+L'analisi Top-Down prevede la scomposizione del problema generale da risolvere
+in più sotto-problemi.
 
 La scomposizione del problema in sotto-problemi, si ottiene attraverso la
 decomposizione del problema in sotto-problemi, che a loro volta possono essere
@@ -33,7 +34,7 @@ del problema in sotto-problemi. Ad esempio, il problema iniziale $P$, può esser
 decomposto in $P_1$, $P_2$ e $P_3$:
 
 ```mermaid
-graph TD
+flowchart TD
   P --> P1 & P2 & P3;
 ```
 
@@ -41,7 +42,7 @@ Nel caso in cui i sotto-problemi $P_1$, $P_2$ e $P_3$ siano a loro volta troppo
 complessi, possono essere decomposti in altri sotto-problemi.
 
 ```mermaid
-graph TD
+flowchart TD
   P --> P1 & P2 & P3;
   P1 --> P1.1 & P1.2;
   P3 --> P3.1 & P3.2;
@@ -58,15 +59,16 @@ problema principale nelle soluzioni di altri problemi, ma molto più semplici e
 dunque più facilmente risolvibili.
 
 La soluzione per un problema $P$ si ottiene combinando le soluzioni dei suoi
-sotto-problemi utilizzando le strutture di controllo, ovvero sequenza, selezione e
-iterazione.
+sotto-problemi utilizzando le strutture di controllo, ovvero sequenza, selezione
+e iterazione.
 
 La situazione è differente se il problema ammette una soluzione ricorsiva.
 
 ### Specifica di un problema
 
-La specifica di un problema, è una descrizione formale del problema, che permette di
-definire il problema in modo univoco. La specifica di un problema, è composta da:
+La specifica di un problema, è una descrizione formale del problema, che permette
+di definire il problema in modo univoco. La specifica di un problema, è composta
+da:
 
 - il compito o _funzione_ che il problema richiede che sia svolto;
 - i dati di **input** e di **output**.

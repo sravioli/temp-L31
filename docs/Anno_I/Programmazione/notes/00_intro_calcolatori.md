@@ -5,7 +5,8 @@
 Gli elementi principali di un sistema di calcolo si suddividono in 2 categorie:
 
 **Hardware**
-: La parte fisica dell'elaboratore che è costituita da componenti elettronici e elettromagnetici
+: La parte fisica dell'elaboratore che è costituita da componenti elettronici e
+  elettromagnetici
 
 **Software**
 : Tutti i programmi che consentono all'Hardware di realizzare specifici compiti
@@ -41,7 +42,8 @@ I componenti fondamentali dell'architettura dei calcolatori sono:
   programmi;
 - Memoria secondaria o di massa (HD, CD, DVD, ecc.) per memorizzare dati e
   programmi in maniera permanente;
-- Dispositivi di input (tastiera, mouse, touch pad, ecc.) per l’inserimento dei dati;
+- Dispositivi di input (tastiera, mouse, touch pad, ecc.) per l’inserimento dei
+  dati;
 - Dispositivi di output (monitor, stampante, ecc.) per ricevere i risultati.
 
 Ogni calcolatore è progettato secondo l'architettura di Von Neumann
@@ -105,8 +107,8 @@ segni di punteggiatura, altri simboli stampabili e caratteri di controllo.
 
 I due principali codici di caratteri sono ASCII e UNICODE.
 
-Questi codici di caratteri servono alla macchina per capire come interpretare le
-stringhe di $0$ e $1$ in caratteri.
+Questi codici di caratteri servono alla macchina per capire come interpretare
+le stringhe di $0$ e $1$ in caratteri.
 
 Con il codice ASCII si hanno a disposizione $256$ simboli distinti
 

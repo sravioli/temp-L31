@@ -40,8 +40,8 @@ caratteristiche fisiche dello studente, in pratica l'opposto dell'algoritmo.
 
 ## Dati semplici
 
-I dati semplici o elementari rappresentano oggetti, entità, proprietà elementari o
-atomiche non decomponibili. Ad esempio:
+I dati semplici o elementari rappresentano oggetti, entità, proprietà elementari
+o atomiche non decomponibili. Ad esempio:
 
 - la misura di un lato di un poligono;
 - il numero di matricola di uno studente;
@@ -49,8 +49,8 @@ atomiche non decomponibili. Ad esempio:
 
 ## Dati strutturati
 
-I dati strutturati rappresentano oggetti, entità, proprietà più complesse, decomponibili in dati
-elementari. Essi sono aggregati di dati semplici.
+I dati strutturati rappresentano oggetti, entità, proprietà più complesse,
+decomponibili in dati elementari. Essi sono aggregati di dati semplici.
 
 !!! example "Esempio"
 
