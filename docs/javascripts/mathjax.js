@@ -15,6 +15,9 @@ window.MathJax = {
       set: ["\\left\\{\\, #1 \\,\\right\\}", 1],
       dom: "{\\mathop{\\rm dom\\,}\\nolimits}",
       codom: "{\\mathop{\\rm codom\\,}\\nolimits}",
+      lng: "{\\mathcal{L}}",
+      mcl: "{\\mathcal{M}_\\mathcal{L}}",
+      mc: "{\\mathcal{M}}"
     },
   },
   options: {
