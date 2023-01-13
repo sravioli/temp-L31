@@ -40,6 +40,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new LaTeX macros
+- Create course folder
 - Remove linter warnings
 - Add new LaTeX macros
 - :see_no_evil: update `.gitignore` to include python
