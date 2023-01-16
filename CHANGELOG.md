@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- :pencil2: fix typos and syntax
 - :art: change `i++` to `i = i + 1`
 - Reformat code using clang_format, fix linter warnings
 - Rewrite project tree structure comments, remove unused footnote
@@ -40,6 +41,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new page
+- Add LaTeX macros
 - Add new LaTeX macros
 - Create course folder
 - Remove linter warnings
