@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- :bug: correct syntax, remove wrong symbols
 - Fix typos, format, add sections
 - Fix command names, add new section
 - Change command name, add negative hspace
@@ -44,6 +45,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add more LaTeX macros, add text plugin
 - Add LaTeX command for Sx, Dx and ^
 - Add new page
 - Add LaTeX macros
