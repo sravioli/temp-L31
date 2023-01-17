@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix command names, add new section
+- Change command name, add negative hspace
 - :pencil2: fix typos and syntax
 - :art: change `i++` to `i = i + 1`
 - Reformat code using clang_format, fix linter warnings
