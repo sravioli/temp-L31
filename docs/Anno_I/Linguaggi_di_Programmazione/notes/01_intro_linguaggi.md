@@ -100,7 +100,7 @@ di memoria per dati e programmi.
 
 ```mermaid
 flowchart TD
-    start((Start)) --> AcqProx(Acquisisci la\langle\,br>prossima istruzione)
+    start((Start)) --> AcqProx(Acquisisci la<br>prossima istruzione)
                    --> Decode(Decodifica)
                    --> AcqOps(Acquisisci gli operandi)
                    --> Choose(Seleziona);
@@ -162,14 +162,14 @@ Prendiamo ad esempio la seguente funzione in Pascal:
 ```pascal
 read(x);
 if x == 1 then print(x) else
-    while (x \langle\,\,\rangle 1) do skip;
+    while (x <> 1) do skip;
 ```
 
 La seguente relazione è presente:
 
 $$
 f(x) =  \begin{cases}
-            1 & \text{se } x = 1  |
+            1 & \text{se } x = 1  \\
             \nexists & \text{se } x \in \R \setminus \{1\}
         \end{cases}
 $$
@@ -300,7 +300,7 @@ dunque
 $$
 H(P,\ x) \text{ ritorna }
 \begin{cases}
-    \text{true}  & \text{se } P(x) \text{ termina}  |
+    \text{true}  & \text{se } P(x) \text{ termina}  \\
     \text{false} & \text{se } P(x) \text{ va in loop}
 \end{cases}
 $$
@@ -320,7 +320,7 @@ quindi si ha che
 $$
 K(P)
 \begin{cases}
-    \text{stampa 'LOOP'}  & \text{se } P(\prgm) \text{ non termina}  |
+    \text{stampa 'LOOP'}  & \text{se } P(\prgm) \text{ non termina}  \\
     \text{va in loop} & \text{se } P(\prgm) \text{ termina}
 \end{cases}
 $$
@@ -495,12 +495,12 @@ $$
 <!-- markdownlint-disable MD046 -->
 | $X \setminus Q$ | $q_0$            | $q_1$            | $q_2$            | $q_3$            |
 | --------------- | ---------------  | ---------------  | ---------------  | ---------------  |
-| $\caret$        | $\caret \sx q_0$ | $\caret \dx q_2$ | //               | $\caret \sx q_0$ |
-| $\mid$          | $\caret \sx q_1$ | $\mid \sx q_1$   | $\caret \dx q_3$ | $\mid \dx q_3$   |
-| $\ast$          | $\caret F HALT$  | $\ast \sx q_1$   | //               | $\ast \dx q_3$   |
+| $\caret$        | $\caret \sx q_0$ | $\caret \dx q_2$ |                  | $\caret \sx q_0$ |
+| \|              | $\caret \sx q_1$ | \|$\sx q_1$      | $\caret \dx q_3$ | \|$\dx q_3$   |
+| $\ast$          | $\caret F HALT$  | $\ast \sx q_1$   |                  | $\ast \dx q_3$   |
 <!-- markdownlint-enable MD046 -->
 
-Per quale motivo alcune transizioni non sono devinite? Perché semplicemente non
+Per quale motivo alcune transizioni non sono definite? Perché semplicemente non
 sono definite.
 
 ## Tesi di Church-Turing
@@ -525,6 +525,31 @@ di quelle calcolabili con la Macchina di Turing? NO.
 | sosta sul nastro di cella in cella                         | scelta della cella di memoria<br>su cui operare |
 | esegue un programma _specifico_,<br>cablato nella macchina | è _generale_, può eseguire<br>programmi diversi |
 <!-- markdownlint-enable MD046 -->
+
+## La Macchina di Turing Universale
+
+La Macchina di Turing universale legge dal nastro sia i dati che il programma,
+dunque il programma non è più cablato nell'unità di controllo ma è codificato
+sul nastro come i dati. In pratica le quintuple che definiscono l'algoritmo
+risolutivo sono rappresentate sul nastro.
+
+Questo significa che la Macchina di turing universale è una macchina
+programmabile poiché effettua un _fetch_ delle quintuple dal nastro, dopodiché
+un _decode_ e infine un _execute_. Insomma, altro non è che un interprete.
+
+La macchina di Turing universale è un modello della macchina di Von Neumann,
+ovvero un modello degli attuali calcolatori, l'unica cosa che non possiede è
+la parte I/O.
+
+## Recap
+
+Un linguaggio di programmazione L è un formalismo per portare al livello di
+macchina fisica gli algoritmi. Implementare L significa realizzarne l’interprete,
+ovvero il programma che esegue la traduzione di L per la macchina ospite.
+
+La possibilità di risolvere un problema non dipende da L. Tutti i linguaggi di
+programmazione calcolano esattamente le stesse funzioni calcolate dalle macchine
+di Turing. Tutti i linguaggi di programmazione sono Turing-completi.
 
 [^1]:
     Si intende la codifica degli algoritmi in un certo linguaggio $\ll$ che è
