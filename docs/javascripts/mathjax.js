@@ -26,6 +26,9 @@ window.MathJax = {
       intr: "{\\mathcal{I}}",
       cmp: "\\mathcal{C}",
       prgmcomp: "{\\mathcal{Pc}}",
+      sx: "{\\mathrm{\\,Sx\\,}}",
+      dx: "{\\mathrm{\\,Dx\\,}}",
+      caret: "{\\;\\hat{}\\;}"
     },
   },
   options: {
