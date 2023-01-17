@@ -169,7 +169,7 @@ La seguente relazione è presente:
 
 $$
 f(x) =  \begin{cases}
-            1 & \text{se } x = 1 \\
+            1 & \text{se } x = 1  |
             \nexists & \text{se } x \in \R \setminus \{1\}
         \end{cases}
 $$
@@ -181,13 +181,13 @@ $$
 In generale un programma scritto in $\ll$ si può vedere come una funzione
 parziale[^3]:
 
-$$ \prog^\ll\colon D \times D \tc \prog^\ll(Input) = Output $$
+$$ \prgm^\ll\colon D \times D \tc \prgm^\ll(Input) = Output $$
 
 Possiamo dare la seguente definizione di interprete di $\ll$ in $\llo$:
 
 $$
-\intr^\llo_\ll\colon (\prog^\ll \times D) \to D \tc
-\intr^\llo_\ll(\prog^\ll, Input) = \prog^\ll(Input)
+\intr^\llo_\ll\colon (\prgm^\ll \times D) \to D \tc
+\intr^\llo_\ll(\prgm^\ll, Input) = \prgm^\ll(Input)
 $$
 
 In un interprete non vi è una traduzione esplicita dei programmi scritti in $\ll$
@@ -202,18 +202,18 @@ prodotto in uscita.
 
 Un compilatore da $\ll$ a $\llo$ è un programma che realizza la funzione:
 
-$$ \comp_{\ll,\ \llo}\colon \prog^\ll \to \prog^\llo $$
+$$ \cmp_{\ll,\ \llo}\colon \prgm^\ll \to \prgm^\llo $$
 
 $$
-\comp_{\ll,\ \llo}(\progcomp^\llo) \qquad \prog^\ll(Input) = \progcomp^\llo(Input)
+\cmp_{\ll,\ \llo}(\prgmcomp^\llo) \qquad \prgm^\ll(Input) = \prgmcomp^\llo(Input)
 $$
 
 Questo significa che avviene una traduzione esplicita dei programmi scritti in
 $\ll$ in programmi scritti in $\llo$.
 
-Per poter eseguire $\prog^\ll$ su $Input$ bisogna eseguire $\comp_{\ll,\ \llo}$
-con $\prog^\ll$ come input. Si avrà come risultato un programma compilato
-$\progcomp^\llo$ scritto in $llo$ che sarà eseguito su $\molo$ con il dato di
+Per poter eseguire $\prgm^\ll$ su $Input$ bisogna eseguire $\cmp_{\ll,\ \llo}$
+con $\prgm^\ll$ come input. Si avrà come risultato un programma compilato
+$\prgmcomp^\llo$ scritto in $llo$ che sarà eseguito su $\molo$ con il dato di
 ingresso $Input$.
 
 ### Interpretazione vs. Compilazione
@@ -253,6 +253,140 @@ flowchart TD
         end
     end
 ```
+
+Un LdP non è altro che un formalismo per portare al livello della macchina
+fisica l'algoritmo solutivo $A_P$ per un certo problema $P$. In generale
+
+```mermaid
+flowchart LR
+    alg([Algoritmo AP<br>descrizione del metodo solutivo]) --> esecutor;
+    data([Dati d'istanza di P]) --> esecutor[Esecutore]
+                                 --> res([Risultati<br>Solluzione dell'istanza di P]);
+```
+
+L'esecutore deve essere in grado di intepretare la descrizione del metodo
+solutivo.
+
+## Il problema della fermata
+
+Esistono dei problemi i quali non possono essere risolti tramite l'uso di un
+programma? La risposta dipende dal LdP?
+
+### Funzioni parziali calcolabili
+
+Una funzione parziale $f\colon A \to B$ è calcolabile nel linguaggio $\ll$ se
+esiste un programma $\prgm$ scritto in $\ll$ tale che:
+
+- se $f(a) = b$ allora $\prgm(a)$ termina e produce come output $b$;
+- se $f(a)$ non è definita allora $\prgm(a)$ va in ciclo.
+
+### Il problema
+
+Si vuole stabilire se un programma $H$ termina su un dato input. Il programma
+$H$ riceve in ingresso un qualsiasi programma $\prgm$ scritto nel linguaggio
+$\ll$ ed è un generico input $x$ per tale programma:
+
+```pascal
+Boolean H(P, x)
+    boolean term;
+    if (P(x) termina) then term = true;
+        else term = false;
+    return term;
+```
+
+dunque
+
+$$
+H(P,\ x) \text{ ritorna }
+\begin{cases}
+    \text{true}  & \text{se } P(x) \text{ termina}  |
+    \text{false} & \text{se } P(x) \text{ va in loop}
+\end{cases}
+$$
+
+È possibile costruire un altro programma $K$, scritto in $\ll$, che prenda in
+input un programma $\prgm$ (sempre scritto in $\ll$). Il programma $K$ sfrutta
+$H$ per decidere sulla terminazione di $\prgm$.
+
+```pascal
+K(P)
+
+if (H(P,\ P) = false) then print("LOOP");
+    else while (true) do print("TERMINA");
+```
+
+quindi si ha che
+
+$$
+K(P)
+\begin{cases}
+    \text{stampa 'LOOP'}  & \text{se } P(\prgm) \text{ non termina}  |
+    \text{va in loop} & \text{se } P(\prgm) \text{ termina}
+\end{cases}
+$$
+
+in pratica la terminazione di $K$ è opposta rispetto a quella del suo input.
+
+!!! question "Cosa accadrebbe se $K$ ricevesse in input se stesso?"
+
+    otterremmo un assurdo perché:
+
+    - $K(K)$ termina con una stampa se $K(K)$ non termina;
+    - $K(K)$ non termina se $K(K)$ termina;
+
+    l'assurdo deriva dall'aver supposto l'esistenza del programma $H$.
+
+Il problema della terminazione è **indecidibile**: non è possibile costruire e
+formalizzare un algoritmo che sia in grado di risolverlo.
+
+Dunque la prima domanda diventa: "Esistono funzioni non calcolabili?" e la
+risposta è sì, infatti il problema della terminazione è uno di questi.
+Questo risultato dipende dal linguaggio $\ll$? Ovvero, dipende dal formalismo
+usato per descrivere l'algoritmo? Per rispondere, introduciamo la macchina di
+Turing.
+
+## Macchine di turing
+
+Esse si basano su un modello matematico di computazione introdotto negli anni
+'20, ed è stato il primo formalismo col quale è stato dimostrato l'indecibilità
+del problema della fermata.
+
+La macchina di Turing è costituita da:
+
+- un nastro potenzialmente infinito diviso in celle (memoria), dove ogni cella
+  contiene un simbolo preso da un alfabeto finito;
+- una testina di lettura/scrittura che, a sua volta:
+      - può leggere/scrivere una cella per volta;
+      - può spostarsi a destra o a sinistra di una cella per volta;
+      - viene gestita da un controllo espresso sotto forma di un numero finito
+      di stati;
+- unità di controllo, che decodifica e esegue comandi rivolti alla testina.
+
+L'unità di controllo esegue un programma $\prgm$ sui dati memorizzati sul nastro.
+Le istruzioni del programma $\prgm$ sono del tipo:
+
+```text linenums="0"
+<simbolo_letto, stato corrente, simbolo_da_scrivere, Sx/Dx, nuovo_stato>
+```
+
+### Il modello matematica
+
+Una MdT p definita dalla quintupla $M = (X,\ Q,\ f_m,\ f_d,\ \delta)$, dove:
+
+- $X$ è un insieme finito di simboli che comprende anche _blank_ ovvero la cella
+  vuota;
+- $Q$ è un insieme finito di stati che comprende _HALT_ che definisce la
+  terminazione;
+- $fm$ è la funzione macchina, definita come $f_m\colon Q \times X \to X$ che
+  determina il simbolo da scrivere sul nastro;
+- $f_d$ è la funzione di direzione, definita come
+  $f_d\colon Q \times X \to \set{Sx,\ Dx,\ F}$ che determina lo spostamento
+  della testina, dove $F$ sta per "ferma".
+
+### Scrivere algoritmi per MdT
+
+È necessario definire un'opportuna configurazione iniziale del nastro e
+codificare i dati. Ad esempio
 
 [^1]:
     Si intende la codifica degli algoritmi in un certo linguaggio $\ll$ che è
