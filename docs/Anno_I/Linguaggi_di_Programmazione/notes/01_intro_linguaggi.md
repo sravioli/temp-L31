@@ -1,4 +1,4 @@
-# Introduzione ai linguaggi di programmazione ed alla teoria dei linguaggi formali
+# Introduzione ai linguaggio di programmazione e alla teoria dei linguaggi formali
 
 ## Apprendimento di un linguaggio di programmazione
 
@@ -15,7 +15,7 @@ insalata/salata, treno/tren.
 modo approfondito, è però possibile conoscerne a fondo i meccanismi che ne
 ispirano il progetto e l'_implementazione_.
 
-## Implementazione dei linguaggi di programmazione
+## Implementazione dei linguaggio di programmazione
 
 !!! question "Che significa _implementare_ un linguaggio di programmazione?"
 
@@ -73,7 +73,7 @@ flowchart LR
 ```
 
 La memoria viene utilizzata per contenere sia i programmi che i dati utili a
-questi ultimi. \ll'$interprete ha tre moduli e ha anche accesso ad una serie di
+questi ultimi. l'interprete ha tre moduli e ha anche accesso ad una serie di
 operazioni. Queste sono operazioni sui tipi e sui parametri dei dati, ma anche
 operazioni e istruzioni per il controllo della sequenza di esecuzione.
 
@@ -100,14 +100,14 @@ di memoria per dati e programmi.
 
 ```mermaid
 flowchart TD
-    start((Start)) --> AcqProx(Acquisisci la<br>prossima istruzione)
+    start((Start)) --> AcqProx(Acquisisci la\langle\,br>prossima istruzione)
                    --> Decode(Decodifica)
                    --> AcqOps(Acquisisci gli operandi)
                    --> Choose(Seleziona);
 
     Choose --> Eop1("Esegui 𝑂𝑃ₙ") &  Eop2("Esegui 𝑂𝑃₂") & Eopn("Esegui 𝑂𝑃₁")
            --> MemRes(Memorizza il risultato)
-           ---> start;
+           --> start;
 
     Choose --> Halt("Esegui 𝐻𝐴𝐿𝑇")
            --> stop((Stop));
@@ -162,7 +162,7 @@ Prendiamo ad esempio la seguente funzione in Pascal:
 ```pascal
 read(x);
 if x == 1 then print(x) else
-    while (x <> 1) do skip;
+    while (x \langle\,\,\rangle 1) do skip;
 ```
 
 La seguente relazione è presente:
@@ -254,14 +254,15 @@ flowchart TD
     end
 ```
 
-Un LdP non è altro che un formalismo per portare al livello della macchina
-fisica l'algoritmo solutivo $A_P$ per un certo problema $P$. In generale
+Un linguaggio di programmazione non è altro che un formalismo per portare al
+livello della macchina fisica l'algoritmo solutivo $A_P$ per un certo problema
+$P$. In generale:
 
 ```mermaid
 flowchart LR
     alg([Algoritmo AP<br>descrizione del metodo solutivo]) --> esecutor;
     data([Dati d'istanza di P]) --> esecutor[Esecutore]
-                                 --> res([Risultati<br>Solluzione dell'istanza di P]);
+                                --> res([Risultati<br>Soluzione dell'istanza di P]);
 ```
 
 L'esecutore deve essere in grado di intepretare la descrizione del metodo
@@ -270,7 +271,7 @@ solutivo.
 ## Il problema della fermata
 
 Esistono dei problemi i quali non possono essere risolti tramite l'uso di un
-programma? La risposta dipende dal LdP?
+programma? La risposta dipende dal linguaggio di programmazione?
 
 ### Funzioni parziali calcolabili
 
@@ -310,8 +311,7 @@ $H$ per decidere sulla terminazione di $\prgm$.
 
 ```pascal
 K(P)
-
-if (H(P,\ P) = false) then print("LOOP");
+if (H(P, P) = false) then print("LOOP");
     else while (true) do print("TERMINA");
 ```
 
@@ -345,7 +345,7 @@ Questo risultato dipende dal linguaggio $\ll$? Ovvero, dipende dal formalismo
 usato per descrivere l'algoritmo? Per rispondere, introduciamo la macchina di
 Turing.
 
-## Macchine di turing
+## Macchina di Turing
 
 Esse si basano su un modello matematico di computazione introdotto negli anni
 '20, ed è stato il primo formalismo col quale è stato dimostrato l'indecibilità
@@ -365,13 +365,14 @@ La macchina di Turing è costituita da:
 L'unità di controllo esegue un programma $\prgm$ sui dati memorizzati sul nastro.
 Le istruzioni del programma $\prgm$ sono del tipo:
 
-```text linenums="0"
-<simbolo_letto, stato corrente, simbolo_da_scrivere, Sx/Dx, nuovo_stato>
+```txt linenums="0"
+<simbolo_letto, stato corrente, simbolo_da_scrivere, Sx, Dx, nuovo_stato>
 ```
 
-### Il modello matematica
+### Il modello matematico
 
-Una MdT p definita dalla quintupla $M = (X,\ Q,\ f_m,\ f_d,\ \delta)$, dove:
+Una Macchina di Turing p definita dalla quintupla $M = (X,\ Q,\ f_m,\ f_d,\ \delta)$,
+dove:
 
 - $X$ è un insieme finito di simboli che comprende anche _blank_ ovvero la cella
   vuota;
@@ -380,13 +381,150 @@ Una MdT p definita dalla quintupla $M = (X,\ Q,\ f_m,\ f_d,\ \delta)$, dove:
 - $fm$ è la funzione macchina, definita come $f_m\colon Q \times X \to X$ che
   determina il simbolo da scrivere sul nastro;
 - $f_d$ è la funzione di direzione, definita come
-  $f_d\colon Q \times X \to \set{Sx,\ Dx,\ F}$ che determina lo spostamento
-  della testina, dove $F$ sta per "ferma".
+  $f_d\colon Q \times X \to \set{\sx,\ \dx,\ F}$ che determina lo spostamento
+  della testina, dove $F$ sta per "ferma";
+- $\delta$ è la funzione di transizione di stato, definita come
+  $\delta\colon Q \times X \to Q$, questa definisce lo stato successivo della
+  computazione.
 
-### Scrivere algoritmi per MdT
+### Scrivere algoritmi per Macchina di Turing
+
+#### Nastro
 
 È necessario definire un'opportuna configurazione iniziale del nastro e
-codificare i dati. Ad esempio
+codificare i dati. Ad esempio, il nastro iniziale per il problema della
+sottrazione di interi, in particolare $4 - 2$:
+
+```txt linenums="0"
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│ ^ │ | │ | │ | │ | │ * │ | │ | │ ^ │ ^ │
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+```
+
+gli operandi sono codificati con `|` e separati da `*`, il blank è rappresentato
+da `^`.
+
+Successivamente bisogna definire un'oppportuna configurazione finale del nastro
+che rappresenti la soluzione
+
+```txt linenums="0"
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│ ^ │ ^ │ ^ │ | │ | │ ^ │ ^ │ ^ │ ^ │ ^ │
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+```
+
+#### Controllo
+
+Bisogna ora definire le funzioni $f_m,\ f_d,\ \delta$, in modo da trasformare
+la configurazione iniziale in quella che rappresenta la soluzione. Come detto,
+il programma per una Macchina di Turing è una sequenza di quintuple:
+
+$$
+\langle x_i \in X,\ q_j \in Q,\ x_{ij} \in X,\ \set{S,\ D,\ F},\ q_{ij} \in Q\rangle
+$$
+
+In corrispondenza di un simbolo letto $x_i$ e dello stato $q_j$ in cui si trova
+l'unità di controllo, si detrminano:
+
+- il simbolo $x_{ij} = f_m(x_i,\ q_j)$ da scrivere nella cella corrente;
+- lo spostamento della testina $f_d(x_i,\ q_j)$;
+- il nuovo stato $q_{ij} = \delta(x_i\ q_j)$ in cui la Macchina di Turing
+  continuerà la computazione.
+
+#### Sottrazione tra interi
+
+Progettiamo un algoritmo per eseguire la sottrazione tra due numeri interi
+$n,\ m \geq 0$ e per semplicità e convenienza assumiamo che $n \geq m$.
+
+La testina è posizionata sulla prima cella vuota a destra dell'ultimo simbolo
+del sottraendo:
+
+```txt linenums="0"
+                                  ↓
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│ ^ │ | │ | │ | │ | │ * │ | │ | │ ^ │ ^ │
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+```
+
+Il modello di calcolo obbliga a pensare all'algoritmo in base alle operazioni
+possibili
+
+#### Un possibile algoritmo
+
+Bisogna cancellare un egual numero di simboli $n$ e da $m$ in modo che sul nastro
+resti solo il risultato finale.
+
+1. Diminuire di un'unità $m$, ricordando di aver cancellato un simbolo da $m$;
+2. Spostarsi a $\sx$ in cerca del primo simbolo di $n$;
+3. Cancellarlo, ricordando che entrambi gli operandi son stati diminuiti di
+   un'unità;
+4. Spostarsi a $\dx$ in cerca dell'ultimo simbolo di $m$
+5. Se non sono presenti più simboli da cancellare da $m$, allora cancellare il
+   separatore e terminare (_HALT_), altrimenti tornare al punto 1.
+
+### Le quintuple di una Macchina di Turing per la sottrazione
+
+Dato l'insieme finito di simboli $X = \set{|,\ \ast,\ \caret}$ e l'insieme finito
+di stati $Q = \set{q_0,\ q_1,\ q_2,\ q_3,\ HALT}$, con:
+
+- $q_0 \equiv$ stato iniziale della computazione, ovvero la ricerca dell'ultimo
+  simbolo di $m$;
+- $q_1 \equiv$ diminuito di $m$;
+- $q_2 \equiv$ raggiunto il simbolo di $n$;
+- $q_3 \equiv$ diminuiti entrambi gli operandi.
+
+Si ottengono le seguenti quintuple:
+
+$$
+\begin{align}
+  & \langle \caret,\ q_0,\ \caret,\  \sx,\  q_0  \rangle,  &
+  & \langle |,\      q_0,\ \caret,\  \sx,\  q_1  \rangle,  & \\
+  & \langle \ast,\   q_0,\ \caret,\  F,\    HALT \rangle,  &
+  & \langle \caret,\ q_1,\ \caret,\  \dx,\  q_2  \rangle,  & \\
+  & \langle |,\      q_1,\ |,\       \sx,\  q_1  \rangle,  &
+  & \langle \ast,\   q_1,\ \ast,\    \sx,\  q_1  \rangle,  & \\
+  & \langle |,\      q_2,\ \caret,\  \dx,\  q_3  \rangle,  &
+  & \langle \caret,\ q_3,\ \caret,\  \sx,\  q_0  \rangle,  & \\
+  & \langle |,\      q_3,\ |,\       \dx,\  q_3  \rangle,  &
+  & \langle \ast,\   q_3,\ \ast,\    \dx,\  q_3  \rangle.  & \\
+\end{align}
+$$
+
+### La matrice funzionale
+
+<!-- markdownlint-disable MD046 -->
+| $X \setminus Q$ | $q_0$            | $q_1$            | $q_2$            | $q_3$            |
+| --------------- | ---------------  | ---------------  | ---------------  | ---------------  |
+| $\caret$        | $\caret \sx q_0$ | $\caret \dx q_2$ | //               | $\caret \sx q_0$ |
+| $\mid$          | $\caret \sx q_1$ | $\mid \sx q_1$   | $\caret \dx q_3$ | $\mid \dx q_3$   |
+| $\ast$          | $\caret F HALT$  | $\ast \sx q_1$   | //               | $\ast \dx q_3$   |
+<!-- markdownlint-enable MD046 -->
+
+Per quale motivo alcune transizioni non sono devinite? Perché semplicemente non
+sono definite.
+
+## Tesi di Church-Turing
+
+La classe delle funzioni calcolabili coincide con la classe delle funzioni
+calcolabili dalla Macchina di Turing.
+
+Questo significa che **ogni** funzione calcolabile è calcolata da una Macchina
+di Turing. Non è presente alcun formalismo in grado di risolvere una classe di
+problemi più ampia di quella che si può risolvere con la Macchina di Turing.
+
+Dunque le funzioni calcolabili con dei linguaggi di programmazione sono di più
+di quelle calcolabili con la Macchina di Turing? NO.
+
+## Macchina di Turing vs. Processori Moderni
+
+<!-- markdownlint-disable MD046 -->
+| Macchina di Turing                                         | CPU                                             |
+| ---------------------------------------------------------- | ----------------------------------------------- |
+| legge/scrive su nastro                                     | legge/scrive su RAM/ROM                         |
+| transita in un nuovo stato                                 | nuova configurazione dei<br>registri della CPU  |
+| sosta sul nastro di cella in cella                         | scelta della cella di memoria<br>su cui operare |
+| esegue un programma _specifico_,<br>cablato nella macchina | è _generale_, può eseguire<br>programmi diversi |
+<!-- markdownlint-enable MD046 -->
 
 [^1]:
     Si intende la codifica degli algoritmi in un certo linguaggio $\ll$ che è
