@@ -4,6 +4,8 @@ window.MathJax = {
     displayMath: [["\\[", "\\]"]],
     processEscapes: true,
     processEnvironments: true,
+    loader: {load: ['[tex]/textmacros']},
+    tex: {packages: {'[+]': ['textmacros']}},
     macros: {
       N: "{\\mathbb{N}}",
       Z: "{\\mathbb{Z}}",
@@ -28,7 +30,9 @@ window.MathJax = {
       prgmcomp: "{\\mathcal{Pc}}",
       sx: "{\\mathrm{\\,Sx\\,}}",
       dx: "{\\mathrm{\\,Dx\\,}}",
-      caret: "{\\;\\hat{}\\;}"
+      caret: "{\\;\\hat{}\\;}",
+      bnf: ["{\\,\\langle\\,\\text{#1}\\,\\rangle\\,}", 1],
+      Coloneqq: "{\\mathop{::=}}",
     },
   },
   options: {
