@@ -1,4 +1,4 @@
-# Introduzione ai linguaggio di programmazione e alla teoria dei linguaggi formali
+# Introduzione ai linguaggi di programmazione
 
 ## Apprendimento di un linguaggio di programmazione
 
