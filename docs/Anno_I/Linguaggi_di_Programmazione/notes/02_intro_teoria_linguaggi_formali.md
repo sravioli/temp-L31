@@ -35,7 +35,7 @@ grammatiche:
 poiché i linguaggi formali utilizzati in informatica sono per lo più di questi
 tipi.
 
-# Introduzione
+## Introduzione
 
 L'informatica teorica è la scienza degli algoritmi, in tutti i loro aspetti,
 poiché è il concetto di algoritmo che è in qualche modo comune a tutti i settori
@@ -177,9 +177,9 @@ segue dunque
 
 $$
 \begin{align}
-    \bnf{parte-nominale} &\Coloneqq \bnf{articolo} \bnf{nome} \\
+    \bnf{parte-nominale} &\Coloneqq \bnf{articolo} \bnf{nome}           \\
     \bnf{nome}           &\Coloneqq \textbf{ car $\mid$ man $\mid$ dog} \\
-    \bnf{articolo}       &\Coloneqq \textbf{ The $\mid$ a} \\
+    \bnf{articolo}       &\Coloneqq \textbf{ The $\mid$ a}              \\
     \bnf{parte-verbale}  &\Coloneqq \textbf{ hits $\mid$ eats}
 \end{align}
 $$
@@ -259,3 +259,134 @@ Per quanto sia scelto "ad hoc" e mostri un fenomeno poco comune nel linguaggio
 naturale, l'esempio è illustrativo di un concetto importante in computazione.
 Una fase cruciale nel processo di compilazione di un programma è l'analisi
 sintattica, come passo essenziale per la sua interpretazione semantica.
+
+## Teoria dei linguaggi formali
+
+Negli anni $'50$, N. Chomsky, linguista americano, cerca di descrivere la
+sintassi del linguaggio naturale secondo semplici regole di riscrittura e
+trasformazione.
+Chomsky considera alcune restrizioni sulle regole sintattiche e classifica i
+linguaggi in base alle restrizioni imposte alle regole che generano tali
+linguaggi.
+Una classe importante di regole che generano linguaggi formali va sotto il nome
+di grammatiche libere da contesto (prive di contesto) o context-free grammars.
+
+L'importanza di tale classe (e dei linguaggi da essa generati) risiede nel fatto
+che lo sviluppo dei primi linguaggi di programmazione di alto livello (ALGOL60),
+che segue di pochi anni il lavoro di Chomsky, dimostra che le grammatiche
+context-free sono strumenti adeguati a descrivere la sintassi di base di molti
+linguaggi di programmazione.
+
+### Esempio di linguaggio context-free
+
+Un linguaggio context-free è, ad esempio, il linguaggio delle parentesi ben
+formate tutte le stringhe di parentesi aperte e chiuse bilanciate correttamente.
+
+!!! example "Esempi"
+
+    $( )$ è ben formata;
+
+    $( ( ) ( ) )$ è ben formata;
+
+    $( ( ) ( )$ non è ben formata
+
+Questo linguaggio è fondamentale in informatica come notazione per contrassegnare
+il "raggio d'azione" nelle espressioni matematiche e nei linguaggi di programmazione.
+
+#### Definizione
+
+1. La stringa $( )$ è ben formata;
+2. se la stringa di simboli $A$ è ben formata, allora lo è anche $(A)$;
+3. se le stringhe $A$ e $B$ sono ben formate, allora lo è anche la stringa $AB$
+
+In corrispondenza di questa definzione induttiva, è possibile considerare un
+sistema di riscrittura che genera esattamente l'insieme delle stringhe lecite
+di parentesi ben formate:
+
+1. $S \to ()$;
+2. $S \to (S)$;
+3. $S \to SS$;
+
+Le regole di riscrittura 1., 2. e 3. sono dette *produzioni* o *regole di
+produzione*. Queste stabiliscono che "data una stringa si può formare una nuova
+stringa sostituendo una $S$ con $()$ o con $(S)$ o con $SS$".
+
+Confrontando la definizione di parentesi ben formate e le tre produzioni, si
+osserva una corrispondenza diretta tra le parti 1. e 2. della definizione e le
+produzioni 1. e 2. La produzione 3. è apparentemente diversa dalla parte 3. della
+definizione. Sono stati utilizzati simboli distinti $A$ e $B$ nella definizione
+induttiva per evidenziare il fatto che le due stringhe di parentesi ben formate
+che consideriamo non sono necessariamente uguali. Nella produzione corrispondente
+non c'è necessità di usare simboli distinti perché in le due $S$ che compaiono a
+destra possono essere sostituite indipendentemente.
+
+Possiamo cioè applicare una produzione ad una delle due $S$ (alla prima o alla
+seconda) indifferentemente. Il risultato non cambia.
+
+### Esempio di generazione
+
+#### Primo modo
+
+$$
+\begin{align}
+    S \subimplies{3} SS &\subimplies{2} (S)S \subimplies{1} ((\,))S \\
+                        &\subimplies{2} ((\,))(S) \subimplies{3} ((\,))(SS) \\
+                        &\subimplies{1} ((\,))((\,)S) \subimplies{1} ((\,)((\,)(\,)))
+\end{align}
+$$
+
+La corrispondente sequenza di applicazione delle produzioni è:
+
+$$ (3) \to (2) \to (1) \to (2) \to (3) \to (1) \to (1) $$
+
+#### Secondo modo
+
+$$
+\begin{align}
+    S \subimplies{3} SS &\subimplies{2} (S)S \subimplies{3} S(SS) \\
+                        &\subimplies{1} S((\,)S) \subimplies{1} S((\,)(\,)) \\
+                        &\subimplies{2} (S)((\,)(\,)) \subimplies{1} ((\,)((\,)(\,)))
+\end{align}
+$$
+
+La corrispondente sequenza di applicazione delle produzioni è:
+
+$$ (3) \to (2) \to (3) \to (1) \to (1) \to (2) \to (1) $$
+
+Una sequenza di applicazioni di regole di produzione prende il nome di
+*derivazione*.
+
+### Notazione
+
+Nei due esempi precedenti si è fatto uso della notazione:
+
+$$ \alpha \subimplies{n} \beta $$
+
+L'interpretazione è la seguente: "da $\alpha$ si produce direttamente $\beta$
+per effetto dell’applicazione della regola di riscrittura $n$". Ad esempio
+
+$$ SS \subimplies{2} (S)S $$
+
+si legge: "$SS$ produce direttamente $(S)S$ per effetto dell’applicazione della
+regola di riscrittura $(2)$.
+
+Le derivazioni precedenti (modi 1 e 2) vengono riassunte attraverso la notazione:
+
+$$ S \astimplies ((\,))((\,)(\,)) $$
+
+che leggiamo come "$S$ produce $((\,))((\,)(\,))$".
+
+Nelle regole di produzione si è fatto uso di due tipi di simboli: caratteri che
+possono apparire nelle derivazioni, ma non nelle stringhe finali, detti simboli
+nonterminali o variabili (nell’esempio, $S$ è il solo nonterminale) e caratteri
+che possono apparire nelle stringhe finali, detti simboli terminali (nell’esempio,
+e sono i simboli terminali).
+
+Nella notazione BNF si scrive:
+
+$$
+\begin{align}
+    &S   &\bnf{S} \\
+    &\!\to &\!\!\Coloneqq
+\end{align}
+$$
