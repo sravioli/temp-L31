@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Syntax cleanup, complete page
+- Fix spacing, refine old commands, improve new ones
 - Fix old commands, add new commands
 - :pencil2: fix (&shorten) page name
 - :bug: correct syntax, remove wrong symbols
