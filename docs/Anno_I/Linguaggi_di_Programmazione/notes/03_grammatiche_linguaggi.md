@@ -336,7 +336,7 @@ generare un linguaggio sono necessari:
 
 Una grammatica generativa o a astruttura di frase di \(G\) è una quadrupla
 
-\[ G = (X,\ V,\ S,\ P) \]
+\[ \grammar \]
 
 dove:
 
@@ -344,17 +344,19 @@ dove:
 - \(v\) è l'**alfabeto non-terminale** o delle variabili per la grammatica;
 - \(S\) è il **simbolo di partenza** per la grammatica;
 - \(P\) è l'insime delle **produzioni** della grammatica.
-_
+
 Valgono inoltre le seguenti condizioni:
 
 - \(\XiV = \emptyset\);
 - \(S \in V\).
 
-## Definizione di produzione
+## Altre definizioni
 
-Una **produzione** è una coppia \((v,\ w)\), dove \(v \in {(\XuV)}^+\) e \(V\)
-contiene un simbolo non-terminale se e solo se \(v \in {(\XuV)}^\ast V {(\XuV)}^\ast\)
-e \(w \in {(\XuV)}^\ast\), quindi \(w\) può essere anche \(\lambda\).
+### Produzione
+
+Una **produzione** è una coppia \((v,\ w)\), dove \(v \in \XuVplus\) e \(V\)
+contiene un simbolo non-terminale se e solo se \(v \in \XuVast V \XuVast\)
+e \(w \in \XuVast\), quindi \(w\) può essere anche \(\lambda\).
 
 Un elemento \((v,\ w)\) di \(P\) è comunemente scritto nella forma:
 
@@ -363,7 +365,7 @@ Un elemento \((v,\ w)\) di \(P\) è comunemente scritto nella forma:
 Una produzione deve, in qualche modo, riscrivere un simbolo non-terminale.
 
 Per convenzione, gli elementi di \(X\) sono rappresentati di solito con lettere
-minuscole (con o senza pedici e di solito sono le prime lettere dell’alfabeto)
+minuscole (con o senza pedici e di solito sono le prime lettere dell'alfabeto)
 o cifre ed operatori (connettivi), mentre gli elementi di \(V\) sono
 rappresentati con lettere maiuscole (con o senza pedici) o con stringhe
 delimitate dalle parentesi angolari "\(\langle\)" e "\(\rangle\)".
@@ -372,10 +374,255 @@ La notazione \(a \to b_1 \mid b_2 \mid \dots \mid b_k\) è impiegata come
 abbreviazione della seguente:
 
 \[
-\begin{align}
-    a &\to b_1 \\
-    a &\to b_2 \\
-      &\hspace{0.7em}\vdots \\
-    a &\to b_k
-\end{align}
+    \begin{align}
+        a &\to b_1              \\
+        a &\to b_2              \\
+          &\hspace{0.7em}\vdots \\
+        a &\to b_k
+    \end{align}
 \]
+
+!!! example "Esempi"
+
+    - La grammatica per il linguaggio della parentesi ben formate è la seguente:
+
+    \[
+        G_1 = \left(
+            \set{(, )},\ \set{S},\ S,\ \set{S \to (\;),\ S \to (S),\ S \to SS}
+        \right)
+    \]
+
+    - La grammatica per il linguaggio dei numeri interi relativi è la seguente:
+
+    \[
+        G_2 = \left(
+            \set{0, 1, \dots, 9, +, -}, \set{S, I, D}, S,
+            \set{S \to +I,\ S \to -I,\ I \to D,\ I \to ID,\
+                 D \to 0,\ D \to 1, \dots, D \to 9}
+        \right)
+    \]
+
+### Derivazione o produzione diretta
+
+Sia \(G = \set{X,\ V,\ S,\ P}\) una gramamtica e siano \(y,z\) su \(\XuV\) due
+stringhe finite di simboli sia terminali che non-terminali, tali che:
+
+\[ y = \gamma\alpha\delta \quad\text{ e }\quad z = \gamma\beta\delta \]
+
+dove \(y \in \XuVplus\), \(z \in \XuVast\), \(\alpha,\beta,\gamma \in \XuVast\).
+
+Si scrive
+
+\[ y \implies z \]
+
+e si dice che \(y\) *produce direttamente* \(z\) o che \(z\) è *derivata
+direttamente* da \(y\) se:
+
+\[ \alpha \to \beta \in P \]
+
+ossia se esiste in \(G\) un produzione \(\alpha \to \beta\).
+
+Si scrive, invece:
+
+\[ y \astimplies z \]
+
+e si dice che \(y\) *produce* \(z\) o che \(z\) è *derivabile* da \(y\) se
+\(y = z\) o se esiste una sequenza di stringhe \(w_1,\, w_2, \dots,\, w_n\), con
+\(w_1,\, w_2,\, \dots,\, w_{n-1} \in \XuVplus\) e \(w_n \in \XuVast\), avendo
+\(w_1 = y\) e \(w_n = z\) tali che \(\forall i,\; i = 1,\, 2,\, \dots,\, n - 1 :
+w_i \underset{\substack{G}}{\implies} w_{i+1}\), ovvero \(w_i\) produce
+direttamente \(w_{i+1}\), cioè:
+
+\[
+    y \astimplies z \iff
+    \begin{align}
+        &y = z              \\
+        &\text{oppure }     \\
+        &w_1 = y \implies w_2 \implies \dots \implies w_{n-1} \implies w_n = z
+    \end{align}
+\]
+
+La notazione di derivazione diretta stabilisce una relazione binaria in \(\XuVast\).
+
+Date due stringhe \(y,z\), il simbolo \(\implies\) può esserci o meno, dipende
+dall'esistenza di una produzione. Allora è possibile anche definire una
+composizione di relazioni:
+
+\[
+     y \supimplies{2} z \deff \exists x : y \implies w \land w \implies z
+\]
+
+dove \(2\) è il numero di trascrizioni necessarie per passare da \(y\) a \(z\),
+ossia la *lunghezza della derivazione*.
+
+Da ciò si ha che \(\astimplies\) non è altro che:
+
+\[
+    I \cup \implies \cup \supimplies{2} \cup \supimplies{3} \cup \cdots
+\]
+
+dove \(I\) è la relazione identica e \(\supimplies{n}\) indica la composizione
+della relazione \(implies\) \(n\) volte con se stessa. Dunque:
+
+- \(\astimplies\) è la *chiusura riflessiva e transitiva* della relazione di
+  derivazione diretta;
+- \(\supimplies{+}\) è la *chiusura transitiva* della stessa relazione.
+
+### Linguaggio generato da una grammatica
+
+Sia \(\grammar\) una grammatica. Il **linguaggio generato da \(G\)**, denotato
+con \(L(G)\), è l'insieme delle stringhe di simboli terminali derivabili dal
+simbolo di partenza \(S\):
+
+\[
+    L(G) = \set{w \in X^\ast\ \middle|\ \supsubimplies{\ast}{G} w}
+\]
+
+Sono, dunque, stringhe di \(L(G)\) le stringhe che:
+
+- consistono di soli simboli terminali;
+- possono essere derivate da \(S\) in \(G\).
+
+### Forma di frase
+
+Sia \(\grammar\) una grammatica. Una stringa \(w \in \XuVast\) è un **forma di
+frase** di \(G\) se
+
+\[ S \supsubimplies{\ast}{G} w \]
+
+Alle forme di frasi si applicano le stesse definizioni (es. potenza) e gli stessi
+operatori (es. concatenazione) dati per le stringhe.
+
+#### Proposizione
+
+Data una grammatica \(\grammar\), \(L(G)\) è l'insieme delle forme di frase
+terminali (o frasi) di \(G\).
+
+### Grammatiche equivalenti
+
+Due grammatiche \(G\) e \(G'\) si dicono **equivalenti** se generano lo stesso
+linguaggio, ossia se
+
+\[ L(G) = L(G') \]
+
+#### Esempio
+
+Sia \(\grammar\), con:
+
+\[
+    X = \set{a,\ b},\quad V = \set{S},\quad
+    P = \set{S \supto{(1)} aSb,\ S \supto{(2)} ab}
+\]
+
+Si determini \(L(G)\). Si ha \(ab \in L(G)\), poiché \(S \subimplies{2} ab\).
+
+Se si numerano le produzioni, è possibile indicare la produzione usata
+immediatamente al di sotto del simbolo \(\implies\):
+
+- \(\subimplies{n} \equiv\) è stata applicata la produzione \(n\);
+- \(y \supimplies{k} z \equiv\) \(y\) produce \(z\) in \(k\) paassi, dove \(k\)
+  è la lunghezza della derivazione.
+
+Si ha \(a^2b^2 \in L(G)\) dato che \(S \subimplies{1} aSb \subimplies{2} a^2b^2\),
+inoltre \(a^3b^3 \in L(G)\) poiché \(S \supimplies{3} a^3b^3\), e dunque
+
+\[ \set{a^n b^n \mid n > 0} \subseteq L(G) \]
+
+Inoltre, qualsiasi derivazione da \(S\) in \(G\) produce frasi del tipo \(a^nb^n\),
+dunque \(L(G) \subseteq \set{a^nb^n \mid n > 0}\), e quindi:
+
+\[ L(G) = \set{a^n b^n \mid n > 0} \]
+
+## Notazione
+
+Per rendere più concisa la descrizione di una grammatica, spesso ci si limiterà
+a elencarne le produzioni, quando sia chiaro quale sia il simbolo di partenza e
+quali siano i simboli terminali e quelli non-terminali.
+
+Inoltre, le produzioni con la stessa parte sinistra vengono accorpate attraverso
+l'uso del simbolo "\(\mid\)" (preso in prestito dalla BNF).
+
+Infine, verrà omessa l'indicazione della grammatica dalla simbologia di
+derivazione e derivazione diretta quando sia chiaro dal contesto a quale
+grammatica si fa riferimento.
+
+!!! example "Esempio"
+
+    Sia data la seguente grammatica:
+
+    \[
+        S \to \sup{A}{(1)} \mid \sup{B}{(2)},\
+        A \to \sup{aA}{(3)} \mid \sup{a}{(4)},\
+        B \to \sup{bB}{(5)} \mid \sup{b}{(6)}
+    \]
+
+    Determinare \(L(G)\).
+
+    Non si sa se applicare \(S \supto{(1)} A\) oppure \(S \supto{(2)} B\)
+    inizialmente. I meccanismi di costruzione di un linguaggio sono generalmente
+    non deterministici, poiché può non essere univoca la sostituzione da operare
+    ad una forma di frase se uno stesso simbolo non-terminale si trova a
+    sinistra di due o più produzioni, come illustrato nella figura seguente
+
+    ```mermaid
+    flowchart LR
+        S ==>|"(2)"| B ==>|"(5)"| bB;
+                     B ==>|"(6)"| b["b ∈ L(G)"];
+
+        S ==>|"(1)"| A ==>|"(4)"| a["a ∈ L(G)"];
+                     A ==>|"(3)"| aA ==>|"(4)"| aa["aa ∈ L(G)"];
+                                  aA ==>|"(3)"| aaA ==>|"(4)"| aaa["aaa ∈ L(G)"];
+                                                aaA ==>|"(3)"| aaaA;
+    ```
+
+    Ne consegue che
+
+    \[ L(G) = \set{a^n \mid n > 0} \cup \set{b^n \mid n > 0} \]
+
+Dunque, una grammatica è uno **strumento generativo** di un linguaggio perché,
+data una qualsiasi parola di quel linguaggio, è possibile risalire mediante le
+produzioni al simbolo di partenza della brammatica.
+
+Viceversa, dato iìsimbolo di partenza di una grammatica, seguendo uno qualsiasi
+dei cammini dell'albero di derivazione, si produce una parola "valida" del
+linguaggio.
+
+in generale, dato un linguaggio \(L\) e una grammatica \(G\), **non** esiste un
+algoritmo in grado di dimostrare che la grammatica genera il linguaggio, ossia
+che \(L = L(G)\).
+
+Più specificamente, **non** esiste un algoritmo che stabilisce se una data stringa
+è generata o no dalla grammatica presa in considerazione.
+
+Tutto ciò si riassume nella seguente proposizione:
+
+!!! quote "Proposizione"
+
+    Il problema di dimostrare la correttezza di una grammatica non è risolubile
+    algoritmicamente, in generale.
+
+In molti casi impotanti, però, è possibile dimostrare per induzione che una
+particolare grammatica genera proprio un particolare linguaggio.
+
+Queste dimostrazioni consentono di stabilire se, data una grammatica \(G\) e un
+linguaggio \(L\), risulta:
+
+1. \(w \in L(G) \implies w \in L\) ovvero \(L(G) \subseteq L\);
+2. \(w \in L \implies w \in L(G)\) ovvero \(L \subseteq L(G)\).
+
+Il punto 1. afferma che la grammatica \(G\) genera solo stringhe appartenenti
+al linguaggio \(L\), ovvero *coerenza* o *consistenza* di \(G\).
+Il secondo punto afferma che il linguaggio \(L\) comprende solo parole generabili
+dalla grammatica \(G\), ovvero la *completezza* di \(G\).
+
+## Principio di Induzione (extra)
+
+Sia \(n_0\) un intero e sia \(P = P(n)\) un enunciato che ha senso per ogni
+intero maggiore o uguale a \(n_0\). Se
+
+\[
+    P(n_0) \text{ è vero } \land
+    \forall n > n_0,\; P(n-1) \text{ è vero } \implies P(n) \text{ è vero}
+\]
+
+allora \(P(n)\) è vero per tutti gli \(n\) maggiori o uguali a \(n_0\)
