@@ -26,27 +26,27 @@ Un **calcolatore** è una macchina fisica che:
 - consente di eseguire algoritmi opportunamente formalizzati[^1] perché siano
   "comprensibili" all'esecutore;
 - la formalizzazione consiste nella codifica degli algoritmi in un certo
-  linguaggio $\ll$ definito da una specifica sintassi;
-- la sintassi di $\ll$ permette di utilizzare determinati costrutti per comporre
-  programmi in $\ll$
-- Un programma in $\ll$ è una sequenza di istruzioni del linguaggio $\ll$.
+  linguaggio \(\lng\) definito da una specifica sintassi;
+- la sintassi di \(\lng\) permette di utilizzare determinati costrutti per comporre
+  programmi in \(\lng\)
+- Un programma in \(\lng\) è una sequenza di istruzioni del linguaggio \(\lng\).
 
 Una _macchina astratta_ è un'astrazione del concetto di calcolatore fisico.
 
 ### Macchina astratta e linguaggio macchina
 
-Una macchina astratta per $\ll$ è un insieme di algoritmi e strutture dati che
-permettono di memorizzare ed eseguire programmi scritti in $\ll$.
+Una macchina astratta per \(\lng\) è un insieme di algoritmi e strutture dati che
+permettono di memorizzare ed eseguire programmi scritti in \(\lng\).
 
-Si denota con $\ml$ ed è composta da:
+Si denota con \(\ml\) ed è composta da:
 
 - una memoria per immagazzinare dati e programmi;
 - un interprete che esegue le istruzioni contenute nei programmi.
 
 !!! def "Linguaggio Macchina"
 
-    Data una macchina astratta $\ml$, il linguaggio $\ll$ "compreso"
-    dall'interprete di $\ml$ è detto linguaggio macchina di $\ml$.
+    Data una macchina astratta \(\ml\), il linguaggio \(\lng\) "compreso"
+    dall'interprete di \(\ml$ è detto linguaggio macchina di \(\ml\).
 
 ### Struttura di una macchina astratta
 
@@ -115,9 +115,9 @@ flowchart TD
 
 ## Realizzazione di una macchina astratta
 
-Per essere effettivamente utilizzata, $\ml$ dovrà prima o poi utilizzare
+Per essere effettivamente utilizzata, \(\ml\) dovrà prima o poi utilizzare
 qualche dispositivo fisico, ovvero mediante una realizzazione "fisica" in
-hardware. In questo caso gli algoritmi di $\ml$ sono realizzati direttamente
+hardware. In questo caso gli algoritmi di \(\ml\) sono realizzati direttamente
 mediante dispositivi fisici.
 
 È possibile pensare a delle realizzazioni che fanno uso di livelli intermedi tra
@@ -140,15 +140,15 @@ che permettono di eseguire il linguaggio su varie piattaforme.
 ### Realizzazione mediante software
 
 Per poter realizzare via software una macchina astratta è necessario realizzare
-degli algoritmi e delle strutture dati di $\ml$ in un altro linguaggio $\ll'$
-che sia già implementato. Dunque, $\ml$ viene realizzata mediante dei programmi
-in $\ll'$ che simulino le funzionalità di $\ml$.
+degli algoritmi e delle strutture dati di \(\ml\) in un altro linguaggio \(\lng'\)
+che sia già implementato. Dunque, \(\ml\) viene realizzata mediante dei programmi
+in \(\lng'\) che simulino le funzionalità di \(\ml\).
 
-La macchina $\ml$ viene realizzata attraverso la macchina $\mlp$. Quest'ultima
-viene detta macchina ospite e si denota con $\molo$.
+La macchina \(\ml\) viene realizzata attraverso la macchina \(\mlprime\). Quest'ultima
+viene detta macchina ospite e si denota con \(\molo\).
 
-Intuitivamente l'implementazione di $\ll$ sulla macchina ospite avviene mediante
-una qualche "traduzione" di $\ll$ in $\llo$;
+Intuitivamente l'implementazione di \(\lng\) sulla macchina ospite avviene mediante
+una qualche "traduzione" di \(\lng\) in \(\llo\);
 
  A seconda di come avvenga la traduzione di parla di implementazione
 
@@ -167,54 +167,54 @@ if x == 1 then print(x) else
 
 La seguente relazione è presente:
 
-$$
+\[
 f(x) =  \begin{cases}
             1 & \text{se } x = 1  \\
             \nexists & \text{se } x \in \R \setminus \{1\}
         \end{cases}
-$$
+\]
 
 ## Definizione di
 
 ### ...interprete
 
-In generale un programma scritto in $\ll$ si può vedere come una funzione
+In generale un programma scritto in \(\lng\) si può vedere come una funzione
 parziale[^3]:
 
-$$ \prgm^\ll\colon D \times D \tc \prgm^\ll(Input) = Output $$
+\[ \prgm^\lng\colon D \times D \tc \prgm^\lng(Input) = Output \]
 
-Possiamo dare la seguente definizione di interprete di $\ll$ in $\llo$:
+Possiamo dare la seguente definizione di interprete di \(\lng\) in \(\llo\):
 
-$$
-\intr^\llo_\ll\colon (\prgm^\ll \times D) \to D \tc
-\intr^\llo_\ll(\prgm^\ll, Input) = \prgm^\ll(Input)
-$$
+\[
+\intr^\llo_\lng\colon (\prgm^\lng \times D) \to D \tc
+\intr^\llo_\lng(\prgm^\lng, Input) = \prgm^\lng(Input)
+\]
 
-In un interprete non vi è una traduzione esplicita dei programmi scritti in $\ll$
+In un interprete non vi è una traduzione esplicita dei programmi scritti in \(\lng\)
 ma solamente un procedimento di decodifica dello stesso.
 
-L'interprete per eseguire un'istruzione $i$ di $\ll$,fa corrispondere a questa
-un insieme di istruzioni di $\llo$. Tale decodifica **non è una traduzione
-esplicita** poiché il codice corrispondente ad $i$ è eseguito direttamente e non
+L'interprete per eseguire un'istruzione \(i\) di \(\lng\),fa corrispondere a questa
+un insieme di istruzioni di \(\llo\). Tale decodifica **non è una traduzione
+esplicita** poiché il codice corrispondente ad \(i\) è eseguito direttamente e non
 prodotto in uscita.
 
 ### ...compilatore
 
-Un compilatore da $\ll$ a $\llo$ è un programma che realizza la funzione:
+Un compilatore da \(\lng\) a \(\llo\) è un programma che realizza la funzione:
 
-$$ \cmp_{\ll,\ \llo}\colon \prgm^\ll \to \prgm^\llo $$
+\[ \cmp_{\lng,\ \llo}\colon \prgm^\lng \to \prgm^\llo \(\)
 
-$$
-\cmp_{\ll,\ \llo}(\prgmcomp^\llo) \qquad \prgm^\ll(Input) = \prgmcomp^\llo(Input)
-$$
+\[
+\cmp_{\lng,\ \llo}(\prgmcmp^\llo) \qquad \prgm^\lng(Input) = \prgmcmp^\llo(Input)
+\]
 
 Questo significa che avviene una traduzione esplicita dei programmi scritti in
-$\ll$ in programmi scritti in $\llo$.
+\(\lng\) in programmi scritti in \(\llo\).
 
-Per poter eseguire $\prgm^\ll$ su $Input$ bisogna eseguire $\cmp_{\ll,\ \llo}$
-con $\prgm^\ll$ come input. Si avrà come risultato un programma compilato
-$\prgmcomp^\llo$ scritto in $llo$ che sarà eseguito su $\molo$ con il dato di
-ingresso $Input$.
+Per poter eseguire \(\prgm^\lng\) su \(Input\) bisogna eseguire \(\cmp_{\lng,\ \llo}\)
+con \(\prgm^\lng\) come input. Si avrà come risultato un programma compilato
+\(\prgmcmp^\llo\) scritto in \(llo\) che sarà eseguito su \(\molo\) con il dato di
+ingresso \(Input\).
 
 ### Interpretazione vs. Compilazione
 
@@ -232,10 +232,10 @@ difficoltà nel debugging.
 ## Gerarchie di macchine astratte
 
 È possibile pensare ad una gerarchie di macchine astratte
-$\mm_{\ll_0},\ \mm_{\ll_1},\ \dots,\ \mm_{\ll_n}$. In questo modo la macchina
-$\mm_{\ll_i}$ viene implementata sfruttando il linguaggio della macchina
-sottostante $\mm_{\ll_{i-1}}$. A sua volta la macchina $\mm_{\ll_i}$ fornisce
-a sua volta il proprio linguaggio alla macchina sottostante $\mm_{\ll_{i+1}}$.
+$\mm_{\lng_0},\ \mm_{\lng_1},\ \dots,\ \mm_{\lng_n}$. In questo modo la macchina
+$\mm_{\lng_i}$ viene implementata sfruttando il linguaggio della macchina
+sottostante \(\mm_{\lng_{i-1}}\). A sua volta la macchina \(\mm_{\lng_i}\) fornisce
+a sua volta il proprio linguaggio alla macchina sottostante \(\mm_{\lng_{i+1}}\).
 
 Questo permette di avere una **indipendenza tra livelli**, ovvero le modifiche
 _interne_ alle funzionalità di un livello non hanno alcuna influenza sugli altri
@@ -255,8 +255,8 @@ flowchart TD
 ```
 
 Un linguaggio di programmazione non è altro che un formalismo per portare al
-livello della macchina fisica l'algoritmo solutivo $A_P$ per un certo problema
-$P$. In generale:
+livello della macchina fisica l'algoritmo solutivo \(A_P\) per un certo problema
+\(P\). In generale:
 
 ```mermaid
 flowchart LR
@@ -265,7 +265,7 @@ flowchart LR
                                 --> res([Risultati<br>Soluzione dell'istanza di P]);
 ```
 
-L'esecutore deve essere in grado di intepretare la descrizione del metodo
+L'esecutore deve essere in grado di interpretare la descrizione del metodo
 solutivo.
 
 ## Il problema della fermata
@@ -275,17 +275,17 @@ programma? La risposta dipende dal linguaggio di programmazione?
 
 ### Funzioni parziali calcolabili
 
-Una funzione parziale $f\colon A \to B$ è calcolabile nel linguaggio $\ll$ se
-esiste un programma $\prgm$ scritto in $\ll$ tale che:
+Una funzione parziale \(f\colon A \to B\) è calcolabile nel linguaggio \(\lng\) se
+esiste un programma \(\prgm\) scritto in \(\lng\) tale che:
 
-- se $f(a) = b$ allora $\prgm(a)$ termina e produce come output $b$;
-- se $f(a)$ non è definita allora $\prgm(a)$ va in ciclo.
+- se \(f(a) = b\) allora \(\prgm(a)\) termina e produce come output \(b\);
+- se \(f(a)\) non è definita allora \(\prgm(a)\) va in ciclo.
 
 ### Il problema
 
-Si vuole stabilire se un programma $H$ termina su un dato input. Il programma
-$H$ riceve in ingresso un qualsiasi programma $\prgm$ scritto nel linguaggio
-$\ll$ ed è un generico input $x$ per tale programma:
+Si vuole stabilire se un programma \(H\) termina su un dato input. Il programma
+$H$ riceve in ingresso un qualsiasi programma \(\prgm\) scritto nel linguaggio
+\(\lng\) ed è un generico input \(x\) per tale programma:
 
 ```pascal
 Boolean H(P, x)
@@ -297,17 +297,17 @@ Boolean H(P, x)
 
 dunque
 
-$$
-H(P,\ x) \text{ ritorna }
-\begin{cases}
-    \text{true}  & \text{se } P(x) \text{ termina}  \\
-    \text{false} & \text{se } P(x) \text{ va in loop}
-\end{cases}
-$$
+\[
+    H(P,\ x) \text{ restituisce }
+    \begin{cases}
+        \text{true}  & \text{se } P(x) \text{ termina}  \\
+        \text{false} & \text{se } P(x) \text{ va in loop}
+    \end{cases}
+\]
 
-È possibile costruire un altro programma $K$, scritto in $\ll$, che prenda in
-input un programma $\prgm$ (sempre scritto in $\ll$). Il programma $K$ sfrutta
-$H$ per decidere sulla terminazione di $\prgm$.
+È possibile costruire un altro programma \(K\), scritto in \(\lng\), che prenda in
+input un programma \(\prgm\) (sempre scritto in \(\lng\)). Il programma \(K\) sfrutta
+$H$ per decidere sulla terminazione di \(\prgm\).
 
 ```pascal
 K(P)
@@ -317,38 +317,38 @@ if (H(P, P) = false) then print("LOOP");
 
 quindi si ha che
 
-$$
-K(P)
-\begin{cases}
-    \text{stampa 'LOOP'}  & \text{se } P(\prgm) \text{ non termina}  \\
-    \text{va in loop} & \text{se } P(\prgm) \text{ termina}
-\end{cases}
-$$
+\[
+    K(P)
+    \begin{cases}
+        \text{stampa 'LOOP'}  & \text{se } P(\prgm) \text{ non termina}  \\
+        \text{va in loop} & \text{se } P(\prgm) \text{ termina}
+    \end{cases}
+\]
 
-in pratica la terminazione di $K$ è opposta rispetto a quella del suo input.
+in pratica la terminazione di \(K\) è opposta rispetto a quella del suo input.
 
-!!! question "Cosa accadrebbe se $K$ ricevesse in input se stesso?"
+!!! question "Cosa accadrebbe se \(K\) ricevesse in input se stesso?"
 
     otterremmo un assurdo perché:
 
-    - $K(K)$ termina con una stampa se $K(K)$ non termina;
-    - $K(K)$ non termina se $K(K)$ termina;
+    - \(K(K)\) termina con una stampa se \(K(K)\) non termina;
+    - \(K(K)\) non termina se \(K(K)\) termina;
 
-    l'assurdo deriva dall'aver supposto l'esistenza del programma $H$.
+    l'assurdo deriva dall'aver supposto l'esistenza del programma \(H\).
 
 Il problema della terminazione è **indecidibile**: non è possibile costruire e
 formalizzare un algoritmo che sia in grado di risolverlo.
 
 Dunque la prima domanda diventa: "Esistono funzioni non calcolabili?" e la
 risposta è sì, infatti il problema della terminazione è uno di questi.
-Questo risultato dipende dal linguaggio $\ll$? Ovvero, dipende dal formalismo
+Questo risultato dipende dal linguaggio \(\lng\)? Ovvero, dipende dal formalismo
 usato per descrivere l'algoritmo? Per rispondere, introduciamo la macchina di
 Turing.
 
 ## Macchina di Turing
 
 Esse si basano su un modello matematico di computazione introdotto negli anni
-'20, ed è stato il primo formalismo col quale è stato dimostrato l'indecibilità
+'20, ed è stato il primo formalismo col quale è stato dimostrato l'indecidibilità
 del problema della fermata.
 
 La macchina di Turing è costituita da:
@@ -362,8 +362,8 @@ La macchina di Turing è costituita da:
       di stati;
 - unità di controllo, che decodifica e esegue comandi rivolti alla testina.
 
-L'unità di controllo esegue un programma $\prgm$ sui dati memorizzati sul nastro.
-Le istruzioni del programma $\prgm$ sono del tipo:
+L'unità di controllo esegue un programma \(\prgm\) sui dati memorizzati sul nastro.
+Le istruzioni del programma \(\prgm\) sono del tipo:
 
 ```txt linenums="0"
 <simbolo_letto, stato corrente, simbolo_da_scrivere, Sx, Dx, nuovo_stato>
@@ -371,20 +371,20 @@ Le istruzioni del programma $\prgm$ sono del tipo:
 
 ### Il modello matematico
 
-Una Macchina di Turing p definita dalla quintupla $M = (X,\ Q,\ f_m,\ f_d,\ \delta)$,
+Una Macchina di Turing p definita dalla quintupla \(M = (X,\ Q,\ f_m,\ f_d,\ \delta)\),
 dove:
 
-- $X$ è un insieme finito di simboli che comprende anche _blank_ ovvero la cella
+- \(X\) è un insieme finito di simboli che comprende anche _blank_ ovvero la cella
   vuota;
-- $Q$ è un insieme finito di stati che comprende _HALT_ che definisce la
+- \(Q\) è un insieme finito di stati che comprende \(\HALT\) che definisce la
   terminazione;
-- $fm$ è la funzione macchina, definita come $f_m\colon Q \times X \to X$ che
+- \(fm\) è la funzione macchina, definita come \(f_m\colon Q \times X \to X\) che
   determina il simbolo da scrivere sul nastro;
-- $f_d$ è la funzione di direzione, definita come
-  $f_d\colon Q \times X \to \set{\sx,\ \dx,\ F}$ che determina lo spostamento
-  della testina, dove $F$ sta per "ferma";
-- $\delta$ è la funzione di transizione di stato, definita come
-  $\delta\colon Q \times X \to Q$, questa definisce lo stato successivo della
+- \(f_d\) è la funzione di direzione, definita come
+  \(f_d\colon Q \times X \to \set{\sx,\ \dx,\ F}\) che determina lo spostamento
+  della testina, dove \(F\) sta per "ferma";
+- \(\delta\) è la funzione di transizione di stato, definita come
+  \(\delta\colon Q \times X \to Q\), questa definisce lo stato successivo della
   computazione.
 
 ### Scrivere algoritmi per Macchina di Turing
@@ -393,7 +393,7 @@ dove:
 
 È necessario definire un'opportuna configurazione iniziale del nastro e
 codificare i dati. Ad esempio, il nastro iniziale per il problema della
-sottrazione di interi, in particolare $4 - 2$:
+sottrazione di interi, in particolare \(4 - 2\):
 
 ```txt linenums="0"
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
@@ -404,7 +404,7 @@ sottrazione di interi, in particolare $4 - 2$:
 gli operandi sono codificati con `|` e separati da `*`, il blank è rappresentato
 da `^`.
 
-Successivamente bisogna definire un'oppportuna configurazione finale del nastro
+Successivamente bisogna definire un'opportuna configurazione finale del nastro
 che rappresenti la soluzione
 
 ```txt linenums="0"
@@ -415,26 +415,26 @@ che rappresenti la soluzione
 
 #### Controllo
 
-Bisogna ora definire le funzioni $f_m,\ f_d,\ \delta$, in modo da trasformare
+Bisogna ora definire le funzioni \(f_m,\ f_d,\ \delta\), in modo da trasformare
 la configurazione iniziale in quella che rappresenta la soluzione. Come detto,
 il programma per una Macchina di Turing è una sequenza di quintuple:
 
-$$
+\[
 \langle x_i \in X,\ q_j \in Q,\ x_{ij} \in X,\ \set{S,\ D,\ F},\ q_{ij} \in Q\rangle
-$$
+\]
 
-In corrispondenza di un simbolo letto $x_i$ e dello stato $q_j$ in cui si trova
-l'unità di controllo, si detrminano:
+In corrispondenza di un simbolo letto \(x_i\) e dello stato \(q_j\) in cui si trova
+l'unità di controllo, si determinano:
 
-- il simbolo $x_{ij} = f_m(x_i,\ q_j)$ da scrivere nella cella corrente;
-- lo spostamento della testina $f_d(x_i,\ q_j)$;
-- il nuovo stato $q_{ij} = \delta(x_i\ q_j)$ in cui la Macchina di Turing
+- il simbolo \(x_{ij} = f_m(x_i,\ q_j)\) da scrivere nella cella corrente;
+- lo spostamento della testina \(f_d(x_i,\ q_j)\);
+- il nuovo stato \(q_{ij} = \delta(x_i\ q_j)\) in cui la Macchina di Turing
   continuerà la computazione.
 
 #### Sottrazione tra interi
 
 Progettiamo un algoritmo per eseguire la sottrazione tra due numeri interi
-$n,\ m \geq 0$ e per semplicità e convenienza assumiamo che $n \geq m$.
+$n,\ m \geq 0$ e per semplicità e convenienza assumiamo che \(n \geq m\).
 
 La testina è posizionata sulla prima cella vuota a destra dell'ultimo simbolo
 del sottraendo:
@@ -451,53 +451,53 @@ possibili
 
 #### Un possibile algoritmo
 
-Bisogna cancellare un egual numero di simboli $n$ e da $m$ in modo che sul nastro
+Bisogna cancellare un egual numero di simboli \(n\) e da \(m\) in modo che sul nastro
 resti solo il risultato finale.
 
-1. Diminuire di un'unità $m$, ricordando di aver cancellato un simbolo da $m$;
-2. Spostarsi a $\sx$ in cerca del primo simbolo di $n$;
+1. Diminuire di un'unità \(m\), ricordando di aver cancellato un simbolo da \(m\);
+2. Spostarsi a \(\sx\) in cerca del primo simbolo di \(n\);
 3. Cancellarlo, ricordando che entrambi gli operandi son stati diminuiti di
    un'unità;
-4. Spostarsi a $\dx$ in cerca dell'ultimo simbolo di $m$
-5. Se non sono presenti più simboli da cancellare da $m$, allora cancellare il
-   separatore e terminare (_HALT_), altrimenti tornare al punto 1.
+4. Spostarsi a \(\dx\) in cerca dell'ultimo simbolo di \(m\)
+5. Se non sono presenti più simboli da cancellare da \(m\), allora cancellare il
+   separatore e terminare (\(\HALT\)), altrimenti tornare al punto 1.
 
 ### Le quintuple di una Macchina di Turing per la sottrazione
 
-Dato l'insieme finito di simboli $X = \set{|,\ \ast,\ \caret}$ e l'insieme finito
-di stati $Q = \set{q_0,\ q_1,\ q_2,\ q_3,\ HALT}$, con:
+Dato l'insieme finito di simboli \(X = \set{|,\ \ast,\ \caret}\) e l'insieme finito
+di stati \(Q = \set{q_0,\ q_1,\ q_2,\ q_3,\ \HALT}\), con:
 
-- $q_0 \equiv$ stato iniziale della computazione, ovvero la ricerca dell'ultimo
-  simbolo di $m$;
-- $q_1 \equiv$ diminuito di $m$;
-- $q_2 \equiv$ raggiunto il simbolo di $n$;
-- $q_3 \equiv$ diminuiti entrambi gli operandi.
+- \(q_0 \equiv\) stato iniziale della computazione, ovvero la ricerca dell'ultimo
+  simbolo di \(m\);
+- \(q_1 \equiv\) diminuito di \(m\);
+- \(q_2 \equiv\) raggiunto il simbolo di \(n\);
+- \(q_3 \equiv\) diminuiti entrambi gli operandi.
 
 Si ottengono le seguenti quintuple:
 
-$$
-\begin{align}
-  & \langle \caret,\ q_0,\ \caret,\  \sx,\  q_0  \rangle,  &
-  & \langle |,\      q_0,\ \caret,\  \sx,\  q_1  \rangle,  & \\
-  & \langle \ast,\   q_0,\ \caret,\  F,\    HALT \rangle,  &
-  & \langle \caret,\ q_1,\ \caret,\  \dx,\  q_2  \rangle,  & \\
-  & \langle |,\      q_1,\ |,\       \sx,\  q_1  \rangle,  &
-  & \langle \ast,\   q_1,\ \ast,\    \sx,\  q_1  \rangle,  & \\
-  & \langle |,\      q_2,\ \caret,\  \dx,\  q_3  \rangle,  &
-  & \langle \caret,\ q_3,\ \caret,\  \sx,\  q_0  \rangle,  & \\
-  & \langle |,\      q_3,\ |,\       \dx,\  q_3  \rangle,  &
-  & \langle \ast,\   q_3,\ \ast,\    \dx,\  q_3  \rangle.  & \\
-\end{align}
-$$
+\[
+    \begin{align}
+    & \langle \caret,\ q_0,\ \caret,\  \sx,\  q_0   \rangle,  &
+    & \langle |,\      q_0,\ \caret,\  \sx,\  q_1   \rangle,  & \\
+    & \langle \ast,\   q_0,\ \caret,\  F,\    \HALT \rangle,  &
+    & \langle \caret,\ q_1,\ \caret,\  \dx,\  q_2   \rangle,  & \\
+    & \langle |,\      q_1,\ |,\       \sx,\  q_1   \rangle,  &
+    & \langle \ast,\   q_1,\ \ast,\    \sx,\  q_1   \rangle,  & \\
+    & \langle |,\      q_2,\ \caret,\  \dx,\  q_3   \rangle,  &
+    & \langle \caret,\ q_3,\ \caret,\  \sx,\  q_0   \rangle,  & \\
+    & \langle |,\      q_3,\ |,\       \dx,\  q_3   \rangle,  &
+    & \langle \ast,\   q_3,\ \ast,\    \dx,\  q_3   \rangle.  & \\
+    \end{align}
+\]
 
 ### La matrice funzionale
 
 <!-- markdownlint-disable MD046 -->
-| $X \setminus Q$ | $q_0$            | $q_1$            | $q_2$            | $q_3$            |
-| --------------- | ---------------  | ---------------  | ---------------  | ---------------  |
-| $\caret$        | $\caret \sx q_0$ | $\caret \dx q_2$ |                  | $\caret \sx q_0$ |
-| \|              | $\caret \sx q_1$ | \|$\sx q_1$      | $\caret \dx q_3$ | \|$\dx q_3$   |
-| $\ast$          | $\caret F HALT$  | $\ast \sx q_1$   |                  | $\ast \dx q_3$   |
+| \(X \setminus Q\) | \(q_0\)            | \(q_1\)            | \(q_2\)            | \(q_3\)            |
+| ----------------- | -----------------  | ------------------ | ------------------ | ------------------ |
+| \(\caret\)        | \(\caret \sx q_0\) | \(\caret \dx q_2\) |                    | \(\caret \sx q_0\) |
+| \(\mid\)          | \(\caret \sx q_1\) | \(\mid\sx q_1\)    | \(\caret \dx q_3\) | \(\mid\dx q_3\)    |
+| \(\ast\)          | \(\caret F \HALT\) | \(\ast \sx q_1\)   |                    | \(\ast \dx q_3\)   |
 <!-- markdownlint-enable MD046 -->
 
 Per quale motivo alcune transizioni non sono definite? Perché semplicemente non
@@ -552,7 +552,7 @@ programmazione calcolano esattamente le stesse funzioni calcolate dalle macchine
 di Turing. Tutti i linguaggi di programmazione sono Turing-completi.
 
 [^1]:
-    Si intende la codifica degli algoritmi in un certo linguaggio $\ll$ che è
+    Si intende la codifica degli algoritmi in un certo linguaggio \(\lng\) che è
     definito da una certa sintassi. Questa deve consentire di usare solo
     determinati costrutti.
 

@@ -17,7 +17,7 @@ Un insieme \(X\) finito e non vuoto di simboli è un *alfabeto*.
       spazio bianco: \(a\) \(b\; \ldots\; z\) \(;\) \(,\) \(.\) \(:\);
     - L'insieme delle dieci cifre arabe \(0\) \(1\; \dots\; 9\).
 
-Con i simbolil primitivi dell'alfabeto si formano le parole (es. \(abc\),
+Con i simboli primitivi dell'alfabeto si formano le parole (es. \(abc\),
 \(127\), \(casa\), etc.).
 
 ### Parole o stringhe
@@ -243,9 +243,9 @@ notazione insiemistica.
 
 ### Riconoscimento di linguaggi formali
 
-Com'è possibile *riconoscere* gli elementi di un dato linguaggio $L$? Questo
+Com'è possibile *riconoscere* gli elementi di un dato linguaggio \(L\)? Questo
 secondo punto di vista ha come obiettivo la costruzione di "macchine" in grado
-di decidere o stabilire se una stringa è un elemento di $L$ oppure no. Si intende
+di decidere o stabilire se una stringa è un elemento di \(L\) oppure no. Si intende
 costruire una "macchinetta" cui dare in ingresso una particolare parola e che
 produca una tra due possibili risposte:
 
@@ -449,7 +449,7 @@ dall'esistenza di una produzione. Allora è possibile anche definire una
 composizione di relazioni:
 
 \[
-     y \supimplies{2} z \deff \exists x : y \implies w \land w \implies z
+     y \Oimplies{2} z \deff \exists x : y \implies w \land w \implies z
 \]
 
 dove \(2\) è il numero di trascrizioni necessarie per passare da \(y\) a \(z\),
@@ -458,15 +458,15 @@ ossia la *lunghezza della derivazione*.
 Da ciò si ha che \(\astimplies\) non è altro che:
 
 \[
-    I \cup \implies \cup \supimplies{2} \cup \supimplies{3} \cup \cdots
+    I \cup \implies \cup \Oimplies{2} \cup \Oimplies{3} \cup \cdots
 \]
 
-dove \(I\) è la relazione identica e \(\supimplies{n}\) indica la composizione
+dove \(I\) è la relazione identica e \(\Oimplies{n}\) indica la composizione
 della relazione \(implies\) \(n\) volte con se stessa. Dunque:
 
 - \(\astimplies\) è la *chiusura riflessiva e transitiva* della relazione di
   derivazione diretta;
-- \(\supimplies{+}\) è la *chiusura transitiva* della stessa relazione.
+- \(\Oimplies{+}\) è la *chiusura transitiva* della stessa relazione.
 
 ### Linguaggio generato da una grammatica
 
@@ -475,7 +475,7 @@ con \(L(G)\), è l'insieme delle stringhe di simboli terminali derivabili dal
 simbolo di partenza \(S\):
 
 \[
-    L(G) = \set{w \in X^\ast\ \middle|\ \supsubimplies{\ast}{G} w}
+    L(G) = \set{w \in X^\ast\ \middle|\ \OUimplies{\ast}{G} w}
 \]
 
 Sono, dunque, stringhe di \(L(G)\) le stringhe che:
@@ -488,7 +488,7 @@ Sono, dunque, stringhe di \(L(G)\) le stringhe che:
 Sia \(\grammar\) una grammatica. Una stringa \(w \in \XuVast\) è un **forma di
 frase** di \(G\) se
 
-\[ S \supsubimplies{\ast}{G} w \]
+\[ S \OUimplies{\ast}{G} w \]
 
 Alle forme di frasi si applicano le stesse definizioni (es. potenza) e gli stessi
 operatori (es. concatenazione) dati per le stringhe.
@@ -514,17 +514,17 @@ Sia \(\grammar\), con:
     P = \set{S \supto{(1)} aSb,\ S \supto{(2)} ab}
 \]
 
-Si determini \(L(G)\). Si ha \(ab \in L(G)\), poiché \(S \subimplies{2} ab\).
+Si determini \(L(G)\). Si ha \(ab \in L(G)\), poiché \(S \Uimplies{(2)} ab\).
 
 Se si numerano le produzioni, è possibile indicare la produzione usata
 immediatamente al di sotto del simbolo \(\implies\):
 
-- \(\subimplies{n} \equiv\) è stata applicata la produzione \(n\);
-- \(y \supimplies{k} z \equiv\) \(y\) produce \(z\) in \(k\) paassi, dove \(k\)
+- \(\Uimplies{n} \equiv\) è stata applicata la produzione \(n\);
+- \(y \Oimplies{k} z \equiv\) \(y\) produce \(z\) in \(k\) paassi, dove \(k\)
   è la lunghezza della derivazione.
 
-Si ha \(a^2b^2 \in L(G)\) dato che \(S \subimplies{1} aSb \subimplies{2} a^2b^2\),
-inoltre \(a^3b^3 \in L(G)\) poiché \(S \supimplies{3} a^3b^3\), e dunque
+Si ha \(a^2b^2 \in L(G)\) dato che \(S \Uimplies{(1)} aSb \Uimplies{(2)} a^2b^2\),
+inoltre \(a^3b^3 \in L(G)\) poiché \(S \Oimplies{3} a^3b^3\), e dunque
 
 \[ \set{a^n b^n \mid n > 0} \subseteq L(G) \]
 

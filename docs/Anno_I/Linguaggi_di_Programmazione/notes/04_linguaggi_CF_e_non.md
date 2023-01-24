@@ -115,6 +115,115 @@ ovvero se
 
 Un linguaggio \(L\) è monotono se può essere generato da una grammatica monotona.
 
+### Esempio
+
+Produzioni monotone:
+
+- \(AB \to CDEF\);
+- \(CB \to BC\).
+
+Una produzione monotona può essere sostituita da una sequenza di produzioni
+contestuali senza alterare il linguaggio generato; la prima produzione può
+essere sostituita dalle seguenti produzioni contestuali:
+
+- \(AB \to AG\);
+- \(AG \to CG\);
+- \(CG \to CDEF\).
+
+La seconda produzioni, può essere sostituita dalle seguenti produzioni contestuali:
+
+- \(CB \to XB\);
+- \(XB \to XC\);
+- \(XC \to BC\);
+
+oppure
+
+- \(CB \to X_1 B\)
+- \(X_1 B \to X_1 X_2\);
+- \(X_1 X_2 \to X_1 C\);
+- \(X_1 C \to BC\);
+
+## Proposizione
+
+La classe dei linguaggi contestuali coincide con la classe dei linguaggi monotoni.
+
+Tale proposizione deriva immediatamente dal teorema seguente
+
+## Teorema
+
+Sia \(G\) una grammatica monotona, ovvero tale che ogni produzione di \(G\) è
+della forma \(v \to w\), con \(\abs{v} \to \abs{w}\), eccetto che è possibile
+un'unica \(\lambda\)-produzione \(S \to \lambda\) se \(S\) non appare alla destra
+di una produzione. Esiste allora una grammatica context-sensitive \(G'\)
+equivalente a \(G\), ovvero tale che \(L(G) = L(G')\).
+
+È possibile enunciare il teorema nel seguente modo:
+
+Un linguaggio \(L\) è dipendente da contesto se e solo se \(\exists G : L = L(G)\)
+e ogni produzione di \(G\) nella forma \(u \to v\) ha la proprietà
+\(0 < \abs{u} \leq \abs{v}\), con una sola eccezione: se \(\lambda \in L(G)\)
+allora \(S \to \lambda\) è una produzione di \(G\) e in tal caso \(S\) non può
+comparire nella parte destra di altre produzioni.
+
+### Dimostrazione
+
+\(\implies\)
+
+Se \(L\) è dipendente da contesto allora, per definizione, esiste \(G\) dipendente
+da contesto tale che \(L = L(G)\):
+
+\[
+    L \text{ context-sensitive} \deff
+    \exists G \text{ context-sensitive } : L = L(G)
+\]
+
+allora ogni produzione di \(G\) è in una delle seguenti due forme:
+
+1. \(yAz \to ywy\) con \(A \in V,\; y,z \in \XuVast,\; w \in \XuVplus\);
+2. \(S \to \lambda\) con \(S\) che non compare nelle parte destra di alcuna
+   produzione.
+
+Dunque, ogni produzione di \(G\) verifica la condizione \(u \to v\), con
+\(0 < \abs{u} \leq \abs{v}\) se è del tipo 1., mentre con \(S\) che non compare
+a destra di alcuna produzione se è del tipo 2. ricade nell'eccezione. Pertanto
+la grammatica \(G\) è quella cercata.
+
+\(\impliedby\)
+
+Sia \(G\) una grammatica in cui ogni produzione è nella forma \(u \to v\) con
+\(0 < \abs{u} \leq \abs{v}\). Senza ledere alla generalità della dimostrazione,
+è possibile supporre che una generica produzione di \(G\) sia del tipo:
+
+\[
+    A_1 A_2 \dots A_m \to B_1 B_2 \dots B_n \; m \leq n
+\]
+
+con \(A_i \in V,\; i = 1, 2, \dots, m\). È legittimo affermare ciò in quanto, se
+\(A_j\) fosse un simbolo terminale, sarebbe possibile sostituirlo nella produzione
+con un nuovo simbolo non-terminale e aggiungere la nuova produzione \(A_j' \to A_j\).
+
+Si denotino con \(C_1,\, C_2,\, \dots,\, C_m\) gli \(m\) simboli non-terminali
+non presenti in \(G\). Utilizzando i \(C_k\) simboli, con \(k = 1, 2, \dots, m\)
+per costruire le nuove regole contestuali che riscrivono la stringa
+\(A_1 A_2 \dots A_m\) con \(B_1 B_2 \dots B_n\), si ha:
+
+\[
+    \left.\begin{array}{@{}ll@{}}
+        A_1\, A_2 \dots A_m \to C_1\, A_2 \dots A_m             \\
+        C_1\, A_2 \dots A_m \to C_1\, C_2\, A_3 \dots A_m       \\
+        \vdots                                                  \\
+        C_1\, C_2 \dots C_{m-1}\, A_m \to
+            C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n   \\
+        C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n \to
+            C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n   \\
+        \vdots                                                  \\
+        C_1\, B_2\, \dots B_n \to B_1\, B_2 \dots B_n
+    \end{array}\right\}
+\]
+
+La nuova gramamtica che incorpora queste produzioni è contestuale e si può
+dimostrare che \(L(G) = L(G')\).
+
 [^1]:
     \(S \to \lambda\) è una produzione context-sensitive e \(S\) non compare a
     destra di un'altra produzione.
