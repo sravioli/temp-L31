@@ -24,22 +24,22 @@ risolvendo i sotto-problemi.
 Così facendo, il problema generale viene decomposto in sotto-problemi più semplici
 del principale. Questi possono essere rappresentati come un albero, in cui il nodo
 radice rappresenta il problema generale, e i nodi foglia rappresentano i
-sotto-problemi più semplici. Quest'albero viene chiamato _albero di decomposizione_
-_funzionale_.
+sotto-problemi più semplici. Quest'albero viene chiamato _albero di decomposizione
+funzionale_.
 
 ## Albero di decomposizione
 
 L'albero di decomposizione funzionale, è un albero che rappresenta la scomposizione
-del problema in sotto-problemi. Ad esempio, il problema iniziale $P$, può essere
-decomposto in $P_1$, $P_2$ e $P_3$:
+del problema in sotto-problemi. Ad esempio, il problema iniziale \(P\), può essere
+decomposto in \(P_1\), \(P_2\) e \(P_3\):
 
 ```mermaid
 flowchart TD
   P --> P1 & P2 & P3;
 ```
 
-Nel caso in cui i sotto-problemi $P_1$, $P_2$ e $P_3$ siano a loro volta troppo
-complessi, possono essere decomposti in altri sotto-problemi.
+Nel caso in cui i sotto-problemi \(P_1\), \(P_2\) e \(P_3\) siano a loro volta
+troppo complessi, possono essere decomposti in altri sotto-problemi.
 
 ```mermaid
 flowchart TD
@@ -49,8 +49,9 @@ flowchart TD
 ```
 
 Quindi si ha che nella radice dell'albero di decomposizione, si ha il problema
-principale $P$, e i nodi foglia $P_1.1$, $P_1.2$, $P_2$, $P_3.1$ e $P_3.2$ si
-hanno i sotto-problemi più semplici, considerati più facilmente risolvibili.
+principale \(P\), e i nodi foglia \(P_{1.1}\), \(P_{1.2}\), \(P_2\), \(P_{3.1}\)
+e \(P_{3.2}\) si hanno i sotto-problemi più semplici, considerati più facilmente
+risolvibili.
 
 ## Come comporre le soluzioni dei sotto-problemi
 
@@ -58,7 +59,7 @@ Lo scopo del processo di decomposizione, è quello di scomporre la soluzione del
 problema principale nelle soluzioni di altri problemi, ma molto più semplici e
 dunque più facilmente risolvibili.
 
-La soluzione per un problema $P$ si ottiene combinando le soluzioni dei suoi
+La soluzione per un problema \(P\) si ottiene combinando le soluzioni dei suoi
 sotto-problemi utilizzando le strutture di controllo, ovvero sequenza, selezione
 e iterazione.
 
@@ -75,8 +76,8 @@ da:
 
 ### Soluzione
 
-La descrizione della soluzione del problema $P$, è basata sulla descrizione delle
-soluzioni dei suoi sotto-problemi, ovvero:
+La descrizione della soluzione del problema \(P\), è basata sulla descrizione
+delle soluzioni dei suoi sotto-problemi, ovvero:
 
 - la specifica di ogni singolo sotto-problema (compito/funzione);
 - i dati di input e output di ciascun sotto-problema.

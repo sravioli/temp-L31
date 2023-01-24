@@ -57,8 +57,8 @@ non diventino mai false, ad esempio:
 (a > 5 ) ∧ (a <= 10)
 ```
 
-In questo caso si ha che $a \in\,]5, 10[$ e nel caso in cui fosse presente un `OR`
-al posto dell'`AND` la condizione non diventerebbe mai falsa.
+In questo caso si ha che \(a \in \,]5,\ 10[\) e nel caso in cui fosse presente
+un `OR` al posto dell'`AND` la condizione non diventerebbe mai falsa.
 
 ## Asserzioni
 

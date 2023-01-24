@@ -22,9 +22,9 @@ risolvere il problema.
 ### Analizzare il problema
 
 L'analisi del problema è una fase fondamentale per risolvere il problema. In
-questa fase si devono identificare i dati da elaborare (-in), i risultati
-desiderati (-out), gli eventuali vincoli tra i dati e, infine, il formato di
-presentazione dei risultati.
+questa fase si devono identificare i dati da elaborare (**input**), i risultati
+desiderati (**output**), gli eventuali vincoli tra i dati e, infine, il formato
+di presentazione dei risultati.
 
 In questo modo si individuano i dati utili e quelli inutili, si individuano i
 vincoli tra i dati e si individuano i dati che possono essere calcolati a partire
@@ -64,7 +64,7 @@ Ad esempio, un programma che calcola la somma di due numeri deve essere testato
 con numeri positivi, negativi, decimali, con numeri molto grandi e con numeri
 molto piccoli. È possibile dire che funzionerà con tutti i numeri? È impossibile
 dirlo con certezza poiché i numeri sono infiniti; è però possibile essere certi
-che il programma funzionerà nel $99.9\%$ dei casi.
+che il programma funzionerà nel \(99.9\%\) dei casi.
 
 Un altro esempio è il programma Microsoft PowerPoint. Quest'ultimo presenta
 innumerevoli funzionalità e questo porta ad avere altrettanti problemi.
@@ -127,11 +127,11 @@ convertire da miglia a chilometri.
 **Analisi**:
 
 È necessario capire cosa fare: dobbiamo convertire dei valori da un sistema di
-misura ad un altro, ovvero da miglia a chilometri. Il dato da elaborare è
-quindi una distanza in miglia. Il risultato desiderato è la distanza in chilometri.
+misura ad un altro, ovvero da miglia a chilometri. Il dato da elaborare è quindi
+una distanza in miglia. Il risultato desiderato è la distanza in chilometri.
 
 Per poter risolvere il problema è necessario conoscere la relazione esistente
-tra miglia e chilometri: $1\,{\rm mi} = 1.609\,{\rm km}$.
+tra miglia e chilometri: \(1\,{\rm mi} = 1.609\,{\rm km}\).
 
 **INPUT**
 : miglio, la distanza espressa in miglia
@@ -140,7 +140,7 @@ tra miglia e chilometri: $1\,{\rm mi} = 1.609\,{\rm km}$.
 : chilometro, la distanza espressa in chilometri
 
 **VINCOLI**
-: $1\,{\rm mi} = 1.609\,{\rm km}$
+: \(1\,{\rm mi} = 1.609\,{\rm km}\)
 
 **Progettazione**:
 
@@ -158,7 +158,7 @@ Visualizzare la distanza in chilometri
 
 Il primo e ultimo passo non necessitano di ulteriori raffinamenti, però il
 secondo passo può essere migliorato. È possibile scrivere: la distanza in
-chilometri è uguale a $1.609$ volte la distanza in miglia.
+chilometri è uguale a \(1.609\) volte la distanza in miglia.
 
 <!-- markdownlint-disable MD046-->
 

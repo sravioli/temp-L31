@@ -8,12 +8,12 @@ flowchart TD
   M --> M1 & M2 & M3;
 ```
 
-scomponiamo il problema $M$ nei sotto-problemi $M_1, M_2, M_3$
+scomponiamo il problema \(M\) nei sotto-problemi \(M_1, M_2, M_3\)
 
 ## Struttura di un programma in C
 
 Nel C, un programma è costituito da una sezione di dichiarazioni globali, dalla
-funzione `#!C main() {}` e da altre funzioni, in questo caso $f_1$ e $f_2$.
+funzione `#!C main() {}` e da altre funzioni, in questo caso \(f_1\) e \(f_2\).
 
 ```mermaid
 flowchart TD
@@ -101,15 +101,15 @@ sotto-programmi sono di due tipi:
 Un sotto-programma di tipo funzione consente di costruire una funzione
 matematica.
 
-Una funzione matematica $f$ associa ad un valore del suo dominio $\dom f$
-un valore del dominio del risultato, il $\codom f$. Ad esempio sia $f = \sqrt{x}$,
+Una funzione matematica \(f\) associa ad un valore del suo dominio \(\dom f\)
+un valore del dominio del risultato, il \(\codom f\). Ad esempio sia \(f = \sqrt{x}\),
 si ha:
 
-$$f: \R \to \R$$
+\[ f \colon \R \to \R \]
 
 ### Funzioni
 
-In un linguaggio di programmazione una funzione $f$ può essere vista come un
+In un linguaggio di programmazione una funzione \(f\) può essere vista come un
 operatore che opera su **operandi**, ovvero i parametri in input, e produce un
 risultato o valore di output
 
@@ -133,7 +133,7 @@ nera della quale si conoscono soltanto i dati d'ingresso e il risultato.
 
 ### Astrazione funzionale
 
-Una funzione $f$ può essere vista come un operatore che opera su tipi di dati
+Una funzione \(f\) può essere vista come un operatore che opera su tipi di dati
 primitivi o definiti dal programmatore.
 
 Con l'introduzione di una funzione viene ampliato l'insieme degli operatori del
@@ -195,7 +195,7 @@ sarebbe la lista di parametri che la funzione accetta.
 Ogni parametro della lista è definito come tipo e identificatore
 
 ```c linenums="0"
-(<parametri>) -> (<tipo> <identificatore>)
+(<parametri>) := (<tipo> <identificatore>)
 ```
 
 I parametri sono tra loro separati da virgole.

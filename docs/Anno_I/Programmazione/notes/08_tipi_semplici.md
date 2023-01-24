@@ -47,11 +47,11 @@ flowchart LR
 
 Un tipo di dato o semplicemente tipo indica:
 
-- Un insieme di valori $D$ (dominio);
-- Un insieme di operazioni $O$ che si applicano agli elementi di $D$, operatori
-  e predicati;
+- Un insieme di valori \(D\) (dominio);
+- Un insieme di operazioni \(O\) che si applicano agli elementi di \(D\),
+  operatori e predicati;
 - Un insieme di costanti, cioè di simboli con cui si denotano i valori del
-  dominio $D$.
+  dominio \(D\).
 
 ### Dichiarazione di una variabile
 
@@ -109,7 +109,7 @@ programmazione. In C i tipi primitivi sono:
       - `#!c float`: per i numeri reali;
       - `#!c double`: per i reali in doppia precisione;
       - `#!c char`: per i caratteri;
-- Tipi definiti dall’utente:
+- Tipi definiti dall'utente:
       - Tipi enumerati definiti tramite la parola chiave `#!c enum`.
 
 ### Tipi semplici e tipi strutturati
@@ -133,11 +133,11 @@ numerici interi e reali. Il linguaggio C fornisce tre tipi predefiniti:
 ### Tipo int
 
 I dati di tipo int costituiscono un sottoinsieme dei numeri interi, positivi e
-negativi. Un `#!c int` è rappresentato generalmente in una parola, $2 {\rm\,byte}$
-o $4 {\rm\,byte}$. Nel caso in cui la parola sia di $2 {\rm\,byte}$ il dominio
-del tipo `#!c int` è costituito dall’insieme.
+negativi. Un `#!c int` è rappresentato generalmente in una parola, \(2 {\rm\,byte}\)
+o \(4 {\rm\,byte}\). Nel caso in cui la parola sia di \(2 {\rm\,byte}\) il dominio
+del tipo `#!c int` è costituito dall'insieme.
 
-$$D = [-2^{15}, 2^{15} -1] = [-32768, 32767]$$
+\[ D = [-2^{15},\ 2^{15} -1] = [-32768,\ 32767] \]
 
 Il minimo e il massimo valore intero hanno una rappresentazione simbolica
 denominata `#!c INT_MIN` e `#!c INT_MAX`.
@@ -149,7 +149,7 @@ La definizione delle due costanti è contenuta nel file `limits.h`.
 
 ### Operatori aritmetici
 
-Siano $a, b$ due operandi di tipo `#!c int`. Gli operatori aritmetici
+Siano \(a, b\) due operandi di tipo `#!c int`. Gli operatori aritmetici
 restituiscono un valore di tipo `#!c int`
 
 | Operatore        | Simbolo   |
@@ -181,7 +181,7 @@ Restituiscono un valore vero (`1`) o falso (`0`)
 I valori del dominio del tipo `#!c int` sono denotati, all’interno di un programma,
 con un insieme di valori costanti (costanti intere).
 
-Ogni costate intera è rappresentatata come un numero intero decimale eventualmente
+Ogni costate intera è rappresentata come un numero intero decimale eventualmente
 con segno. Ad esempio: `#!c 0`, `#!c -151`, `#!c +41`.
 
 ## Espressione aritmetica
@@ -203,6 +203,6 @@ In ogni caso il risultato è un intero.
 
 ## Compatibilità tra tipi
 
-Siano $T_1$ e $T_2$ due tipi differenti. Variabili di tipo differente possono
+Siano \(T_1\) e \(T_2\) due tipi differenti. Variabili di tipo differente possono
 comparire in una stessa espressione? Generalmente sì, se il linguaggio di
 programmazione fornisce delle regole di conversione implicite tra i due tipi.

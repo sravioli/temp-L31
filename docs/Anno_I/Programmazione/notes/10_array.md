@@ -19,8 +19,8 @@ un componente.
 ### Linearità
 
 Le strutture dati possono essere lineari, ovvero la struttura può essere vista
-come una sequenza di dati in cui è possibile individuare la $1^\circ$ componente,
-la $2^\circ$ componente e così via fino ad esaurire la lunghezza della sequenza,
+come una sequenza di dati in cui è possibile individuare la \(1^\circ\) componente,
+la \(2^\circ\) componente e così via fino ad esaurire la lunghezza della sequenza,
 come ad esempio i vettori.
 
 Le strutture dati possono essere anche non lineari, come ad esempio una matrice.
