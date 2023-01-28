@@ -52,6 +52,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add commit/month activity badge
 - Rename old pdfs, add new ones
 - Small rewrite of (almost) all LaTeX macros (WiP)
 - Add section, correct paragraph titles
