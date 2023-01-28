@@ -52,6 +52,7 @@ Si denota con \(\ml\) ed è composta da:
 
 Vediamo la struttura di una macchina astratta:
 
+<!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart LR
     subgraph Memoria
@@ -71,6 +72,7 @@ flowchart LR
 
     Memoria --- Interprete --- Operazioni;
 ```
+<!-- markdownlint-enable MD046 -->
 
 La memoria viene utilizzata per contenere sia i programmi che i dati utili a
 questi ultimi. l'interprete ha tre moduli e ha anche accesso ad una serie di
@@ -98,6 +100,7 @@ di memoria per dati e programmi.
 
 ## Ciclo di esecuzione del generico interprete
 
+<!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart TD
     start((Start)) --> AcqProx(Acquisisci la<br>prossima istruzione)
@@ -112,6 +115,7 @@ flowchart TD
     Choose --> Halt("Esegui 𝐻𝐴𝐿𝑇")
            --> stop((Stop));
 ```
+<!-- markdownlint-enable MD046 -->
 
 ## Realizzazione di una macchina astratta
 
@@ -159,19 +163,21 @@ una qualche "traduzione" di \(\lng\) in \(\llo\);
 
 Prendiamo ad esempio la seguente funzione in Pascal:
 
+<!-- markdownlint-disable MD046 -->
 ```pascal
 read(x);
 if x == 1 then print(x) else
     while (x <> 1) do skip;
 ```
+<!-- markdownlint-enable MD046 -->
 
 La seguente relazione è presente:
 
 \[
-f(x) =  \begin{cases}
-            1 & \text{se } x = 1  \\
-            \nexists & \text{se } x \in \R \setminus \{1\}
-        \end{cases}
+    f(x) =  \begin{cases}
+                1 & \text{se } x = 1  \\
+                \nexists & \text{se } x \in \R \setminus \{1\}
+            \end{cases}
 \]
 
 ## Definizione di
@@ -186,8 +192,8 @@ parziale[^3]:
 Possiamo dare la seguente definizione di interprete di \(\lng\) in \(\llo\):
 
 \[
-\intr^\llo_\lng\colon (\prgm^\lng \times D) \to D \tc
-\intr^\llo_\lng(\prgm^\lng, Input) = \prgm^\lng(Input)
+    \intr^\llo_\lng\colon (\prgm^\lng \times D) \to D \tc
+    \intr^\llo_\lng(\prgm^\lng, Input) = \prgm^\lng(Input)
 \]
 
 In un interprete non vi è una traduzione esplicita dei programmi scritti in \(\lng\)
@@ -205,7 +211,7 @@ Un compilatore da \(\lng\) a \(\llo\) è un programma che realizza la funzione:
 \[ \cmp_{\lng,\ \llo}\colon \prgm^\lng \to \prgm^\llo \(\)
 
 \[
-\cmp_{\lng,\ \llo}(\prgmcmp^\llo) \qquad \prgm^\lng(Input) = \prgmcmp^\llo(Input)
+    \cmp_{\lng,\ \llo}(\prgmcmp^\llo) \qquad \prgm^\lng(Input) = \prgmcmp^\llo(Input)
 \]
 
 Questo significa che avviene una traduzione esplicita dei programmi scritti in
@@ -241,6 +247,7 @@ Questo permette di avere una **indipendenza tra livelli**, ovvero le modifiche
 _interne_ alle funzionalità di un livello non hanno alcuna influenza sugli altri
 livelli.
 
+<!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart TD
     subgraph mWEB[Macchina WEB]
@@ -253,17 +260,20 @@ flowchart TD
         end
     end
 ```
+<!-- markdownlint-enable MD046 -->
 
 Un linguaggio di programmazione non è altro che un formalismo per portare al
 livello della macchina fisica l'algoritmo solutivo \(A_P\) per un certo problema
 \(P\). In generale:
 
+<!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart LR
     alg([Algoritmo AP<br>descrizione del metodo solutivo]) --> esecutor;
     data([Dati d'istanza di P]) --> esecutor[Esecutore]
                                 --> res([Risultati<br>Soluzione dell'istanza di P]);
 ```
+<!-- markdownlint-enable MD046 -->
 
 L'esecutore deve essere in grado di interpretare la descrizione del metodo
 solutivo.
@@ -287,6 +297,7 @@ Si vuole stabilire se un programma \(H\) termina su un dato input. Il programma
 $H$ riceve in ingresso un qualsiasi programma \(\prgm\) scritto nel linguaggio
 \(\lng\) ed è un generico input \(x\) per tale programma:
 
+<!-- markdownlint-disable MD046 -->
 ```pascal
 Boolean H(P, x)
     boolean term;
@@ -294,6 +305,7 @@ Boolean H(P, x)
         else term = false;
     return term;
 ```
+<!-- markdownlint-enable MD046 -->
 
 dunque
 
@@ -309,11 +321,13 @@ dunque
 input un programma \(\prgm\) (sempre scritto in \(\lng\)). Il programma \(K\) sfrutta
 $H$ per decidere sulla terminazione di \(\prgm\).
 
+<!-- markdownlint-disable MD046 -->
 ```pascal
 K(P)
 if (H(P, P) = false) then print("LOOP");
     else while (true) do print("TERMINA");
 ```
+<!-- markdownlint-enable MD046 -->
 
 quindi si ha che
 
@@ -365,9 +379,11 @@ La macchina di Turing è costituita da:
 L'unità di controllo esegue un programma \(\prgm\) sui dati memorizzati sul nastro.
 Le istruzioni del programma \(\prgm\) sono del tipo:
 
+<!-- markdownlint-disable MD046 -->
 ```txt linenums="0"
 <simbolo_letto, stato corrente, simbolo_da_scrivere, Sx, Dx, nuovo_stato>
 ```
+<!-- markdownlint-enable MD046 -->
 
 ### Il modello matematico
 
@@ -395,11 +411,13 @@ dove:
 codificare i dati. Ad esempio, il nastro iniziale per il problema della
 sottrazione di interi, in particolare \(4 - 2\):
 
+<!-- markdownlint-disable MD046 -->
 ```txt linenums="0"
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
 │ ^ │ | │ | │ | │ | │ * │ | │ | │ ^ │ ^ │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
+<!-- markdownlint-enable MD046 -->
 
 gli operandi sono codificati con `|` e separati da `*`, il blank è rappresentato
 da `^`.
@@ -407,11 +425,13 @@ da `^`.
 Successivamente bisogna definire un'opportuna configurazione finale del nastro
 che rappresenti la soluzione
 
+<!-- markdownlint-disable MD046 -->
 ```txt linenums="0"
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
 │ ^ │ ^ │ ^ │ | │ | │ ^ │ ^ │ ^ │ ^ │ ^ │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
+<!-- markdownlint-enable MD046 -->
 
 #### Controllo
 
@@ -420,7 +440,7 @@ la configurazione iniziale in quella che rappresenta la soluzione. Come detto,
 il programma per una Macchina di Turing è una sequenza di quintuple:
 
 \[
-\langle x_i \in X,\ q_j \in Q,\ x_{ij} \in X,\ \set{S,\ D,\ F},\ q_{ij} \in Q\rangle
+    \langle x_i \in X,\ q_j \in Q,\ x_{ij} \in X,\ \set{S,\ D,\ F},\ q_{ij} \in Q\rangle
 \]
 
 In corrispondenza di un simbolo letto \(x_i\) e dello stato \(q_j\) in cui si trova
@@ -439,12 +459,14 @@ $n,\ m \geq 0$ e per semplicità e convenienza assumiamo che \(n \geq m\).
 La testina è posizionata sulla prima cella vuota a destra dell'ultimo simbolo
 del sottraendo:
 
+<!-- markdownlint-disable MD046 -->
 ```txt linenums="0"
                                   ↓
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
 │ ^ │ | │ | │ | │ | │ * │ | │ | │ ^ │ ^ │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
+<!-- markdownlint-enable MD046 -->
 
 Il modello di calcolo obbliga a pensare all'algoritmo in base alle operazioni
 possibili
@@ -492,13 +514,13 @@ Si ottengono le seguenti quintuple:
 
 ### La matrice funzionale
 
-<!-- markdownlint-disable MD046 -->
+<!-- markdownlint-disable MD013 -->
 | \(X \setminus Q\) | \(q_0\)            | \(q_1\)            | \(q_2\)            | \(q_3\)            |
 | ----------------- | -----------------  | ------------------ | ------------------ | ------------------ |
 | \(\caret\)        | \(\caret \sx q_0\) | \(\caret \dx q_2\) |                    | \(\caret \sx q_0\) |
 | \(\mid\)          | \(\caret \sx q_1\) | \(\mid\sx q_1\)    | \(\caret \dx q_3\) | \(\mid\dx q_3\)    |
 | \(\ast\)          | \(\caret F \HALT\) | \(\ast \sx q_1\)   |                    | \(\ast \dx q_3\)   |
-<!-- markdownlint-enable MD046 -->
+<!-- markdownlint-enable MD013 -->
 
 Per quale motivo alcune transizioni non sono definite? Perché semplicemente non
 sono definite.
@@ -517,14 +539,14 @@ di quelle calcolabili con la Macchina di Turing? NO.
 
 ## Macchina di Turing vs. Processori Moderni
 
-<!-- markdownlint-disable MD046 -->
+<!-- markdownlint-disable MD013 MD033 -->
 | Macchina di Turing                                         | CPU                                             |
 | ---------------------------------------------------------- | ----------------------------------------------- |
 | legge/scrive su nastro                                     | legge/scrive su RAM/ROM                         |
 | transita in un nuovo stato                                 | nuova configurazione dei<br>registri della CPU  |
 | sosta sul nastro di cella in cella                         | scelta della cella di memoria<br>su cui operare |
 | esegue un programma _specifico_,<br>cablato nella macchina | è _generale_, può eseguire<br>programmi diversi |
-<!-- markdownlint-enable MD046 -->
+<!-- markdownlint-enable MD013 MD033 -->
 
 ## La Macchina di Turing Universale
 

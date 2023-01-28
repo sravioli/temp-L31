@@ -37,7 +37,9 @@ mkdocs serve
 MkDocs avvierà un server su [localhost:8000](http://localhost:8000/) dove
 saranno presenti gli appunti.
 
+<!-- markdownlint-disable MD033 -->
 Per interrompere il server basta premere <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+<!-- markdownlint-enable MD033 -->
 
 ## Struttura
 

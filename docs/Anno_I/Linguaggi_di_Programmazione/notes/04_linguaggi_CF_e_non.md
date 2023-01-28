@@ -59,6 +59,7 @@ grammatica dipendente da contesto.
 
 La relazione è la seguente
 
+<!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart TD
     subgraph null[" "]
@@ -67,6 +68,7 @@ flowchart TD
         end
     end
 ```
+<!-- markdownlint-enable MD046 -->
 
 Tale relazione sussiste perché le regole di produzione context-sensitive sono
 una generalizzazione di quelle context-free. Le produzioni context-free sono un
@@ -80,7 +82,7 @@ sono equivalenti alla parola vuota.
     che \(w \in \XuVast\) mentre nella definizione di grammatica context-sensitive
     \(w \in \XuVplus\).
 
-    Dunque le gramamtiche context-free ammettono produzioni del tipo \(A \to \lambda\)
+    Dunque le grammatiche context-free ammettono produzioni del tipo \(A \to \lambda\)
     con \(A\) che può anche non essere il simbolo iniziale, mentre le grammatiche
     context-sensitive non ammettono tali produzioni.
 
@@ -209,19 +211,19 @@ per costruire le nuove regole contestuali che riscrivono la stringa
 
 \[
     \left.\begin{array}{@{}ll@{}}
-        A_1\, A_2 \dots A_m \to C_1\, A_2 \dots A_m             \\
-        C_1\, A_2 \dots A_m \to C_1\, C_2\, A_3 \dots A_m       \\
-        \vdots                                                  \\
+        A_1\, A_2 \dots A_m \to C_1\, A_2 \dots A_m                 \\
+        C_1\, A_2 \dots A_m \to C_1\, C_2\, A_3 \dots A_m           \\
+        \vdots                                                      \\
         C_1\, C_2 \dots C_{m-1}\, A_m \to
-            C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n   \\
+              C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n     \\
         C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n \to
-            C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n   \\
-        \vdots                                                  \\
+              C_1\, C_2 \dots C_{m-1}\, C_m\, B_{m+1} \dots B_n     \\
+        \vdots                                                      \\
         C_1\, B_2\, \dots B_n \to B_1\, B_2 \dots B_n
     \end{array}\right\}
 \]
 
-La nuova gramamtica che incorpora queste produzioni è contestuale e si può
+La nuova grammatica che incorpora queste produzioni è contestuale e si può
 dimostrare che \(L(G) = L(G')\).
 
 [^1]:

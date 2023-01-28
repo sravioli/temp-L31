@@ -124,11 +124,11 @@ Data una stringa \(\alpha\) su \(X\), la potenza \(h\)-esima di \(\alpha\) è
 definita induttivamente come segue:
 
 \[
-\alpha^h =  \begin{cases}
-                \lambda             &\text{se } h = 0 \\
-                \alpha\alpha^{h-1}  &\text{altrimenti}
-            \end{cases} \quad
-\forall h \in \N
+    \alpha^h =  \begin{cases}
+                    \lambda             &\text{se } h = 0 \\
+                    \alpha\alpha^{h-1}  &\text{altrimenti}
+                \end{cases} \quad
+    \forall h \in \N
 \]
 
 La potenza \(h\)-esima di una stringa è un caso speciale di concatenamento (in
@@ -148,10 +148,10 @@ Sia \(X\) un alfabeto, poniamo:
 si ha dunque:
 
 \[
-X^i = \set{
-    x_1\,x_2 \dots x_{i-1}\, x_i \mid x_1\,x_2 \dots x_{i-1} \in X^{i-1},\,
-    x_i \in X, \quad
-    x_1\,x_2 \dots x_i \equiv x_1\,x_2 \dots x_{i-1} \cdot x_i}
+    X^i = \set{
+        x_1\,x_2 \dots x_{i-1}\, x_i \mid x_1\,x_2 \dots x_{i-1} \in X^{i-1},\,
+        x_i \in X, \quad
+        x_1\,x_2 \dots x_i \equiv x_1\,x_2 \dots x_{i-1} \cdot x_i}
 \]
 
 Se \(i \geq 2\) si ha:
@@ -166,15 +166,15 @@ Se \(\lambda\) è la parola vuota e si prende un \(w \in X^+\) tale che
 Inoltre si ha:
 
 \[
-X^h = \begin{cases}
-            \set{\lambda}   &\text{se } h = 0 \\
-            X \cdot X^{h-1} &\text{altrimenti}
-      \end{cases}
+    X^h = \begin{cases}
+                \set{\lambda}   &\text{se } h = 0 \\
+                X \cdot X^{h-1} &\text{altrimenti}
+          \end{cases}
 \]
 
 ### Linguaggio formale
 
-Un *lingauggio formale* \(L\) su un alfabeto \(X\) è un sottoinsieme di \(X^\ast\),
+Un *linguaggio formale* \(L\) su un alfabeto \(X\) è un sottoinsieme di \(X^\ast\),
 ovvero \(L \subseteq X^\ast\).
 
 !!! example "Esempio"
@@ -262,7 +262,7 @@ Analizziamo il problema della generazione di \(L\).
 
 Sia dato l'alfabeto: \(X = \set{0,\ 1,\ 2, \dots,\ 9,\ +,\ -}\). Si vuole generare
 il linguaggio \(L\) dei numeri interi relativi. Ovviamente \(L \subseteq X^\ast\),
-più precisamente \(L \subset X^\ast\) poichè ad esempio \(1++-5 \notin L\).
+più precisamente \(L \subset X^\ast\) poiché ad esempio \(1++-5 \notin L\).
 
 Non è possibile elencare gli elementi di \(L\). È dunque necessario trovare una
 serie di regole mediante le quali è possibile produrre tutti e soli gli elementi
@@ -274,15 +274,15 @@ di cifre precedute da \(+\) o \(-\).
 Adottata la BNF per descrivere le produzioni, si ha:
 
 \[
-\begin{align}
-    \bnf{S} &\Coloneqq +\bnf{I} \mid -\bnf{I} \\
-    \bnf{I} &\Coloneqq \bnf{D} \mid \bnf{I} \bnf{D} \\
-    \bnf{D} &\Coloneqq 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5
-                         \mid 6 \mid 7 \mid 8 \mid 9
-\end{align}
+    \begin{align}
+        \bnf{S} &\Coloneqq +\bnf{I} \mid -\bnf{I}               \\
+        \bnf{I} &\Coloneqq \bnf{D} \mid \bnf{I} \bnf{D}         \\
+        \bnf{D} &\Coloneqq 0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5
+                             \mid 6 \mid 7 \mid 8 \mid 9
+    \end{align}
 \]
 
-Queste regole generano tutti gl iinteri relativi, purché si parta dal simbolo
+Queste regole generano tutti gl interi relativi, purché si parta dal simbolo
 non-terminale \(S\). Il simbolo non-terminale \(I\) è anche detto *categoria
 sintattica* e sta ad indicare la classe dei numeri interi. Questo è definito
 ricorsivamente o come una cifra o come un intero seguito da una cifra.
@@ -334,7 +334,7 @@ generare un linguaggio sono necessari:
 
 ### Definizione
 
-Una grammatica generativa o a astruttura di frase di \(G\) è una quadrupla
+Una grammatica generativa o a struttura di frase di \(G\) è una quadrupla
 
 \[ \grammar \]
 
@@ -343,7 +343,7 @@ dove:
 - \(X\) è l'**alfabeto terminale** per la grammatica;
 - \(v\) è l'**alfabeto non-terminale** o delle variabili per la grammatica;
 - \(S\) è il **simbolo di partenza** per la grammatica;
-- \(P\) è l'insime delle **produzioni** della grammatica.
+- \(P\) è l'insieme delle **produzioni** della grammatica.
 
 Valgono inoltre le seguenti condizioni:
 
@@ -404,7 +404,7 @@ abbreviazione della seguente:
 
 ### Derivazione o produzione diretta
 
-Sia \(G = \set{X,\ V,\ S,\ P}\) una gramamtica e siano \(y,z\) su \(\XuV\) due
+Sia \(G = \set{X,\ V,\ S,\ P}\) una grammatica e siano \(y,z\) su \(\XuV\) due
 stringhe finite di simboli sia terminali che non-terminali, tali che:
 
 \[ y = \gamma\alpha\delta \quad\text{ e }\quad z = \gamma\beta\delta \]
@@ -430,7 +430,7 @@ e si dice che \(y\) *produce* \(z\) o che \(z\) è *derivabile* da \(y\) se
 \(y = z\) o se esiste una sequenza di stringhe \(w_1,\, w_2, \dots,\, w_n\), con
 \(w_1,\, w_2,\, \dots,\, w_{n-1} \in \XuVplus\) e \(w_n \in \XuVast\), avendo
 \(w_1 = y\) e \(w_n = z\) tali che \(\forall i,\; i = 1,\, 2,\, \dots,\, n - 1 :
-w_i \underset{\substack{G}}{\implies} w_{i+1}\), ovvero \(w_i\) produce
+w_i \Uimplies{G} w_{i+1}\), ovvero \(w_i\) produce
 direttamente \(w_{i+1}\), cioè:
 
 \[
@@ -520,7 +520,7 @@ Se si numerano le produzioni, è possibile indicare la produzione usata
 immediatamente al di sotto del simbolo \(\implies\):
 
 - \(\Uimplies{n} \equiv\) è stata applicata la produzione \(n\);
-- \(y \Oimplies{k} z \equiv\) \(y\) produce \(z\) in \(k\) paassi, dove \(k\)
+- \(y \Oimplies{k} z \equiv\) \(y\) produce \(z\) in \(k\) passi, dove \(k\)
   è la lunghezza della derivazione.
 
 Si ha \(a^2b^2 \in L(G)\) dato che \(S \Uimplies{(1)} aSb \Uimplies{(2)} a^2b^2\),
@@ -581,9 +581,9 @@ grammatica si fa riferimento.
 
 Dunque, una grammatica è uno **strumento generativo** di un linguaggio perché,
 data una qualsiasi parola di quel linguaggio, è possibile risalire mediante le
-produzioni al simbolo di partenza della brammatica.
+produzioni al simbolo di partenza della grammatica.
 
-Viceversa, dato iìsimbolo di partenza di una grammatica, seguendo uno qualsiasi
+Viceversa, dato il simbolo di partenza di una grammatica, seguendo uno qualsiasi
 dei cammini dell'albero di derivazione, si produce una parola "valida" del
 linguaggio.
 
@@ -601,7 +601,7 @@ Tutto ciò si riassume nella seguente proposizione:
     Il problema di dimostrare la correttezza di una grammatica non è risolubile
     algoritmicamente, in generale.
 
-In molti casi impotanti, però, è possibile dimostrare per induzione che una
+In molti casi importanti, però, è possibile dimostrare per induzione che una
 particolare grammatica genera proprio un particolare linguaggio.
 
 Queste dimostrazioni consentono di stabilire se, data una grammatica \(G\) e un

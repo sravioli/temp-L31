@@ -73,7 +73,8 @@ mindmap
             Programmi
             Linguaggi
                 Teoria dei linguaggi formali
-``` -->
+```
+-->
 
 <!-- TODO: aggiungere immagine, oppure trovare modo di scriverlo -->
 Lo schema riportato in figura fornisce una panoramica delle aree di ricerca che
@@ -120,7 +121,7 @@ Quando si inizia a studiare un linguaggio, formale o meno, tutti quanti sono
 esperti di un linguaggio, quello con cui si comunica con altre persone.
 
 Oltre ad essere competenti in uno (o più) linguaggi naturali, lo studente in
-informatica ha familiarià con diversi linguaggi di programmazione, come FORTRAN,
+informatica ha familiarità con diversi linguaggi di programmazione, come FORTRAN,
 PASCAL, C, PROLOG, etc.
 
 Questi linguaggi vengono (o venivano) usati per scrivere programmi e quindi per
@@ -150,17 +151,19 @@ stesso significato, sebbene siano sintatticamente differenti:
 
 - The man hits the dog;
 - The dog is hit by the man;
-- L'homme frappe le chien
+- L'homme frappe le chien.
 
 Lo studio della sintassi è lo studio della grammatica, cioè della struttura
 delle frasi. La frase "The man hits the dog" può essere analizzata sintatticamente,
 cioè risolta nelle parti grammaticali componenti, come segue:
 
+<!-- markdownlint-disable MD049 -->
 \[
-\underbrace{\text{The man}}_{\bnf{parte-nominale}} \quad
-\underbrace{\text{hits}}_{\bnf{parte-verbale}}     \quad
-\underbrace{\text{the dog}}_{\bnf{parte-nominale}} \quad
+    \underbrace{\text{The man}}_{\bnf{parte-nominale}} \quad
+    \underbrace{\text{hits}}_{\bnf{parte-verbale}}     \quad
+    \underbrace{\text{the dog}}_{\bnf{parte-nominale}} \quad
 \]
+<!-- markdownlint-enable MD049 -->
 
 e ogni frase in questa forma è sintatticamente valida in inglese.
 
@@ -168,20 +171,20 @@ Possiamo descrivere un particolare insieme di tali frasi semplici in inglese
 usando le seguenti regole:
 
 \[
-\bnf{frase-semplice} \Coloneqq \bnf{parte-nominale}
-                               \bnf{parte-verbale}
-                               \bnf{parte-nominale}
+    \bnf{frase-semplice} \Coloneqq \bnf{parte-nominale}
+                                \bnf{parte-verbale}
+                                \bnf{parte-nominale}
 \]
 
 segue dunque
 
 \[
-\begin{align}
-    \bnf{parte-nominale} &\Coloneqq \bnf{articolo} \bnf{nome}           \\
-    \bnf{nome}           &\Coloneqq \textbf{ car \(\mid\) man \(\mid\) dog} \\
-    \bnf{articolo}       &\Coloneqq \textbf{ The \(\mid\) a}              \\
-    \bnf{parte-verbale}  &\Coloneqq \textbf{ hits \(\mid\) eats}
-\end{align}
+    \begin{align}
+        \bnf{parte-nominale} &\Coloneqq \bnf{articolo} \bnf{nome}               \\
+        \bnf{nome}           &\Coloneqq \textbf{ car \(\mid\) man \(\mid\) dog} \\
+        \bnf{articolo}       &\Coloneqq \textbf{ The \(\mid\) a}                \\
+        \bnf{parte-verbale}  &\Coloneqq \textbf{ hits \(\mid\) eats}
+    \end{align}
 \]
 
 Le precedenti regole sono scritte in BNF, una notazione usata comunemente per
@@ -232,23 +235,27 @@ utilizzando le regole date in precedenza): **They are flying planes**.
 
 Un'analisi sintattica di questa frase è:
 
+<!-- markdownlint-disable MD049 -->
 \[
-\underbrace{\text{They}}_{\bnf{pronome}} \quad
-\underbrace{\text{are}}_{\bnf{verbo}} \quad
-\underbrace{
-    \underbrace{\text{flying}}_{\bnf{aggettivo}} \quad
-    \underbrace{\text{planes}}_{\bnf{nome}}
-}_{\bnf{parte-nominale}}
+    \underbrace{\text{They}}_{\bnf{pronome}} \quad
+    \underbrace{\text{are}}_{\bnf{verbo}} \quad
+    \underbrace{
+        \underbrace{\text{flying}}_{\bnf{aggettivo}} \quad
+        \underbrace{\text{planes}}_{\bnf{nome}}
+    }_{\bnf{parte-nominale}}
 \]
+<!-- markdownlint-enable MD049 -->
 
 Quest'analisi suggerisce che **they** si riferisce a **planes** (aerei nel cielo
 che volano). Un'analisi alternativa sarebbe:
 
+<!-- markdownlint-disable MD049 -->
 \[
-\underbrace{\text{They}}_{\bnf{pronome}} \quad
-\underbrace{\text{are flying}}_{\bnf{verbo}} \quad
-\underbrace{\text{planes}}_{\bnf{nome}}
+    \underbrace{\text{They}}_{\bnf{pronome}} \quad
+    \underbrace{\text{are flying}}_{\bnf{verbo}} \quad
+    \underbrace{\text{planes}}_{\bnf{nome}}
 \]
+<!-- markdownlint-enable MD049 -->
 
 e questa implicherebbe un'interpretazione semantica completamente differente,
 in cui **they** si riferisce a chiunque sia attualmente al controllo dei **planes**
@@ -282,6 +289,7 @@ linguaggi di programmazione.
 Un linguaggio context-free è, ad esempio, il linguaggio delle parentesi ben
 formate tutte le stringhe di parentesi aperte e chiuse bilanciate correttamente.
 
+<!-- markdownlint-disable MD046 -->
 !!! example "Esempi"
 
     \(( )\) è ben formata;
@@ -289,6 +297,7 @@ formate tutte le stringhe di parentesi aperte e chiuse bilanciate correttamente.
     \(( ( ) ( ) )\) è ben formata;
 
     \(( ( ) ( )\) non è ben formata
+<!-- markdownlint-enable MD033 -->
 
 Questo linguaggio è fondamentale in informatica come notazione per contrassegnare
 il "raggio d'azione" nelle espressioni matematiche e nei linguaggi di programmazione.
@@ -299,7 +308,7 @@ il "raggio d'azione" nelle espressioni matematiche e nei linguaggi di programmaz
 2. se la stringa di simboli \(A\) è ben formata, allora lo è anche \((A)\);
 3. se le stringhe \(A\) e \(B\) sono ben formate, allora lo è anche la stringa \(AB\)
 
-In corrispondenza di questa definzione induttiva, è possibile considerare un
+In corrispondenza di questa definizione induttiva, è possibile considerare un
 sistema di riscrittura che genera esattamente l'insieme delle stringhe lecite
 di parentesi ben formate:
 
@@ -317,8 +326,8 @@ produzioni 1. e 2. La produzione 3. è apparentemente diversa dalla parte 3. del
 definizione. Sono stati utilizzati simboli distinti \(A\) e \(B\) nella definizione
 induttiva per evidenziare il fatto che le due stringhe di parentesi ben formate
 che consideriamo non sono necessariamente uguali. Nella produzione corrispondente
-non c'è necessità di usare simboli distinti perché in le due \(S\) che compaiono a
-destra possono essere sostituite indipendentemente.
+non c'è necessità di usare simboli distinti perché in le due \(S\) che compaiono
+a destra possono essere sostituite indipendentemente.
 
 Possiamo cioè applicare una produzione ad una delle due \(S\) (alla prima o alla
 seconda) indifferentemente. Il risultato non cambia.
