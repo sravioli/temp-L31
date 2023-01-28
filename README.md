@@ -3,6 +3,7 @@
 ![GitHub](https://img.shields.io/github/license/sRavioli/L31)
 ![GitHub issues](https://img.shields.io/github/issues/sRavioli/L31)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sRavioli/L31)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sRavioli/L31)
 
 Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31,
 A.A. 2021-22, dell'Università di Bari "Aldo Moro".
