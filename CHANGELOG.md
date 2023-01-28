@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Remove linter warnings, fix typos, adjust syntax
 - :fire: change LaTeX math delimiter, fix syntax, complete pages
 - :fire: change all `$...$` for `\(...\)` and `$$...$$` to `\[...\]`
 - Syntax cleanup, complete page
@@ -51,6 +52,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Rename old pdfs, add new ones
 - Small rewrite of (almost) all LaTeX macros (WiP)
 - Add section, correct paragraph titles
 - Add LaTeX commands, fix older commands
