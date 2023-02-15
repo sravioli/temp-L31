@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Replace empty file with one with content
 - Remove linter warnings, fix typos, adjust syntax
 - :fire: change LaTeX math delimiter, fix syntax, complete pages
 - :fire: change all `$...$` for `\(...\)` and `$$...$$` to `\[...\]`
