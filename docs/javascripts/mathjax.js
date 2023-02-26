@@ -1,11 +1,15 @@
 window.MathJax = {
+    loader: {
+        load: ['[tex]/textmacros', '[tex]/cancel'],
+    },
     tex: {
         inlineMath: [["\\(", "\\)"]],
         displayMath: [["\\[", "\\]"]],
         processEscapes: true,
         processEnvironments: true,
-        loader: {load: ['[tex]/textmacros']},
-        tex: {packages: {'[+]': ['textmacros']}},
+        packages: {
+            '[+]': ['textmacros', 'cancel']
+        },
         macros: {
             // numerical sets
             N: "{\\mathbb{N}}",
@@ -16,9 +20,9 @@ window.MathJax = {
             C: "{\\mathbb{C}}",
 
             // math operators
-            mcd: "{\\mathop{\\rm mcd}\\nolimits}",
-            dom: "{\\mathop{\\rm dom}\\nolimits}",
-            codom: "{\\mathop{\\rm codom}\\nolimits}",
+            mcd: "{\\operatorname{mcd}}",
+            dom: "{\\operatorname{dom}}",
+            codom: "{\\operatorname{codom}}",
 
             // so that
             tc: "{\\hspace\{.4em}\\text{t.c.}\\hspace\{.4em}}",
@@ -61,12 +65,6 @@ window.MathJax = {
                 "{\\overset{\\substack{#1}}{\\underset{\\substack{#2}}{\\implies}}}",
                 2
             ],
-
-
-
-            // subimplies: ["{\\underset{\\substack{(#1)}}{\\implies}}", 1],
-            // supimplies: ["{\\overset{\\substack{#1}}{\\implies}}", 1],
-            // supsubimplies: ["{\\overset{\\substack{#1}}{\\underset{\\substack{#2}}{\\implies}} }", 2],
             astimplies: "{\\overset{\\substack{\\ast}}{\\implies}}",
             deff: "{\\overset{\\substack{\\hspace{-0.1em}\\text{def}}}{\\iff}}",
 
@@ -79,7 +77,40 @@ window.MathJax = {
             XuVast: "{{(X \\cup V)}^\\ast}",
             grammar: "{G = \\set{X,\\ V,\\ S,\\ P}}",
             supto: ["{\\overset{\\substack{#1}}{\\to}}", 1],
-            sup: ["{\\overset{\\substack{#2}}{#1}}", 2]
+            sup: ["{\\overset{\\substack{#2}}{#1}}", 2],
+
+            ceil: ["{\\mathopen\\lceil #1 \\mathclose\\rceil}", 1],
+            floor: ["{\\mathopen\\lfloor #1 \\mathclose\\rfloor}", 1],
+
+            // units of measurement
+            bit: "{\\small\\rm\\, b}",
+            byte: "{\\small\\rm\\, B}",
+
+            bbit: "{\\small\\rm\\, bit}",
+            bbyte: "{\\small\\rm\\, byte}",
+
+            KB: "{\\small\\rm\\, KB}",
+            MB: "{\\small\\rm\\, MB}",
+            GB: "{\\small\\rm\\, GB}",
+            TB: "{\\small\\rm\\, TB}",
+            PB: "{\\small\\rm\\, PB}",
+            EB: "{\\small\\rm\\, EB}",
+            ZB: "{\\small\\rm\\, ZB}",
+            YB: "{\\small\\rm\\, YB}",
+
+            KiB: "{\\small\\rm\\, KiB}",
+            MiB: "{\\small\\rm\\, MiB}",
+            GiB: "{\\small\\rm\\, GiB}",
+            TiB: "{\\small\\rm\\, TiB}",
+            PiB: "{\\small\\rm\\, PiB}",
+            EiB: "{\\small\\rm\\, EiB}",
+            ZiB: "{\\small\\rm\\, ZiB}",
+            YiB: "{\\small\\rm\\, YiB}",
+
+            bin: ["{0{\\small\\text{b}}\\hspace{0.07em} #1}", 1],
+            hex: ["{0\\text{x}\\hspace{0.07em} \\mathrm{#1}}", 1],
+
+            ifrac: ["{^{#1} \\!/ _{\\!#2}}", 2],
         },
     },
     options: {
