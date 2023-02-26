@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Rename to add page index to filename
 - Replace empty file with one with content
 - Remove linter warnings, fix typos, adjust syntax
 - :fire: change LaTeX math delimiter, fix syntax, complete pages
@@ -53,6 +54,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Rewrite page, adjust formatting, remove some linter warnings
+- Add macros for bit/byte units, fix wrong plugin loading
 - Add commit/month activity badge
 - Rename old pdfs, add new ones
 - Small rewrite of (almost) all LaTeX macros (WiP)
