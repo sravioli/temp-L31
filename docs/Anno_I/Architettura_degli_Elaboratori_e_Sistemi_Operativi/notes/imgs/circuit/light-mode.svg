@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Circuit Diagram, cdlibrary.dll 4.0.0.0 -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="340" height="180" xmlns="http://www.w3.org/2000/svg">
+	<line x1="240" y1="40" x2="255" y2="40" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="240" y1="60" x2="255" y2="60" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 249,40 M 249,30 Q 269,50 249,70 M 248,70 Q 283,65 298,50 Q 283,35 248,30" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="300" y1="50" x2="310" y2="50" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="100" y1="140" x2="107" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 109,130 M 109,140 L 109,158 L 137,140 L 109,122 L 109,140 M 137,140 A 2,2 -5 1 1 143,140 A 2,2 -5 1 1 137,140" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="145" y1="140" x2="170" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="170" y1="90" x2="185" y2="90" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="170" y1="110" x2="185" y2="110" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 185,90 M 185,80 L 185,120 L 209,120 M 185,80 L 209,80 M 209,120 A 5,5 90 0 0 209,80" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="231" y1="100" x2="240" y2="100" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<text x="60" y="130" style="fill: rgb(21, 21, 21);font-family:Arial;font-size:11px;text-anchor:start" dominant-baseline="middle" transform="rotate(0, 60, 130)">C</text>
+	<text x="60" y="80" style="fill: rgb(21, 21, 21);font-family:Arial;font-size:11px;text-anchor:start" dominant-baseline="middle" transform="rotate(0, 60, 80)">B</text>
+	<text x="60" y="30" style="fill: rgb(21, 21, 21);font-family:Arial;font-size:11px;text-anchor:start" dominant-baseline="middle" transform="rotate(0, 60, 30)">A</text>
+	<line x1="80" y1="140" x2="100" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="170" y1="110" x2="170" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="80" y1="90" x2="170" y2="90" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="240" y1="60" x2="240" y2="100" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="80" y1="40" x2="240" y2="40" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="20" y1="140" x2="36" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 36,140 L 36,122 L 64,140 L 36,158 L 36,140" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="64" y1="140" x2="80" y2="140" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="20" y1="90" x2="36" y2="90" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 36,90 L 36,72 L 64,90 L 36,108 L 36,90" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="64" y1="90" x2="80" y2="90" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="20" y1="40" x2="36" y2="40" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<path d="M 36,40 L 36,22 L 64,40 L 36,58 L 36,40" style="fill-opacity:0;fill:rgb(21, 21, 21);stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+	<line x1="64" y1="40" x2="80" y2="40" style="stroke:rgb(21, 21, 21);stroke-linecap:square;stroke-width:2" />
+</svg>
