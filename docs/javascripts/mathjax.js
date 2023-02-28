@@ -111,6 +111,8 @@ window.MathJax = {
             hex: ["{0\\text{x}\\hspace{0.07em} \\mathrm{#1}}", 1],
 
             ifrac: ["{^{#1} \\!/ _{\\!#2}}", 2],
+            oneton: ["{#2_1,\\, #2_2, \\,\\dotsc,\\, #2_{#1}}", 2, "n" ],
+            sumton: ["{#2_1 + #2_2 +\\dotsb+ #2_{#1}}", 2, "n" ]
         },
     },
     options: {
