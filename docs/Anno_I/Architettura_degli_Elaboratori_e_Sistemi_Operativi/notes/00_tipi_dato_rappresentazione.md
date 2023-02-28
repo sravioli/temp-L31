@@ -78,7 +78,7 @@ I sistemi moderni memorizzano e manipolano miliardi di bit: vi è quindi la
 necessità di avere dei multipli, infatti si ha \(8 \bbit = 1 \bbyte\).
 
 Con la lettera "\(\bit\)" minuscola si indicano i bit, mentre con la lettera
-"\(\byte\)" si indicano i byte.
+"\(\byte\)" maiuscola si indicano i byte.
 
 #### Multipli del byte
 
@@ -102,9 +102,9 @@ Esistono analoghe misure per i multipli dei \(\bbit\) (\(\small{\rm Kb}\), ovver
 KiloBit, quindi \(1000\bbit\)), utilizzati generalmente come misura nelle quantità
 di dati trasmessi.
 
-Fino a qualche anno fa le misure \(\KiB,\, \GiB,\, \TiB,\,\dots\) non esistevano
-e i nomi dei multipli in tabella erano corrispondenti a quest'altri, ovvero
-\(1 \KB = 1024 \byte\).
+Fino a qualche anno fa le misure \(\KiB,\, \GiB,\, \TiB,\,\dotsc\,\) non
+esistevano e i nomi dei multipli in tabella erano corrispondenti agli altri,
+ovvero \(1 \KB = 1024 \byte\).
 
 ## Tipi di dati non numerici
 
