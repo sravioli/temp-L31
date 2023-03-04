@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Rewrite page
 - Fix typos, mispelling and phrasing
 - Rename to add page index to filename
 - Replace empty file with one with content
@@ -55,6 +56,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add macros
 - Semi-finish page, add some images (SVGs)
 - Add QoL macros
 - Rewrite page, adjust formatting, remove some linter warnings
