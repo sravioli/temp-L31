@@ -107,12 +107,21 @@ window.MathJax = {
             ZiB: "{\\small\\rm\\, ZiB}",
             YiB: "{\\small\\rm\\, YiB}",
 
+            // typeset binary/hexadecimal numbers
             bin: ["{0{\\small\\text{b}}\\hspace{0.07em} #1}", 1],
             hex: ["{0\\text{x}\\hspace{0.07em} \\mathrm{#1}}", 1],
 
+            // some QoL macros
             ifrac: ["{^{#1} \\!/ _{\\!#2}}", 2],
             oneton: ["{#2_1,\\, #2_2, \\,\\dotsc,\\, #2_{#1}}", 2, "n" ],
-            sumton: ["{#2_1 + #2_2 +\\dotsb+ #2_{#1}}", 2, "n" ]
+            sumton: ["{#2_1 + #2_2 +\\dotsb+ #2_{#1}}", 2, "n" ],
+
+            // logical operators
+            lxor: "\\veebar",
+
+            // (reverse) polish notation NOT GOOD!! complicates things
+            prefx: ["{\\mathbin{#1}\\, #2#3}", 3],
+            postx: ["{#2#3 \\,\\mathbin{#1}\\;}", 3],
         },
     },
     options: {
