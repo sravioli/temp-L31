@@ -107,6 +107,9 @@ window.MathJax = {
             ZiB: "{\\small\\rm\\, ZiB}",
             YiB: "{\\small\\rm\\, YiB}",
 
+            millisecond: "{\\small\\rm\\, ms}",
+            second: "{\\small\\rm\\, s}",
+
             // typeset binary/hexadecimal numbers
             bin: ["{0{\\small\\text{b}}\\hspace{0.07em} #1}", 1],
             hex: ["{0\\text{x}\\hspace{0.07em} \\mathrm{#1}}", 1],
