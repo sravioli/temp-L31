@@ -111,6 +111,10 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 - :recycle: change file structure, generate changelog automatically
 - :recycle: change header, add parsers, customize settings
 
+### Testing
+
+- Test deploy with gh actions
+
 ### Fix
 
 - [**BREAKING**] :truck: rename folder to long name
