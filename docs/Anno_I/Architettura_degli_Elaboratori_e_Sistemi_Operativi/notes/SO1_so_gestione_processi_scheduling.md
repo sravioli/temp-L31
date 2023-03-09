@@ -2,63 +2,98 @@
 
 ## Obiettivi di un sistema operativo
 
-- **Convenienza** nell'uso del calcolatore rispetto ai potenziali utenti;
-- **Efficienza** nell'utilizzo del calcolatore e delle sue parti costitutive;
-- **Capacità di evolversi** rispetto a evoluzioni hardware, esigenze degli
+- **convenienza** nell'uso del calcolatore rispetto ai potenziali utenti;
+- **efficienza** nell'utilizzo del calcolatore e delle sue parti costitutive;
+- **capacità di evolversi** rispetto a evoluzioni hardware, esigenze degli
   utenti e bug.
 
-## sistema operativo come interfaccia
+## Sistema operativo come interfaccia
+
+<!-- markdownlint-disable MD046 -->
+```mermaid
+flowchart LR
+    subgraph PC
+        App(Application Program)
+        Utilities
+        OS(Operating System)
+        HW(Computer Hardware)
+    end
+
+    App --> User(End User)
+    Utilities & OS --> Programmer
+    HW --> Dev(Operating System Developer)
+```
+<!-- markdownlint-enable MD046 -->
 
 Il sistema operativo:
 
-- Nasconde i dettagli hardware al programmatore;
-- Fornisce un'**interfaccia** per utilizzare il sistema.
+- nasconde i dettagli hardware al programmatore;
+- fornisce un'**interfaccia** per utilizzare il sistema.
 
 Il sistema operativo agisce quindi in maniera **trasparente**.
 
 Un'**interfaccia** è un componente fisico o logico che permette a due o più
 sistemi elettronici di comunicare e interagire.
 
-TODO: aagiungere immagine (a scala).
+<!-- TODO: aagiungere immagine (a scala). -->
 
 ## Servizi offerti dal sistema operativo
 
 Il sistema operativo offre vari servizi:
 
-- **Creazione dei programmi**: compilatore, debugger come utilità offerte al
-  programmatore. Non sono parte del sistema operativo ma sono accessibili tramite
-  esso;
-- **Esecuzione dei programmi**: caricamento in memoria dei programmi,
+- **creazione dei programmi**: compilatore, debugger come utilità offerte al
+  programmatore. Non sono parte del sistema operativo ma sono accessibili
+  tramite esso;
+- **esecuzione dei programmi**: caricamento in memoria dei programmi,
   inizializzazione dei dispositividi I/O, ecc;
-- **Accesso ai dispositivi di I/O**: l'utente/programmatore ignora il set di
+- **accesso ai dispositivi di I/O**: l'utente/programmatore ignora il set di
   istruzioni e i segnali dei dispositivi;
-- **Accesso controllato ai file**: comprensione del formato, meccanismi di
+- **accesso controllato ai file**: comprensione del formato, meccanismi di
   protezione, associazione file indirizzi di memoria;
-- **Accesso al sistema** (inteso in senso lato);
-- **Rilevazione e correzione degli errori hardware** o generati da programmi in
+- **accesso al sistema** (inteso in senso lato);
+- **rilevazione e correzione degli errori hardware** o generati da programmi in
   esecuzione;
-- **Contabilità e statistiche d'uso delle risorse**, dei tempi di risposta (al
+- **contabilità e statistiche d'uso delle risorse**, dei tempi di risposta (al
   fine di migliorare le prestazioni).
 
-## sistema operativo come gestore delle risorse
+## Sistema operativo come gestore delle risorse
 
-TODO:aggiungere diagramma mermaid dispositivi I/O.
+<!-- markdownlint-disable MD046 -->
+```mermaid
+flowchart LR
+    subgraph PC[" "]
+        Controller1[I/O Controller]
+        Controller2[I/O Controller]
+        Processore
+        subgraph Memoria
+            subgraph OS[Sistema Operativo]
+                Kernel(Kernel)
+            end
+            Programmi
+            Dati
+        end
+    end
+    Dispositivo1([Dispositivo I/O]) <--> Controller1
+    Dispositivo2([Dispositivo I/O]) <--> Controller2
+```
+<!-- markdownlint-enable MD046 -->
 
 Il sistema operativo:
 
-- Dirige la CPU nell'utilizzo delle altre risorse del sistema e nella
+- dirige la CPU nell'utilizzo delle altre risorse del sistema e nella
   temporizzazione dell'esecuzione dei programmi;
-- Decide quando un programma in esecuzione può utilizzare una risorsa – il
+- decide quando un programma in esecuzione può utilizzare una risorsa. Il
   processore stesso è una risorsa.
 
 Il **Kernel** è Parte del sistema operativo risiedente in memoria centrale,
-contiene le funzioni del sistema operativo usate più frequentemente
+contiene le funzioni del sistema operativo usate più frequentemente.
 
 ## Batch multiprogrammati
 
 Con **batch multiprogrammati** si intende sistemi dove è consentita la
 multiprogrammazione, ovvero l'esecuzione di più programmi in contemporanea.
 
+<!-- markdownlint-disable MD046 -->
 === "Mono-programmazione"
 
     Ad esempio:
@@ -70,7 +105,10 @@ multiprogrammazione, ovvero l'esecuzione di più programmi in contemporanea.
 
     Percentuale di utilizzo della CPU:
 
-    \[ \frac{0.0001 \cancel{\second}}{0.0031 \cancel{\second}} = 0.032 = 3.2 \% \]
+    \[
+        \frac{0.0001 \cancel{\second}}{0.0031 \cancel{\second}} = 0.032
+                                                                = 3.2 \%
+    \]
 
 === "Multi-programmazione"
 
@@ -79,9 +117,11 @@ multiprogrammazione, ovvero l'esecuzione di più programmi in contemporanea.
       un'operazione di I/O la CPU può essere impegnata da un altro processo;
     - Elaborazione seriale dei task.
 
+<!-- markdownlint-enable MD046 -->
+
 ### Multi-programmazione
 
-TODO: aggiungere immagine della multiprogrammazione.
+<!-- TODO: aggiungere immagine della multiprogrammazione. -->
 
 Le difficoltà della multi-programmazione sono le seguenti:
 
@@ -90,20 +130,16 @@ Le difficoltà della multi-programmazione sono le seguenti:
 
 ## Processo = Job = Task
 
-!!! def
+!!! def "Processo"
     Un'attività caratterizzata dall'esecuzione di una sequenza di istruzioni,
     uno stato corrente e un set di istruzioni di sistema
 
-Componenti
+Le componenti di un processo sono le seguenti:
 
-- ^^Programma^^:
-      - Codice eseguibile
-- ^^Dati^^:
-      - Variabili
-      - Spazio di lavoro
-      - Buffer
-- ^^Contesto di esecuzione^^ (info necessarie al sistema operativo per gestire
-  il processo):
+- ^^Programma^^, che comprende il codice eseguibile;
+- ^^Dati^^, che comprendono: variabili, spazio di lavoro, buffer
+- ^^Contesto di esecuzione^^, oovero le informazioni necessarie al sistema
+  operativo per gestire il processo:
       - Contenuto dei registri della CPU
       - Priorità
       - Stato di esecuzione
@@ -111,108 +147,118 @@ Componenti
 
 ### Implementazione di un processo
 
-TODO: aggiungere immagine dell'implementazione di un processo.
+L'immagine è veramente troppo complicata per ricrearla.
+
+<!-- TODO: aggiungere immagine dell'implementazione di un processo. -->
 
 ### Gestione della memoria
 
-Il sistema operativo deve assolvere 5 compiti
+Il sistema operativo deve assolvere cinque compiti
 
-1. Isolamento dei processi;
-2. Allocazione e gestione automatica della memoria: la gerarchia delle memorie
+1. isolamento dei processi;
+2. allocazione e gestione automatica della memoria: la gerarchia delle memorie
    deve essere trasparente all'utente;
-3. Supporto alla programmazione modulare: variazione di dimensione dei programmi;
-4. Protezione e controllo dell'accesso: gestione di aree di memoria condivise tra
-   i processi;
-5. Memorizzazione a lungo termine
+3. supporto alla programmazione modulare: variazione di dimensione dei programmi;
+4. protezione e controllo dell'accesso: gestione di aree di memoria condivise
+   tra i processi;
+5. memorizzazione a lungo termine.
 
-Necessità soddisfatte da:
+Queste necessità sono soddisfatte da:
 
-- **memoria virtuale**: i programmi indirizzano la memoria con riferimenti logici
-  ignorando gli aspetti fisici, quando un programma è in esecuzione solo una sua
-  parte risiede effettivamente in memoria centrale;
+- **memoria virtuale**: i programmi indirizzano la memoria con riferimenti
+  logici ignorando gli aspetti fisici, quando un programma è in esecuzione solo
+  una sua parte risiede effettivamente in memoria centrale;
 - **file system**: implementa la memorizzazione a lungo termine.
 
 ### Stati dei processi
 
-Il compito principale di un sistema operativo è il controllo dell'esecuzione dei
-processi. In particolare, è possibile classificare lo stato attuale di un processo
-mediante, appunto, uno **stato**. Tale classificazione consente di gestire in
-maniera differente processi in stato differente.
+Il compito principale di un sistema operativo è il controllo dell'esecuzione
+dei processi. In particolare, è possibile classificare lo stato attuale di un
+processo mediante, appunto, uno **stato**. Tale classificazione consente di
+gestire in maniera differente processi in stato differente.
 
 ### Descrizione dei Processi
 
-Il sistema operativo necessita di uno strumento per gestire i processi, che tenga
-traccia di tutte le informazioni disponibili. Esso prende il nome di **Descrittore
-di Processo**, oppure **Process Control Block** (*PCB*).
+Il sistema operativo necessita di uno strumento per gestire i processi, che
+tenga traccia di tutte le informazioni disponibili. Esso prende il nome di
+**Descrittore di Processo**, oppure **Process Control Block** (*PCB*).
 
-TODO: aggiungere immagine dei processi.
+```mermaid
+flowchart TB
+  subgraph VirtualMemory[Virtual Memory]; P1; P2; Pn; end
+  subgraph ComputerResources[Computer Resources]
+    Processor; I/O; I/O1; MainMemory
+  end
+  P1 --> Processor & I/O & I/O1[I/O]
+  P2 -.-> I/O
+  P1 & P2 -->  MainMemory[Main Memory]
+  Pn -.-> MainMemory
+```
 
-#### Process Control Block - PCB
+#### Process Control Block (PCB)
 
 È costituito da:
 
-1. Identificatore del Processo: **Process IDentification** (*PID*), è un valore
-   numerico;
-2. Informazioni sullo stato del processore:
-      - Registri dati visibili all'utente (i quali dipendono dall'architettura
-        del calcolatore);
-      - Registri di controllo e di stato:
+1. un dentificatore di processo, detto anche **Process IDentification** (**PID**),
+   è un valore numerico univoco;
+2. le informazioni sullo stato del processore, queste contengono:
+      - registri dati visibili all'utente, questi dipendono dall'architettura
+        del calcolatore;
+      - registri di controllo e di stato, che a loro volta contengono:
            - *Program Counter*: indirizzo della prossima istruzione da eseguire;
            - *Registri di stato*: includono i flag per l'abilitazione degli
              interrupt;
-           - *Registri* che contengono codici relativi alla condizione (segno,
-             overflow, etc).
-      - Puntatori allo stack, usati per procedure e funzioni.
-
-3. Informazioni di controllo del processo:
-      - Schedulazione e informazioni di stato:
-          - Stato del processo (running, ready, etc.);
-          - Priorità nelle code di scheduling;
-          - Informazioni correlate alla schedulazione (tempo di attesa, tempo
+           - *Registri* che contengono codici relativi alla condizione, come:
+             segno, overflow, etc.
+      - Puntatori allo stack, che vengono usati per procedure e funzioni.
+3. le informazioni di controllo del processo, queste contengono:
+      - schedulazione e informazioni di stato:
+          - stato del processo (*Running*, *Ready*, etc.);
+          - priorità nelle code di scheduling;
+          - informazioni correlate alla schedulazione (tempo di attesa, tempo
             di esecuzione, etc);
-          - Evento del quale è in attesa (se è in attesa).
-      - Strutturazione dati:
-          - Puntatori ad altri processi (figli/padre o per l'implementazione di
-            code).
-      - Comunicazione tra processi:
-          - Flag, segnali e messaggi per la comunicazione.
-      - Privilegi:
-          - In relazione all'uso della memoria, dei dispositivi, etc.
-      - Gestione della memoria:
-          - Limiti di memoria: insieme degli indirizzi accessibili (base, limite).
-      - Contabilizzazione delle risorse:
-          - Risorse controllate dal processo (lista dei file aperti, lista dei
-            dispositivi I/O) e la loro storia.
+          - evento del quale è in attesa (se è in attesa).
+      - Strutturazione dati, ovvero puntatori ad altri processi che siano
+        figli/padre o che siano per l'implementazione di code.
+      - Comunicazione tra processi, avviene mediante flag, segnali e messaggi
+        per la comunicazione.
+      - privilegi, in relazione all'uso della memoria, dei dispositivi, etc.
+      - gestione della memoria, sono presenti dei limiti di memoria, ovvero un
+        insieme degli indirizzi accessibili (base, limite).
+      - Contabilizzazione delle risorse, ovvero le risorse controllate dal
+        processo, come lista dei file aperti, lista dei dispositivi I/O, e la
+        loro storia.
 
 ### Immagine dei processi in memoria
 
-TODO: aggiungere immagine dei processi in mem.
+<!-- TODO: aggiungere immagine dei processi in mem. -->
 
 Nell'esempio le immagini occupano locazioni contigue di memoria, in una
-implementazione reale ciò può non essere vero. Dipende dalla politica di gestione
-della memoria.
+implementazione reale ciò può non essere vero. Dipende dalla politica di
+gestione della memoria.
 
 ### Creazione e terminazione dei processi
 
-Eventi che portano alla creazione dei processi:
+Eventi che portano alla **creazione** dei processi:
 
-1. Richiesta da terminale (un utente accede al sistema);
-2. Il sistema operativo genera un processo sulla base della richiesta di un
-   processo utente (es. stampa: il processo generatore continua la sua esecuzione);
-3. Un processo utente genera un nuovo processo, processo padre e processo figlio
+1. richiesta da terminale (un utente accede al sistema);
+2. il sistema operativo genera un processo sulla base della richiesta di un
+   processo utente (es. stampa: il processo generatore continua la sua
+   esecuzione);
+3. un processo utente genera un nuovo processo, processo padre e processo figlio
    (es. sfruttare il parallelismo: un processo server genera diverse istanze per
    gestire diverse richieste).
 
 Eventi che portano alla terminazione dei processi:
 
-1. Terminazione normale (end);
-2. Uscita dell'utente dall'applicazione;
-3. Superamento del tempo massimo;
-4. Memoria non disponibile;
-5. Violazione dei limiti di memoria;
-6. Fallimento di un'operazione (aritmetica – I/O);
-7. Terminazione del genitore;
-8. Richiesta del genitore.
+1. terminazione normale (end);
+2. uscita dell'utente dall'applicazione;
+3. superamento del tempo massimo;
+4. memoria non disponibile;
+5. violazione dei limiti di memoria;
+6. fallimento di un'operazione, che sia aritmetica o di I/O, etc.;
+7. terminazione del genitore;
+8. richiesta del genitore.
 
 #### Modello a due stati
 
@@ -220,57 +266,54 @@ Eventi che portano alla terminazione dei processi:
 ```mermaid
 stateDiagram-v2
     direction LR
-    nrun: Not-Running
-    run: Running
+    NotRunning: Not-Running
 
-    [*] --> nrun: Ingresso
-    nrun --> run: Alloca
-    run --> nrun: Pausa
-    run --> [*]: Uscita
+    [*] --> NotRunning: Ingresso
+    NotRunning --> Running: Alloca
+    Running --> NotRunning: Pausa
+    Running --> [*]: Uscita
 ```
 <!-- markdownlint-enable MD046 -->
 
 Nel modello a due stati, lo stato *Not-Running* include due possibilità:
 
-1. Il processo è pronto per essere eseguito
-2. Il processo è in attesa di un evento o di un dispositivo I/O
+1. il processo è pronto per essere eseguito
+2. il processo è in attesa di un evento o di un dispositivo I/O
 
 Il dispatcher (scheduler) non può semplicemente scegliere il processo da più
 tempo in attesa, poiché esso potrebbe essere in attesa di un trasferimento I/O
 
 Si giunge dunque al modello a cinque stati:
 
-- Vengono introdotti gli stati *New* e *Exit* (*Terminated*);
-- Lo stato di *Not-Running* viene diviso negli stati *Ready* (pronto all'esecuzione)
-  e *Blocked* (in attesa di un evento, una risorsa, etc).
+- vengono introdotti gli stati *New* e *Exit* (anche *Terminated*);
+- lo stato di *Not-Running* viene diviso negli stati *Ready* (pronto
+  all'esecuzione) e *Blocked* (in attesa di un evento, una risorsa, etc).
 
 #### Modello a cinque stati
 
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction Lr
-    new: New
-    ready: Ready
-    blocked: Blocked
-    run: Running
-    exit: Exit
+    direction LR
 
-    [*] --> new
-    new --> ready: Admit
-    ready --> run: Dispatch
-    ready --> exit
-    run --> exit: Release
-    run --> ready: Timeout
-    run --> blocked: Event wait
-    blocked --> ready: Event occurs
-    blocked --> exit
-    exit --> [*]
+    [*] --> New
+    New --> Ready: Admit
+    Ready --> Running: Dispatch
+    Ready --> Exit: Kill
+
+    Running --> Exit: Release
+    Running --> Ready: Timeout
+    Running --> Blocked: Event Wait
+
+    Blocked --> Ready: Event Occurs
+    Blocked --> Exit: Kill
+
+    Exit --> [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
-Le transizioni *Ready*-->*Exit* e *Blocked*-->*Exit* si hanno nel caso in cui un
-processo genitore termina il processo figlio.
+Le transizioni *Ready*-->*Exit* e *Blocked*-->*Exit* si hanno nel caso in cui
+un processo genitore termina il processo figlio.
 
 I nuovi stati *New* e *Exit*:
 
@@ -282,97 +325,150 @@ I nuovi stati *New* e *Exit*:
 
 ### Strategie di accodamento
 
-TODO: aggiungere immagine delle strategie di accodamento (forse si può fare in
-mermaid).
+La prima strategia è quella della coda di *Blocked* singola:
+
+<!-- markdownlint-disable MD046 -->
+```mermaid
+stateDiagram-v2
+    direction LR
+    state Admit <<join>>
+      RQ: Coda di Ready
+      BQ: Coda di Blocked
+      [*] --> Admit
+      Admit --> RQ: Admit
+      BQ --> Admit: Event Occurs
+      RQ --> Processor: Dispatch
+
+    Processor --> [*]: Release
+    Processor --> Admit: Timeout
+    Processor --> BQ: Event Wait
+```
+<!-- markdownlint-enable MD046 -->
+
+L'altra strategia di accodamento fa uso di più code di *Blocked*:
+
+<!-- markdownlint-disable MD046 -->
+```mermaid
+stateDiagram-v2
+    direction LR
+    state Admit <<join>>
+      ReadyQueue: Coda di Ready
+      [*] --> Admit
+      Admit --> ReadyQueue: Admit
+      ReadyQueue --> Processor: Dispatch
+
+    state EventWait <<fork>>
+      BlockedQueues: Code di Blocked
+      state BlockedQueues {
+        direction LR
+        BlockedQueue1: Coda di Blocked #1
+        BlockedQueue2: Coda di Blocked #2
+        BlockedQueue3: Coda di Blocked #3
+        BlockedQueuen: Coda di Blocked #n
+      }
+      EventWait --> BlockedQueue1: Event #1 Wait
+      EventWait --> BlockedQueue2: Event #2 Wait
+      EventWait --> BlockedQueue3: Event #3 Wait
+      EventWait --> BlockedQueuen: Event #n Wait
+
+    state EventOccurs <<join>>
+      BlockedQueue1 --> EventOccurs: Event #1 Occurs
+      BlockedQueue2 --> EventOccurs: Event #2 Occurs
+      BlockedQueue3 --> EventOccurs: Event #3 Occurs
+      BlockedQueuen --> EventOccurs: Event #n Occurs
+      EventOccurs --> Admit
+
+    state ProcessorFork <<fork>>
+      Processor --> ProcessorFork
+      ProcessorFork --> Admit: Timeout
+      ProcessorFork --> EventWait: Event Wait
+      ProcessorFork --> [*]: Release
+```
+<!-- markdownlint-enable MD046 -->
 
 ### Context Switch
 
-Riguarda il passaggio della CPU ad un nuovo processo. Cause:
+Il context-switch avviene quando c'è passaggio della CPU a un nuovo processo.
+Le cause principali sono:
 
-- Clock interrupt: il processo ha terminato il tempo a sua disposizione e dunque
-  torna nella coda di ready;
-- I/O interrupt: una operazione di I/O è terminata, il sistema operativo sposta
-  il processo in attesa di tale evento da *Blocked* a *Ready* e decide se
+- clock interrupt: il processo termina il tempo a sua disposizione e torna nella
+  coda di ready;
+- I/O interrupt: un'operazione di I/O termina, il sistema operativo sposta il
+  processo in attesa di tale evento da *Blocked* a *Ready* e decide se far
   riprendere l'esecuzione del processo precedente.
-- Memory fault: l'indirizzo di memoria generato è sul disco (memoria virtuale) e
-  deve essere portato in RAM. Il sistema operativo carica il blocco, nel frattempo
-  il processo che ha generato la richiesta è in *Blocked*, al termine del
-  trasferimento andrà in *Ready*;
-- Trap: errore di esecuzione (il processo potrebbe andare in *Exit*);
-- Supervisor call (es. file open, il processo utente va in *Blocked*).
+- memory fault: l'indirizzo di memoria generato è sul disco (memoria virtuale) e
+  deve essere portato in RAM. Il sistema operativo carica il blocco, nel
+  frattempo il processo che ha generato la richiesta è in *Blocked*, al termine
+  del trasferimento andrà in *Ready*;
+- trap: errore di esecuzione, il processo potrebbe andare in *Exit*;
+- supervisor call (es. file open, il processo utente va in *Blocked*).
 
-TODO: aggiungere diagramma del context switch.
+<!-- TODO: aggiungere diagramma del context switch. Forse troppo difficile. -->
 
-Operazioni svolte dal sistema operativo in modalità supervisor al momento del
-cambio di processo in stato di running:
+Le operazioni svolte dal sistema operativo in modalità supervisor al momento del
+cambio di processo in stato di *Running* sono le seguenti:
 
-- Salvataggio del contesto del processo che abbandona la CPU (valori dei registri
-  della CPU: pc, psw, reg, ecc.);
-- Cambio del valore di stato nel PCB (*Running*-->[*Ready*, *Blocked*, *Exit*]);
-- Spostamento del PCB in nuova coda (*Ready* o *Blocked*) o deallocare le sue
+- salvataggio del contesto del processo che abbandona la CPU, ovvero dei valori
+  dei registri della CPU, quali: pc, psw, reg, etc;
+- cambio del valore di stato nel PCB, da *Running* si passa a *Ready* o
+  *Blocked* o *Exit*;
+- spostamento del PCB in nuova coda (*Ready* o *Blocked*) o deallocare le sue
   risorse (*Exit*);
-- Aggiornamento delle strutture dati gestione memoria (area dello stack);
-- Selezione di nuovo processo per lo stato running (dispatcher);
-- Aggiornamento del suo stato nel PCB
-- Ripristino del contesto
+- aggiornamento delle strutture dati gestione memoria (area dello stack);
+- selezione di nuovo processo per lo stato running (dispatcher);
+- aggiornamento del suo stato nel PCB;
+- ripristino del contesto.
 
-Context Switch
-
-- Il context-switch time è **overhead**: il sistema non svolge nessun compito
-  utile (all'utente);
-- Il tempo dipende dalla complessità del sistema operativo e dall'hardware.
+Il context-switch time è **overhead**, ovvero il sistema operativo non svolge
+alcun compito che sia utile all'utente. Il tempo dipende dalla complessità del
+sistema operativo e dall'hardware.
 
 ### Modalità di esecuzione dei processi
 
-Modalità utente: esecuzione di processi utente
-Modalità Sistema o Kernel o Controllo: esecuzione di istruzioni che hanno come scopo
+Le modalità di esecuzione sono due: *modalità utente*, ovvero l'esecuzione di
+processi utente e *modalità sistema* o *Kernel* o *Controllo*, ovvero
+l'esecuzione di istruzioni che hanno come scopo:
 
-- Gestione dei Processi
-      - Creazione e terminazione
-      - Schedulazione
-      - Cambio di contesto
-      - Sincronizzazione
-      - PCB
-- Gestione della memoria
-      - Allocazione
-      - Trasferimento disco/RAM e viceversa
-      - Gestione della paginazione, segmentazione…
-- Gestione I/O
-      - Gestione buffer
-      - Allocazione canali I/O
-- Supporto
-      - Gestione interruzioni
-      - Contabilità
+- la gestione dei processi, ovvero creazione e terminazione, schedulazione,
+  cambio di contesto, sincronizzazione e PCB;
+- la gestione della memoria, ovvero allocazione, trasferimento da disco a RAM
+  e viceversa, gestione della paginazione, della segmentazione, etc;
+- la gestione I/O, ovvero la festione dei buffer, l'allocazione a canali I/O;
+- il supporto, ovvero la gestione delle interruzioni, la contabilità.
 
 ### Creazione dei Processi
 
-1. Assegnare al processo un PID unico; aggiungere una entry level alla tabella
-   dei processi;
-2. Allocare lo spazio per il processo e per tutti gli elementi della sua immagine
-   (PCB, User Stack, area di memoria dati e istruzioni, aree condivise);
-3. Inizializzazione del PCB:
-    - Stato del processore = 0
-    - PC = prossima istruzione
-    - Puntatori allo stack
-    - Stato = ready
-4. Inserimenti nella coda di ready;
-5. Estende le strutture al fine della fatturazione o delle statistiche.
+Per creare un proesso si seguono i seguenti passi:
+
+1. assegnare al processo un PID unico, dunque aggiungere una entry level alla
+   tabella dei processi;
+2. allocare lo spazio per il processo e per tutti gli elementi della sua
+   immagine (PCB, User Stack, area di memoria dati e istruzioni, aree condivise);
+3. inizializzazione del PCB, ovvero (in pseudocodice):
+
+    ```txt
+    stato del processore := 0
+    process counter := prossima istruzione
+    puntatori allo stack
+    stato := ready
+    ```
+
+4. inserimenti nella coda di ready;
+5. estende le strutture al fine della fatturazione o delle statistiche.
 
 ### Evoluzione del modello a cinque stati
 
-- Nonostante la memoria virtuale, un programma per essere eseguito deve essere
-  in RAM
-- Con elevata probabilità tutti i processi in memoria restano in attesa di
-  operazioni di I/O
+Nonostante la memoria virtuale, un programma per essere eseguito deve essere in
+RAM. Con elevata probabilità tutti i processi in memoria restano in attesa di
+operazioni di I/O. Questo significa che il processore resta inattivo poiché è
+molto più veloce dei dispositivi I/O. Le soluzioni applicabili sono le seguenti:
 
-Questo significa che il processore resta inattivo (poiché è molto più veloce di
-I/O). Le soluzioni sono le seguenti:
-
-- Espandere la memoria, è però costoso e poco efficiente (programmi sempre più
-  grandi);
-- Effettuare lo **swapping**: spostare un processo dalla RAM alla memoria
-  secondaria: porta all'introduzione dello stato **Suspend**. Lo swapping è
-  un'ulteriore operazione di I/O, ma in generale è la più rapida tra le queste.
+- espandere la memoria, risulta essere costoso e poco efficiente dato che i
+  programmi sono sempre più grandi;
+- effettuare lo **swapping**, ovvero spostare un processo dalla RAM alla memoria
+  secondaria. Questo porta all'introduzione dello stato di **Suspend**. Lo
+  swapping è anch'esso un'operazione di I/O, ma in generale è la più rapida tra
+  queste.
 
 #### Modello a sei stati
 
@@ -419,67 +515,73 @@ Ciò consente al sistema operativo di scegliere tra i processi in *New* e in
 ```mermaid
 stateDiagram-v2
     direction LR
-    rSuspended: Ready/Suspended
-    bSuspended: Blocked/Suspended
+    ReadySuspended: Ready/Suspended
+    BlockedSuspended: Blocked/Suspended
 
     [*] --> New
     New --> Ready: Admit
-    New --> rSuspended: Admit
+    New --> ReadySuspended: Admit
 
-    Ready --> rSuspended: Suspend
+    Ready --> ReadySuspended: Suspend
     Ready --> Running: Dispatch
     Ready --> Exit
 
     Running --> Ready: Timeout
-    Running --> rSuspended: Suspend
-    Running --> Blocked: Event wait
+    Running --> ReadySuspended: Suspend
+    Running --> Blocked: Event Wait
     Running --> Exit: Release
 
-    Blocked --> bSuspended: Suspend
+    Blocked --> BlockedSuspended: Suspend
     Blocked --> Exit
 
-    bSuspended --> Blocked: Activate
-    bSuspended --> rSuspended: Event occurs
-    bSuspended --> Exit
+    BlockedSuspended --> Blocked: Activate
+    BlockedSuspended --> ReadySuspended: Event Occurs
+    BlockedSuspended --> Exit
 
-    rSuspended --> Ready: Activate
-    rSuspended --> Exit
+    ReadySuspended --> Ready: Activate
+    ReadySuspended --> Exit
 
     Exit --> [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
-Esiste uno schema di gestione della memoria noto come memoria virtuale, nel
-quale un processo può trovarsi solo parzialmente in RAM. Quando si fa riferimento
-a un indirizzo su disco questo viene caricato. Dunque gli stati di sospensione
-in quel caso sono inutili.
+È simile al modello a cinque stati di sospensione. È presente un parallelismo
+tra i processi in memoria principale e quelli in memoria secondaria.
 
-La transizione da *Ready* a *Ready/Suspended* avviene laddove vi sia la necessità
-di maggiore memoria per allocare un processo più grande o a maggiore priorità.
+Esiste uno schema di gestione della memoria noto come memoria virtuale, nel
+quale un processo può trovarsi solo parzialmente in RAM. Quando si fa
+riferimento a un indirizzo su disco questo viene caricato. Dunque gli stati di
+sospensione in quel caso sono inutili.
+
+La transizione da *Ready* a *Ready/Suspended* avviene laddove vi sia la
+necessità di maggiore memoria per allocare un processo più grande o a maggiore
+priorità.
 
 ## Schedulazione
 
 La schedulazione, ossia la scelta dell'ordine di esecuzione dei processi, e la
-relativa politica di allocazione deve tenere in considerazione i seguenti fattori:
+relativa politica di allocazione deve tenere in considerazione i seguenti
+fattori:
 
-- **Equità**: tutti i processi appartengono a una stessa classe o con richieste
-  simili o stesso costo. Devono avere la stessa possibilità di accesso alla
-  risorsa;
-- **Tempo di risposta differenziale**: il sistema operativo discrimina tra classi
-  che hanno bisogno di risorse diverse e di tempi diversi, es. i processi
-  I/O-bound (forte uso di I/O) vengono schedulati per primi.
-- **Efficienza**: massimizzare il *throughput* (quantità di dati trasmessi),
-  minimizzare il tempo di risposta.
+- **equità**, ovvero tutti i processi che appartengono alla stessa classe o che
+  hanno richieste simili o che hanno lo stesso costro devono avere la stessa
+  possibilità di accesso alle risorse;
+- **tempo di risposta differenziale**, ovvero il sistema operativo discrimina
+  tra classi che hanno bisogno di risorse diverse e di tempi diversi (es. i
+  processi I/O-bound che fanno forte uso di I/O vengono schedulati per primi);
+- **efficienza**, è necessario massimizzare il *throughput*, ovvero la quantità
+  di dati trasmessi, e minimizzare il tempo di risposta.
 
-Con scheduling si intende un insieme di tecniche e meccanismi interni del sistema
-operativo che amministrano l'ordine in cui il lavoro viene svolto. L'obiettivo
-primario dello scheduling è l'ottimizzazione delle prestazioni del sistema.
+Con scheduling si intende un insieme di tecniche e meccanismi interni del
+sistema operativo che amministrano l'ordine in cui il lavoro viene svolto.
+L'obiettivo primario dello scheduling è l'ottimizzazione delle prestazioni del
+sistema.
 
 Il sistema operativo può prevedere fino a tre tipi di scheduler:
 
-- Scheduler di lungo termine (*SLT*);
-- Scheduler di medio termine (*SMT*);
-- Scheduler di breve termine (*SBT*).
+- Scheduler di *lungo* termine (**SLT**);
+- Scheduler di *medio* termine (**SMT**);
+- Scheduler di *breve* termine (**SBT**).
 
 Gli scheduler intervengono secondo il seguente schema:
 
@@ -487,49 +589,46 @@ Gli scheduler intervengono secondo il seguente schema:
 ```mermaid
 stateDiagram-v2
     direction LR
-    rSuspended: Ready/Suspended
-    bSuspended: Blocked/Suspended
+    ReadySuspended: Ready/Suspended
 
-    [*] --> New
-    New --> rSuspended: SLT
     New --> Ready: SLT
-
-    rSuspended --> Ready: SMT
+    New --> ReadySuspended: SLT
+    ReadySuspended --> Ready: SMT
     Ready --> Running: SBT
-    Running --> Exit
-    bSuspended --> Blocked: SMT
 
-    Exit --> [*]
+    BlockedSuspended: Blocked/Suspended
+    BlockedSuspended --> Blocked: SMT
 ```
 <!-- markdownlint-enable MD046 -->
 
 ### Scheduler di lungo termine
 
-Determina quali programmi sono ammessi nel sistema per essere processati
-(*New*-->*Ready*, *New*-->*Ready/Suspended*). Controlla il grado di
-multiprogrammazione (*New*-->*Ready*), avere più processi significa avere minor
-tempo percentuale di esecuzione per ciascuno di questi.
+Determina quali programmi sono ammessi nel sistema per essere processati, quindi
+controlla le transizioni da *New* a *Ready* e da *New* a *Ready/Suspended*.
+Controlla, inoltre, il grado di multiprogrammazione (*New*-->*Ready*), avere
+più processi significa avere minor tempo percentuale di esecuzione per ciascuno
+di questi.
 
 Le stime effettuate dal programmatore o dal sistema forniscono informazioni sulle
-risorse necessarie all'esecuzione, come le dimensioni della memoria, il tempo di
-esecuzione totale, etc.
+risorse necessarie all'esecuzione, come le dimensioni della memoria, il tempo
+di esecuzione totale, etc.
 
 Il lavoro dello scheduler di lungo termine si basa quindi sulla stima del
 comportamento globale dei job.
 
-Le strategie principali sono:
+Le strategie principali dello scheduler sono:
 
-1. fornire alla coda dei processi pronti (e quindi allo scheduler di breve termine)
+1. fornire alla coda dei processi pronti, quindi allo scheduler di breve termine,
    gruppi di processi che siano bilanciati tra loro nello sfruttamento della CPU
    e dell'I/O;
-2. aumentare il numero di processi provenienti dalla coda batch, quando il carico
-   della CPU diminuisce;
-3. diminuire (fino anche a bloccare) i lavori provenienti dalla coda batch, quando
-   il carico aumenta e/o i tempi di risposta del sistema diminuiscono.
+2. aumentare il numero di processi provenienti dalla coda batch quando il
+   carico della CPU diminuisce;
+3. diminuire, fino anche a bloccare, i lavori provenienti dalla coda batch
+   quando il carico aumenta e/o i tempi di risposta del sistema diminuiscono.
 
-La frequenza di chiamata dello Scheduler a Lungo Termine è bassa e consente di
-implementare strategie anche complesse di selezione dei lavori e di dimensionamento
-del carico dei processi da inviare alla coda pronti (*Ready*).
+La frequenza di chiamata dello scheduler a lungo termine è bassa e consente di
+implementare strategie anche complesse di selezione dei lavori e di
+dimensionamento del carico dei processi da inviare alla coda di *Ready*.
 
 ### Scheduler di medio termine
 
@@ -538,15 +637,15 @@ Si occupa di gestire la schedulazione delle transizioni:
 - *Ready/Suspended*-->*Ready*;
 - *Blocked/Suspended*-->*Blocked*.
 
-Si bassa sulla necessità di gestire il livello di multiprogrammazione. La presenza
-di molti processi sospesi in memoria riduce la disponibilità per nuovi processi
-pronti. In questo caso lo scheduler di breve termine è obbligato a scegliere tra
-i pochi processi pronti, dunque:
+Si basa sulla necessità di gestire il livello di multiprogrammazione. La
+presenza di molti processi sospesi in memoria riduce la disponibilità per nuovi
+processi pronti. In questo caso lo scheduler di breve termine è obbligato a
+scegliere tra i pochi processi pronti, dunque:
 
-- utilizza le informazioni del Descrittore di Processo (*PCB*) per stabilire la
-  richiesta di memoria del processo;
+- utilizza le informazioni del Descrittore di Processo (**PCB**) per stabilire
+  la richiesta di memoria del processo;
 - tenta di allocare spazio in memoria centrale;
-- riposiziona il processo in memoria nella coda dei pronti.
+- riposiziona il processo in memoria nella coda di *Ready*.
 
 Viene attivato quando:
 
@@ -556,20 +655,20 @@ Viene attivato quando:
 ### Scheduler di breve termine
 
 Prende anche il nome di **dispatcher**. Si occupa di gestire la transizione
-*Ready*-->*Run* e viene eseguito molto frequentemente. Invocato quando si
-verifica un evento:
+da *Ready* a *Run* e viene eseguito molto frequentemente. Viene invocato quando
+si verifica un evento:
 
-- Clock interrupts;
+- clock interrupts;
 - I/O interrupts;
-- Chiamate del sistema operativo;
-- Signals.
+- chiamate del sistema operativo;
+- signals.
 
 La sua principale strategia è orientata alla massimizzazione delle prestazioni
 del sistema secondo un specifico insieme di obiettivi.
 
 ### Scheduling della CPU nel Dispatcher
 
-TODO: aggiungere immagine.
+<!-- TODO: aggiungere immagine. -->
 
 Esecuzione di un processo:
 
@@ -584,13 +683,13 @@ contrario si dice **CPU-bound** quando presenta poche operazioni di I/O.
 
 ## Algoritmi di schedulazione
 
-Innanzitutto, siano:
+Innanzitutto, si definiscano:
 
-- il **tempo di ricircolo** come il tempo trascorso tra l'avvio di un processo
-  (la sua immissione nel sistema) e la terminazione dello stesso;
+- il **tempo di ricircolo** come il tempo trascorso tra l'avvio di un processo,
+  pvvero la sua immissione nel sistema, e la terminazione dello stesso;
 - il **tempo di attesa** come il tempo che un processo trascorre in attesa delle
   risorse a causa di conflitti con altri processi. Si può calcolare come la
-  differenza   tra il tempo di ricircolo e il tempo di esecuzione. Sostanzialmente
+  differenza tra il tempo di ricircolo e il tempo di esecuzione. Sostanzialmente
   valuta la sorgente di inefficienza, essendo il prezzo da pagare per condividere
   delle risorse.
 
@@ -599,46 +698,63 @@ sopracitati. Un buon algoritmo di scheduling cerca di bilanciare l'esecuzione
 dei processi al meglio, massimizzando l'uso del processore e riducendo i tempi
 di attesa.
 
+<!-- markdownlint-disable MD046 -->
 !!! tip "Decision mode"
 
-    === "Non-Preemptive (non-interrompibile)"
+    Può essere di due tipi.
 
-        Un processo in running abbandonerà tale stato solo se termina l'esecuzione
-        o si blocca per un'operazione di I/O.
+    === "Non-Preemptive (non-interrompibile)"
+        Un processo in *Running* abbandonerà tale stato solo se termina
+        l'esecuzione o si blocca per un'operazione di I/O.
 
     === "Preemptive (interrompibile)"
+        Un processo in *Running* può essere interrotto e spostato in *Ready*
+        del sistema operativo (es. se giunge un processo "più importante" in
+        *Ready*).
 
-        Un processo in running può essere interrotto e spostato in *Ready* dal
-        sistema operativo (ad esempio se giunge un processo "più importante" in
-        *Ready*)
-
-        - PRO: Nessun processo può monopolizzare il processore;
-        - CONTRO: Crea problemi dove vi sono processi che condividono dati,
-          richiedono meccanismi di sincronizzazione.
+        Il **pro** è che nessun processo può monopolizzare il processore, il
+        **contro** è che crea problemi dove vi sono processi che condividono
+        dati e dunque richiedono meccaniscmi di sincronizzazione.
+<!-- markdownlint-enable MD046 -->
 
 ### First Come First Served (FCFS)
 
-TODO: aggiungere immagine del FCFS.
+```mermaid
+gantt
+  title First Come First Served
+  dateFormat  ss
+  axisFormat  %S
 
-Applica il principio della coda::
+  section A
+    Running     :A, 0, 3s
+  section B
+    Running     :B, after A, 9s
+  section C
+    Running     :C, after B, 3s
+  section D
+    Running     :D, after C, 3s
+  section E
+    Running     :E, after D, 2s
+```
+
+Applica il principio della coda:
 
 - Ogni processo entra in coda di *Ready*;
-- Quando un processo abbandona lo stato di *running* si seleziona il processo
+- Quando un processo abbandona lo stato di *Running* si seleziona il processo
   che da più tempo è in stato di *Ready*.
 
-Favorisce i processi CPU-bound. Un processo I/O-bound che richiede poco tempo di
-esecuzione potrebbe attendere molto tempo prima che gli venga assegnata la CPU.
-Genera l'effetto convoglio: tutti i processi in coda attendono che un processo
-CPU-bound termini.
-È senza prelazione ovvero con basso sfruttamento delle componenti e con un basso
-lavoro utile del sistema.
+Favorisce i processi CPU-bound. Un processo I/O-bound che richiede poco tempo
+di esecuzione potrebbe attendere molto tempo prima che gli venga assegnata la
+CPU. Genera l'effetto convoglio: tutti i processi in coda attendono che un
+processo CPU-bound termini.
+È senza prelazione, ovvero con basso sfruttamento delle componenti e con un
+basso lavoro utile del sistema.
 
 Le prestazioni dipendono unicamente dall'ordine di arrivo dei Jobs. Ad esempio,
-siano \(p_1\) e \(p_2\):
+siano \(p_1\) e \(p_2\) due processi con tempo di esecuzione totale di
+\(20\second\) e \(2\second\) rispettivamente.
 
-- \(p_1\) ha un tempo di esecuzione totale di \(20 \second\);
-- \(p_2\) ha un tempo di esecuzione totale di \(2 \second\).
-
+<!-- markdownlint-disable MD046 -->
 === "\(p_1\) prima di \(p_2\)"
 
     ```mermaid
@@ -687,6 +803,7 @@ siano \(p_1\) e \(p_2\):
     - \(p_1 = 0 \second\);
     - \(p_2 = 2 \second\);
     - \(t_{\rm medio} = 1 \second\).
+<!-- markdownlint-enable MD046 -->
 
 ### Event Driven
 
@@ -728,15 +845,15 @@ stateDiagram-v2
 ```
 <!-- markdownlint-enable MD046 -->
 
-Schema che ragiona secondo un **valore di priorità** assegnato a ciascun processo:
-lo scheduler sceglierà sempre il processo pronto con priorità maggiore. La priorità
-può essere assegnata dall'utente o dal sistema e può essere di tipo statico o
-dinamico. La priorità dinamica varia in base a:
+È uno schema che ragiona secondo un **valore di priorità** assegnato a ciascun
+processo: lo scheduler sceglierà sempre il processo pronto con priorità maggiore.
+La priorità può essere assegnata dall'utente o dal sistema e può essere di tipo
+statico o dinamico. La priorità dinamica varia in base a:
 
-- Valore iniziale;
-- Caratteristiche del processo;
-- Richiesta di risorse;
-- Comportamento durante l'esecuzione.
+- valore iniziale;
+- caratteristiche del processo;
+- richiesta di risorse;
+- comportamento durante l'esecuzione.
 
 Tale modello è generalmente applicato nei sistemi dove il tempo di risposta,
 soprattutto ad eventi esterni, è critico.
@@ -744,47 +861,82 @@ soprattutto ad eventi esterni, è critico.
 Il sistemista può influire sull'ordine in cui uno scheduler serve gli eventi
 esterni modificando le priorità assegnate ai processi. Le prestazioni sono
 dipendenti da una accurata pianificazione nell'assegnazione delle priorità.
-Le priorità sono definite:
+Le priorità possono essere definite:
 
-- Internamente al sistema operativo: utilizzando grandezze misurabili quali
+- internamente al sistema operativo, utilizzando grandezze misurabili quali
   l'uso di memoria, file aperti, rapporto tra picchi medi di I/O e di CPU;
-- Esternamente al sistema operativo: rilevanza del processo, criticità.
+- esternamente al sistema operativo, utilizzando la rilevanza del processo,
+  la sua criticità.
 
-**PROBLEMA**: Non è in grado di garantire il completamento di un processo in un
-intervallo di tempo finito dalla sua creazione, in quanto potrebbe essere
-continuamente sorpassato da processi a priorità più alta. Tale situazione prende
-il nome di starvation.
+Il **problema** sta nel fatto che non è in grado di garantire il completamento
+di un processo in un intervallo di tempo finito dalla sua creazione. Questo
+perché potrebbe essere continuamente sorpassato da processi a priorità più alta.
+Tale situazione prende il nome di ^^starvation^^.
 
-**SOLUZIONE**: Usare l'aging, ovvero al passare del tempo in stato di *Ready*
-la priorità del processo aumenta.
+La soluzione **soluzione** sta nell'usare l'aging, ovvero al passare del tempo
+in stato di *Ready*, la priorità del processo aumenta.
 
 ### Round Robin (RR)
 
-TODO: aggiungere immagine.
+```mermaid
+gantt
+  title Round Robin (RR)
+  dateFormat  ss
+  axisFormat  %S
+
+  section A
+    Running     :A1,       0, 2s
+    Running     :A2, after B1, 1s
+
+  section B
+    Running     :B1, after A1, 1s
+    Running     :B2, after A2, 1s
+    Running     :B3, after C1, 1s
+    Running     :B4, after C2, 1s
+    Running     :B5, after C3, 1s
+    Running     :B6, after C4, 1s
+
+  section C
+    Running     :C1, after B2, 1s
+    Running     :C2, after D1, 1s
+    Running     :C3, after D2, 1s
+    Running     :C4, after D3, 1s
+
+  section D
+    Running     :D1, after B3, 1s
+    Running     :D2, after E1, 1s
+    Running     :D3, after E2, 1s
+    Running     :D4, after B6, 2s
+
+  section E
+    Running     :E1, after B4, 1s
+    Running     :E2, after B5, 1s
+```
 
 Utilizza come principio il **time slice**, ovvero una preemption basata sul
 clock (clock interrupt). Ogni processo utilizza il processore per un dato
-intervallo di tempo, i valori tipici sono: \(10\)-\(100 \millisecond\).
+intervallo di tempo, i valori tipici sono \(10\)–\(100 \millisecond\).
 
 Al verificarsi dell'interrupt il processo in esecuzione viene portato nella coda
-di *Ready* (gestita First In First Out, FIFO).
+di *Ready*, che è gestita First In First Out (*FIFO*).
 
-Con \(n\)  processi in ready e un time quantum \(q\), ogni processo ottiene
-\(\ifrac{1}{n}\) del tempo di CPU in frazioni di tempo al più pari a \(q\).
-Tempo massimo di attesa in ready: \((n − 1)q\). Prestazioni dipendenti dal
-quanto di tempo:
+Con \(n\) processi in *Ready* e un time quantum \(q\), ogni processo ottiene
+\(\ifrac{1}{n}\) del tempo di CPU, con frazioni di tempo al più pari a \(q\).
+Il tempo massimo di attesa in *Ready* è pari a \(q \cdot (n − 1)\). Le
+prestazioni sono dipendenti dal time quantum, infatti:
 
-- \(q\) troppo grande: degenera in First Come First Served;
-- \(q\) troppo piccolo: incrementa il numero di context switch, consumando le
-  risorse.
+- se \(q\) è troppo grande, degenera in First Come First Served;
+- se \(q\) troppo piccolo, il numero di context switch aumenta, causando un
+  consumo di risorse.
 
-La schedulazione Round Robin fornisce una buona condivisione delle risorse del sistema:
+La schedulazione Round Robin fornisce una buona condivisione delle risorse del
+sistema, perché:
 
-- i processi più brevi possono completare l'operazione in un \(q\) (buon tempo
-  di risposta);
-- i processi più lunghi sono forzati a passare più volte per la coda dei processi
-  pronti (tempo proporzionale alle loro richieste di risorse);
-- per i processi interattivi lunghi, se l' esecuzione tra due fasi interattive
+- i processi più brevi possono completare l'operazione in un \(q\), il che
+  equivale ad un buon tempo di risposta;
+- i processi più lunghi sono forzati a passare più volte per la coda dei
+  processi pronti, il tempo è proporzionale alle loro richieste di risorse;
+- per i processi interattivi lunghi, se l'esecuzione tra due fasi interattive
   riesce a completarsi in un \(q\), il tempo di risposta è buono.
 
 La realizzazione di uno scheduler Round Robin richiede il supporto di un Timer
@@ -792,44 +944,64 @@ che invia un'interruzione alla scadenza di ogni \(q\), forzando lo scheduler a
 sostituire il processo in esecuzione. Il timer viene riazzerato se un processo
 cede il controllo al sistema operativo prima della scadenza del suo \(q\).
 
-TODO: aggiungere immagine.
-
 ### Highest Response Ratio Next (HRRN)
 
 Siano:
 
-- \(w\) il tempo speso in coda di Ready (quindi in attesa della disponibilità
-  del processore);
+- \(w\) il tempo speso in coda di Ready, quindi in attesa della disponibilità
+  del processore;
 - \(s\) il tempo di servizio previsto.
 
-Si definisce il Response Ratio come:
+Si definisce il response ratio come:
 
-\[ RR = \frac{w + s}{s} \]
+\[ \text{response ratio} = \frac{w + s}{s} = 1 + \frac{w}{s} \]
 
 L'algoritmo Highest Response Ratio Next manda in esecuzione il processo con il
-più alto valore di \(RR\). Osservazioni:
+più alto valore di response ration. Osservazioni:
 
-- Quando un processo entra in coda per la prima volta ha un \(RR = 1\);
-- Tiene in considerazione l'età del processo, applica quindi un meccanismo di
-  aging \((w)\).
+- quando un processo entra in coda per la prima volta ha un response ratio pari
+  a \(1\);
+- tiene in considerazione l'età del processo, applica quindi un meccanismo di
+  aging, è proprio \(w\).
 
 ### Shortest Process Next (SPN)
 
-TODO: aggiungere immagine.
+```mermaid
+gantt
+  title Shortest Process Next (SPN)
+  dateFormat  ss
+  axisFormat  %S
 
-Il processo scelto dalla coda di ready è quello con il più breve tempo di
-esecuzione stimato (più breve sequenza di operazioni svolte dal processore).
+  section A
+    Running     :A,     0, 3s
 
-- **PRO**: il Shortest Process Next è ottimale nel senso che fornisce il tempo medio
-  di attesa minimo per un dato set di processi;
-- **CONTRO**: è difficile stimare la durata della prossima sequenza di CPU (oltre
-  che oneroso), è possibile la starvation per processi fortemente CPU-bound.
+  section B
+    Running     :B, after A, 6s
+
+  section C
+    Running     :C, after E, 4s
+
+  section D
+    Running     :D, after C, 2s
+
+  section E
+    Running     :E, after B, 2s
+```
+
+Il processo scelto dalla coda di *Ready* è quello con il più breve tempo di
+esecuzione stimato, ovvero la più breve sequenza di operazioni svolte dal
+processore.
+
+Il **pro** è che il Shortest Process Next è ottimale nel fornire il tempo di
+attesa minimo per un dato insieme di processi. Il **contro** è che è sia
+difficile stimare la durata della prossima sequenza di CPU che oneroso, è
+inoltre possibile la starvation per processi fortemente CPU-bound.
 
 Ha una versione preemptive: se arriva nuovo processo con una sequenza di CPU
 minore del tempo necessario per la conclusione della sequenza di CPU del processo
 attualmente in esecuzione, si ha il prerilascio della CPU a favore del processo
 appena arrivato. Questo schema è anche noto come **Shortest Remaining Time First**
-(SRTF) oppure **Shortest Remaining Time Next** (SRTN).
+(**SRTF**) oppure **Shortest Remaining Time Next** (**SRTN**).
 
 ### Schedulazione a code multiple
 
@@ -863,17 +1035,17 @@ stateDiagram-v2
 
 La coda di *Ready* viene divisa in sotto-code:
 
-- Foreground (processi interattivi)
-- Background (processi batch)
+- Foreground, per processi interattivi;
+- Background, per processi batch.
 
-Ogni coda ha un proprio algoritmo di Schedulazione (es. Foreground con Round Robin,
-Background con First Come First Served). Vi è necessita di uno scheduling tra
-le code:
+Ogni coda ha un proprio algoritmo di schedulazione (es. Foreground con Round
+Robin, Background con First Come First Served). Vi è necessita di uno scheduling
+tra le code:
 
-- A priorità fissa e con prelazione (ad esempio serve prima dalla Foreground e
-  poi dalla Background);
-- Time slice – ad ogni coda è associato un certo ammontare di tempo di CPU (ad
-  esempio 80% alla Foreground in RR, 20% alla Background in FCFS).
+- a priorità fissa e con prelazione (es. serve prima la coda Foreground e
+  poi quella di Background);
+- time slice, a ogni coda è associato un certo ammontare di tempo di CPU (es.
+  \(80\%\) alla Foreground con Round Robin, \(20\%\) alla Background con FCFS).
 
 ### Schedulazione a code multiple con feedback
 
@@ -881,16 +1053,16 @@ le code:
 ```mermaid
 stateDiagram-v2
     direction LR
-    q8: quantum = 8s
-    q16: quantum = 16s
+    q8: Round Robin, q = 8s
+    q16: Round Robin, q = 16s
     fcfs: First Come First Served
 
-    [*] --> q8
-    q8 --> q16
-    q16 --> fcfs
-    fcfs --> [*]
-    q16 --> [*]
-    q8 --> [*]
+    [*] --> q8: Ingresso
+    q8 --> q16: Timeout
+    q16 --> fcfs: Timeout
+    fcfs --> [*]: Release
+    q16 --> [*]: Release
+    q8 --> [*]: Release
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -902,6 +1074,7 @@ Le code Multilevel-Feedback sono definite dai seguenti parametri:
 - Algoritmo di scheduling per ogni coda;
 - Metodi usati per l'upgrading e il downgrading di ogni processo.
 
+<!-- markdownlint-disable MD046 -->
 !!! example "Esempio"
 
     Tre code:
@@ -918,4 +1091,4 @@ Le code Multilevel-Feedback sono definite dai seguenti parametri:
     - Il processo in \(Q_1\) viene nuovamente servito con politica Round Robin
       e riceve la CPU per ulteriori \(16 \millisecond\);
     - Se ancora non termina viene spostato in \(Q_2\) e servito con First Come
-      First Served
+      First Served.
