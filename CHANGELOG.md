@@ -9,6 +9,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Remove trailing spaces
+- Comment out the TODOs, useless to have them in plain text
+- General syntax fix, add various mermaid charts
 - Rewrite of the page
 - Rewrite page
 - Fix typos, mispelling and phrasing
