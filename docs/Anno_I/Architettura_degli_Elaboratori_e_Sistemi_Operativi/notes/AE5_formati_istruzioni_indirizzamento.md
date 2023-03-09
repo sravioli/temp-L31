@@ -202,7 +202,7 @@ attivazione* oppure, *record di attivazione*).
 
 #### Stack di attivazione: fattoriale ricorsivo
 
-TODO: aggiungere immagine dello stack o trovare rappresentazione valida
+<!-- TODO: aggiungere immagine dello stack o trovare rappresentazione valida -->
 
 main
 main

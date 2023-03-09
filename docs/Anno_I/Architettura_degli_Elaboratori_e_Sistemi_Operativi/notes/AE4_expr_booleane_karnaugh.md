@@ -525,7 +525,7 @@ La qualità dei raggruppamenti migliora progressivamente dal primo esempio (figu
 che ha i raggruppamenti di dimensione più grande che coprono l'intera superficie
 delle celle con valore \(1\).
 
- TODO: controllare i colori.
+ <!-- TODO: controllare i colori. -->
 
 Non ha invece senso creare un raggruppamento ridondante se tutte le celle
 interessate sono già state selezionate. Il raggruppamento in rosso è superfluo
@@ -550,18 +550,18 @@ Vediamo ora come si generano gli implicanti a partire dai raggruppamenti
 L'implicante di un raggruppamento composto da una singola cella è equivalente al
 mintermine di tale cella.
 
- TODO: aggiungere formazione implicanti
+ <!-- TODO: aggiungere formazione implicanti -->
 
 La mappa di Karnaugh, quindi, nel caso in cui vengano scelti tutti i raggruppamenti
 con celle singole, corrisponde perfettamente alla somma di mintermini:
 
- TODO: aggiungere scomposizione in mintermini della mappa di Karnaugh.
+<!-- TODO: aggiungere scomposizione in mintermini della mappa di Karnaugh. -->
 
 L'implicante di un raggruppamento composto da più celle è calcolato in maniera
 analoga al mintermine ma utilizzando solo le variabili che mantengono un valore
 costante:
 
- TODO: aggiungere mappa di Karnaugh di raggruppamento di più celle.
+<!-- TODO: aggiungere mappa di Karnaugh di raggruppamento di più celle. -->
 
 A varia (0-1), quindi viene esclusa
 B è costante (1), quindi viene mantenuta
@@ -570,7 +570,7 @@ D è costante (1), quindi viene mantenuta
 
 Altri due esempi:
 
- TODO: altro esempio come sopra.
+ <!-- TODO: altro esempio come sopra. -->
 
 Prima tab
 
@@ -591,9 +591,9 @@ di \(f\). **Un implicante primo corrisponde a un \(k\)-cubo di dimensione massim
 ovvero un \(k\)-cubo che non è contenuto (per intero) in un \(x\)-cubo di dimensioni
 maggiori:
 
- TODO: aggiungere MdK con implicanti primi e non.
+<!-- TODO: aggiungere MdK con implicanti primi e non. -->
 
- TODO: rivedere i colori degli implicanti nel testo.
+<!-- TODO: rivedere i colori degli implicanti nel testo. -->
 
 Gli implicanti prodotti dai raggruppamenti rosso e giallo NON sono primi, in
 quanto sono contenuti interamente all'interno del raggruppamento azzurro. Il
@@ -615,8 +615,10 @@ Siano:
     {\color{}\bar{A}BD}
 \]
 
- TODO: da colorare differentemente rispetto ai colori della dimostrazione e degli
-implicanti dell'immagine.
+<!--
+  TODO: da colorare differentemente rispetto ai colori della dimostrazione e degli
+        implicanti dell'immagine.
+-->
 
 Sia \({\color{}\bar{A}\bar{B}D} \implies {\color{}\bar{A}D}\), ovvero che se
 \({\color{}\bar{A}\bar{B}D}\) è vero, allora \({\color{}\bar{A}D}\) è vero. Allora,
@@ -643,7 +645,7 @@ Come già affermato in precedenza, i raggruppamenti di destra nell'esempio di
 sotto sono preferibili a quelli di sinistra. Ciò perché gli implicanti dei
 raggruppamenti di destra sono più semplici
 
- TODO: aggiungere immagine cui l'esempio fa riferimento.
+<!-- TODO: aggiungere immagine cui l'esempio fa riferimento. -->
 
 e sono ricavabili algebricamente dagli implicanti dei raggruppamenti di sinistra,
 scomponendo il raggruppamento azzurro nelle sue parti, applicando le proprietà e
@@ -660,13 +662,13 @@ ricomponendo il raggruppamento azzurro:
 <!--     \end{align} -->
 <!-- \] -->
 
- TODO: copiare la lunga equazione che va qua.
+<!-- TODO: copiare la lunga equazione che va qua. -->
 
 \(\bar{A}D\) e \(BCD\) sono quindi ambedue implicanti primi (anche se hanno
 \(\bar{A}BCD\) in comune). Infatti, l'uno non implica l'altro. Provando a
 dimostrare che l'uno implichi l'altro si ha:
 
- TODO: aggiungere i colori e mappa di Karnaugh.
+<!-- TODO: aggiungere i colori e mappa di Karnaugh. -->
 
 Th: 1. \bar{A}D \implies BCD ovvero che se \bar{A}D è vero allora BCD è vero
 oppure 2. BCD \implies
@@ -694,7 +696,7 @@ Le condizioni di indifferenza sono generalmente indicate con la lettera greca
 phi \(\varphi\) (che idealmente rappresenta uno zero e un uno sovrapposti), ma
 anche con \(X\), \(\Delta\), \(\ast\), etc.
 
- TODO: aggiungere MdK delle condizioni di indifferenza.
+<!-- TODO: aggiungere MdK delle condizioni di indifferenza. -->
 
 Le condizioni di indifferenza rappresentano quindi un jolly: verranno considerate
 se aiutano (in verde) a costituire un raggruppamento o a costituire un raggruppamento
@@ -709,7 +711,7 @@ a \(n\) variabili in due mappe di Karnaugh a \(n − 1\) variabili. Ad esempio,
 dividendo una mappa a \(4\) variabili \(A\), \(B\), \(C\) e \(D\) sulla base
 della variabile \(C\):
 
- TODO: aggiungere divisione della MdK in due mappe distinte.
+<!-- TODO: aggiungere divisione della MdK in due mappe distinte. -->
 
 Agli implicanti ottenuti dalle singole mappe sarà quindi necessario moltiplicare
 il termine \(C\), sulla base della mappa:
@@ -725,7 +727,9 @@ Le due mappe separate possono essere viste in maniera sovrapposta, consentendo
 dei raggruppamenti cubici: si è parlato, infatti, di \(k\)-cubi (in realtà sono
 parallelepipedi).
 
- TODO: aggiungere MdK + svrapposizione + tabelle diu verità della sovrapposizione.
+<!--
+    TODO: aggiungere MdK + svrapposizione + tabelle di verità della sovrapposizione.
+-->
 
 !!! note "Nota Bene"
 
@@ -738,4 +742,4 @@ parallelepipedi).
 È possibile, in maniera speculare, utilizzare le mappe di Karnaugh con gli zeri,
 individuando un corrispettivo speculare degli implicanti analogo ai maxtermini:
 
-TODO: aggiungere MdK con i maxtermini.
+<!-- TODO: aggiungere MdK con i maxtermini. -->
