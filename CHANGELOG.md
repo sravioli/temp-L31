@@ -60,6 +60,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add landing page
 - Add units of measurement
 - Add macros
 - Semi-finish page, add some images (SVGs)
