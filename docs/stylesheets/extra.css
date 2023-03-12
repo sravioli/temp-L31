@@ -1,0 +1,20 @@
+:root {
+  --md-admonition-icon--def: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bookmark-outline</title><path d="M17,18L12,15.82L7,18V5H17M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z" /></svg>')
+}
+
+.md-typeset .admonition.def,
+.md-typeset details.def {
+  border-color: rgb(43, 155, 70);
+}
+
+.md-typeset .def>.admonition-title,
+.md-typeset .def>summary {
+  background-color: rgba(43, 155, 70, 0.1);
+}
+
+.md-typeset .def>.admonition-title::before,
+.md-typeset .def>summary::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--def);
+  mask-image: var(--md-admonition-icon--def);
+}
