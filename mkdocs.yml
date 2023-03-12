@@ -1,9 +1,21 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
-site_name: Informatica – L31
-repo_url: https://github.com/sRavioli/L31
+# project information
+site_name: Appunti di Informatica
+site_url: https://sravioli.github.io/L31
+site_author: Simone Fidanza
+site_description: >-
+  Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31,
+  A.A. 2021-22, dell'Università di Bari "Aldo Moro".
+
+# repository
 repo_name: sRavioli/L31
-edit_uri: edit/main/site/docs/
+repo_url: https://github.com/sRavioli/L31
+
+# copyright
+copyright: Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+
+edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -13,24 +25,28 @@ theme:
     code: Fira Code
 
   language: it
+  direction: ltr
 
   icon:
+    logo: fontawesome/solid/terminal
     repo: fontawesome/brands/git
     edit: material/file-edit-outline
 
   palette:
-    # Palette toggle for dark mode
-    - scheme: slate
-      primary: deep purple
-      accent: blue
+    # Dark mode palette
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep purple
       toggle:
         icon: material/weather-night
         name: Passa alla modalità chiara
 
-    # Palette toggle for light mode
-    - scheme: default
-      primary: green
-      accent: amber
+    # Light mode palette
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: purple
       toggle:
         icon: material/weather-sunny
         name: Passa alla modalità scura
@@ -44,15 +60,53 @@ theme:
     # - toc.integrate # integrate the table of contents into the page
     - toc.follow # sidebar gets scrolled so that active anchor is visible
     - navigation.top # back to top button
+    - navigation.footer # footer nav is now opt-in
     - search.suggest # search suggestions
     - search.share # deep link to the current search query and result
     - header.autohide # hide header when scrolling down
+    - content.action.edit # edit is now opt-in
+    - content.action.view # view source is now opt-in
+    - content.code.copy
 
-  plugins:
-    - search # multilingual client-side search w/ lunr.js
-    - git-revision-date-localized:
+plugins:
+  # multilingual search engine
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+      lang:
+        - it
+        - en
+
+  # implement date of creation and last edit
+  - git-revision-date-localized:
       type: date
       enable_creation_date: true
+      fallback_to_build_date: true
+
+  - offline # optimize for offline usage
+
+  # zoom and move images
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      auto_caption: false
+      caption_position: bottom
+
+extra:
+  generator: true # display "Made with Material for MkDocs"
+  social:
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:<fsimone2002@proton.me>
+      name: Mandami una mail
+    - icon: fontawesome/brands/github
+      link: https://github.com/sRavioli
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/who.dat.boy___
 
 markdown_extensions:
   # Python Markdown
@@ -66,7 +120,8 @@ markdown_extensions:
   # auto-generate TOC
   - toc:
       permalink: ⚓︎ # change permalink symbol
-      permalink_title: Link permanente a questo paragrafo
+      permalink_title: Link permanente
+      toc_depth: 5
 
   # Python Markdown Extensions
   # render LaTeX math
@@ -82,15 +137,18 @@ markdown_extensions:
   - pymdownx.caret # ^superscript^
   - pymdownx.tilde # ~subscript~
 
-  # supercharge admonition making them collapsible
+  # supercharge admonition making them collapsible (??? ???+)
   - pymdownx.details
 
   # keyboard keys
   - pymdownx.keys # ++key+key++
 
+  # highlight inline code
+  - pymdownx.inlinehilite
   # adds support for syntax highlighting of code blocks and inline code
   - pymdownx.highlight:
       use_pygments: true
+      auto_title: true
       linenums: true
       linenums_style: table
       anchor_linenums: true
@@ -102,13 +160,13 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
 
-  - pymdownx.inlinehilite # highlight inline code
-
   # convert some sequences of characters into symbols
   - pymdownx.smartsymbols
 
   # Embed content from arbitrary files
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      auto_append:
+        - includes/glossary.md
 
   - pymdownx.tabbed:
       alternate_style: true
@@ -119,3 +177,6 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
