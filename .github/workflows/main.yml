@@ -1,50 +1,37 @@
-# name: Publish docs using MkDocs
-#
-# on:
-#   push:
-#     branches: [master]
-#   pull_request:
-#     branches: [master]
-# jobs:
-#   build:
-#     name: Build and Publish docs
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout master
-#         uses: actions/checkout@v3
-#       - name: Setup Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: "3.x"
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install mkdocs-material
-#       - name: Deploy
-#         run: |
-#           git pull
-#           mkdocs gh-deploy
-
-name: ci
+name: Build and Deploy with MkDocs
 on:
   push:
     branches:
-      - master
       - main
+
 permissions:
   contents: write
+
 jobs:
   deploy:
+    name: Deploy site
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout master
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v2
+      - name: Cache stuff
+        uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
           path: .cache
-      - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
-
+      - name: Install Material for MkDocs
+        run: >-
+          python -m pip install --upgrade pip
+          pip install mkdocs-material
+      - name: Install MkDocs plugins
+        run: >-
+          pip install mkdocs-git-revision-date-localized-plugin
+          pip install pillow cairosvg
+          pip install mkdocs-glightbox
+      - name: Deploy site
+        run: mkdocs gh-deploy --force
