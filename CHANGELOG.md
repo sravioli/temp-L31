@@ -61,6 +61,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add hyperlinks to remaining badges
 - Add hyperlinks to badges
 - Add landing page
 - Add units of measurement
