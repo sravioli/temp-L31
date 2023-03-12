@@ -27,6 +27,7 @@ theme:
   language: it
   direction: ltr
 
+  favicon: assets/images/favicon.png
   icon:
     logo: fontawesome/solid/terminal
     repo: fontawesome/brands/git
@@ -99,6 +100,7 @@ plugins:
 
 extra:
   generator: true # display "Made with Material for MkDocs"
+  homepage: https://sravioli.github.io/L31/
   social:
     - icon: fontawesome/solid/paper-plane
       link: mailto:<fsimone2002@proton.me>
