@@ -5,21 +5,17 @@
 Un thread è un **flusso di esecuzione indipendente** (traccia) all'interno di
 un processo. Un processo può essere diviso in più thread per:
 
-- Ottenere un parallelismo dei flussi di esecuzione all'interno del processo;
-- Gestire chiamate bloccanti o situazioni di risposta asincrona.
+- ottenere un parallelismo dei flussi di esecuzione all'interno del processo;
+- gestire chiamate bloccanti o situazioni di risposta asincrona.
 
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
   state Processo {
     Thread1: Thread #1
-    state Thread1 {
-      [*] --> [*]
-    }
+    state Thread1 { [*] --> [*] }
     Thread2: Thread #2
-    state Thread2 {
-      [*] --> [*]
-    }
+    state Thread2 { [*] --> [*] }
   }
 ```
 
@@ -129,7 +125,7 @@ il thread esiste all'interno nel processo.
 
 Un sistema operativo con processi multipli a singolo thread è lo UNIX.
 
-Sistemi operativi Multithread sono ad esempio:
+Sistemi operativi multithread sono ad esempio:
 
 - Windows
 - Solaris
@@ -156,7 +152,7 @@ Sistemi operativi Multithread sono ad esempio:
 === "Thread"
 
     Un thread non possiede risorse in quanto utilizza quelle del processo.
-    Viene anche chiamato *Light Weight Process* (LWP).
+    Viene anche chiamato *Light Weight Process*.
 
     Il thread possiede un proprio stato, una propria priorità e deve essere
     schedulato tra gli stessi thread, sottostando però alla schedulazione del
@@ -167,7 +163,9 @@ Sistemi operativi Multithread sono ad esempio:
     - Risiedono nello stesso spazio di indirizzamento;
     - Hanno accesso agli stessi dati.
 
-    Le informazioni del thread sono contenute nel **Thread Control Block** (TCB).
+    Le informazioni del thread sono contenute nel **Thread Control Block**.
+
+*[TCB]: Thread Control Block
 <!-- markdownlint-enable MD046 -->
 
 Dunque è più facile condividere le informazioni tra i thread.
@@ -183,7 +181,7 @@ I thread posseggono vari vantaggi rispetto ai processi:
 - il tempo necessario allo switch tra threads all'interno dello stesso processo
   è minore rispetto al tempo di switch tra processi;
 
-I threads all'interno di uno stesso processo condividono sia memoria che files:
+I thread all'interno di uno stesso processo condividono sia memoria che files:
 lo scambio dei dati avviene senza la richiesta di intervento del kernel. Vi è però
 la necessità di sincronizzare le atività dei threads.
 
@@ -218,7 +216,7 @@ per tutti i suoi thread.
 Un thread ha quattro operazioni di base:
 
 1. **creazione**:
-    - creazione di un processo --> creazione di un thread;
+    - la creazione di un processo implica la creazione di un thread;
     - un thread può creare altri thread.
 2. **Blocco** (attesa di un evento):
     - salvataggio del contesto per il thread: PC, Stack pointer, registri CPU
@@ -228,14 +226,16 @@ Un thread ha quattro operazioni di base:
 4. **Terminazione**:
     - deallocazione del contesto registri, deallocazione stack
 
+*[PC]: Program Counter
+*[CPU]: Central Processing Unit
+
 Il blocco di un thread blocca l'intero processo? no (?).
 
 ### Esempi di multithreading
 
-Un esempio di multithreading è il **Remote Procedure Call** (RPC), ovvero la
-chiamata da parte di un processo a una procedura attiva su un elaboratore
-diverso dal chiamante. Vediamo il caso di due chiamate RPC diverse a diversi
-host:
+Un esempio di multithreading è il **Remote Procedure Call**, ovvero la chiamata
+da parte di un processo a una procedura attiva su un elaboratore diverso dal
+chiamante. Vediamo il caso di due chiamate RPC diverse a diversi host:
 
 ```mermaid
 gantt
@@ -254,7 +254,8 @@ gantt
     Running         :run2, after block1, 3ms
 ```
 
-Il questo caso il processo in attesa di risposta del server.
+Il questo caso, dopo la RPC, il processo resta in attesa di risposta del server,
+senza effettuare alcuna operazione.
 
 ```mermaid
 gantt
@@ -263,7 +264,7 @@ gantt
   axisFormat  %L
   section Thread A
     RCP request             :milestone, RCP1, after runA, 0ms
-    Running                 :runA, 0ms, 1ms
+    Running                 :runA, 0, 1ms
     Blocked                 :crit, blockA, after runA, 2ms
     Running                 :runA1, after blockA, 2ms
     Wait for processor      :crit, blockA1, after runA1, 1ms
@@ -278,6 +279,8 @@ gantt
 
 In questo caso, invece, quando viene effettuata una richiesta RPC, il processo
 si sposta su un altro thread. In questo modo il tempo di attesa viene ridotto.
+
+*[RPC]: Remote Procedure Call
 
 Un altro esempio di multithreading è un programma di video-scrittura, gestione
 e pubblicazione di pagine su desktop. Questo possiede tre thread sempre attivi:
@@ -302,7 +305,7 @@ ovviamente la necessità di sincronizzare i due threads.
 ## Categorie di Thread
 
 <!-- markdownlint-disable MD046 -->
-=== "User Level Thread (ULT)"
+=== "User Level Thread"
 
     I thread a livello utente sono:
 
@@ -311,10 +314,10 @@ ovviamente la necessità di sincronizzare i due threads.
     - trasparenti al Kernel.
 
     Lo svantaggio è che se il Kernel è a singolo thread il blocco del thread a
-    livello utente blocca l'intero proesso (il sistema operativo continua a
+    livello utente blocca l'intero processo (il sistema operativo continua a
     schedulare i processi).
 
-=== "Kernel Level Thread (KLT)"
+=== "Kernel Level Thread"
 
     Nei thread a livello di kernel:
 
@@ -324,277 +327,371 @@ ovviamente la necessità di sincronizzare i due threads.
 
 <!-- markdownlint-enable MD046 -->
 
-### User Level Thread (ULT)
+### User Level Thread
+
+```mermaid
+stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    Thread1: Thread #1
+    Thread2: Thread #2
+    Thread3: Thread #3
+    ThreadsLibrary: Libreria Utente
+    state ThreadsLibrary {
+      state ProcessFork <<fork>>
+    }
+  }
+
+  KernelSpace: Spazio Kernel
+  state KernelSpace { Process }
+  Process --> ProcessFork
+  ProcessFork --> Thread1
+  ProcessFork --> Thread2
+  ProcessFork --> Thread3
+```
 
 Il lavoro di gestione dei threads è svolto dalla libreria utente. Per questo il
-kernel ignora l'esistenza dei threads. Gli ULT utilizzano il modello ^^Molti a
-Uno^^.
+kernel ignora l'esistenza dei threads. Gli ULT utilizzano il modello ^^molti a
+uno^^.
 
-La libreria permette:
+*[ULT]: User Level Thread
 
-- Creazione e distruzione dei threads
-- Scambio messaggi tra threads
-- Schedulazione
-- Salvataggio e caricamento dei contesti dei thread
+La libreria permette di:
 
-Tali attività sono svolte all'interno del processo utente, pertanto il kernel
-continua a schedulare i processi come unità a se stanti.
+- creare e distruggere i threads;
+- sbambiare messaggi tra threads;
+- schedulare;
+- salvare e caricare i contesti dei thread.
 
-User Level Thread (ULT)
-VANTAGGI:
+Tali attività sono svolte all'interno del processo utente, pertanto **il kernel
+continua a schedulare i processi come unità a sè stanti**.
 
-- Risparmio di sovraccarico
-- il cambio diThread avviene all'interno dello spazio di indirazzamento utente
-- Non viene richiesto l'intervento del Kernel
-- Schedulzione diversa per ogni applicazione
-- Ottimizzazione in base al tipo di applicazione
-- ULT eseguito da qualsiasi sistema operativo
-- Libreria a livello utente condivisa dalle applicazioni
+I **vantaggi** dell'ULT sono i seguenti:
 
-SVANTAGGI:
+- risparmio di sovraccarico, questo avviene perché iìcambio di thread avviene
+  all'interno dello spazio di indirizzamento utente e non viene richiesto
+  l'intervento del kernel;
+- schedulazione differente per ogni applicazione, c'è un'ottimizzazione in base
+  al tipo di applicazione;
+- viene eseguito da qualsiasi sistema operativo, la libreria a livello utente
+  è condivisa dalle applicazioni.
 
-- La chiamata a sistema da parte di un thread blocca tutti i thread del processo
-- Il kernel assegna un processo ad un singolo processore quindi non si può avere
-  multiprocessing a livello di thread (thread dello stesso processo su più
-  processori)
-- Soluzioni Parziali
-- Sviluppo dell'applicazione a livello di processi (addio vantaggi dei thread)
-- jacketing: conversione di una chiamata bloccante in una non bloccante. Es.:
-  Nel caso di I/O si invoca una procedura di jacketing che verifica se il
-  dispositivo è occupato, in caso affermativo il thread passa in ready e un altro
-  thread va in run.
+Gli **svantaggi** dell'ULT sono i seguenti:
 
-### Kernel Level Thread (KLT) puro
+- la chiamata a sistema da parte di un thread blocca tutti i thread del processo;
+- il kernel assegna un processo a un singolo processore, quindi non è possibile
+  avere multiprocessing a livello di thread (thread dello stesso processo su più
+  processori);
 
-Il lavoro di gestione dei threads è svolto dal Kernel: modello uno a uno. A livello
-utente una API consente l'accesso alla parte del Kernel che gestisce.
-I thread
-Il kernel mantiene info su:
+Delle soluzioni parziali sono:
 
-- Contesto del processo
-- Contesto dei threads
-- Scambio messaggi tra threads
-Schedulazione effettuata a livello di thread
-- se un thread di un P è bloccato, un altro thread dello stesso processo può
-essere eseguito
-- Thread di uno stesso P possono essere schedulati su diversi processori
-SVANTAGGI:
-Overhead: trasferimento del controllo da un thread ad un altro richiede
-l'intervento del kernel
+- sviluppare l'applicazione a livello di processi, andando a perdere i vantaggi
+  dei threads;
+- fare uso del **jacketing**, ovvero convertire una chiamata bloccante in una
+  non bloccante. Nel caso di I/O si invoca una procedura di jacketing che
+  verifica se iìdispositivo è occupato, se sì il thread passa in *Ready* e un
+  altro thread va in *Running*.
 
-## Approcci misti
+### Kernel Level Thread puro
 
-Modello molti a molti: più thread di livello utente sono in corrispondenza
-con più thread di livello kernel
-IThread sono creati nello spazio utente
-Vari
-thread
-di
-uno
-stesso
-processo
-possono
-essere
-eseguiti
-contemporaneamente su più processori
-Una chiamata bloccante non blocca necessariamente l'intero processo
-Necessità di comunicazione fra kernel e libreria di thread per mantenere un
-appropriato numero di kernel thread allocati all'applicazione.
-Light Weight Process (LWP) – struttura intermedia appare alla libreria dei
-thread
-utente
-come
-un
-processore
-virtuale
-sul
-quale
-schedulare
-l'esecuzione.
-Es. Una applicazione CPU-bound su un sistema monoprocessore implica
+```mermaid
+stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    Thread1: Thread #1
+    Thread2: Thread #2
+    Thread3: Thread #3
+  }
+
+  KernelSpace: Spazio Kernel
+  note left of KernelSpace
+    La gestione dei thread
+    avviene nello Spazio Kernel
+  end note
+  state KernelSpace {
+    state ProcessFork <<fork>>
+    Process --> ProcessFork
+  }
+  ProcessFork --> Thread1
+  ProcessFork --> Thread2
+  ProcessFork --> Thread3
+```
+
+Il lavoro di gestione dei threads è svolto dal kernel e fa uso del ^^modello
+uno a uno^^. A livello utente una API consente l'accesso alla parte del kernel
+che gestisce.
+
+*[API]: Application Program Interface
+
+Il kernel mantiene informazioni su:
+
+- contesto del processo;
+- contesto dei threads;
+- scambio messaggi tra threads.
+
+**La schedulazione viene effettuata a livello di thread**:
+
+- se un thread di un proceso è bloccato, una altro thread dello stesso processo
+  puà essere eseguito;
+- i thread di uno stesso processo possono essere schedulati su diversi processori.
+
+Lo **svantaggio** del KLT è che il trasferimento del controllo da un thread a un
+altro richiede l'intervento del kernel (overhead).
+
+*[KLT]: Kernel Level Thread
+
+### Approcci misti
+
+```mermaid
+stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    ThreadsLibrary: Libreria Utente
+    state ThreadsLibrary {
+      state ThreadsLibFork <<fork>>
+    }
+    UserThread1: Thread Utente #1
+    UserThread2: Thread Utente #2
+    UserThread3: Thread Utente #3
+    UserThread4: Thread Utente #4
+  }
+
+  KernelSpace: Spazio Kernel
+  state KernelSpace {
+    Process1: Processo #1
+    Process2: Processo #2
+    KernelThread1: Thread Kernel #1\n (processo #1)
+    KernelThread2: Thread Kernel #2\n (processo #1)
+    KernelThread3: Thread Kernel #1\n (processo #2)
+  }
+
+  Process1 --> KernelThread1
+  Process1 --> KernelThread2
+  Process2 --> KernelThread3
+  ThreadsLibFork --> UserThread1
+  ThreadsLibFork --> UserThread2
+  ThreadsLibFork --> UserThread3
+
+  KernelThread1 --> ThreadsLibFork
+  KernelThread2 --> ThreadsLibFork
+  KernelThread3 --> UserThread4
+```
+
+Fa uso del ^^modello molti a molti^^, ovvero più thread di livello utente sono
+in corrispondenza con più thread di livello kernel.
+
+I thread sono creati nello spazio utente, vari thread di uno stesso processo
+possono essere eseguiti contemporaneamente su più processori, inoltre una
+chiamata bloccante non blocca necessariamente l'intero processo. Vi è la
+necessità di comunicazione fra kernel e libreria di thread per mantenere un
+appropriato numero di thread kernel allocati all'applicazione.
+
+Con LWP si intende una struttura intermedia che appare alla libreria dei thread
+utente come un processore virtuale sul quale schedulare l'esecuzione.
+As esempio una applicazione CPU-bound su un sistema monoprocessore implica|
 che un solo thread per volta possa essere eseguito, quindi per essa sarà
 sufficiente un unico LWP per thread.
-Una applicazione I/O-bound tipicamente richiede un LWP per ciascuna
-chiamata di sistema bloccante
 
-Relazione tra Thread e Processi
-Thread : Processi
-Descrizione
-Sistemi
-1:1
-Ogni thread di esecuzione è un
-processo unico con il proprio spazio
-di indirizzamento e le proprie risorse
-Molte implementazioni di
-UNIX
-M:1
-Ogni processo ha associato un
-proprio spazio di indirizzamento e
-delle risorse. In ogni processo si
-possono creare ed eseguire molti
-thread
-Windows NT
-Solaris
-OS/2
-OS/390
-MACH
-1:M
-Un thread può spostarsi da un
-processo all'altro: ciò permette di
-spostare facilmente i thread tra
-sistemi diversi
-Ra(Clouds)
-Emerald
-M:M
-Combina le proprietà degli approcci
-M:1 e 1:M
-TRIX
-Ambienti
-distribuiti:
-thread possono
-spostarsi tra più
-calcolatori
+Una applicazione I/O-bound tipicamente richiede un LWP per ciascuna chiamata di
+sistema bloccante.
 
-Symmetric Multi Processing (SMP)
-Un calcolatore con molti processori
+*[LWP]: Light Weight Process
 
-- I processori condividono le stesse risorse
-- Tutti i processori possono effettuare le stesse funzioni
-- Ogni processore esegue una stessa copia del SO
-- Ogni processore gestisce la schedulazione dei processi o
-thread disponibili
-Difficoltà:
-- I processori non devono schedulare lo stesso processo
-- Comunicazione
-tra
-processori:
-memoria
-condivisa
-(possibilità di effettuare accessi simultanei alla memoria
-– memoria multiporta)
-- Coerenza della $: RAW, WAR, RAR, WAW (risolti a livello
-hardware)
+### Relazione tra Thread e Processi
 
-Symmetric Multi Processing (SMP)
-Il multiprocessore deve essere trasparente all'utente: il programmatore deve operare
-come se fosse in multiprogrammazione su monoprocessore
-Punti critici della progettazione di un Sistema Operativo per SMP:
+<!-- markdownlint-disable MD013 MD033 -->
+| Thread a processi | Descrizione                                                                                                                                          | Sistemi                              |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- |
+| uno a uno         | Ogni thread di esecuzione è un<br>processo unico con il proprio spazio<br>di indirizzamento e le proprie risorse                                     | Molte implementazioni di UNIX        |
+| molti a uno       | Ogni processo ha associato un proprio<br>spazio di indirizzamento e delle risorse.<br>In ogni processo si possono creare ed<br>eseguire molti thread | WindowsNT<br>Solaris<br>OS/2<br>MACH |
+| uno a molti       | Un thread può spostarsi da un processo<br>all’altro: ciò permette di spostare<br>facilmente i thread tra sistemi diversi                             | Ra(clouds)<br>Emerald                |
+| molti a molti     | Combina le proprietà degli approcci<br> molti a uno e uno a molti                                                                                    | TRIX                                 |
+<!-- markdownlint-enable MD013 MD033 -->
 
-- Processi e Thread del Kernel concorrenti: l'esecuzione contemporanea su diversi
-processori non deve compromettere le strutture di gestione del SO (tabelle, ecc.)
-- Schedulazione: necessità di evitare conflitti
-- Sincronizzazione: mutua esclusione e ordinamento degli eventi
-- Gestione della memoria condivisa
-- Tolleranza ai guasti: in caso di “perdita di un processore” devono essere aggiornate le
-strutture di controllo del SO
+Gli ultimi due punti (uno a molti e molti a molti), sono ambienti distribuiti:
+i thread possono spostarsi tra più calcolatori.
 
-Stati dei Thread in Windows
+## Symmetric Multi Processing
 
-- Ready
-- Standby: legato alla disponibilità del processore (SMP)
-richiesto per il thread. Se la priorità è sufficientemente
-alta il processo in running può essere interrotto.
-- Running
-- Waiting: I/O, attesa per sincronizzazione
-- Transition: thread pronto per l'esecuzione ma le risorse
-non sono disponibili (es. lo stack può essere stato
+È un sistema multiprocessore con una memoria centralizzata condivisa chiamata
+memoria principale, operante sotto un unico sistema operativo con due o più
+processori omogenei. Nel SMP:
+
+- i processori condividono le stesse risorse;
+- tutti i processori possono effettuare le stesse funzioni;
+- ogni processore esegue una stessa copia del sistema operativo;
+- ogni processore gestisce la schedulazione dei processi o thread disponibili.
+
+Le difficoltà del SMP sono le seguenti:
+
+- i processori non devono schedulare lo stesso processo;
+- la comunicazione tra processori: memoria condivisa (possibilità di effettuare
+  accessi simultanei alla memoria – memoria multiporta);
+- coerenza della cache: RAW, WAR, RAR, WAW (risolto a livello hardware).
+
+il multiprocessore **deve essere trasparente all'utente**: il programmatore deve
+operare come se fosse in multiprogrammazione su monoprocessore.
+
+I punti critici della progettazione di un sistema operativo per SMP sono i
+seguenti:
+
+- processi e thread del Kernel concorrenti: l'esecuzione contemporanea su
+  diversi processori non deve compromettere le strutture di gestione del sistema
+  operativo (tabelle, etc);
+- schedulazione: vi è necessità di evitare conflitti;
+- sincronizzazione: mutua esclusione e ordinamento degli eventi;
+- gestione della memoria condivisa;
+- tolleranza ai guasti: in caso di "perdita di un processore" devono essere
+  aggiornate le strutture di controllo del sistema operativo.
+
+*[SMP]: Symmetric Multi Processing
+
+## Stati dei Thread in Windows
+
+```mermaid
+stateDiagram-v2
+  direction LR
+  state Eseguibile {
+    direction LR
+    Ready --> Standby: Scelta processo\n da eseguire
+    Running --> Ready: Interrotto
+    Standby --> Running: Scambio
+  }
+  NonEseguibile: Non Eseguibile
+  state NonEseguibile {
+    direction LR
+    Waiting --> Transition: Sblocca risorsa\n non disponibile
+    Terminated
+  }
+  Running --> Terminated: Termina
+  Running --> Waiting: Blocca/Sospendi
+  Waiting --> Ready: Sblocca/Ripristina\n risorsa disponibile
+  Transition --> Ready: Risorsa disponibile
+```
+
+Lo stato *Standby* è legato alla disponibilità del processore (SMP) richiesto
+per il thread. Se la priorità è sufficientemente alta, il processo in *Running*
+può essere interrotto. Lo stato di *Waiting* è legato all'I/O e all'attesa per
+la sincronizzazione. Lo stato *Transition* si ha quando il thread è pronto per
+l'esecuzione ma le risorse non sono disponibili (es. lo stack può essere stato
 spostato su disco mentre era in waiting).
-- Terminated
+
 Supporto di SMP:
-- I thread (inclusi quelli del kernel) possono essere eseguiti su ogni processore
-- Il primo thread in ready viene assegnato al primo processore disponibile
-- Thread appartenenti allo stesso processo possono essere eseguiti (contemporaneamente) su diversi processori
-- Esecuzione di un thread sempre sullo stesso processore: dati ancora in cache..
 
-MicroKernel
-Piccolo Nucleo del SO
-Contiene le funzioni essenziali del SO
-Servizi tradizionalmente inclusi nel SO
-sono
-sottosistemi
-esterni
-al
-microkernel ed eseguiti in modalità
-utente:
+- i thread (inclusi quelli del kernel) possono essere eseguiti su ogni
+  processore;
+- il primo thread in *Ready* viene assegnato al primo processore disponibile;
+- i thread appartenenti allo stesso processo possono essere eseguiti
+  contemporaneamente) su diversi processori;
+- l'esecuzione di un thread sempre sullo stesso processore porta ad avere i
+  dati ancora in cache.
 
-- Device drivers
-- File systems
-- Virtual memory manager
-- Windowing system
-- Security services
-Interazione solo tra strati adiacenti
-La comunicazione avviene attraverso il
-MicroKernel che ridireziona i messaggi
+## MicroKernel
 
-Vantaggi del MicroKernel
+È un piccolo nucleo del sistema operativo e contiene le funzioni essenziali di
+quest'ultimo. I servizi tradizionalmente inclusi nel sistema operativo sono
+sottosistemi esterni al microkernel ed eseguiti in modalità utente, quali:
 
-- Interfaccia uniforme: I moduli usano le stesse interfacce per le richieste al microKernel
-- Estensibilità: introduzione di nuovi servizi o modifiche non richiedono modifiche del
-microKernel
-- Flessibilità: a seconda delle applicazioni certe caratteristiche possono essere ridotte o
-potenziate per soddisfare al meglio le richieste dei clienti. Es. Windows home –
-professional – ultimate
-- Portabilità: Il cambio dell'hardware comporterà unicamente la modifica del
-microkernel.
-- Affidabilità: lo sviluppo di piccole porzioni di codice ne permette una migliore
-ottimizzazione e test.
-- Supporto ai sistemi distribuiti: ogni servizio è identificato da un numero nel
-microkernel e una richiesta da client non è necessario che sappia dove si trova il server
-in grado di soddisfare la stessa. Messaggistica gestita dal microkernel
+- device drivers
+- file systems
+- virtual memory manager
+- windowing system
+- security services
 
-Design del MicroKernel
-Il microkernel deve contenere:
+L'interazione in un Kernel a livelli avviene solo tra strati adiacenti, mentre
+nel Microkernel la comunicazione avviene attraverso quest'ultimo, che
+ridireziona i messaggi.
 
-- Le funzioni che dipendono direttamente dall'hardware (gestione degli interrupt e I/O)
-- Le funzioni per la comunicazione tra processi (IPC)
-- Gestione primitiva della memoria
-Problema delle prestazioni per sistemi microkernel:
-Costruire, inviare, accettare, decodificare un messaggio costa più che una chiamata a SO
-Possibili soluzioni:
-- Aggiungendo funzionalità al microkernel (MACH OS) si riduce il numero di
-cambiamenti di stato (utente/kernel) - Riduzione di flessibilità, interfacce minime…
-- Ulteriore riduzione del microkernel
+### Vantaggi del MicroKernel
 
-Funzioni minime del MicroKernel
-Gestione primitiva della memoria
-Un modulo esterno al microkernel mappa pagine
-virtuali in pagine fisiche.
-Il mapping è conservato in memoria principale.
+I vantaggi del microKernel sono i seguenti:
 
-- Una applicazione che accede ad una pagina che
-non si trova in memoria genera un page fault
-- L'esecuzione passa al microkernel che invia un
-msg al paginatore comunicando la pagina
-richiesta
-- La pagina viene caricata (paginatore e kernel
-collaborano per il mapping memoria reale-
-virtuale)
-- Quando viene caricata la pagina il pager invia un
-msg all'applicazione
+- **interfaccia uniforme**: i moduli usano le stesse interfacce per le richieste
+  al microKernel;
+- **estensibilità**: l'introduzione di nuovi servizi o modifiche non richiede
+  modifiche del microKernel;
+- **flessibilità**: a seconda delle applicazioni certe caratteristiche possono
+  essere ridotte o potenziate per soddisfare al meglio le richieste dei clienti
+  (es. Windows Home/Professional/Ultimate);
+- **portabilità**: il cambio dell'hardware comporterà unicamente la modifica del
+  microkernel.
+- **affidabilità**: lo sviluppo di piccole porzioni di codice ne permette una
+  migliore ottimizzazione e test.
+- **supporto ai sistemi distribuiti**: ogni servizio è identificato da un numero
+  nel microkernel e una richiesta da client non è necessario che sappia dove si
+  trova il server in grado di soddisfare la stessa. La messaggistica viene
+  gestita dal microkernel.
 
-Funzioni minime del MicroKernel
-Comunicazione tra processi
-Messaggio = (intestazione) + (corpo) + (puntatore+inform. di contr.)
+### Design del MicroKernel
 
-- Intestazione (Mittente, Ricevente)
-- Corpo (dati del messaggio)
-- Puntatore (informazioni di controllo del processo, blocco dati)
-Associata ad ogni processo c'è una PORTA: una capability list indica chi può inviare
-messaggi
-Tale porta è amministrata dal Kernel
+Il microKernel deve contenere:
 
-Funzioni minime del MicroKernel
-Gestione degli Interrupt e dell'I/O
+- le funzioni che dipendono direttamente dall'hardware (gestione degli interrupt
+  e I/O);
+- le funzioni per la comunicazione tra processi (IPC);
+- gestione primitiva della memoria;
 
-- Il microkernel riconosce gli interrupt ma non li gestisce direttamente.
-- Il microkernel trasforma l'interrupt in messaggio a livello utente, che invia al
-processo che gestisce l'interrupt
+I sistemi con microKernel presentano un problema a livello di prestazioni:
+Costruire, inviare, accettare, decodificare un messaggio costa più che una
+chiamata al sistema operativo. Le possibili soluzioni sono:
+
+- aggiungere funzionalità al microkernel riduce il numero di cambiamenti di
+  stato (utente/kernel). Vi è però una riduzione di flessibilità, interfacce
+  minime, etc;
+- ridurre ulteriormente il microkernel.
+
+*[IPC]: InterProcess Communication
+
+### Funzioni minime del MicroKernel
+
+#### Gestione primitiva della memoria
+
+Un modulo esterno al microkernel mappa pagine virtuali in pagine fisiche, il
+mapping è conservato in memoria principale.
+
+- un'applicazione che accede ad una pagina che non si trova in memoria genera
+  un *page fault*;
+- l'esecuzione passa al microKernel che invia un messagio al paginatore
+  comunicando la pagina richiesta;
+- la pagina viene caricata: il paginatore e il kernel collaborano per il mapping
+  memoria reale-virtuale;
+- quando viene caricata la pagina il pager invia un messaggio all'applicazione.
+
+#### Comunicazione tra processi
+
+Il messaggio è composto nel seguente modo:
+
+\[ \bnf{messaggio} \Coloneqq \bnf{intestazione} + \bnf{corpo} + \bnf{puntatore} \]
+
+dove l'intesazione è composta da mittente e ricevente, il corpo contiene i dati
+del messaggio e il puntatiore contiene le informaizoni di controllo del processo
+e il blocco dati.
+
+Associata ad ogni processo c'è una **porta**: una *capability list* indica chi
+può inviare messaggi. Tale porta è amministrata dal Kernel.
+
+#### Gestione degli Interrupt e dell'I/O
+
+Il microkernel riconosce gli interrupt ma non li gestisce direttamente,
+**trasforma l'interrupt in messaggio a livello utente**, che invia al processo
+che gestisce l'interrupt
+
+```txt
 driver thread:
-do
-wait(msg, mittente);
-if mittente=mio_interrupt_hardware
-then leggi/scrivi le porte di I/O;
-azzera l'interrupt hardware
-else….
-Endif
-enddo
+ESEGUI
+    wait(msg, mittente)
+    SE (mittente = mio_interrupt_hardware)
+        ALLORA
+            leggi/scrivi le porte di I/O
+            azzera l'output hardware
+        ALTRIMENTI
+            >> ....
+    FINE
+FINE
+```
