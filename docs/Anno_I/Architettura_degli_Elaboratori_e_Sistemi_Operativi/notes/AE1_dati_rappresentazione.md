@@ -4,7 +4,7 @@
 
 L'alfabeto del calcolatore costituito da due simboli: `0` e `1`.
 
-!!! def "BIT (binary digit)"
+!!! def "BIT"
 
     È l'unità elementare di informazione. La cifra binaria può assumere solo due
     valori alternativi: `0` oppure `1`. Archiviato da un dispositivo digitale o
