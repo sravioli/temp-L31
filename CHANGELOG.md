@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Complete the rewrite of SO2
 - Remove trailing spaces
 - Comment out the TODOs, useless to have them in plain text
 - General syntax fix, add various mermaid charts
