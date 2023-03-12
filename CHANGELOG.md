@@ -61,6 +61,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add emoji support, improve homepage
 - Remove old workflow, modify the current to be more verbose and install plugins
 - [**BREAKING**] Add more settings, custom CSS; change color scheme
 - Add hyperlinks to remaining badges
