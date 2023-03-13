@@ -9,6 +9,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Addo short phrase to improve readability
+- Improve structure, complete unfinished work
+- Improve readability, better file structure
 - Complete the rewrite of SO2
 - Remove trailing spaces
 - Comment out the TODOs, useless to have them in plain text
@@ -61,6 +64,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Remove all TODOs from file, add missing images, improve structure, fix typos
+- Add entries, sort alphabetically
 - Add new entries to the glossary
 - Change default favicon
 - Add emoji support, improve homepage
