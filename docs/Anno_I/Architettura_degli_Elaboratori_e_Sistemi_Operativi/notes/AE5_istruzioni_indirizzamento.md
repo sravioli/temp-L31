@@ -1,27 +1,25 @@
 # Formati di istruzioni e indirizzamento
 
-## Architettura CISC e RISC
+## Architetture CISC e RISC
 
-L'architettura **CISC** (*Complex Instruction Set Computer*):
+L'architettura **CISC**:
 
-- Indica un'architettura per microprocessori formata da un set di istruzioni
-  contenente, appunto, istruzioni in grado di eseguire operazioni complesse
-  (es. lettura di un dato in memoria, modifica e salvataggio direttamente in
-  memoria tramite una singola istruzione). Ne sono un esempio i processori
-  dell'architettura x86 di Intel;
-- Spesso traducono l'istruzione da CISC in un lotto di operazioni elaborate
-  come RISC;
-- Spesso sono microprogrammate: all'interno della CPU stessa è presente un
-  programma che traduce le istruzioni in fase di decodifica;
-- I vantaggi sono che avvicinano il linguaggio macchina ai linguaggi di alto
-  livello
+È un'architettura per microprocessori formata da un set di istruzioni
+contenente, appunto, istruzioni in grado di eseguire operazioni complesse (es.
+lettura di un dato in memoria, modifica e salvataggio direttamente in memoria
+tramite una singola istruzione). Ne sono un esempio i processori dell'architettura
+x86 di Intel.
 
-L'architettura **RISC** (*Reduced Instruction Set Computer*):
+Spesso traducono l'istruzione da CISC in un lotto di operazioni elaborate come
+RISC. Sovente sono microprogrammate, ovvero all'interno della CPU stessa è
+presente un programma che traduce le istruzioni in fase di decodifica.
 
-- Indica un'architettura per microprocessori che sceglie un set di istruzioni
-  più semplice e lineare;
-- I vantaggi sono che eseguono le operazioni in maniera più veloce rispetto alla
-  CISC.
+I vantaggi dell'architettura CISC sono che avvicinano il linguaggio macchina ai
+linguaggi di alto livello.
+
+L'architettura **RISC** è un'architettura per microprocessori che sceglie un
+set di istruzioni più semplice e lineare. I suoi vantaggi sono che eseguono le
+operazioni in maniera più veloce rispetto alla CISC.
 
 ## Tipi di istruzioni
 
@@ -29,24 +27,24 @@ Ve ne sono molteplici.
 
 ### Istruzioni di trasferimento dati
 
-Poter copiare dati da una locazione all'altra è fondamentale. Un esempio pratico
-sono le istruzioni di assegnamento (es. `A = B` copia in `A` i bit contenuti
-nella locazione di `B`).
+È fondamentale per poter copiare dati da una locazione all'altra. Un esempio
+pratico sono le istruzioni di assegnamento (es. `A = B` copia in `A` i bit
+contenuti nella locazione di `B` in quella di `A`).
 
 I dati possono avere due sorgenti: la memoria o i registri, ergo ci sono quattro
-tipi di trasferimento possibili. Alcune architetture usano un'unica istruzione
+tipi di trasferimenti possibili. Alcune architetture usano un'unica istruzione
 per tutte le tipologie, altre ad esempio utilizzano le seguenti istruzioni:
 
 - `LOAD`: copia dalla memoria ai registri;
 - `STORE`: copia dai registri alla memoria
 - `MOVE`: copia dai registri ai registri;
-- Generalmente non è prevista un'istruzione per copiare dalla memoria alla memoria.
+- generalmente non è prevista un'istruzione per copiare dalla memoria alla
+  memoria.
 
 ### Operazioni binarie
 
-Producono un risultato dalla combinazione di due operandi. Tutti gli ISA
-(*Instruction Set Architecture*), ad esempio posseggono operazioni per somma e
-sottrazione tra interi.
+Producono un risultato dalla combinazione di due operandi. Tutti gli ISA, ad
+esempio posseggono operazioni per somma e sottrazione tra interi.
 
 Tra le operazioni binarie vi sono anche le operazioni booleane. In genere sono
 disponibili le operazioni AND, OR (e NOT, che è unario) e a volte si trovano
@@ -56,15 +54,15 @@ calcolo bit a bit.
 Per ottenere tutte le operazioni booleane è sufficiente avere a disposizione il
 NOT e un'operazione tra AND e OR:
 
-- Tramite i teoremi di De Morgan è possibile ricavare l'OR dall'AND e viceversa;
-- Si utilizzano NOT, OR e AND per generare le altre funzioni booleane mediante
+- tramite i teoremi di De Morgan è possibile ricavare l'OR dall'AND e viceversa;
+- si utilizzano NOT, OR e AND per generare le altre funzioni booleane mediante
   le equivalenze logiche (ad esempio \(A \lxor B = A\bar{B} + \bar{A}B\))[^1];
-- Si utilizzano le Mappe di Karnaugh o un sistema equivalente per esprimere la
+- si utilizzano le mappe di Karnaugh o un sistema equivalente per esprimere la
   funzione booleana.
 
 [^1]:
     Come è possibile confermare [qui](https://it.wikipedia.org/wiki/Simboli_logici)
-    il simbolo \(\lxor\) rappresenta lo XOR logico. \(\)
+    il simbolo \(\lxor\) rappresenta lo XOR logico.
 
 Un uso importante dell'AND è l'estrazione della parola. Ciò avviene mediante
 l'utilizzo di un AND tra il dato originale e una costante, detta **maschera**,
@@ -78,7 +76,7 @@ che identifica la parola da estrarre:
     \end{array}
 \]
 
-La maschera si comporrà di \(1\) dove vi sono i bit da estrarre e di \(0\) negli
+La maschera si comporrà di uno dove vi sono i bit da estrarre e di zero negli
 altri bit. Il risultato verrà infine fatto scorrere in modo da isolare a destra
 il risultato (nell'esempio sopra: di \(16 \bbit\)).
 
@@ -93,7 +91,7 @@ complementare all'estrazione:
     \end{array}
 \]
 
-Per sostituire una parola (o dei bit) si utilizzano in sequenza estrazione ed
+Per sostituire una parola (o dei bit) si utilizzano in sequenza estrazione e
 impacchettamento:
 
 \[
@@ -146,9 +144,9 @@ Tipi di istruzioni
 
 Tra queste:
 
-- Uguaglianza tra parole;
-- Verificare se una certa parola è zero (molto usata);
-- Confronto di maggioranza o minoranza tra numeri (dipende dall'implementazione
+- uguaglianza tra parole;
+- verificare se una certa parola è zero (molto usata);
+- confronto di maggioranza o minoranza tra numeri (dipende dall'implementazione
   del numero).
 
 ### Istruzioni di input/output
@@ -158,7 +156,7 @@ Interagiscono con i dispositivi di I/O e sono di tre tipologie:
 - I/O programmato con attesa attiva;
 - I/O interrupt driven, che viene innescato dagli interrupt;
 - I/O con DMA, ovvero l'I/O programmato ma viene aggiunto il componente chip
-  Direct Memory Access che ha accesso diretto al bus.
+  DMA che ha accesso diretto al bus.
 
 ### Istruzioni di salto (JUMP)
 
@@ -166,9 +164,9 @@ Il codice è scritto mediante l'ausilio di etichette, che definiscono "sezioni"
 del programma. Le istruzioni di salto consentono al programma di passare da una
 sezione all'altra. Si dividono in:
 
-- **Salti incondizionati**: (`GOTO`) si passa direttamente ad un'altra sezione
+- **salti incondizionati**: (`GOTO`) si passa direttamente ad un'altra sezione
   del programma;
-- **Salti condizionati**: si verifica una condizione e si passa ad un'altra
+- **salti condizionati**: si verifica una condizione e si passa ad un'altra
   sezione del programma a seconda del risultato della verifica (es. pratico è
   l'`if`). Viene generalmente implementato mediante il calcolo della condizione
   e la memorizzazione del risultato in un registro, successivamente viene effettuato
@@ -255,8 +253,8 @@ flowchart LR
 
 Un'istruzione si compone di:
 
-- Un OPCODE, che identifica l'istruzione da eseguire;
-- Altre informazioni quali la provenienza degli operandi e la destinazione dei
+- un OPCODE, che identifica l'istruzione da eseguire;
+- altre informazioni quali la provenienza degli operandi e la destinazione dei
   risultati.
 
 L'argomento che tratta la provenienza degli operandi, ovvero la loro residenza
@@ -308,34 +306,35 @@ dimensione):
 
 Rispettivamente:
 
-- A. Istruzione senza indirizzi
-- B. Istruzione con un solo operando
-- C. Istruzione con due operandi
-- D. Istruzione con tre operandi
+- A è un'istruzione senza indirizzi
+- B è un'istruzione con un solo operando
+- C è un'istruzione con due operandi
+- D è un'istruzione con tre operandi
 
 ## Alcuni criteri progettuali
 
-A parità di progetto, istruzioni più corte sono preferibili:
+A parità di progetto, istruzioni più corte sono preferibili per vari motivi.
 
-- Un programma con istruzioni a \(32 \bit\) occupa il doppio dello spazio in
-  memoria dello stesso programma con istruzioni a \(16 \bit\);
-- Tuttavia tale fattore potrebbe risultare sempre meno preminente in futuro, in
-  quanto il costo della memoria va sempre più diminuendosi. Dall'altro lato, le
-  dimensioni dei software aumentano. Altro fattore da tenere in considerazione,
-  però, è l'ampiezza delle bande di memoria che trasferiscono i dati.
-- Le istruzioni più corte sono elaborate più velocemente.
+Innanzitutto un programma con istruzioni a \(32 \bit\) occupa il doppio dello
+spazio in memoria dello stesso programma con istruzioni a \(16 \bit\). Tuttavia
+tale fattore potrebbe risultare sempre meno preminente in futuro, in quanto il
+costo della memoria va sempre più diminuendosi. Dall'altro lato, le dimensioni
+dei software aumentano. Altro fattore da tenere in considerazione, però, è
+l'ampiezza delle bande di memoria che trasferiscono i dati.
+
+Le istruzioni più corte sono elaborate più velocemente.
 
 È necessario prevedere spazio sufficiente per rappresentare tutte le istruzioni
 desiderate:
 
-- Se si richiedono \(2^n\) possibili operazioni differenti, vanno rappresentate
+- se si richiedono \(2^n\) possibili operazioni differenti, vanno rappresentate
   con almeno \(n\) bit destinati all'OPCODE;
-- È necessario considerare degli OPCODE in eccedenza per eventuali evoluzioni
+- è necessario considerare degli OPCODE in eccedenza per eventuali evoluzioni
   del progetto.
 
 Dimensione degli indirizzi:
 
-- La dimensione degli indirizzi dipende dalla dimensione delle parole in memoria.
+- la dimensione degli indirizzi dipende dalla dimensione delle parole in memoria.
   Siano \(\xi\) un indirizzo, \(m\) la memoria e \(w\) una parola, si ha:
 
     \[
@@ -344,15 +343,15 @@ Dimensione degli indirizzi:
         \dim \xi = \ceil{\log_2 n_\xi}
     \]
 
-- Scegliere la dimensione delle parole tra più o meno bit comporta vantaggi e
+- scegliere la dimensione delle parole tra più o meno bit comporta vantaggi e
   svantaggi in entrambe le scelte, nei quali però questo corso non entra nel
   dettaglio.
 
 Si consideri un'istruzione lunga \(n + k \bbit\), dove \(n\) è il numero di bit
 destinati all'OPCODE e \(k\) il numero di bit destinati a un operando:
 
-- Si hanno a disposizione \(2^n\) istruzioni;
-- Si hanno a disposizione \(2^k\) parole in memoria da indirizzare.
+- si hanno a disposizione \(2^n\) istruzioni;
+- si hanno a disposizione \(2^k\) parole in memoria da indirizzare.
 
 Lo stesso spazio potrebbe essere diviso in \((n − 1) \bbit\) dedicati all'OPCODE
 e \((k + 1) \bbit\) dedicati all'operando, dimezzando il set di istruzioni ma
@@ -426,14 +425,14 @@ La configurazione \(1111\) nei bit destinati all'OPCODE indica che l'istruzione
 \]
 
 Di fatto l'OPCODE passa a \(8 \bbit\) \((\bin{1111\text{xxxx}})\) nel secondo
-lotto di istruzioni. Utilizzando questo meccanismo il set delle istruzioni a viene
-espanso a:
+lotto di istruzioni. Utilizzando questo meccanismo il set delle istruzioni
+viene espanso a:
 
 - \(2^4 − 1\) istruzioni con tre operandi e
 - \(2^4\) istruzioni con due operandi;
 
-Il meccanismo può essere ovviamente reiterato, ottenendo, ad esempio, con \(16 \bbit\)
-di istruzione e indirizzi a \(4 \bbit\).
+Il meccanismo può essere ovviamente reiterato, ottenendo, ad esempio, con
+\(16 \bbit\) di istruzione e indirizzi a \(4 \bbit\).
 
 Si ottengono \(2^4 - 1\) istruzioni a tre operandi:
 
@@ -563,13 +562,13 @@ Molte istruzioni contengono operandi, si pone quindi il problema di come
 specificarne la posizione. Si parla dunque di indirizzamento, che può essere
 delle seguenti tipologie:
 
-- Immediato;
-- Diretto;
-- A registro;
-- A registro indiretto;
-- Indicizzato;
-- Indicizzato esteso;
-- A stack.
+- immediato;
+- diretto;
+- a registro;
+- a registro indiretto;
+- indicizzato;
+- indicizzato esteso;
+- a stack.
 
 ### Immediato
 
@@ -582,7 +581,7 @@ all'indirizzo, l'operando stesso. Ad esempio:
     \end{array}
 \]
 
-ovvero, carica la costante \(4\) nel registo R1.
+ovvero, carica la costante \(4\) nel registo \(\text{R}1\).
 
 Ha il vantaggio di non richiedere un riferimento supplementare in memoria per
 effettuare il fetch dell'operando. Naturalmente l'entità del valore è limitata
@@ -592,21 +591,21 @@ costanti.
 ### Diretto
 
 L'**indirizzamento diretto** utilizza come operando direttamente ciò che è
-indicato nello spazio riservato all'indirizzo. Ha lo svantaggio di accedere sempre
-alla medesima locazione, quindi il valore contenuto nella cella di memoria può
-variare, ma non può cambiare la locazione referenziata.
+indicato nello spazio riservato all'indirizzo. Ha lo svantaggio di accedere
+sempre alla medesima locazione, quindi il valore contenuto nella cella di
+memoria può variare, ma non può cambiare la locazione referenziata.
 
-È quindi necessario conoscere in ^^fase di compilazione^^ l'indirizzo che si dovrà
-referenziare (e non può essere un indirizzo contenuto all'interno di una
-procedura/funzione, in quanto l'allocazione avverrebbe durante l'invocazione della
-funzione stessa) Viene dunque utilizzato unicamente in riferimento a variabili
-globali.
+È quindi necessario conoscere in ^^fase di compilazione^^ l'indirizzo che si
+dovrà referenziare (e non può essere un indirizzo contenuto all'interno di una
+procedura/funzione, in quanto l'allocazione avverrebbe durante l'invocazione
+della funzione stessa) Viene dunque utilizzato unicamente in riferimento a
+variabili globali.
 
 ### A registro
 
 L'**indirizzamento a registro** funziona in maniera analoga all'indirizzamento
-diretto, ma referenzia un registro anziché una locazione nello spazio di indirizzamento.
-È nota anche semplicemente come **modalità a registro**.
+diretto, ma referenzia un registro anziché una locazione nello spazio di
+indirizzamento. È nota anche semplicemente come **modalità a registro**.
 
 Nelle architetture load/store (ovvero le architetture dove si può operare solo
 tramite operandi su registri) tutte le istruzioni utilizzano questa modalità, a
@@ -616,10 +615,10 @@ da/verso un registro.
 ### A registro indiretto
 
 Nell'**indirizzamento a registro indiretto** l'operando proviene o è destinato
-alla memoria, ma l'indirizzo non è contenuto all'interno dell'istruzione. Il campo
-destinato all'operando contiene un registro che indica la locazione in memoria
-dell'operando. Quando un indirizzo è utilizzato in questo modo, prende il nome
-di puntatore.
+alla memoria, ma l'indirizzo non è contenuto all'interno dell'istruzione. Il
+campo destinato all'operando contiene un registro che indica la locazione in
+memoria dell'operando. Quando un indirizzo è utilizzato in questo modo, prende
+il nome di puntatore.
 
 Ha il grande vantaggio di non dover indicare in fase di compilazione la locazione
 della parola in memoria (in quanto potrà essere caricato nel registro a runtime),
@@ -628,16 +627,17 @@ semplicemente variando il valore contenuto nel registro.
 
 ### Indicizzato
 
-L'**indirizzamento indicizzato** consente di referenziare una parola in memoria che
-si trova a un certo spiazzamento rispetto a un registro. L'indirizzamento si
-ottiene dunque mediante:
+L'**indirizzamento indicizzato** consente di referenziare una parola in memoria
+che si trova a un certo spiazzamento rispetto a un registro. L'indirizzamento
+si ottiene dunque mediante la specifica di:
 
-- La specifica di un registro (in via esplicita o implicita);
-- La specifica di uno spiazzamento ^^costante^^.
+- un registro (in via esplicita o implicita);
+- uno spiazzamento ^^costante^^.
 
 Tale meccanismo viene utilizzato in alcune occasioni nelle quali è nota a priori
 la distanza tra una variabile e l'altra. Può essere utilizzato nel caso opposto:
-mantenere un puntatore in memoria nell'istruzione e il piccolo offset in un registro.
+mantenere un puntatore in memoria nell'istruzione e il piccolo offset in un
+registro.
 
 ### Indicizzato esteso
 
@@ -647,13 +647,13 @@ di due registri, più un eventuale offset aggiuntivo.
 
 Disporre di tale possibilità costituisce un grande vantaggio (si immaigni di
 scrivere in linguaggio macchina un ciclo che opera su un vettore). Generalmente
-le macchine che offrono tale possibilità forniscono anche un offset da \(8 \bbit\)
-o \(16 \bbit\).
+le macchine che offrono tale possibilità forniscono anche un offset da
+\(8 \bbit\) o \(16 \bbit\).
 
 ### A stack
 
-Alcune istruzioni possono essere utilizzate in combinazione a una struttura stack.
-Tale forma di indirizzamento prende il nome di **indirizzamento a stack**.
+Alcune istruzioni possono essere utilizzate in combinazione a una struttura
+stack. Tale forma di indirizzamento prende il nome di **indirizzamento a stack**.
 
 Uno degli esempi pratici di utilizzo è quello legato alla **notazione polacca
 inversa**.
@@ -666,10 +666,10 @@ operandi:
 
 \[ A + B \]
 
-Esistono, equivalentemente, la notazione prefissa e la notazione postfissa
+Esistono, equivalentemente, la notazione prefissa e la notazione postfissa:
 
-- Notazione prefissa: \({+}\,AB\);
-- Notazione postfissa: \(AB\,{+}\).
+- notazione prefissa: \({+}\,AB\);
+- notazione postfissa: \(AB\,{+}\).
 
 In tali casi l'operatore è posto prima/dopo gli operandi
 
@@ -678,10 +678,10 @@ dal logico polacco J. Lukasiewicz (1958) che ne ha studiato le proprietà.
 
 Presenta alcuni vantaggi rispetto alla notazione infissa:
 
-- Ogni operazione può essere scritta correttamente senza parentesi;
-- La valutazione delle formule in tale notazione si addice particolarmente ai
+- ogni operazione può essere scritta correttamente senza parentesi;
+- la valutazione delle formule in tale notazione si addice particolarmente ai
   compilatori con stack
-- Gli operatori infissi possiedono un ordine di precedenza, che è arbitrario:
+- gli operatori infissi possiedono un ordine di precedenza, che è arbitrario:
   ad esempio \(a + b \times c\) corrisponde a \(a + (b \times c)\) e non a
   \((a + b) \times c\) perché alla moltiplicazione è assegnato un ordine di
   priorità più alto.
@@ -703,8 +703,8 @@ moltiplicazione prioritaria rispetto ad addizione e sottrazione).
 
 Come si valuta una formula in notazione polacca inversa?
 
-- Quando trovo un valore, lo aggiungo in cima allo stack
-- Quando trovo un operando, prendo i due valori in cima allo stack, effettuo
+- quando trovo un valore, lo aggiungo in cima allo stack
+- quando trovo un operando, prendo i due valori in cima allo stack, effettuo
   l'operazione tra questi due ed inserisco il risultato in cima allo stack.
 
 \[
@@ -722,7 +722,7 @@ Un esempio più complesso che mostra i vantaggi per l'elaboratore:
 
 <!-- markdownlint-disable MD013 -->
 | Stringa rimanente                                                    | Istruzione   | Stack           |
-| --                                                                   | --           | --              |
+| :------------------------------------------------------------------- | :----------- | :-------------- |
 | \(8\; 2\,5\,{\times}\,{+}\; 1\; 3\,2\,{\times}\,{+}\; 4\,{−}\; {/}\) | BIPUSH \(8\) | \(8\)           |
 | \(2\,5\,{\times}\,{+}\; 1\; 3\,2\,{\times}\, {+}\; 4\,{−}\; {/}\)    | BIPUSH \(2\) | \(8, 2\)        |
 | \(5\,{\times}\,{+}\; 1\; 3\,2\,{\times}\, {+}\; 4\,{−}\; {/}\)       | BIPUSH \(5\) | \(8, 2, 5\)     |
