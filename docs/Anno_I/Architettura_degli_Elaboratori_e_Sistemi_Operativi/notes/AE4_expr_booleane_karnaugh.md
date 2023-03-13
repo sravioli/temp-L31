@@ -2,9 +2,11 @@
 
 ## Espressioni logiche
 
-Un'espressione logica (o funzione logica) è una qualsiasi espressione composta
-da variabili logiche, le quali possono assumere solo valori booleani (vero/falso)
-e da connettivi logici (operatori logici).
+!!! def "Espressione Logica"
+
+    Un'espressione logica (o funzione logica) è una qualsiasi espressione
+    composta da variabili logiche, le quali possono assumere solo valori
+    booleani (vero/falso) e da connettivi logici (operatori logici).
 
 Un esempio di espressione logica è:
 
@@ -25,12 +27,12 @@ L'algebra di Boole ha le seguenti proprietà:
 | Proprietà commutativa      | \(AB = BA\)                           | \(A + B = B + A\)                     |
 | Proprietà associativa      | \((AB)C = A(BC)\)                     | \((A + B)C = A + (B + C)\)            |
 | Proprietà distributiva     | \(A + BC = (A + B)(A + C)\)           | \(A(B + C) = AB + AC\)                |
-| Legge di De Morgan         | \(\overline{AB} = \bar{A} + \bar{B}\) | \(\overline{A + B} = \bar{A}\bar{B}\) |
+| Legge di de Morgan         | \(\overline{AB} = \bar{A} + \bar{B}\) | \(\overline{A + B} = \bar{A}\bar{B}\) |
 | 1^a^ legge di assorbimento | \(A(A + B) = A\)                      | \(A + AB = A\)                        |
 | 2^a^ legge di assorbimento | \(A(\bar{A} + B) = AB\)               | \(A + \bar{A}B = A + B\)              |
 <!-- markdownlint-enable MD013 -->
 
-Un'espressione logica può essere rappresentata in modo esaustivo utilizzando la
+Un'espressione logica può essere rappresentata in modo esaustivo utilizzando una
 **tavola di verità**. Ciascuna espressione logica ha un suo equivalente **circuito
 logico**. Ad esempio, \(A + B\bar{C}\):
 
@@ -52,27 +54,34 @@ logico**. Ad esempio, \(A + B\bar{C}\):
 <figure markdown>
   ![Circuito della tabella di verità](./imgs/circuit/light-mode.svg#only-light){ width="450" loading=lazy }
   ![Circuito della tabella di verità](./imgs/circuit/dark-mode.svg#only-dark){ width="450" loading=lazy }
-  <figcaption>Circuito logico corrispondente alla tabella</figcaption>
+  <figcaption>Circuito logico corrispondente alla funzione riportata sopra</figcaption>
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
 ## Forma normale disgiuntiva e congiuntiva
 
-Un'espressione logica è detta in **forma normale disgiuntiva** (DNF – *Disjunctive
-Normal Form*, o anche prima forma canonica) se è una disgiunzione di clausole,
-dove ciascuna clausola è una congiunzione di letterali. Ad esempio:
+!!! def "DNF"
+    Un'espressione logica è detta in **forma normale disgiuntiva** (DNF o anche
+    prima forma canonica) se è una disgiunzione di clausole, dove ciascuna
+    clausola è una congiunzione di letterali.
+
+Ad esempio:
 
 \[ AB + B\bar{C} + A\bar{B}C \]
 
-Un'espressione logica è detta in **forma normale congiuntiva** (CNF – *Conjunctive
-Normal Form*, o anche seconda forma canonica) se è una congiunzione di clausole,
-dove ciascuna clausola è una disgiunzione di letterali. Ad esempio:
+!!! def "CNF"
+    Un'espressione logica è detta in **forma normale congiuntiva** (CNF o anche
+    seconda forma canonica) se è una congiunzione di clausole, dove ciascuna
+    clausola è una disgiunzione di letterali.
+
+Ad esempio:
 
 \[ (A + B)(B + \bar{C})(A + \bar{B} + C) \]
 
 Una qualsiasi espressione logica può essere tradotta in DNF o in CNF.
 
-Ricostruire un'espressione logica
+### Ricostruire un'espressione logica
+
 È immediato, avendo a disposizione una funzione logica arbitraria, ricavarne la
 tavola di verità e il circuito logico corrispondente. Partendo da un circuito
 logico è immediato ricostruire l'espressione corrispondente a tale circuito.
@@ -95,17 +104,21 @@ consente di ricavare l'espressione logica di una funzione booleana qualsiasi.
 L'espressione risultante sarà espressa, appunto, come somma di mintermini, ovvero
 sarà in **forma normale disgiuntiva**.
 
-Un **mintermine** (o prodotto canonico) è una funzione booleana che assume il
-valore ^^vero^^ in corrispondenza di un'unica configurazione di variabili booleane
-indipendenti.
+!!! def "Mintermine"
+    Un **mintermine** (o *prodotto canonico*) è una funzione booleana che assume
+    il valore ^^vero^^ in corrispondenza di un'unica configurazione di variabili
+    booleane indipendenti.
 
-In maniera perfettamente speculare, si definisce **maxtermine** (o somma canonica)
-una funzione booleana che assume il valore ^^falso^^ in corrispondenza di un'unica
-configurazione di variabili booleane indipendenti.
+In maniera perfettamente speculare,
+
+!!! def "Maxtermine"
+    Si definisce **maxtermine** (o *somma canonica*) una funzione booleana che
+    assume il valore ^^falso^^ in corrispondenza di un'unica configurazione di
+    variabili booleane indipendenti.
 
 Allo stesso modo, quindi, sarà possibile riscrivere una funzione booleana
 qualsiasi come **prodotto di maxtermini** (o prodotto di somme), il cui risultato
-sarà in **forma normale congiuntiva**. ^^*Le due scritture si equivalgono*^^.
+sarà in CNF. ^^*Le due scritture si equivalgono*^^.
 
 Per ciascuna combinazione di input della tavola di verità è quindi possibile
 ricavare un mintermine e un maxtermine
@@ -127,24 +140,24 @@ ricavare un mintermine e un maxtermine
 Ciascun mintermine si ottiene come prodotto delle singole variabili booleane,
 associando:
 
-- La variabile booleana quando il valore è \(1\);
-- La variabile booleana negata quando il valore è \(0\).
+- la variabile booleana quando il valore è \(1\);
+- la variabile booleana negata quando il valore è \(0\).
 
 Ciascun maxtermine si ottiene come somma delle singole variabili booleane,
 associando:
 
-- La variabile booleana negata quando il valore è \(1\);
-- La variabile booleana quando il valore è \(0\)
+- la variabile booleana negata quando il valore è \(1\);
+- la variabile booleana quando il valore è \(0\)
 
 Ciascun mintermine è la negazione logica del relativo maxtermine (e viceversa)
-a seguito dell'applicazione delle leggi di De Morgan.
+a seguito dell'applicazione delle leggi di de Morgan.
 
 È facile verificare che ciascun mintermine e ciascun maxtermine rispetta la
 definizione:
 
-- **Mintermine**: *assume il valore ^^vero^^ in corrispondenza di un'unica
+- **mintermine**: *assume il valore ^^vero^^ in corrispondenza di un'unica
   configurazione di variabili booleane indipendenti*;
-- **Maxtermine**: *assume il valore ^^falso^^ in corrispondenza di un'unica
+- **maxtermine**: *assume il valore ^^falso^^ in corrispondenza di un'unica
   configurazione di variabili booleane indipendenti*.
 
 Ad esempio, la configurazione \(A = 0\), \(B = 1\), \(C = 0\), \(D = 1\) ha per
@@ -154,8 +167,8 @@ Infatti, in corrispondenza della configurazione \(A = 0\), \(B = 1\), \(C = 0\),
 \(D = 1\), si ha come mintermine: \(\bar{A}B\bar{C}D\) ovvero
 \(\bar{0}1\bar{0}1 = 1111 = 1\). In tutte le altre configurazioni restituirà \(0\),
 mentre come maxtermine: \(A + \bar{B} + C + \bar{D}\) ovvero
-\(0 + \bar{1} + 0 + \bar{1} = 0 + 0 + 0 + 0 = 0\). In tutte le altre configurazioni
-restituirà \(1\).
+\(0 + \bar{1} + 0 + \bar{1}\) e quindi \(0 + 0 + 0 + 0 = 0\). In tutte le altre
+configurazioni restituirà \(1\).
 
 ### Somma di mintermini
 
@@ -210,14 +223,16 @@ di mintermini o prodotto di maxtermini. Generalmente, la scrittura in somma di
 mintermini è preferita.
 
 L'espressione risultante, però, **non è detto che sia minima**, pertanto si deve
-provare a semplificarla attraverso l'uso delle proprietà dell'algebra di Boole,
+provare a semplificarla attraverso l'uso delle proprietà dell'algebra di Boole
 mediante, quindi, dei passaggi algebrici.
 
 Semplificare l'espressione consente dei vantaggi:
 
-- gestione algebrica più semplice (meno porte = circuito più semplice);
-- in termini di velocità (meno porte = circuito più veloce);
-- in termini di costi (meno porte = meno spese).
+- gestione algebrica più semplice: avere meno porte significa avere un circuito
+  più semplice;
+- in termini di velocità: avere meno porte significa avere un circuito più
+  veloce;
+- in termini di costi: avere meno porte significa avere meno spese.
 
 Ad esempio, l'espressione di prima:
 
@@ -233,17 +248,17 @@ Sia dunque l'espressione logica da semplificare la seguente:
 
 \[
     f = \bar{A}\bar{B}\bar{C}
-    + \underline{\bar{A}B\bar{C} + \bar{A}BC}
-    + \underline{AB\bar{C} + ABC}
+        + \underline{\bar{A}B\bar{C} + \bar{A}BC}
+        + \underline{AB\bar{C} + ABC}
 \]
 
 È innanzitutto possibile applicare la forma distributiva della forma OR e la
-complementazione in forma OR. Dunque:
+complementazione in forma OR. dunque:
 
 \[
     f = \bar{A}\bar{B}\bar{C}
-    + \bar{A}B\underbrace{(\bar{C} + C)}_1
-    + AB\underbrace{(\bar{C} + C)}_1
+        + \bar{A}B\underbrace{(\bar{C} + C)}_1
+        + AB\underbrace{(\bar{C} + C)}_1
 \]
 
 L'elemento neutro per l'AND è l'\(1\):
@@ -259,7 +274,7 @@ evidenziati e successivamente la complementazione in forma OR:
     f = \bar{A}\bar{B}\bar{C} + B\underbrace{(A + \bar{A})}_1
 \]
 
-Di nuovo, l'elemento neutro per l'AND è proprio l'\(1\) e dunque si può
+di nuovo, l'elemento neutro per l'AND è proprio l'\(1\) e dunque si può
 applicare la seconda legge di assorbimento nella forma OR:
 
 \[ f = \bar{A}\bar{C} + B \]
@@ -270,7 +285,7 @@ Il teorema di Shannon[^1] consente di scomporre una funzione booleana
 complessa in funzioni più semplici
 
 !!! def "Teorema di Shannon"
-    Data una funzione booleana \(f\) in \(n\) variabili \(\oneton{v}\) si ha che:
+    data una funzione booleana \(f\) in \(n\) variabili \(\oneton{v}\) si ha che:
 
     \[
         f(\oneton{v}) = v_1 \cdot f(1,\, v_2, \,\dots,\, v_n)
@@ -308,7 +323,7 @@ tavola di verità:
 essa può essere riscritta in due funzioni più semplici, separando sulla base di
 una variabile.
 
-Ad esempio, scegliendo di separare sulla base della variabile \(B\)j:
+Ad esempio, scegliendo di separare sulla base della variabile \(B\):
 
 \[
     \begin{array}{ ccc|c }
@@ -370,31 +385,31 @@ al massimo delle sue potenzialità, ovvero scegliendo i raggruppamenti migliori,
 si ricaverà l'espressione minima, altrimenti si ricaveranno delle espressioni
 semplificabili.
 
-Tale metodo è particolarmente efficace nei casi di funzioni fino a \(4\) variabili,
-gestibile nei casi di \(5\) e \(6\) variabili, difficilmente applicabile nei casi
-di funzioni a più di \(6\) variabili. Per quest'ultime si utilizzano altri metodi
-che non saranno trattati in questo corso.
+Tale metodo è particolarmente efficace nei casi di funzioni fino a quattro
+variabili, gestibile nei casi di cinque e sei variabili, difficilmente
+applicabile nei casi di funzioni a più di sei variabili. Per quest'ultime si
+utilizzano altri metodi che non saranno trattati in questo corso.
 
 La mappa di Karnaugh può essere quindi utilizzata per ottimizzare un'espressione
-logica o un circuito logico. La mappa di Karnaugh opera in \(3\) fasi:
+logica o un circuito logico. La mappa di Karnaugh opera in tre fasi:
 
-1. Costruzione della o delle mappe;
-2. Scelta dei raggruppamenti;
-3. Generazione degli implicanti e dell'espressione finale.
+1. costruzione della o delle mappe;
+2. scelta dei raggruppamenti;
+3. generazione degli implicanti e dell'espressione finale.
 
 ### Costruzione della mappa
 
-Una singola mappa di Karnaugh può essere realizzata per \(2\), \(3\) o \(4\)
+Una singola mappa di Karnaugh può essere realizzata per due, tre o quattro
 variabili. La costruzione di tale mappa avviene disponendo le variabili lungo
 il lato sinistro e il lato superiore di una tabella (massimo due variabili per
-lato). I lati dove sono disposte due variabili verranno divisi in \(4\) parti,
-i lati dove è disposta una sola variabile verranno divisi in \(2\) parti. La
+lato). I lati dove sono disposte due variabili verranno divisi in quattro parti,
+i lati dove è disposta una sola variabile verranno divisi in due parti. La
 scelta di come disporre le variabili e in quale ordine sta all'utilizzatore della
 mappa ed è indifferente per il risultato.
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  <figcaption>Mappe di Karnaugh a...</figcaption>
+  <figcaption>Mappe di Karnaugh...</figcaption>
   ![Mappe di Karnaugh a 2, 3 e 4 variabili](./imgs/karnaugh/empty/dark-mode.svg#only-dark){ width="600" loading=lazy }
   ![Mappe di Karnaugh a 2, 3 e 4 variabili](./imgs/karnaugh/empty/light-mode.svg#only-light){ width="600" loading=lazy }
 </figure>
@@ -402,11 +417,11 @@ mappa ed è indifferente per il risultato.
 
 Lungo i lati della mappa di Karnaugh si riportano le configurazioni:
 
-- Per i lati a singola variabile si usa la configurazione \(0\)-\(1\);
-- Per i lati a doppia variabile si usa la configurazione \(00\)-\(01\)-\(11\)-\(10\).
+- \(0\)-\(1\) per i lati a singola variabile;
+- \(00\)-\(01\)-\(11\)-\(10\) per i lati a doppia variabile.
 
 I valori riportati rappresentano le possibili configurazioni delle variabili.
-Tali disposizioni possono essere anche scritte al contrario (\(1\)-\(0\);
+Tali disposizioni possono essere anche scritte al contrario (\(1\)-\(0\) e
 \(10\)-\(11\)-\(01\)-\(00\)).
 
 !!! warning "Attenzione"
@@ -415,8 +430,8 @@ Tali disposizioni possono essere anche scritte al contrario (\(1\)-\(0\);
     di Gray ed è utilizzata in questo caso in maniera tale che nel passare da
     una casella all'altra cambi sempre il valore di una sola variabile.
 
-Prendendo la tavola di verità, si riportano nella mappa di Karnaugh i valori
-(è sufficiente riportare i valori per i quali la funzione assume il valore
+Prendendo la tavola di verità, si riportano nella mappa di Karnaugh i valori.
+È sufficiente riportare i valori per i quali la funzione assume il valore
 \(1\) della funzione per ciascuna configurazione:
 
 \[
@@ -453,16 +468,17 @@ Le due rappresentazioni si equivalgono.
 
 ### Scelta dei raggruppamenti
 
-Dalla mappa di Karnaugh devono essere effettuati dei raggruppamenti delle celle
+dalla mappa di Karnaugh devono essere effettuati dei raggruppamenti delle celle
 dove è contenuto il valore \(1\). Tali raggruppamenti devono rispondere a tutte
 le seguenti condizioni:
 
-1. Si possono raggruppare solo elementi tra celle adiacenti orizzontalmente o
+1. si possono raggruppare solo elementi tra celle adiacenti orizzontalmente o
    verticalmente;
-2. I raggruppamenti non devono contenere celle con il valore \(0\);
-3. Si possono raggruppare solo elementi in rettangoli o quadrati;
-4. Il numero di celle di ciascun raggruppamento deve essere una potenza di \(2\);
-5. Tutte le celle con il valore 1 devono essere contenute almeno in un raggruppamento
+2. i raggruppamenti non devono contenere celle con il valore \(0\);
+3. si possono raggruppare solo elementi in rettangoli o quadrati;
+4. il numero di celle di ciascun raggruppamento deve essere una potenza di \(2\);
+5. tutte le celle con il valore \(1\) devono essere contenute almeno in un
+   raggruppamento
 
 I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
@@ -484,8 +500,8 @@ I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
     <!-- markdownlint-disable MD013 MD033 -->
     <figure markdown>
-      ![Mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-dark-mode.svg#only-dark){ width="700" loading=lazy }
-      ![Mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-light-mode.svg#only-light){ width="700" loading=lazy }
+      ![Tre mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-dark-mode.svg#only-dark){ width="700" loading=lazy }
+      ![Tre mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-light-mode.svg#only-light){ width="700" loading=lazy }
     </figure>
     <!-- markdownlint-enable MD013 MD033 -->
 
@@ -496,17 +512,17 @@ I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
     <!-- markdownlint-disable MD013 MD033 -->
     <figure markdown>
-      ![Mappe di Karnaugh non valide](./imgs/karnaugh/invalid/dark-mode.svg#only-dark){ width="700" loading=lazy }
-      ![Mappe di Karnaugh non valide](./imgs/karnaugh/invalid/light-mode.svg#only-light){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh non valide](./imgs/karnaugh/invalid/dark-mode.svg#only-dark){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh non valide](./imgs/karnaugh/invalid/light-mode.svg#only-light){ width="700" loading=lazy }
     </figure>
     <!-- markdownlint-enable MD013 MD033 -->
 
     In ordine:
 
-    - Il numero di elementi non è una potenza di \(2\);
-    - Sono prese celle non aventi il valore \(1\);
-    - Il raggruppamento non è né rettangolare né quadrato;
-    - Sono prese celle non adiacenti.
+    - il numero di elementi non è una potenza di \(2\);
+    - sono prese celle non aventi il valore \(1\);
+    - il raggruppamento non è né rettangolare né quadrato;
+    - sono prese celle non adiacenti.
 
 Nell'ambito della scelta dei raggruppamenti, è sempre preferibile scegliere i
 raggruppamenti in maniera tale che siano sempre i più grandi possibile, anche
@@ -521,16 +537,23 @@ in seguito.
 <!-- markdownlint-enable MD013 MD033 -->
 
 La qualità dei raggruppamenti migliora progressivamente dal primo esempio (figura
-\(\text{a}\) all'ultimo (figura \(\text{d}\)). L'ultimo esempio è infatti quello
-che ha i raggruppamenti di dimensione più grande che coprono l'intera superficie
-delle celle con valore \(1\).
-
- <!-- TODO: controllare i colori. -->
+\(\text{(a)}\)) all'ultimo (figura \(\text{(D)}\)). L'ultimo esempio è infatti
+quello che ha i raggruppamenti di dimensione più grande che coprono l'intera
+superficie delle celle con valore \(1\).
 
 Non ha invece senso creare un raggruppamento ridondante se tutte le celle
-interessate sono già state selezionate. Il raggruppamento in rosso è superfluo
-(quindi inutile): tutte le celle del raggruppamento sono già coperte dal
-raggruppamento azzurro e dal raggruppamento in verde.
+interessate sono già state selezionate.
+
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Raggruppamento inutile vs. utile](./imgs/karnaugh/groups/useless/dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Raggruppamento inutile vs. utile](./imgs/karnaugh/groups/useless/light-mode.svg#only-light){ width="700" loading=lazy }
+  <figcaption>Raggruppamento inutile (rosso)</figcaption>
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
+
+Il raggruppamento in rosso è superfluo, quindi inutile: tutte le celle del
+raggruppamento sono già coperte dal quello azzurro e dal quello in verde.
 
 ### Generazione degli implicanti
 
@@ -546,59 +569,172 @@ quanto implica la funzione \(f\): se \(I_i\) è vero allora \(f\) è vero. Quest
 dell'OR (somma logica), cioè che una qualsiasi somma logica è vera se almeno uno
 degli elementi che la compone è vero.
 
-Vediamo ora come si generano gli implicanti a partire dai raggruppamenti
-L'implicante di un raggruppamento composto da una singola cella è equivalente al
-mintermine di tale cella.
+Ma come si generano gli implicanti a partire dai raggruppamenti?
 
- <!-- TODO: aggiungere formazione implicanti -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Implicante di un raggruppamento a singola cella](./imgs/karnaugh/implicants/1-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a singola cella](./imgs/karnaugh/implicants/1-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
+
+L'implicante di un raggruppamento composto da una singola cella è equivalente al
+mintermine di tale cella, in questo caso:
+
+\[
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        0 & 1 & 1 & 1
+    \end{array}
+\]
+
+Ovvero:
+
+\[ \bar{A}BCD \]
 
 La mappa di Karnaugh, quindi, nel caso in cui vengano scelti tutti i raggruppamenti
 con celle singole, corrisponde perfettamente alla somma di mintermini:
 
-<!-- TODO: aggiungere scomposizione in mintermini della mappa di Karnaugh. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Implicante di tre raggruppamenti a singola cella](./imgs/karnaugh/implicants/2-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di tre raggruppamenti a singola cella](./imgs/karnaugh/implicants/2-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
+
+Che corrispondono, dall'alto verso il basso, a:
+
+\[
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        1 & 0 & 0 & 0
+    \end{array}
+    \qquad
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        0 & 1 & 1 & 1
+    \end{array}
+    \qquad
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        1 & 0 & 1 & 0
+    \end{array}
+\]
+
+ovvero a:
+
+\[
+    A\bar{B}\bar{C}\bar{D}
+    \qquad
+    \bar{A}BCD
+    \qquad
+    A\bar{B}C\bar{D}
+\]
+
+e dunque:
+
+\[ f = A\bar{B}\bar{C}\bar{D} + \bar{A}BCD + A\bar{B}C\bar{D} \]
 
 L'implicante di un raggruppamento composto da più celle è calcolato in maniera
 analoga al mintermine ma utilizzando solo le variabili che mantengono un valore
 costante:
 
-<!-- TODO: aggiungere mappa di Karnaugh di raggruppamento di più celle. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Implicante di un raggruppamento a due celle](./imgs/karnaugh/implicants/3-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a due celle](./imgs/karnaugh/implicants/3-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
-A varia (0-1), quindi viene esclusa
-B è costante (1), quindi viene mantenuta
-C è costante (1), quindi viene mantenuta
-D è costante (1), quindi viene mantenuta
+In questo caso si ha
+
+\[
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        0 & 1 & 1 & 1 \\
+        1 & 1 & 1 & 1
+    \end{array}
+\]
+
+che sarebbe \(BCD\). Questo perché:
+
+- \(A\) varia (\(0\)-\(1\)), viene esclusa;
+- \(B\) è costante (\(1\)), viene mantenuta;
+- \(C\) è costante (\(1\)), viene mantenuta;
+- \(D\) è costante (\(1\)), viene mantenuta.
 
 Altri due esempi:
 
- <!-- TODO: altro esempio come sopra. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Implicante di due raggruppamenti a otto e quattro celle](./imgs/karnaugh/implicants/4-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di due raggruppamenti a otto e quattro celle](./imgs/karnaugh/implicants/4-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
-Prima tab
+Nel primo raggruppamento si ha:
 
-- A varia (0-1), quindi viene esclusa
-- B varia (0-1), quindi viene esclusa
-- C è costante (0), quindi viene mantenuta
-- D varia (0-1), quindi viene esclusa
+\[
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        0 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        1 & 1 & 0 & 0 \\
+        1 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 1 & 0 & 1 \\
+        1 & 1 & 0 & 1 \\
+        1 & 0 & 0 & 1
+    \end{array}
+\]
 
-Seconda tab:
+poiché
 
-- A è costante (1), quindi viene mantenuta
-- B varia (0-1), quindi viene esclusa
-- C è costante (1), quindi viene mantenuta
-- D varia (0-1), quindi viene esclusa
+- \(A\) varia (\(0\)-\(1\)), viene esclusa;
+- \(B\) varia (\(0\)-\(1\)), viene esclusa;
+- \(C\) è costante (\(0\)), viene mantenuta;
+- \(D\) varia (\(0\)-\(1\)), viene esclusa.
 
-Un implicante è detto implicante primo di \(f\) se non implica un altro implicante
-di \(f\). **Un implicante primo corrisponde a un \(k\)-cubo di dimensione massima**,
-ovvero un \(k\)-cubo che non è contenuto (per intero) in un \(x\)-cubo di dimensioni
-maggiori:
+Nel secondo raggruppamento, invece, si ha:
 
-<!-- TODO: aggiungere MdK con implicanti primi e non. -->
+\[
+    \begin{array}{ cccc }
+        A & B & C & D \\ \hline
+        1 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 \\
+        1 & 1 & 1 & 0 \\
+        1 & 0 & 1 & 0
+    \end{array}
+\]
+
+questo poiché:
+
+- \(A\) è costante (\(1\)), viene mantenuta;
+- \(B\) varia (\(0\)-\(1\)), viene esclusa;
+- \(C\) è costante (\(1\)), viene mantenuta;
+- \(D\) varia (\(0\)-\(1\)), viene esclusa.
+
+!!! def "Implicante primo"
+    Un implicante è detto implicante primo di \(f\) se non implica un altro
+    implicante di \(f\). **Un implicante primo corrisponde a un \(k\)-cubo di
+    dimensione massima**, ovvero un \(k\)-cubo che non è contenuto per intero
+    in un \(x\)-cubo di dimensioni maggiori.
+
+Ovvero:
+
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Implicante primo](./imgs/karnaugh/implicants/5-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante primo](./imgs/karnaugh/implicants/5-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
 <!-- TODO: rivedere i colori degli implicanti nel testo. -->
 
-Gli implicanti prodotti dai raggruppamenti rosso e giallo NON sono primi, in
-quanto sono contenuti interamente all'interno del raggruppamento azzurro. Il
-raggruppamento azzurro è un \(2\)-cubo, mentre il raggruppamento rosso e quello
-giallo sono \(1\)-cubi. Il raggruppamento azzurro genera un implicante primo,
+Gli implicanti prodotti dai raggruppamenti magenta e beige ^^**non**^^ sono
+primi, in quanto sono contenuti interamente nel raggruppamento blu. Il
+raggruppamento blu è un \(2\)-cubo, mentre il raggruppamento magenta e quello
+beige sono \(1\)-cubi. Il raggruppamento blu genera un implicante primo,
 in quanto \(k\)-cubo di dimensione maggiore.
 
 È semplice dimostrare che gli implicanti corrispondenti ai raggruppamenti rosso
@@ -608,82 +744,97 @@ sono primi).
 Siano:
 
 \[
-    {\color{}\bar{A}D}
+    {\color{blue}\bar{A}D}
     \qquad
-    {\color{}\bar{A}\bar{B}D}
+    {\color{magenta}\bar{A}\bar{B}D}
     \qquad
-    {\color{}\bar{A}BD}
+    {\color{beige}\bar{A}BD}
 \]
 
-<!--
-  TODO: da colorare differentemente rispetto ai colori della dimostrazione e degli
-        implicanti dell'immagine.
--->
+Sia \({\color{magenta}\bar{A}\bar{B}D} \implies {\color{blue}\bar{A}D}\),
+ovvero che se \({\color{magenta}\bar{A}\bar{B}D}\) è vero, allora
+\({\color{blue}\bar{A}D}\) è vero. Allora, per proprietà associativa,
+\(\bar{A}\bar{B}D = (\bar{A}D)\bar{B}\). dalle proprietà dell'AND deriva che se
+\((\bar{A}D)\bar{B}\) è vero, allora lo sono sia \(\bar{A}D\) che \(\bar{B}\).
+Quindi \((\bar{A}D)\) è vero.
 
-Sia \({\color{}\bar{A}\bar{B}D} \implies {\color{}\bar{A}D}\), ovvero che se
-\({\color{}\bar{A}\bar{B}D}\) è vero, allora \({\color{}\bar{A}D}\) è vero. Allora,
-per proprietà associativa, \({\color{}\bar{A}\bar{B}D} = (\bar{A}D)\bar{B}\). Dalle
-proprietà dell'AND che se \((\bar{A}D)\bar{B}\) è vero, allora lo sono sia
-\(\bar{A}D\) che \(\bar{B}\). Quindi \((\bar{A}D)\) è vero.
-
-Sia \({\color{}\bar{A}BD} \implies {\color{}\bar{A}D}\) ovvero che se
-\({\color{}\bar{A}BD}\) è vero allora \({\color{}\bar{A}D}\) è vero. Allora, per
-proprietà associativa, \(\bar{A}BD = (\bar{A}D)B\). Dalle proprietà dell'AND, se
-\((\bar{A}D)B\) è vero, allora lo sono sia \(\bar{A}D\) che \(B\). Quindi
-\(\bar{A}D\) è vero.
+Sia \({\color{beige}\bar{A}BD} \implies {\color{blue}\bar{A}D}\) ovvero che se
+\({\color{beige}\bar{A}BD}\) è vero allora \({\color{blue}\bar{A}D}\) è vero.
+Allora, per proprietà associativa, \(\bar{A}BD = (\bar{A}D)B\). dalle proprietà
+dell'AND, se \((\bar{A}D)B\) è vero, allora lo sono sia \(\bar{A}D\) che \(B\).
+Quindi \(\bar{A}D\) è vero.
 
 Infatti gli implicanti dei raggruppamenti rosso e giallo possono essere
 semplificati algebricamente nell'implicante primo del raggruppamento azzurro:
 
 \[
-    {\color{}\bar{A}\bar{B}D} + {\color{}\bar{A}BD} = \bar{A}D(\bar{B} + B)
-                                                    = \bar{A}D(1)
-                                                    = {\color{}\bar{A}D}
+    {\color{magenta}\bar{A}\bar{B}D}
+        + {\color{beige}\bar{A}BD} = \bar{A}D(\bar{B} + B)
+                                   = \bar{A}D(1)
+                                   = {\color{blue}\bar{A}D}
 \]
 
 Come già affermato in precedenza, i raggruppamenti di destra nell'esempio di
 sotto sono preferibili a quelli di sinistra. Ciò perché gli implicanti dei
 raggruppamenti di destra sono più semplici
 
-<!-- TODO: aggiungere immagine cui l'esempio fa riferimento. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Raggruppamenti preferibili per la generazione degli implicanti](./imgs/karnaugh/implicants/6-dark-mode.svg#only-dark){ width="500" loading=lazy }
+  ![Raggruppamenti preferibili per la generazione degli implicanti](./imgs/karnaugh/implicants/6-light-mode.svg#only-light){ width="500" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
 e sono ricavabili algebricamente dagli implicanti dei raggruppamenti di sinistra,
 scomponendo il raggruppamento azzurro nelle sue parti, applicando le proprietà e
 ricomponendo il raggruppamento azzurro:
 
-<!-- \[ -->
-<!--     \begin{align} -->
-<!--         f = \bar{A}D + ABCD &= (\bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D -->
-<!--                                 + \bar{A}\bar{B}CD + \bar{A}BCD) + ABCD \\ -->
-<!--                             &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D -->
-<!--                                 + \bar{A}\bar{B}CD + \bar{A}BCD + ABCD  \\ -->
-<!--                             &= \bar{A}B \bar{C}D + \bar{A}\bar{B}CD -->
-<!--                                 + \bar{A}BCD + ABCD + \bar{A}BCD        \\ -->
-<!--     \end{align} -->
-<!-- \] -->
+\[
+    \begin{align}
+        f = {\color{blue}\bar{A}D} + {\color{magenta}ABCD}
+            &= {\color{blue}(\bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD)} + \color{magenta}{ABCD}   \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD + ABCD                      \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}\bar{B}CD
+                + \bar{A}BCD + ABCD + \bar{A}BCD                            \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD + ABCD + \bar{A}BCD         \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD + BCD(A + \bar{A})          \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD + BCD(1)                    \\
+            &= \bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD + BCD                       \\
+            &= {\color{blue}(\bar{A}\bar{B}\bar{C}D + \bar{A}B\bar{C}D
+                + \bar{A}\bar{B}CD + \bar{A}BCD)} + {\color{green}BCD}      \\
+            &= {\color{blue}\bar{A}D} + {\color{green}BCD}                  \\
+            &= f'
+    \end{align}
+\]
 
-<!-- TODO: copiare la lunga equazione che va qua. -->
+\({\color{blue}\bar{A}D}\) e \({\color{green}BCD}\) sono quindi ambedue
+implicanti primi (anche se hanno \({\color{red}\bar{A}BCD}\) in comune).
+Infatti, l'uno non implica l'altro. Provando a dimostrare che l'uno implichi
+l'altro si ha:
 
-\(\bar{A}D\) e \(BCD\) sono quindi ambedue implicanti primi (anche se hanno
-\(\bar{A}BCD\) in comune). Infatti, l'uno non implica l'altro. Provando a
-dimostrare che l'uno implichi l'altro si ha:
+1. \({\color{blue}\bar{A}D} \implies {\color{green}BCD}\) ovvero che se
+   \({\color{blue}\bar{A}D}\) è vero allora \({\color{green}BCD}\) è vero;
+2. \({\color{green}BCD} \implies {\color{blue}\bar{A}D}\) ovvero che se
+   \({\color{green}BCD}\) è vero allora \({\color{blue}\bar{A}D}\) è vero.
 
-<!-- TODO: aggiungere i colori e mappa di Karnaugh. -->
+Allora:
 
-Th: 1. \bar{A}D \implies BCD ovvero che se \bar{A}D è vero allora BCD è vero
-oppure 2. BCD \implies
-\bar{A}D ovvero che se BCD è vero allora \bar{A}D è vero
-
-1. Per proprietà associativa \bar{A}D = ( \bar{A})(D). Sapendo che \bar{A}D è vero, allora sia \bar{A} che D sono vere. Pertanto BCD = BC1 =
-BC. Si vuole quindi ora dimostrare che \bar{A}D \implies BC, ovvero che 1 \implies BC, ma non vi sono elementi sulla veridicità di B e
-C, pertanto l'uno non implica l'altro
-2. Per proprietà associativa BCD = (B)(C)(D). Sapendo che BCD è vero, allora sia B che C che D sono vere. Pertanto
-\bar{A}D =
-\bar{A}1 =
-\bar{A}. Si vuole quindi ora dimostrare che BCD \implies
-\bar{A}, ovvero che 1 \implies
-\bar{A}, ma non vi sono elementi sulla
-veridicità di A, pertanto l'uno non implica l'altro
+1. Per proprietà associativa \(\bar{A}D = (\bar{A})(D)\). Sapendo che
+   \(\bar{A}D\) è vero, allora sia \(\bar{A}\) che \(D\) sono vere. Pertanto
+   \(BCD = BC1 = BC\). Si vuole quindi ora dimostrare che \(\bar{A}D \implies BC\),
+   ovvero che \(1 \implies BC\), ma non vi sono elementi sulla veridicità di \(B\)
+   e \(C\), pertanto l'uno non implica l'altro.
+2. Per proprietà associativa \(BCD = (B)(C)(D)\). Sapendo che \(BCD\) è vero,
+   allora sia \(B\) che \(C\) che \(D\) sono vere. Pertanto
+   \(\bar{A}D = \bar{A}1 = \bar{A}\). Si vuole quindi ora dimostrare che
+   \(BCD \implies \bar{A}\), ovvero che \(1 \implies \bar{A}\), ma non vi sono
+   elementi sulla veridicità di \(A\), pertanto l'uno non implica l'altro.
 
 ### Condizioni di indifferenza
 
@@ -694,9 +845,14 @@ di condizione di indifferenza per la specifica configurazione.
 
 Le condizioni di indifferenza sono generalmente indicate con la lettera greca
 phi \(\varphi\) (che idealmente rappresenta uno zero e un uno sovrapposti), ma
-anche con \(X\), \(\Delta\), \(\ast\), etc.
+anche con \(X\), \(\delta\), \(\ast\), etc.
 
-<!-- TODO: aggiungere MdK delle condizioni di indifferenza. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Raggruppamento con una condizione di indifferenza](./imgs/karnaugh/implicants/7-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Raggruppamento con una condizione di indifferenza](./imgs/karnaugh/implicants/7-light-mode.svg#only-light){ width="300" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
 Le condizioni di indifferenza rappresentano quindi un jolly: verranno considerate
 se aiutano (in verde) a costituire un raggruppamento o a costituire un raggruppamento
@@ -711,7 +867,12 @@ a \(n\) variabili in due mappe di Karnaugh a \(n − 1\) variabili. Ad esempio,
 dividendo una mappa a \(4\) variabili \(A\), \(B\), \(C\) e \(D\) sulla base
 della variabile \(C\):
 
-<!-- TODO: aggiungere divisione della MdK in due mappe distinte. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Divisione di una mappa di Karnaugh in due mappe](./imgs/karnaugh/implicants/8-dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Divisione di una mappa di Karnaugh in due mappe](./imgs/karnaugh/implicants/8-light-mode.svg#only-light){ width="700" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
 
 Agli implicanti ottenuti dalle singole mappe sarà quindi necessario moltiplicare
 il termine \(C\), sulla base della mappa:
@@ -725,11 +886,44 @@ da \(4) variabili).
 
 Le due mappe separate possono essere viste in maniera sovrapposta, consentendo
 dei raggruppamenti cubici: si è parlato, infatti, di \(k\)-cubi (in realtà sono
-parallelepipedi).
+parallelepipedi):
 
-<!--
-    TODO: aggiungere MdK + svrapposizione + tabelle di verità della sovrapposizione.
--->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Due mappe separate viste in maniera sovrapposta](./imgs/karnaugh/implicants/9-dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Due mappe separate viste in maniera sovrapposta](./imgs/karnaugh/implicants/9-light-mode.svg#only-light){ width="700" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
+
+Queste due mappe è come se fossero sovrapposte, formando dunque:
+
+\[
+    \begin{array}{c}
+        \begin{array}{ ccccc }
+            A & B & C & D & E \\ \hline
+            0 & 0 & 0 & 1 & 0 \\
+            0 & 1 & 0 & 1 & 0 \\
+            0 & 0 & 1 & 1 & 0 \\
+            0 & 1 & 1 & 1 & 0 \\ \hline
+            0 & 0 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 1 & 1 \\
+            0 & 1 & 1 & 1 & 1
+        \end{array} \\
+        {\color{magenta}\bar{A}D}
+    \end{array}
+%
+    \qquad\qquad
+%
+    \begin{array}{c}
+        \begin{array}{ ccccc }
+            A & B & C & D & E \\ \hline
+            1 & 0 & 1 & 1 & 0 \\ \hline
+            1 & 0 & 1 & 1 & 1
+        \end{array} \\
+        {\color{yellow}A\bar{B}CD}
+    \end{array}
+\]
 
 !!! note "Nota Bene"
 
@@ -742,4 +936,54 @@ parallelepipedi).
 È possibile, in maniera speculare, utilizzare le mappe di Karnaugh con gli zeri,
 individuando un corrispettivo speculare degli implicanti analogo ai maxtermini:
 
-<!-- TODO: aggiungere MdK con i maxtermini. -->
+<!-- markdownlint-disable MD013 MD033 -->
+<figure markdown>
+  ![Mappe di Karnaugh con maxtermini anziché mintermini](./imgs/karnaugh/implicants/10-dark-mode.svg#only-dark){ width="400" loading=lazy }
+  ![Mappe di Karnaugh con maxtermini anziché mintermini](./imgs/karnaugh/implicants/10-light-mode.svg#only-light){ width="400" loading=lazy }
+</figure>
+<!-- markdownlint-enable MD013 MD033 -->
+
+Così si ha:
+
+\[
+    \begin{array}{ c }
+        \begin{array}{ cccc }
+            A & B & C & D \\ \hline
+            0 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & 1 \\
+            0 & 1 & 0 & 1
+        \end{array} \\
+        {\color{blue}A + C}
+    \end{array}
+%
+    \qquad
+%
+    \begin{array}{ c }
+        \begin{array}{ cccc }
+            A & B & C & D \\ \hline
+            0 & 1 & 1 & 1 \\
+            1 & 1 & 1 & 1
+        \end{array} \\
+        {\color{magenta}\bar{B} + \bar{C} + \bar{D}}
+    \end{array}
+%
+    \qquad
+%
+    \begin{array}{ c }
+        \begin{array}{ cccc }
+            A & B & C & D \\ \hline
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 1 \\
+            0 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 0
+        \end{array} \\
+        {\color{green}A + B}
+    \end{array}
+\]
+
+Dunque:
+
+\[
+    f = (A + C)(\bar{B} + \bar{C} + \bar{D})(A + B).
+\]
