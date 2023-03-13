@@ -2,6 +2,8 @@
 
 ## Obiettivi di un sistema operativo
 
+Un sistema operativo ha priincipalmente tre obiettivi:
+
 - **convenienza** nell'uso del calcolatore rispetto ai potenziali utenti;
 - **efficienza** nell'utilizzo del calcolatore e delle sue parti costitutive;
 - **capacità di evolversi** rispetto a evoluzioni hardware, esigenze degli
