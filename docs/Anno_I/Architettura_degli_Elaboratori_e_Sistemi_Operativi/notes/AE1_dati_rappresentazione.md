@@ -6,12 +6,13 @@ L'alfabeto del calcolatore costituito da due simboli: `0` e `1`.
 
 !!! def "BIT"
 
-    È l'unità elementare di informazione. La cifra binaria può assumere solo due
-    valori alternativi: `0` oppure `1`. Archiviato da un dispositivo digitale o
-    un sistema fisico che esiste in uno di due possibili stati distinti.
+    È l'unità elementare di informazione. La cifra binaria può assumere solo
+    due valori alternativi: `0` oppure `1`. Viene archiviato da un dispositivo
+    digitale o un sistema fisico che esiste in uno di due possibili stati
+    distinti.
 
 | Presenza   | Assenza   |
-|:-----------|:----------|
+| :--------- | :-------- |
 | Vero       | Falso     |
 | `1`        | `0`       |
 | \(+\)      | \(-\)     |
@@ -31,8 +32,8 @@ L'alfabeto del calcolatore costituito da due simboli: `0` e `1`.
 ### Sequenze di bit
 
 Per poter rappresentare un numero maggiore di informazione si usano sequenze di
-bit. Il processo che fa corrispondere ad un dato reale una sequenze di bit prende
-il nome di **codifica dell'informazione**.
+bit. Il processo che fa corrispondere a un dato reale una sequenza di bit
+prende il nome di **codifica dell'informazione**.
 
 !!! example "Esempi"
 
@@ -42,7 +43,7 @@ il nome di **codifica dell'informazione**.
         necessari per codificare tale informazione?
 
         \[
-            \begin{array}{ l|l }
+            \begin{array}{ c|l }
                 \text{Voto} & \text{Bit}    \\ \hline
                 \text{Ottimo}        & 0  0 \\
                 \text{Discreto}      & 0  1 \\
@@ -71,11 +72,11 @@ il nome di **codifica dell'informazione**.
 
 ### Bit, byte e word
 
-Con \(n\) bit si possono rappresentare \(2^n\) stati o valori differenti. Per
-rappresentare \(n\) stati o valori, bisogna usare almeno \(\lceil\log_2 n\rceil\).
+Con \(n \bbit\) si possono rappresentare \(2^n\) stati o valori differenti. Per
+rappresentare \(n\) stati o valori, bisogna usare almeno \(\ceil{\log_2 n}\bit\).
 
 I sistemi moderni memorizzano e manipolano miliardi di bit: vi è quindi la
-necessità di avere dei multipli, infatti si ha \(8 \bbit = 1 \bbyte\).
+necessità di avere dei multipli, infatti si ha che \(8 \bbit = 1 \bbyte\).
 
 Con la lettera "\(\bit\)" minuscola si indicano i bit, mentre con la lettera
 "\(\byte\)" maiuscola si indicano i byte.
@@ -83,7 +84,7 @@ Con la lettera "\(\bit\)" minuscola si indicano i bit, mentre con la lettera
 #### Multipli del byte
 
 | Unità     | Simbolo   | Valore relativo | Valore pot. \(10\) |
-| :-------- | :-------- | :-------------- | :----------------- |
+| :-------- | --------: | --------------: | -----------------: |
 | Byte      | \(\byte\) | \(8 \bit\)      | \(10^0 \byte\)     |
 | KiloByte  | \(\KB\)   | \(1000 \byte\)  | \(10^3 \byte\)     |
 | MegaByte  | \(\MB\)   | \(1000 \KB\)    | \(10^6 \byte\)     |
@@ -94,9 +95,9 @@ Con la lettera "\(\bit\)" minuscola si indicano i bit, mentre con la lettera
 | ZettaByte | \(\ZB\)   | \(1000 \EB\)    | \(10^{21} \byte\)  |
 | YottaByte | \(\YB\)   | \(1000 \ZB\)    | \(10^{24} \byte\)  |
 
-Esistono misure in potenza di due dove \(1 \KiB = 1024 \byte\) dove \(\KiB\) sta
-per KibiByte. Gli altri multipli sono equivalente a quelli elencati sopra, eccetto
-che sono in potenza di due e non di dieci.
+Esistono misure in potenza di due dove \(1 \KiB = 1024 \byte\), dove \(\KiB\) sta
+per KibiByte. Gli altri multipli sono equivalenti a quelli elencati sopra,
+eccetto che sono in potenza di due e non di dieci.
 
 Esistono analoghe misure per i multipli dei \(\bbit\) (\(\small{\rm Kb}\), ovvero
 KiloBit, quindi \(1000\bbit\)), utilizzati generalmente come misura nelle quantità
@@ -109,15 +110,15 @@ ovvero \(1 \KB = 1024 \byte\).
 ## Tipi di dati non numerici
 
 La rappresentazione dei numeri, così come tutte le altre rappresentazioni dei
-dati, in informatica, a livello circuitale, avviene per tramite del
-**codice binario**. Le unità in memoria sono valori binari (corrispondenti ai bit).
+dati, in informatica, a livello circuitale, avviene per tramite del **codice
+binario**. Le unità in memoria sono valori binari (corrispondenti ai bit).
 
 Vi sono molteplici tipi di dati non numerici.
 
 ### Booleani
 
 I dati booleani sono contenuti all'interno di singoli bit che assumono valore
-`0/1`-`F/V`. Comunemente si considera come falso il valore `0` e come vero
+`0/1` o `F/V`. Comunemente si considera come falso il valore `0` e come vero
 qualsiasi altro valore.
 
 !!! example "Esempio"
@@ -125,7 +126,7 @@ qualsiasi altro valore.
     L'espressione `#!C if(a)` corrisponde a `#!C if(a != 0)`.
 
 In questa situazione il valore viene memorizzato all'interno di uno (es. per il
-`#!C char`) o più byte (es. per `#!C short`, `#!C int`, \(\dots\)).
+`#!C char`) o più byte (es. per `#!C short`, `#!C int`, etc).
 
 L'unico caso in cui un booleano viene effettivamente memorizzato in un singolo
 bit si ha quando si utilizzano le **mappe di bit**: viene considerato un byte
@@ -136,11 +137,11 @@ come se fosse un array di bit, ciascuno dei quali rappresenta un valore booleano
 Mappati come interi equivalenti in ASCII/UNICODE. In particolare si ha che
 l'UNICODE ha diversi "tipi", rappresentati in tabella.
 
-| Sigla  | \# di bit (\(\bit\,\)) | Descrizione                        |
-|:-------|:-----------------------|:-----------------------------------|
-| UTF-8  | \(8\; (1 \byte)\)      | ASCII esteso                       |
-| UTF-16 | \(16\; (2 \byte)\)     | Espansione a linguaggi occidentali |
-| UTF-32 | \(32\; (4 \byte)\)     | Set più completo di caratteri      |
+| Sigla  | \# di bit              | Descrizione                        |
+| :----- | :--------------------- | :--------------------------------- |
+| UTF-8  | \(8\bit\; (1 \byte)\)  | ASCII esteso                       |
+| UTF-16 | \(16\bit\; (2 \byte)\) | Espansione a linguaggi occidentali |
+| UTF-32 | \(32\bit\; (4 \byte)\) | Set più completo di caratteri      |
 
 L'ASCII invece occupa \(7 \bit\).
 
@@ -151,18 +152,26 @@ un puntatore dipende dalla dimensione dello spazio di indirizzamento.
 
 <!-- markdownlint-disable MD046 -->
 ```mermaid
-flowchart RL
-    subgraph varr [variabile]
-        var["indirizzo: 1001<br><br>valore: 50"];
-    end
-    subgraph pntr [puntatore]
-        p["indirizzo: 2047<br><br>valore: 1001"] --> var;
-    end
+stateDiagram-v2
+  direction LR
+  var: Variabile normale
+  state var {
+    varAddress: 1001\n (indirizzo)
+    varValue: 50\n (valore)
+  }
+
+  ptr: Puntatore
+  state ptr {
+    ptrAddress: 2047\n (indirizzo)
+    ptrValue: 1001\n (valore)
+   }
+
+  ptrValue --> varAddress
 ```
 <!-- markdownlint-enable MD046 -->
 
 Ovvero il puntatore, appunto, punta all'indirizzo della variabile con valore
-\(50\).
+\(50\) e indirizzo \(1001\), infatti il puntatore assume valore \(1001\).
 
 ## Basi numeriche
 
@@ -255,10 +264,8 @@ Il numero in base \(b\) è rappresentato dai singoli resti, presi come cifre,
 considerando l'ultimo resto come cifra più significativa e il primo resto come
 cifra meno significativa.
 
-**ALGORITMO**:
-
 <!-- markdownlint-disable MD046 -->
-```txt
+```txt title="ALGORITMO"
 i := 0
 ESEGUI
     cᵢ := n % b   >> operazione modulo (resto della divisione)
@@ -310,7 +317,7 @@ FINCHÉ (n != 0)
 
 ### Conversione rapida da base \(2^n\) a base \(2\) e viceversa
 
-Piché le basi \(16 = 2^4\) è possibile dividere in blocchi da \(4\) cifre a
+Poiché la base \(16 = 2^4\) è possibile dividere in blocchi da \(4\) cifre a
 partire da destra e trasformare il blocco da una base all'altra.
 
 \[
@@ -323,7 +330,8 @@ partire da destra e trasformare il blocco da una base all'altra.
 ### Rappresentazione di un numero
 
 Per rappresentare un numero \(n \in \N\) in base \(b\) sono necessarie
-\(\ceil{\log_b n}\) cifre. Quindi, la stessa regola la si applica anche in binario.
+\(\ceil{\log_b n}\) cifre. Quindi, la stessa regola la si applica anche in
+binario.
 
 ### Somma e sottrazione
 
@@ -404,10 +412,10 @@ Laddove i segni siano concordi è necessario valutare se la somma dei moduli
 (sia essa positiva o negativa) costituisca un valore rappresentabile con il
 numero di bit scelti per la rappresentazione:
 
-- Se il modulo è troppo grande per essere rappresentato si ha una situazione di
-  *overflow* (se gli operandi sono positivi) o di *underflow* (se gli operandi
-  sono negativi). Le operazioni produrranno dunque un risultato errato;
-- Se invece il modulo può essere rappresentato, il bit in eccesso dovrà essere
+- se il modulo è troppo grande per essere rappresentato si ha una situazione di
+  *overflow*, se gli operandi sono positivi, o di *underflow*, se gli operandi
+  sono negativi. Le operazioni produrranno dunque un risultato errato;
+- se invece il modulo può essere rappresentato, il bit in eccesso dovrà essere
   gestito correttamente per garantire la validità del risultato.
 
 Il bit in eccesso si può presentare anche nei casi in cui i segni sono discordi,
@@ -425,7 +433,7 @@ Ipotizzando di voler effettuare la somma \(A + B\), si ha:
 | \(B < 0\) | \(\abs{A} < \abs{B} \implies -(\abs{B} - \abs{A})\)<br>\(\abs{A} > \abs{B} \implies \abs{A} - \abs{B}\) |                                        \(-(\abs{A} + \abs{B})\)                                         |
 <!-- markdownlint-enable MD013 MD033-->
 
-Lo svantaggio è l'operazione risulta estremamente complicata.
+Lo svantaggio è che l'operazione risulta estremamente complicata.
 
 ### Complemento a uno
 
@@ -515,9 +523,9 @@ di un altro valore.
 
 In particolare:
 
-- lo zero resta corrispondente solo alla notazione composta da tutti \(0\);
-- la notazione composta da tutti \(1\) corrisponde invece al valore \(−1\);
-- Viene rappresentato un valore negativo in più: \(−2^{n−1}\).
+- lo zero resta corrispondente solo alla notazione composta da tutti zeri;
+- la notazione composta da tutti uno corrisponde invece al valore \(−1\);
+- viene rappresentato un valore negativo in più: \(−2^{n−1}\).
 
 Nel complemento a due su \(n\) bit sono quindi rappresentati \(2^n\) valori e,
 dunque, l'intervallo rappresentabile è \({[−2^{n−1},\; 2^{n−1} − 1]}_{10}\)
@@ -576,12 +584,13 @@ POSIX).
 
 Poiché tale valore di tempo veniva memorizzato in variabili da \(32 \bit\),
 giunti al massimo valore rappresentabile, il secondo immediatamente successivo
-viene interpretato come il minimo valore rappresentabile su \(32 \bit\)^[†](https://it.wikipedia.org/wiki/Bug_dell%27anno_2038)^.
+viene interpretato come il minimo valore rappresentabile su
+\(32 \bit\)^[\[\(\dagger\)\]](https://it.wikipedia.org/wiki/Bug_dell%27anno_2038)^.
 
 ## Rappresentazione dei numeri razionali
 
-Per rappresentare un numero razionale[^1] (al netto degli errori di approssimazione)
-vi sono due strade principali:
+Per rappresentare un numero razionale[^1], al netto degli errori di
+approssimazione, vi sono due strade principali:
 
 1. **notazione in virgola fissa**: si dedica un numero di cifre alla parte intera
    e un numero di cifre alla parte decimale:
@@ -594,8 +603,8 @@ vi sono due strade principali:
    più valori.
 
 [^1]:
-    I numeri reali sono composti dai numeri razionali irrazionali. I numeri
-    irrazionali non sono rappresentabili.
+    I numeri reali sono composti dai numeri razionali e irrazionali. Quest'ultimi
+    non sono rappresentabili.
 
 ### Rappresentazione floating point
 
@@ -605,30 +614,30 @@ Qualsiasi numero può essere scritto nella seguente forma:
 
 Dove \(M\) è la **mantissa**, \(b\) è la **base** e \(e\) è l'**esponente**.
 
-Quanto tale sistema viene applicato alla base \(10\) prende il nome di *notazione
+Quando tale sistema viene applicato alla base \(10\) prende il nome di *notazione
 scientifica* (es. \(0.83234 \times 10^2\)).
 
 Naturalmente, tale rappresentazione dovrà essere approssimata destinando un certo
 numero di bit alla mantissa e un certo numero di bit all’esponente.
 La precisione nel floating point è la seguente:
 
-|                      | Precisione Singola | Precisione doppia   |
-| :------------------- | :----------------- | :------------------ |
-| Segno                | \(1 \bit\)         | \(1 \bit\)          |
-| Esponente            | \(8 \bit\)         | \(11 \bit\)         |
-| Mantissa             | \(23 \bit\)        | \(52 \bit\)         |
-| Totale               | \(32 \bit\)        | \(64 \bit\)         |
-| Intervallo esponente | \([-126,\; 127]\)  | \([-1022,\; 1023]\) |
-| Bias esponente       | \(127\)            | \(1023\)            |
+|                          | Precisione Singola | Precisione doppia   |
+| :----------------------- | :----------------- | :------------------ |
+| **Segno**                | \(1 \bit\)         | \(1 \bit\)          |
+| **Esponente**            | \(8 \bit\)         | \(11 \bit\)         |
+| **Mantissa**             | \(23 \bit\)        | \(52 \bit\)         |
+| **Totale**               | \(32 \bit\)        | \(64 \bit\)         |
+| **Intervallo esponente** | \([-126,\; 127]\)  | \([-1022,\; 1023]\) |
+| **Bias esponente**       | \(127\)            | \(1023\)            |
 
-Non è necessario memorizzare la base in quanto è implicita \((2)\). Non tutte
+Non è necessario memorizzare la base in quanto è implicita (è due). Non tutte
 le configurazioni di esponenti sono disponibili, alcune sono riservate.
 
 Gli esponenti sono rappresentati in **forma polarizzata**, ovvero viene
-memorizzato l'esponente (in binario) sommato ad una costante che viene detta
+memorizzato l'esponente (in forma binaria) sommato ad una costante detta
 **bias**. Questo consente di effettuare più facilmente i controlli di maggioranza
-o minoranza tra interi polarizzati (l'esponente più basso assume valore
-\(\bin{00000000}\) e il più alto \(\bin{11111111}\)).
+o minoranza tra interi polarizzati poiché l'esponente più basso assume valore
+\(\bin{00000000}\) e il più alto \(\bin{11111111}\).
 
 Vi sono diverse tipologie di numeri nel floating point:
 
@@ -636,15 +645,15 @@ Vi sono diverse tipologie di numeri nel floating point:
     \begin{array}{ c|c|c|l }
         \text{Segno} & \text{Esponente} & \text{Mantissa}
             & \text{Valore}                                     \\ \hline
-        & \neq 0 \lor 111\dots111 & \text{qualsiasi}
+        \pm & \neq 0 \lor 111\dots111 & \text{qualsiasi}
             & \text{n. normalizzato}                            \\
-        & 0 & \text{qualsiasi tranne } 0
+        \pm & 0 & \text{qualsiasi tranne } 0
             & \text{n. denormalizzato}                          \\
         \pm & 0 & \text{0}
             & \pm 0                                             \\
-        & 111\dots111 & 0
+        \pm & 111\dots111 & 0
             & \pm\infty                                         \\
-        & 111\dots111 & \text{qualsiasi tranne } 0
+        \pm & 111\dots111 & \text{qualsiasi tranne } 0
             & \text{NaN (Not a Number)}
     \end{array}
 \]
@@ -701,7 +710,7 @@ cifre binarie che è possibile memorizzare) o il risultato è \(1\).
     Dunque \({19.3125}_{10} = \bin{10011.\underline{0101}}\). A riprova di ciò:
 
     \[
-        \begin{array}{ ccccc c cccc }
+        \begin{array}{ lllll c llll }
             2^4 & 2^3 & 2^2 & 2^1 & 2^0 &   & 2^{-1} & 2^{-2} & 2^{-3} & 2^{-4} \\
                 \hline
             1   & 0   & 0   & 1   & 1   & . & 0      & 1      & 0      & 1      \\
@@ -720,8 +729,8 @@ cifre binarie che è possibile memorizzare) o il risultato è \(1\).
 
 #### Numeri denormalizzati
 
-Un **numero denormalizzato** espresso in floating point su un calcolatore è definito
-come segue:
+Un **numero denormalizzato** espresso in floating point su un calcolatore è
+definito come segue:
 
 \[ \pm 0.xxxxxxx \times 2 ^{1-b} \]
 
@@ -733,23 +742,23 @@ tra lo \(0\) e il più piccolo numero normalizzato rappresentabile.
 
 In generale l'aritmetica a virgola mobile è affetta da alcune problematiche:
 
-1. Non sono valide in generale la proprietà associativa e la proprietà distributiva;
-2. *Assorbimento*: numeri molto grandi "assorbono" numeri più piccoli, es.
+1. non sono valide in generale la proprietà associativa e la proprietà distributiva;
+2. *assorbimento*: numeri molto grandi "assorbono" numeri più piccoli, es.
    \(10^{15} + 1 = 10^{15}\);
-3. *Cancellazione*: quando sottraendo due numeri molto vicini si ottiene \(0\);
-4. Arrotondamento.
+3. *cancellazione*: quando sottraendo due numeri molto vicini si ottiene \(0\);
+4. arrotondamento.
 
 Gli errori di calcolo sono invece ottenuti da:
 
-1. Le operazioni in overflow danno risultato \(\pm\infty\);
-2. Situazioni di underflow, ovvero valori molto piccoli trasformati in \(0\);
-3. Le operazioni impossibili (es. la radice quadrata di un numero negativo)
+1. le operazioni in overflow danno risultato \(\pm\infty\);
+2. situazioni di underflow, ovvero valori molto piccoli trasformati in \(0\);
+3. le operazioni impossibili (es. la radice quadrata di un numero negativo)
    restituisce NaN.
 
 I problemi di arrotondamento sono dati da una duplice natura:
 
-1. Operazioni aritmetiche, es \(\ifrac{2}{3} = 0.666667\);
-2. Numeri non rappresentabili.
+1. operazioni aritmetiche, es \(\ifrac{2}{3} = 0.666667\);
+2. numeri non rappresentabili.
 
 Ad esempio \(0.1\) non è un numero rappresentabile, infatti:
 
@@ -769,33 +778,44 @@ Si ha un ciclo infinito sulla cifra finae \(2\)-\(4\)-\(8\)-\(6\)
 
 ### Operazioni in floating point
 
-1. **Confronto di uguaglianza**: poiché i dati possono provenire da operazioni
-    di natura diversa ha senso definire l’uguaglianza come segue:
+#### Confronto di uguaglianza
 
-    \[ A = B \iff \abs{A - B} < \varepsilon \]
+Poiché i dati possono provenire da operazioni di natura diversa ha senso
+definire l’uguaglianza come segue. Preso un \(\varepsilon\) sufficientemente
+piccolo:
 
-    ovvero se i due numeri sono "sufficientemente" vicini tra loro;
+\[ A = B \iff \abs{A - B} < \varepsilon \]
 
-2. **Confronto maggiore/minore**: non a caso vegono memorizzati nell'ordine segno,
-    esponente e mantissa. Per confrontarli è sufficiente scorrere i bit dei due
-    numeri fin quando non si trova un bit diverso:
+ovvero se i due numeri sono abbastanza vicini tra loro.
 
-    - Se si trova nel segno, è più grande il numero con il segno positivo (\(0\));
-    - Se si trova nell’esponente o nella mantissa è più grande il numero con il
-      bit a \(1\).
+#### Confronto maggiore/minore
 
-3. **Somma/sottrazione**:
-    - si allineano i due numeri per raggiungere lo stesso esponente;
-    - si sommano le mantisse;
-    - si normalizza il risultato;
-    - si controlla se è overflow o underflow;
-    - si arrotonda il numero;
-    - se non è normalizzato, lo si normalizza.
+Non a caso vegono memorizzati nell'ordine segno, esponente e mantissa. Per
+confrontarli è sufficiente scorrere i bit dei due numeri fin quando non si
+trova un bit diverso:
 
-4. **Prodotto/divisione**:
-    - si sommano gli esponenti – bias;
-    - si moltiplicano le mantisse;
-    - si normalizza il risultato;
-    - si controlla se è overflow o underflow;
-    - si arrotonda il numero;
-    - se non è normalizzato, lo si normalizza.
+- se si trova nel segno, è più grande il numero con il segno positivo (\(0\));
+- se si trova nell’esponente o nella mantissa è più grande il numero con il
+  bit a \(1\).
+
+#### Somma/sottrazione
+
+Per effettuare la somma o la sottrazione:
+
+- si allineano i due numeri per raggiungere lo stesso esponente;
+- si sommano le mantisse;
+- si normalizza il risultato;
+- si controlla se è overflow o underflow;
+- si arrotonda il numero;
+- se non è normalizzato, lo si normalizza.
+
+#### Prodotto/divisione
+
+Per effettuare il prodotto o la divisione:
+
+- si sommano gli esponenti – bias;
+- si moltiplicano le mantisse;
+- si normalizza il risultato;
+- si controlla se è overflow o underflow;
+- si arrotonda il numero;
+- se non è normalizzato, lo si normalizza.
