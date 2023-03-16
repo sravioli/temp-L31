@@ -1,0 +1,10 @@
+
+se la stringa contiene un numero dispari di parentesi aperte non può
+essere convertita: errore
+
+se contiene un numero pari:
+  bisogna controllare che le parentesi che vengono aperte, vengono anche
+  chiuse. se non è così: errore
+
+se può essere manipolata si procede con l'algoritmo
+

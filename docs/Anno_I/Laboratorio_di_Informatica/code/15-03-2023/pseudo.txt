@@ -1,0 +1,230 @@
+>> Esercitazione del 15 marzo 2023
+>> Leggere in input, da file di testo, una sequenza di caratteri alfanumerici e
+>> memorizzarli nell’ordine in cui sono stati letti.
+>> Dopo aver memorizzato l’intera sequenza, eliminare le eventuali sottosequenze 
+>> di elementi delimitati dalle parentesi tonde (aperta all’inizio della sequenza, 
+>> chiusa alla fine della sequenza), sostituendole con un solo elemento 
+>> contenente un asterisco "*".
+>>
+>> Stampare la sequenza ottenuta.
+>>
+>> Si tenga conto del fatto che la sequenza fornita in input non potrà contenere 
+>> coppie di parentesi che si "intersecano" e che inoltre per ogni parentesi 
+>> aperta esiste una parentesi chiusa.
+>>
+>> Esempio: Si consideri la sequenza 
+>>
+>>    a, b, (a, c, g), b, e, (p, q), a, (x, x), f
+>> 
+>> La sequenza di output sarà allora la seguente: 
+>>
+>>    a, b, (*), b, e, (*), a, (*), f
+>>
+>> N.B. Realizzare pseudocodice, casi di test e codice in linguaggio C, e 
+>> inviare tutto via e-mail entro le 17.30
+
+
+=== ESERCIZIO ===
+
+INPUT:
+- nomefile: il nome del file contenete la stringa di caratteri da manipolare.
+
+OUTPUT:
+- sq_manipolata: il valore finale che la sequenza assume. stringa 
+
+LAVORO:
+- manipolabile: indica se la lista di caratteri è manipolabile. Intero che può
+  assumere valore 0/1.
+
+ALGORITMO:
+sequenza := LeggereDaFile(nomefile)
+manipolabile := SiPuoManipolare(sequenza)
+SE (manipolabile = 1) 
+  ALLORA seq_manipolata := ManipolareSequenza(sequenza)
+FINE
+
+
+-------------------------------------------------------------------------------
+
+== LeggereDaFile() ==
+  legge caratteri da un file di testo e li riporta uno ad uno all'interno di un
+  array di caratteri.
+
+INPUT:
+- nomefile: nome del file che contiene la sequenza da modificare
+
+OUTPUT:
+- sequenza: lista di caratteri contenuti all'interno del file, array di caratteri
+  di dimensione 1, non può essere vuoto.
+
+LAVORO:
+mo vediamo
+
+ALGORITMO:
+i := 1
+ESEGUI
+  elemento i-esimo di sequenza := carattere i-esimo
+FINCHÉ (ci sono caratteri nel file)
+
+
+-------------------------------------------------------------------------------
+
+== SiPuoManipolare() ==
+  controlla se la sequenza può essere manipolata, ovvero se rispetta la 
+  condizioni iniziali.
+
+INPUT:
+- sequenza: lista di caratteri di cui verificare se è possibile manipolare, 
+  array di caratteri a una dimensione
+
+OUTPUT:
+- manipolabile: indica se la sequenza è manipolabile. intero che assume valore 
+  0/1
+
+LAVORO:
+- n_par_aperte: numero di parentesi aperte che sono presenti nella sequenza, 
+  intero
+- n_par_chiuse: numero di parentesi chiuse che sono presenti nella sequenza, 
+  intero
+- par_sono_in_coppia: indica se le parentesi che vengono aperte vengono anche
+  chiuse, numero intero che assume valore 0/1
+
+ALGORITMO:
+n_par_aperte := TrovaNumeroCarattere(sequenza, '(')
+n_par_chiuse := TrovaNumeroCarattere(sequenza, ')')
+par_sono_in_coppia := ControllaChiusuraParentesi(sequenza)
+SE (
+    ((n_par_aperte % 2) != 0) OR (n_par_chiuse % 2) != 0)) AND
+    (n_par_aperte = n_par_chiuse) AND
+    (par_sono_in_coppia = 1)
+   (
+  ALLORA manipolabile := 1
+  ALTRIMENTI manipolabile := 0
+FINE
+
+
+---------------------------------------------
+
+= TrovaNumeroCarattere() =
+  trova quante volte si ripete un carattere all'interno di una sequenza.
+
+INPUT:
+- sequenza: lista di caratteri da analizzare, array di caratteri a una 
+  dimensione;
+- carattere: carattere che va ricercato all'interno della sequenza, carattere.
+
+
+OUTPUT:
+- n_caratteri: il numero di volte che il carattere dato si ripete all'interno
+  della sequenza, intero >= 0.
+
+LAVORO:
+- i: contatore
+
+ALGORITMO:
+n_caratteri := 0
+i := 1
+MENTRE (i < sequenza.lunghezza)
+  SE elemento i-esimo di sequenza = carattere
+    ALLORA n_caratteri := n_caratteri + 1
+FINE
+
+
+---------------------------------------------
+
+= ControllaChiusuraParentesi() =
+  controlla che le parentesi aperte abbiano un proprio corrispettivo.
+
+INPUT:
+- sequenza: lista di caratteri in cui controllare se le parentesi aperte vengono
+  chiuse.
+
+OUTPUT:
+- boh: indica se le parentesi aperte vengono chiuse, intero che assume valore 
+  0/1;
+
+LAVORO:
+- i: contatore
+
+ALGORITMO:
+i := 1
+MENTRE (i <= sequenza.lunghezza)
+  >> se la prima parentesi incontrata è chiusa non ha senso continuare
+  SE (elemento i-esimo di sequenza = ')') ALLORA
+    boh := 0
+    i := i + sequenza.lunghezza
+  FINE_SE
+
+  >> se è una tonda bisogna controllare se e quando si chiude
+  SE (elemento i-esimo di sequenza = '(') ALLORA   
+    j := i + 1
+    MENTRE (j < sequenza.lunghezza)
+    >> se c'è un'altra parentesi aperta inutile continuare
+      SE (elemento j-esimo di sequenza = '(') ALLORA 
+        boh := 0
+        j := j + sequenza.lunghezza
+      FINE_SE
+      SE (elemento j-esimo di sequenza = ')') ALLORA
+        boh := 1
+      FINE_SE
+      j := j + 1
+    FINE_MENTRE
+  FINE_SE
+  i := i + 1
+FINE_MENTRE
+
+
+-------------------------------------------------------------------------------
+
+== ManipolareSequenza() ==
+
+INPUT:
+OUTPUT:
+LAVORO:
+ALGORITMO:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==BOZZA==
+leggo la sequenza da file e la metto in un array (while)
+se la sequenza ha un numero dispari di parentesi aperte
+  allora ERRORE
+se ha numero dispari di parentesi chiuse
+  allora ERRORE
+se non ci sono parentesi: ho finito
+scannerizzo la sequenza finché non trovo una parentesi aperta
+  continuo finché non trovo una parentesi chiusa
+    se trovo una parentesi chiusa elimino ciò che sta nelle parentesi e metto *
+
+stampo la sequenza finale
+
+
+
+
+----------------------------------
+DA DEFINIRE
+
+- [x] LeggereDaFile()
+- [x] SiPuoManipolare()
+  - [x] TrovaNumeroCarattere()
+  - [x] ControllaChiusuraParentesi()
+- [ ] ManipolareSequenza()
