@@ -25,18 +25,18 @@ window.MathJax = {
             codom: "{\\operatorname{codom}}",
 
             // so that
-            tc: "{\\hspace\{.4em}\\text{t.c.}\\hspace\{.4em}}",
+            tc: "{\\hspace{.4em}\\text{t.c.}\\hspace{.4em}}",
 
             // better set notation
-            set: ["{\\left\\{\\hspace\{.1em} #1 \\hspace\{.1em}\\right\\}}", 1],
+            set: ["{\\left\\{\\hspace\{.1em} #1 \\hspace{.1em}\\right\\}}", 1],
 
             // LdP macros
             lng: "{\\mathcal{L}}",
-            llo: "{\\mathcal{L}_{\\hspace{-.08em}O} \\hspace\{.1em}}",
+            llo: "{\\mathcal{L}_{\\hspace{-.08em}O} \\hspace{.1em}}",
 
             mm: "{\\mathcal{M}}",
-            ml: "{{\\mm}_{\\hspace{-.15em} \\lng} \\hspace\{.1em}}",
-            mlprime: "{{\\mm'}_{\\hspace{-.55em} \\lng^{'}} \\hspace\{.1em}}",
+            ml: "{{\\mm}_{\\hspace{-.15em} \\lng} \\hspace{.1em}}",
+            mlprime: "{{\\mm'}_{\\hspace{-.55em} \\lng^{'}} \\hspace{.1em}}",
             molo: "{{\\mm_{\\hspace{-.1em}O}}_{\\hspace{-.1em}\\llo}\\hspace{.1em}}",
 
             prgm: "{\\mathcal{P}}",
