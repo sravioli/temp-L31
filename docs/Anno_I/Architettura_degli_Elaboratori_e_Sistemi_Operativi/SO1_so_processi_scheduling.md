@@ -14,16 +14,16 @@ Un sistema operativo ha priincipalmente tre obiettivi:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart LR
-    subgraph PC
-        App(Application Program)
-        Utilities
-        OS(Operating System)
-        HW(Computer Hardware)
-    end
+  subgraph PC
+    App(Application Program)
+    Utilities
+    OS(Operating System)
+    HW(Computer Hardware)
+  end
 
-    App --> User(End User)
-    Utilities & OS --> Programmer
-    HW --> Dev(Operating System Developer)
+  App --> User(End User)
+  Utilities & OS --> Programmer
+  HW --> Dev(Operating System Developer)
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -63,20 +63,20 @@ Il sistema operativo offre vari servizi:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 flowchart LR
-    subgraph PC[" "]
-        Controller1[I/O Controller]
-        Controller2[I/O Controller]
-        Processore
-        subgraph Memoria
-            subgraph OS[Sistema Operativo]
-                Kernel(Kernel)
-            end
-            Programmi
-            Dati
-        end
+  subgraph PC[" "]
+  Controller1[I/O Controller]
+  Controller2[I/O Controller]
+  Processore
+  subgraph Memoria
+    subgraph OS[Sistema Operativo]
+      Kernel(Kernel)
     end
-    Dispositivo1([Dispositivo I/O]) <--> Controller1
-    Dispositivo2([Dispositivo I/O]) <--> Controller2
+    Programmi
+    Dati
+    end
+  end
+  Dispositivo1([Dispositivo I/O]) <--> Controller1
+  Dispositivo2([Dispositivo I/O]) <--> Controller2
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -296,21 +296,21 @@ Si giunge dunque al modello a cinque stati:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
+  direction LR
 
-    [*] --> New
-    New --> Ready: Admit
-    Ready --> Running: Dispatch
-    Ready --> Exit: Kill
+  [*] --> New
+  New --> Ready: Admit
+  Ready --> Running: Dispatch
+  Ready --> Exit: Kill
 
-    Running --> Exit: Release
-    Running --> Ready: Timeout
-    Running --> Blocked: Event Wait
+  Running --> Exit: Release
+  Running --> Ready: Timeout
+  Running --> Blocked: Event Wait
 
-    Blocked --> Ready: Event Occurs
-    Blocked --> Exit: Kill
+  Blocked --> Ready: Event Occurs
+  Blocked --> Exit: Kill
 
-    Exit --> [*]
+  Exit --> [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -332,18 +332,18 @@ La prima strategia è quella della coda di *Blocked* singola:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    state Admit <<join>>
-      RQ: Coda di Ready
-      BQ: Coda di Blocked
-      [*] --> Admit
-      Admit --> RQ: Admit
-      BQ --> Admit: Event Occurs
-      RQ --> Processor: Dispatch
+  direction LR
+  state Admit <<join>>
+    RQ: Coda di Ready
+    BQ: Coda di Blocked
+    [*] --> Admit
+    Admit --> RQ: Admit
+    BQ --> Admit: Event Occurs
+    RQ --> Processor: Dispatch
 
-    Processor --> [*]: Release
-    Processor --> Admit: Timeout
-    Processor --> BQ: Event Wait
+  Processor --> [*]: Release
+  Processor --> Admit: Timeout
+  Processor --> BQ: Event Wait
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -352,39 +352,39 @@ L'altra strategia di accodamento fa uso di più code di *Blocked*:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    state Admit <<join>>
-      ReadyQueue: Coda di Ready
-      [*] --> Admit
-      Admit --> ReadyQueue: Admit
-      ReadyQueue --> Processor: Dispatch
+  direction LR
+  state Admit <<join>>
+    ReadyQueue: Coda di Ready
+    [*] --> Admit
+    Admit --> ReadyQueue: Admit
+    ReadyQueue --> Processor: Dispatch
 
-    state EventWait <<fork>>
-      BlockedQueues: Code di Blocked
-      state BlockedQueues {
-        direction LR
-        BlockedQueue1: Coda di Blocked #1
-        BlockedQueue2: Coda di Blocked #2
-        BlockedQueue3: Coda di Blocked #3
-        BlockedQueuen: Coda di Blocked #n
-      }
-      EventWait --> BlockedQueue1: Event #1 Wait
-      EventWait --> BlockedQueue2: Event #2 Wait
-      EventWait --> BlockedQueue3: Event #3 Wait
-      EventWait --> BlockedQueuen: Event #n Wait
+  state EventWait <<fork>>
+    BlockedQueues: Code di Blocked
+    state BlockedQueues {
+      direction LR
+      BlockedQueue1: Coda di Blocked #1
+      BlockedQueue2: Coda di Blocked #2
+      BlockedQueue3: Coda di Blocked #3
+      BlockedQueuen: Coda di Blocked #n
+    }
+    EventWait --> BlockedQueue1: Event #1 Wait
+    EventWait --> BlockedQueue2: Event #2 Wait
+    EventWait --> BlockedQueue3: Event #3 Wait
+    EventWait --> BlockedQueuen: Event #n Wait
 
-    state EventOccurs <<join>>
-      BlockedQueue1 --> EventOccurs: Event #1 Occurs
-      BlockedQueue2 --> EventOccurs: Event #2 Occurs
-      BlockedQueue3 --> EventOccurs: Event #3 Occurs
-      BlockedQueuen --> EventOccurs: Event #n Occurs
-      EventOccurs --> Admit
+  state EventOccurs <<join>>
+    BlockedQueue1 --> EventOccurs: Event #1 Occurs
+    BlockedQueue2 --> EventOccurs: Event #2 Occurs
+    BlockedQueue3 --> EventOccurs: Event #3 Occurs
+    BlockedQueuen --> EventOccurs: Event #n Occurs
+    EventOccurs --> Admit
 
-    state ProcessorFork <<fork>>
-      Processor --> ProcessorFork
-      ProcessorFork --> Admit: Timeout
-      ProcessorFork --> EventWait: Event Wait
-      ProcessorFork --> [*]: Release
+  state ProcessorFork <<fork>>
+    Processor --> ProcessorFork
+    ProcessorFork --> Admit: Timeout
+    ProcessorFork --> EventWait: Event Wait
+    ProcessorFork --> [*]: Release
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -477,27 +477,27 @@ molto più veloce dei dispositivi I/O. Le soluzioni applicabili sono le seguenti
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
+  direction LR
 
-    [*] --> New
-    New --> Ready: Admit
+  [*] --> New
+  New --> Ready: Admit
 
-    Ready --> Suspended: Suspend
-    Ready --> Running: Dispatch
-    Ready --> Exit
+  Ready --> Suspended: Suspend
+  Ready --> Running: Dispatch
+  Ready --> Exit
 
-    Running --> Ready: Timeout
-    Running --> Blocked: Event wait
-    Running --> Exit: Release
+  Running --> Ready: Timeout
+  Running --> Blocked: Event wait
+  Running --> Exit: Release
 
-    Suspended --> Ready: Activate
-    Suspended --> Blocked: Activate
+  Suspended --> Ready: Activate
+  Suspended --> Blocked: Activate
 
-    Blocked --> Suspended: Suspend
-    Blocked --> Ready: Event occurs
-    Blocked --> Exit
+  Blocked --> Suspended: Suspend
+  Blocked --> Ready: Event occurs
+  Blocked --> Exit
 
-    Exit --> [*]
+  Exit --> [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -516,34 +516,34 @@ Ciò consente al sistema operativo di scegliere tra i processi in *New* e in
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    ReadySuspended: Ready/Suspended
-    BlockedSuspended: Blocked/Suspended
+  direction LR
+  ReadySuspended: Ready/Suspended
+  BlockedSuspended: Blocked/Suspended
 
-    [*] --> New
-    New --> Ready: Admit
-    New --> ReadySuspended: Admit
+  [*] --> New
+  New --> Ready: Admit
+  New --> ReadySuspended: Admit
 
-    Ready --> ReadySuspended: Suspend
-    Ready --> Running: Dispatch
-    Ready --> Exit
+  Ready --> ReadySuspended: Suspend
+  Ready --> Running: Dispatch
+  Ready --> Exit
 
-    Running --> Ready: Timeout
-    Running --> ReadySuspended: Suspend
-    Running --> Blocked: Event Wait
-    Running --> Exit: Release
+  Running --> Ready: Timeout
+  Running --> ReadySuspended: Suspend
+  Running --> Blocked: Event Wait
+  Running --> Exit: Release
 
-    Blocked --> BlockedSuspended: Suspend
-    Blocked --> Exit
+  Blocked --> BlockedSuspended: Suspend
+  Blocked --> Exit
 
-    BlockedSuspended --> Blocked: Activate
-    BlockedSuspended --> ReadySuspended: Event Occurs
-    BlockedSuspended --> Exit
+  BlockedSuspended --> Blocked: Activate
+  BlockedSuspended --> ReadySuspended: Event Occurs
+  BlockedSuspended --> Exit
 
-    ReadySuspended --> Ready: Activate
-    ReadySuspended --> Exit
+  ReadySuspended --> Ready: Activate
+  ReadySuspended --> Exit
 
-    Exit --> [*]
+  Exit --> [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -590,16 +590,16 @@ Gli scheduler intervengono secondo il seguente schema:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    ReadySuspended: Ready/Suspended
+  direction LR
+  ReadySuspended: Ready/Suspended
 
-    New --> Ready: SLT
-    New --> ReadySuspended: SLT
-    ReadySuspended --> Ready: SMT
-    Ready --> Running: SBT
+  New --> Ready: SLT
+  New --> ReadySuspended: SLT
+  ReadySuspended --> Ready: SMT
+  Ready --> Running: SBT
 
-    BlockedSuspended: Blocked/Suspended
-    BlockedSuspended --> Blocked: SMT
+  BlockedSuspended: Blocked/Suspended
+  BlockedSuspended --> Blocked: SMT
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -812,38 +812,38 @@ siano \(p_1\) e \(p_2\) due processi con tempo di esecuzione totale di
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    state Admit <<fork>>
-      [*] --> Admit: Admit
-      Admit --> RQ0
-      Admit --> RQ1
-      Admit --> RQ2
-      Admit --> RQ3
-      Admit --> RQn
+  direction LR
+  state Admit <<fork>>
+    [*] --> Admit: Admit
+    Admit --> RQ0
+    Admit --> RQ1
+    Admit --> RQ2
+    Admit --> RQ3
+    Admit --> RQn
 
-    Code: Code di Ready
-    state Code {
-      RQ0: Coda di Ready #0
-      RQ1: Coda di Ready #1
-      RQ2: Coda di Ready #2
-      RQ3: Coda di Ready #3
-      RQn: Coda di Ready #n
-    }
+  Code: Code di Ready
+  state Code {
+    RQ0: Coda di Ready #0
+    RQ1: Coda di Ready #1
+    RQ2: Coda di Ready #2
+    RQ3: Coda di Ready #3
+    RQn: Coda di Ready #n
+  }
 
-    BQ: Coda Blocked
-    BQ --> Admit: Event Occurs
+  BQ: Coda Blocked
+  BQ --> Admit: Event Occurs
 
-    state Dispatch <<join>>
-      RQ0 --> Dispatch
-      RQ1 --> Dispatch
-      RQ2 --> Dispatch
-      RQ3 --> Dispatch
-      RQn --> Dispatch
-      Dispatch --> Processor: Dispatch
+  state Dispatch <<join>>
+    RQ0 --> Dispatch
+    RQ1 --> Dispatch
+    RQ2 --> Dispatch
+    RQ3 --> Dispatch
+    RQn --> Dispatch
+    Dispatch --> Processor: Dispatch
 
-    Processor --> [*]: Release
-    Processor --> BQ: Event Wait
-    Processor --> Admit: Preemption
+  Processor --> [*]: Release
+  Processor --> BQ: Event Wait
+  Processor --> Admit: Preemption
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -1010,28 +1010,28 @@ appena arrivato. Questo schema è anche noto come **Shortest Remaining Time Firs
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    system: System Processes
-    interactive: Interactive Processes
-    interactiveEditing: Interactive Editing Processes
-    batch: Batch Processes
-    student: Student Processes
+  direction LR
+  system: System Processes
+  interactive: Interactive Processes
+  interactiveEditing: Interactive Editing Processes
+  batch: Batch Processes
+  student: Student Processes
 
-    state ready <<fork>>
-      [*] --> ready
-      ready --> system: Hi Priority
-      ready --> interactive
-      ready --> interactiveEditing
-      ready --> batch
-      ready --> student: Lo Priority
+  state ready <<fork>>
+    [*] --> ready
+    ready --> system: Hi Priority
+    ready --> interactive
+    ready --> interactiveEditing
+    ready --> batch
+    ready --> student: Lo Priority
 
-    state stop <<join>>
-        system --> stop
-        interactive --> stop
-        interactiveEditing --> stop
-        batch --> stop
-        student --> stop
-        stop -->  [*]
+  state stop <<join>>
+    system --> stop
+    interactive --> stop
+    interactiveEditing --> stop
+    batch --> stop
+    student --> stop
+    stop -->  [*]
 ```
 <!-- markdownlint-enable MD046 -->
 
@@ -1054,17 +1054,17 @@ tra le code:
 <!-- markdownlint-disable MD046 -->
 ```mermaid
 stateDiagram-v2
-    direction LR
-    q8: Round Robin, q = 8s
-    q16: Round Robin, q = 16s
-    fcfs: First Come First Served
+  direction LR
+  q8: Round Robin, q = 8s
+  q16: Round Robin, q = 16s
+  fcfs: First Come First Served
 
-    [*] --> q8: Ingresso
-    q8 --> q16: Timeout
-    q16 --> fcfs: Timeout
-    fcfs --> [*]: Release
-    q16 --> [*]: Release
-    q8 --> [*]: Release
+  [*] --> q8: Ingresso
+  q8 --> q16: Timeout
+  q16 --> fcfs: Timeout
+  fcfs --> [*]: Release
+  q16 --> [*]: Release
+  q8 --> [*]: Release
 ```
 <!-- markdownlint-enable MD046 -->
 
