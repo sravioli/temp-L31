@@ -147,6 +147,7 @@ markdown_extensions:
 
   # highlight inline code
   - pymdownx.inlinehilite
+
   # adds support for syntax highlighting of code blocks and inline code
   - pymdownx.highlight:
       use_pygments: true
