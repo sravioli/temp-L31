@@ -581,7 +581,7 @@ all'indirizzo, l'operando stesso. Ad esempio:
     \end{array}
 \]
 
-ovvero, carica la costante \(4\) nel registo \(\text{R}1\).
+ovvero, carica la costante \(4\) nel registro \(\text{R}1\).
 
 Ha il vantaggio di non richiedere un riferimento supplementare in memoria per
 effettuare il fetch dell'operando. Naturalmente l'entità del valore è limitata
@@ -645,7 +645,7 @@ Contenuto in alcune macchine, l'**indirizzamento indicizzato esteso** consente
 di referenziare un indirizzo in memoria ottenuto sommando tra loro il contenuto
 di due registri, più un eventuale offset aggiuntivo.
 
-Disporre di tale possibilità costituisce un grande vantaggio (si immaigni di
+Disporre di tale possibilità costituisce un grande vantaggio (si immagini di
 scrivere in linguaggio macchina un ciclo che opera su un vettore). Generalmente
 le macchine che offrono tale possibilità forniscono anche un offset da
 \(8 \bbit\) o \(16 \bbit\).
@@ -707,6 +707,7 @@ Come si valuta una formula in notazione polacca inversa?
 - quando trovo un operando, prendo i due valori in cima allo stack, effettuo
   l'operazione tra questi due ed inserisco il risultato in cima allo stack.
 
+<!-- markdownlint-disable MD049 -->
 \[
     \begin{align}
         \underbrace{5\,6\,{\times}}_{30}\; 3\,6\,{\times}\; -
@@ -715,6 +716,7 @@ Come si valuta una formula in notazione polacca inversa?
             &\implies 12
     \end{align}
 \]
+<!-- markdownlint-enable MD049 -->
 
 Un esempio più complesso che mostra i vantaggi per l'elaboratore:
 

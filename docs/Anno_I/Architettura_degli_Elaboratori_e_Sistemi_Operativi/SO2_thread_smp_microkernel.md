@@ -183,11 +183,11 @@ I thread posseggono vari vantaggi rispetto ai processi:
 
 I thread all'interno di uno stesso processo condividono sia memoria che files:
 lo scambio dei dati avviene senza la richiesta di intervento del kernel. Vi è però
-la necessità di sincronizzare le atività dei threads.
+la necessità di sincronizzare le attività dei threads.
 
 Alcuni esempi:
 
-- l'esecuzione foreground e backgroud, es. il foglio di calcolo: un thread
+- l'esecuzione foreground e background, es. il foglio di calcolo: un thread
   gestisce il menù e legge i comandi, un altro li esegue e aggiorna il foglio;
 - l'elaborazione asincrona, es. elaboratore di testo: un thread di scarico su
   disco ad ogni minuto evita delle perdite per cadute di tensione;
@@ -290,7 +290,7 @@ e pubblicazione di pagine su desktop. Questo possiede tre thread sempre attivi:
    di altri thread);
 3. disegno dello schermo.
 
-Un altro esempio ancora è quello dello sorrimento pagina con barra laterale. In
+Un altro esempio ancora è quello dello scorrimento pagina con barra laterale. In
 questo caso il thread eventi controlla la barra di scorrimento, il thread di
 ridisegno dello schermo ridisegna la pagina in base allo spostamento. Vi è
 ovviamente la necessità di sincronizzare i due threads.
@@ -361,7 +361,7 @@ uno^^.
 La libreria permette di:
 
 - creare e distruggere i threads;
-- sbambiare messaggi tra threads;
+- scambiare messaggi tra threads;
 - schedulare;
 - salvare e caricare i contesti dei thread.
 
@@ -370,7 +370,7 @@ continua a schedulare i processi come unità a sè stanti**.
 
 I **vantaggi** dell'ULT sono i seguenti:
 
-- risparmio di sovraccarico, questo avviene perché iìcambio di thread avviene
+- risparmio di sovraccarico, questo avviene perché il cambio di thread avviene
   all'interno dello spazio di indirizzamento utente e non viene richiesto
   l'intervento del kernel;
 - schedulazione differente per ogni applicazione, c'è un'ottimizzazione in base
@@ -391,7 +391,7 @@ Delle soluzioni parziali sono:
   dei threads;
 - fare uso del **jacketing**, ovvero convertire una chiamata bloccante in una
   non bloccante. Nel caso di I/O si invoca una procedura di jacketing che
-  verifica se iìdispositivo è occupato, se sì il thread passa in *Ready* e un
+  verifica se il dispositivo è occupato, se sì il thread passa in *Ready* e un
   altro thread va in *Running*.
 
 ### Kernel Level Thread puro
@@ -435,7 +435,7 @@ Il kernel mantiene informazioni su:
 
 **La schedulazione viene effettuata a livello di thread**:
 
-- se un thread di un proceso è bloccato, una altro thread dello stesso processo
+- se un thread di un processo è bloccato, una altro thread dello stesso processo
   puà essere eseguito;
 - i thread di uno stesso processo possono essere schedulati su diversi processori.
 
@@ -657,7 +657,7 @@ mapping è conservato in memoria principale.
 
 - un'applicazione che accede ad una pagina che non si trova in memoria genera
   un *page fault*;
-- l'esecuzione passa al microKernel che invia un messagio al paginatore
+- l'esecuzione passa al microKernel che invia un messaggio al paginatore
   comunicando la pagina richiesta;
 - la pagina viene caricata: il paginatore e il kernel collaborano per il mapping
   memoria reale-virtuale;
@@ -669,8 +669,8 @@ Il messaggio è composto nel seguente modo:
 
 \[ \bnf{messaggio} \Coloneqq \bnf{intestazione} + \bnf{corpo} + \bnf{puntatore} \]
 
-dove l'intesazione è composta da mittente e ricevente, il corpo contiene i dati
-del messaggio e il puntatiore contiene le informaizoni di controllo del processo
+dove l'intestazione è composta da mittente e ricevente, il corpo contiene i dati
+del messaggio e il puntatore contiene le informazioni di controllo del processo
 e il blocco dati.
 
 Associata ad ogni processo c'è una **porta**: una *capability list* indica chi

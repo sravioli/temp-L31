@@ -2,7 +2,7 @@
 
 ## Obiettivi di un sistema operativo
 
-Un sistema operativo ha priincipalmente tre obiettivi:
+Un sistema operativo ha principalmente tre obiettivi:
 
 - **convenienza** nell'uso del calcolatore rispetto ai potenziali utenti;
 - **efficienza** nell'utilizzo del calcolatore e delle sue parti costitutive;
@@ -37,7 +37,7 @@ Il sistema operativo agisce quindi in maniera **trasparente**.
 Un'**interfaccia** è un componente fisico o logico che permette a due o più
 sistemi elettronici di comunicare e interagire.
 
-<!-- TODO: aagiungere immagine (a scala). -->
+<!-- TODO: aggiungere immagine (a scala). -->
 
 ## Servizi offerti dal sistema operativo
 
@@ -47,7 +47,7 @@ Il sistema operativo offre vari servizi:
   programmatore. Non sono parte del sistema operativo ma sono accessibili
   tramite esso;
 - **esecuzione dei programmi**: caricamento in memoria dei programmi,
-  inizializzazione dei dispositividi I/O, ecc;
+  inizializzazione dei dispositivi I/O, ecc;
 - **accesso ai dispositivi di I/O**: l'utente/programmatore ignora il set di
   istruzioni e i segnali dei dispositivi;
 - **accesso controllato ai file**: comprensione del formato, meccanismi di
@@ -140,7 +140,7 @@ Le componenti di un processo sono le seguenti:
 
 - ^^Programma^^, che comprende il codice eseguibile;
 - ^^Dati^^, che comprendono: variabili, spazio di lavoro, buffer
-- ^^Contesto di esecuzione^^, oovero le informazioni necessarie al sistema
+- ^^Contesto di esecuzione^^, ovvero le informazioni necessarie al sistema
   operativo per gestire il processo:
       - Contenuto dei registri della CPU
       - Priorità
@@ -201,7 +201,7 @@ flowchart TB
 
 È costituito da:
 
-1. un dentificatore di processo, detto anche **Process IDentification** (**PID**),
+1. un identificatore di processo, detto anche **Process IDentification** (**PID**),
    è un valore numerico univoco;
 2. le informazioni sullo stato del processore, queste contengono:
       - registri dati visibili all'utente, questi dipendono dall'architettura
@@ -435,12 +435,12 @@ l'esecuzione di istruzioni che hanno come scopo:
   cambio di contesto, sincronizzazione e PCB;
 - la gestione della memoria, ovvero allocazione, trasferimento da disco a RAM
   e viceversa, gestione della paginazione, della segmentazione, etc;
-- la gestione I/O, ovvero la festione dei buffer, l'allocazione a canali I/O;
+- la gestione I/O, ovvero la gestione dei buffer, l'allocazione a canali I/O;
 - il supporto, ovvero la gestione delle interruzioni, la contabilità.
 
 ### Creazione dei Processi
 
-Per creare un proesso si seguono i seguenti passi:
+Per creare un processo si seguono i seguenti passi:
 
 1. assegnare al processo un PID unico, dunque aggiungere una entry level alla
    tabella dei processi;
@@ -566,7 +566,7 @@ relativa politica di allocazione deve tenere in considerazione i seguenti
 fattori:
 
 - **equità**, ovvero tutti i processi che appartengono alla stessa classe o che
-  hanno richieste simili o che hanno lo stesso costro devono avere la stessa
+  hanno richieste simili o che hanno lo stesso costo devono avere la stessa
   possibilità di accesso alle risorse;
 - **tempo di risposta differenziale**, ovvero il sistema operativo discrimina
   tra classi che hanno bisogno di risorse diverse e di tempi diversi (es. i
@@ -688,7 +688,7 @@ contrario si dice **CPU-bound** quando presenta poche operazioni di I/O.
 Innanzitutto, si definiscano:
 
 - il **tempo di ricircolo** come il tempo trascorso tra l'avvio di un processo,
-  pvvero la sua immissione nel sistema, e la terminazione dello stesso;
+  ovvero la sua immissione nel sistema, e la terminazione dello stesso;
 - il **tempo di attesa** come il tempo che un processo trascorre in attesa delle
   risorse a causa di conflitti con altri processi. Si può calcolare come la
   differenza tra il tempo di ricircolo e il tempo di esecuzione. Sostanzialmente
@@ -716,7 +716,7 @@ di attesa.
 
         Il **pro** è che nessun processo può monopolizzare il processore, il
         **contro** è che crea problemi dove vi sono processi che condividono
-        dati e dunque richiedono meccaniscmi di sincronizzazione.
+        dati e dunque richiedono meccanismi di sincronizzazione.
 <!-- markdownlint-enable MD046 -->
 
 ### First Come First Served (FCFS)

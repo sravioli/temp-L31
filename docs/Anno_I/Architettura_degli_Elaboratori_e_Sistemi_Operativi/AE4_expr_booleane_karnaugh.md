@@ -52,8 +52,8 @@ logico**. Ad esempio, \(A + B\bar{C}\):
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Circuito della tabella di verità](./imgs/circuit/light-mode.svg#only-light){ width="450" loading=lazy }
-  ![Circuito della tabella di verità](./imgs/circuit/dark-mode.svg#only-dark){ width="450" loading=lazy }
+  ![Circuito della tabella di verità](./svgs/circuit/light-mode.svg#only-light){ width="450" loading=lazy }
+  ![Circuito della tabella di verità](./svgs/circuit/dark-mode.svg#only-dark){ width="450" loading=lazy }
   <figcaption>Circuito logico corrispondente alla funzione riportata sopra</figcaption>
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
@@ -410,8 +410,8 @@ mappa ed è indifferente per il risultato.
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
   <figcaption>Mappe di Karnaugh...</figcaption>
-  ![Mappe di Karnaugh a 2, 3 e 4 variabili](./imgs/karnaugh/empty/dark-mode.svg#only-dark){ width="600" loading=lazy }
-  ![Mappe di Karnaugh a 2, 3 e 4 variabili](./imgs/karnaugh/empty/light-mode.svg#only-light){ width="600" loading=lazy }
+  ![Mappe di Karnaugh a 2, 3 e 4 variabili](./svgs/karnaugh/empty/dark-mode.svg#only-dark){ width="600" loading=lazy }
+  ![Mappe di Karnaugh a 2, 3 e 4 variabili](./svgs/karnaugh/empty/light-mode.svg#only-light){ width="600" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -458,8 +458,8 @@ Prendendo la tavola di verità, si riportano nella mappa di Karnaugh i valori.
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Mappa di Karnaugh della tabella di verità precedente](./imgs/karnaugh/table/dark-mode.svg#only-dark){ loading=lazy }
-  ![Mappa di Karnaugh della tabella di verità precedente](./imgs/karnaugh/table/light-mode.svg#only-light){ loading=lazy }
+  ![Mappa di Karnaugh della tabella di verità precedente](./svgs/karnaugh/table/dark-mode.svg#only-dark){ loading=lazy }
+  ![Mappa di Karnaugh della tabella di verità precedente](./svgs/karnaugh/table/light-mode.svg#only-light){ loading=lazy }
   <figcaption>Mappa di Karnaugh della tabella precedente</figcaption>
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
@@ -486,8 +486,8 @@ I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
     <!-- markdownlint-disable MD013 MD033 -->
     <figure markdown>
-      ![Quattro mappe di Karnaugh valide](./imgs/karnaugh/valid/1-dark-mode.svg#only-dark){ width="700" loading=lazy }
-      ![Quattro mappe di Karnaugh valide](./imgs/karnaugh/valid/1-light-mode.svg#only-light){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh valide](./svgs/karnaugh/valid/1-dark-mode.svg#only-dark){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh valide](./svgs/karnaugh/valid/1-light-mode.svg#only-light){ width="700" loading=lazy }
     </figure>
     <!-- markdownlint-enable MD013 MD033 -->
 
@@ -500,8 +500,8 @@ I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
     <!-- markdownlint-disable MD013 MD033 -->
     <figure markdown>
-      ![Tre mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-dark-mode.svg#only-dark){ width="700" loading=lazy }
-      ![Tre mappe di Karnaugh valide, toro](./imgs/karnaugh/valid/2-light-mode.svg#only-light){ width="700" loading=lazy }
+      ![Tre mappe di Karnaugh valide, toro](./svgs/karnaugh/valid/2-dark-mode.svg#only-dark){ width="700" loading=lazy }
+      ![Tre mappe di Karnaugh valide, toro](./svgs/karnaugh/valid/2-light-mode.svg#only-light){ width="700" loading=lazy }
     </figure>
     <!-- markdownlint-enable MD013 MD033 -->
 
@@ -512,8 +512,8 @@ I raggruppamenti di \(2^k\) elementi prendono anche il nome di \(k\)-cubi.
 
     <!-- markdownlint-disable MD013 MD033 -->
     <figure markdown>
-      ![Quattro mappe di Karnaugh non valide](./imgs/karnaugh/invalid/dark-mode.svg#only-dark){ width="700" loading=lazy }
-      ![Quattro mappe di Karnaugh non valide](./imgs/karnaugh/invalid/light-mode.svg#only-light){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh non valide](./svgs/karnaugh/invalid/dark-mode.svg#only-dark){ width="700" loading=lazy }
+      ![Quattro mappe di Karnaugh non valide](./svgs/karnaugh/invalid/light-mode.svg#only-light){ width="700" loading=lazy }
     </figure>
     <!-- markdownlint-enable MD013 MD033 -->
 
@@ -531,8 +531,8 @@ in seguito.
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Raggruppamenti progressivamente migliori](./imgs/karnaugh/groups/dark-mode.svg#only-dark){ width="700" loading=lazy }
-  ![Raggruppamenti progressivamente migliori](./imgs/karnaugh/groups/light-mode.svg#only-light){ width="700" loading=lazy }
+  ![Raggruppamenti progressivamente migliori](./svgs/karnaugh/groups/dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Raggruppamenti progressivamente migliori](./svgs/karnaugh/groups/light-mode.svg#only-light){ width="700" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -546,8 +546,8 @@ interessate sono già state selezionate.
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Raggruppamento inutile vs. utile](./imgs/karnaugh/groups/useless/dark-mode.svg#only-dark){ width="700" loading=lazy }
-  ![Raggruppamento inutile vs. utile](./imgs/karnaugh/groups/useless/light-mode.svg#only-light){ width="700" loading=lazy }
+  ![Raggruppamento inutile vs. utile](./svgs/karnaugh/groups/useless/dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Raggruppamento inutile vs. utile](./svgs/karnaugh/groups/useless/light-mode.svg#only-light){ width="700" loading=lazy }
   <figcaption>Raggruppamento inutile (rosso)</figcaption>
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
@@ -573,8 +573,8 @@ Ma come si generano gli implicanti a partire dai raggruppamenti?
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Implicante di un raggruppamento a singola cella](./imgs/karnaugh/implicants/1-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Implicante di un raggruppamento a singola cella](./imgs/karnaugh/implicants/1-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a singola cella](./svgs/karnaugh/implicants/1-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a singola cella](./svgs/karnaugh/implicants/1-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -597,8 +597,8 @@ con celle singole, corrisponde perfettamente alla somma di mintermini:
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Implicante di tre raggruppamenti a singola cella](./imgs/karnaugh/implicants/2-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Implicante di tre raggruppamenti a singola cella](./imgs/karnaugh/implicants/2-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Implicante di tre raggruppamenti a singola cella](./svgs/karnaugh/implicants/2-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di tre raggruppamenti a singola cella](./svgs/karnaugh/implicants/2-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -641,8 +641,8 @@ costante:
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Implicante di un raggruppamento a due celle](./imgs/karnaugh/implicants/3-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Implicante di un raggruppamento a due celle](./imgs/karnaugh/implicants/3-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a due celle](./svgs/karnaugh/implicants/3-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di un raggruppamento a due celle](./svgs/karnaugh/implicants/3-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -667,8 +667,8 @@ Altri due esempi:
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Implicante di due raggruppamenti a otto e quattro celle](./imgs/karnaugh/implicants/4-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Implicante di due raggruppamenti a otto e quattro celle](./imgs/karnaugh/implicants/4-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Implicante di due raggruppamenti a otto e quattro celle](./svgs/karnaugh/implicants/4-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante di due raggruppamenti a otto e quattro celle](./svgs/karnaugh/implicants/4-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -724,8 +724,8 @@ Ovvero:
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Implicante primo](./imgs/karnaugh/implicants/5-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Implicante primo](./imgs/karnaugh/implicants/5-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Implicante primo](./svgs/karnaugh/implicants/5-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Implicante primo](./svgs/karnaugh/implicants/5-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -780,8 +780,8 @@ raggruppamenti di destra sono più semplici
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Raggruppamenti preferibili per la generazione degli implicanti](./imgs/karnaugh/implicants/6-dark-mode.svg#only-dark){ width="500" loading=lazy }
-  ![Raggruppamenti preferibili per la generazione degli implicanti](./imgs/karnaugh/implicants/6-light-mode.svg#only-light){ width="500" loading=lazy }
+  ![Raggruppamenti preferibili per la generazione degli implicanti](./svgs/karnaugh/implicants/6-dark-mode.svg#only-dark){ width="500" loading=lazy }
+  ![Raggruppamenti preferibili per la generazione degli implicanti](./svgs/karnaugh/implicants/6-light-mode.svg#only-light){ width="500" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -849,8 +849,8 @@ anche con \(X\), \(\delta\), \(\ast\), etc.
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Raggruppamento con una condizione di indifferenza](./imgs/karnaugh/implicants/7-dark-mode.svg#only-dark){ width="300" loading=lazy }
-  ![Raggruppamento con una condizione di indifferenza](./imgs/karnaugh/implicants/7-light-mode.svg#only-light){ width="300" loading=lazy }
+  ![Raggruppamento con una condizione di indifferenza](./svgs/karnaugh/implicants/7-dark-mode.svg#only-dark){ width="300" loading=lazy }
+  ![Raggruppamento con una condizione di indifferenza](./svgs/karnaugh/implicants/7-light-mode.svg#only-light){ width="300" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -869,8 +869,8 @@ della variabile \(C\):
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Divisione di una mappa di Karnaugh in due mappe](./imgs/karnaugh/implicants/8-dark-mode.svg#only-dark){ width="700" loading=lazy }
-  ![Divisione di una mappa di Karnaugh in due mappe](./imgs/karnaugh/implicants/8-light-mode.svg#only-light){ width="700" loading=lazy }
+  ![Divisione di una mappa di Karnaugh in due mappe](./svgs/karnaugh/implicants/8-dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Divisione di una mappa di Karnaugh in due mappe](./svgs/karnaugh/implicants/8-light-mode.svg#only-light){ width="700" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -890,8 +890,8 @@ parallelepipedi):
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Due mappe separate viste in maniera sovrapposta](./imgs/karnaugh/implicants/9-dark-mode.svg#only-dark){ width="700" loading=lazy }
-  ![Due mappe separate viste in maniera sovrapposta](./imgs/karnaugh/implicants/9-light-mode.svg#only-light){ width="700" loading=lazy }
+  ![Due mappe separate viste in maniera sovrapposta](./svgs/karnaugh/implicants/9-dark-mode.svg#only-dark){ width="700" loading=lazy }
+  ![Due mappe separate viste in maniera sovrapposta](./svgs/karnaugh/implicants/9-light-mode.svg#only-light){ width="700" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
@@ -938,8 +938,8 @@ individuando un corrispettivo speculare degli implicanti analogo ai maxtermini:
 
 <!-- markdownlint-disable MD013 MD033 -->
 <figure markdown>
-  ![Mappe di Karnaugh con maxtermini anziché mintermini](./imgs/karnaugh/implicants/10-dark-mode.svg#only-dark){ width="400" loading=lazy }
-  ![Mappe di Karnaugh con maxtermini anziché mintermini](./imgs/karnaugh/implicants/10-light-mode.svg#only-light){ width="400" loading=lazy }
+  ![Mappe di Karnaugh con maxtermini anziché mintermini](./svgs/karnaugh/implicants/10-dark-mode.svg#only-dark){ width="400" loading=lazy }
+  ![Mappe di Karnaugh con maxtermini anziché mintermini](./svgs/karnaugh/implicants/10-light-mode.svg#only-light){ width="400" loading=lazy }
 </figure>
 <!-- markdownlint-enable MD013 MD033 -->
 
