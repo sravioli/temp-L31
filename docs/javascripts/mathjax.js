@@ -81,6 +81,7 @@ window.MathJax = {
 
             ceil: ["{\\mathopen\\lceil #1 \\mathclose\\rceil}", 1],
             floor: ["{\\mathopen\\lfloor #1 \\mathclose\\rfloor}", 1],
+            ipmatrix: ["{\\begin{pmatrix} #1 \\end{pmatrix}}", 1],
 
             // units of measurement
             bit: "{\\small\\rm\\, b}",
