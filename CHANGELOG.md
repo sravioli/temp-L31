@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Remove `notes` folder
 - Fix various typos and conform to new folder name (`svgs`)
 - Fix mkdocs.yml spacing
 - Addo short phrase to improve readability
