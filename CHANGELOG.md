@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix various typos and conform to new folder name (`svgs`)
+- Fix mkdocs.yml spacing
 - Addo short phrase to improve readability
 - Improve structure, complete unfinished work
 - Improve readability, better file structure
@@ -64,6 +66,13 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new terms to the glossary and sort them
+- Add new page for `AESO`, already completed
+- Add new page for AESO
+- Add macro for inline p-matrices
+- Remove unwanted backslashes
+- Add exercises and notes, fix formatting
+- Remove notes folder in favour of no folder
 - Remove all TODOs from file, add missing images, improve structure, fix typos
 - Add entries, sort alphabetically
 - Add new entries to the glossary
