@@ -168,6 +168,9 @@ markdown_extensions:
 
   # Embed content from arbitrary files
   - pymdownx.snippets:
+      base_path:
+        - "."
+        - "./docs/Anno_I/Laboratorio_di_Informatica/code/22-03-2023/"
       auto_append:
         - includes/glossary.md
 
