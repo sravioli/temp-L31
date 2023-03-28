@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Add base path for snippets
 - Remove `notes` folder
 - Fix various typos and conform to new folder name (`svgs`)
 - Fix mkdocs.yml spacing
@@ -67,6 +68,10 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new file for `AESO`
+- Add new note file for lab
+- Add new custom admonition
+- Add code for ex of `22-03-23`
 - Add new terms to the glossary and sort them
 - Add new page for `AESO`, already completed
 - Add new page for AESO
