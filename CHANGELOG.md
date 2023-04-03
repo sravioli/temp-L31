@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix typo
 - Add base path for snippets
 - Remove `notes` folder
 - Fix various typos and conform to new folder name (`svgs`)
@@ -68,6 +69,13 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new note file for InfLab
+- Add testing module !needs rewrite
+- Complete the leaderboard module, create txt file
+- Start prototyping for game of goose
+- Rewrite and adjust notes for InfLab
+- Add code relative to exercise of 29/03
+- Add new lab notes
 - Add new file for `AESO`
 - Add new note file for lab
 - Add new custom admonition
