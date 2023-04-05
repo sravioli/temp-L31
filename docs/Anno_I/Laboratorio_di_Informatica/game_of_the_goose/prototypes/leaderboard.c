@@ -1,23 +1,45 @@
-// Copyright (c) 2023 Simone Fidanza – GNU GPLv3
+/**
+ * @file leaderboard.c
+ * @brief A program to manage a leaderboard of players.
+ *
+ * This program allows the user to create, read, update and delete entries in a
+ * leaderboard of players. Each entry consists of a player name (up to 3
+ * characters), and a score. The program can store up to 10 entries. The program
+ * reads and writes entries from/to a file named "leaderboard.txt".
+ *
+ * @see https://github.com/simonefidanza/leaderboard
+ *
+ * @note This program uses the scanf_s function to read input, which is a
+ *       Microsoft-specific function. If you're using a different compiler, you
+ *       might need to use a different function to read input.
+ * @note This program uses the strncpy_s function to truncate strings, which is
+ *       a Microsoft-specific function. If you're using a different compiler,
+ *       you might need to use a different function to truncate strings.
+ *
+ * @author Simone Fidanza
+ * @date April 2023
+ * @licence GNU GPLv3
+ */
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define STR_END '\0'
+#define LINE_END '\n'
 
 #define MAX_NAME_LENGTH 20
 #define MAX_USERNAME_LENGTH 3
-
 #define MAX_LINE_LENGTH 20
 
 #define MAX_NUM_PLAYERS 4
 
 #define MAX_ENTRIES 10
-typedef struct {
+typedef struct Entry Entry;
+struct Entry {
   char name[MAX_USERNAME_LENGTH + 1];
   int score;
-} Entry;
+};
 
 void get_name(char *name);
 int is_name_valid(const char *name);
@@ -40,14 +62,6 @@ void remove_duplicates(Entry entries[], int num_entries);
 
 void print_leaderboard(Entry entries[], int num_entries);
 
-int main() {
-  Entry entries[MAX_ENTRIES];
-  int num_entries = read_entries(entries, "leaderboard.txt");
-  print_leaderboard(entries, MAX_ENTRIES);
-
-  return 0;
-}
-
 /**
  * @brief Gets a valid username from the user, truncates it necessary, and
  *        converts it to uppercase.
@@ -60,10 +74,6 @@ int main() {
  *
  * @param name The character array to store the username. It's as long as the
  *             maximum allowed name length.
- *
- * @note The function uses scanf_s to read the input, which is a
- *       Microsoft-specific function. If you're using a different compiler, you
- *       might need to use a different function to read the input.
  *
  * @see is_name_valid()
  * @see truncate_string()
