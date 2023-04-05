@@ -1,3 +1,4 @@
+// Copyright (c) 2023 Simone Fidanza – GNU GPLv3
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
