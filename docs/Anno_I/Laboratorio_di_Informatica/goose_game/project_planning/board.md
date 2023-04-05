@@ -118,20 +118,20 @@ posizione inn_position-esima di board := inn_position (x6)
 x := (num_special*num_squares) / MAX_NUM_SQUARES
 ```
 
-### is_goose_space(space, board)
+### is_goose_square(square, board)
 
 ```txt
-SE (casella space-esima di board = GOOSE_VALUE)
+SE (casella square-esima di board = GOOSE_VALUE)
   ALLORA: esito := 1
   ALTRIMenti := 0
 FINE
 ```
 
-### `check_special_position(special_space_position, board)`
+### `check_special_position(special_square_position, board)`
 
 **INPUT**:
 
-`special_space_position`
+`special_square_position`
 :   valore della posizione della casella speciale all'interno del tabellone.
     Intero maggiore di zero.
 
@@ -149,8 +149,8 @@ con lunghezza compresa tra `MIN_NUM_SQUARES`
 **ALGORITMO**:
 
 ```txt title="check_special_position()"
-allowed_special_position := special_space_position
-SE (is_goose_space(special_space_pos, board) = 1) 
+allowed_special_position := special_square_position
+SE (is_goose_square(special_square_pos, board) = 1) 
   ALLORA 
     allowed_special_position := allowed_special_position + 1
 FINE
