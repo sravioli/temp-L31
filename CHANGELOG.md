@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Use `square` instead of `space` to improve clarity
+- Add file doxygen, remove main(), adjust Entry declaration
 - Fix typo
 - Add base path for snippets
 - Remove `notes` folder
@@ -69,6 +71,13 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Almost complete pseudocode for board.txt, create file for structs
+- Create txt file for global variables
+- Add src folder, will populate with time
+- Add more prototypes, need adjusting, maybe removing
+- Create leaderboard.h module
+- Create folder for project prototyping
+- Record barebone demo of main menu
 - Add new note file for InfLab
 - Add testing module !needs rewrite
 - Complete the leaderboard module, create txt file
