@@ -1,0 +1,133 @@
+TABELLONE DI GIOCO
+==================
+
+Costanti e variabili globali dichiarate nel file "globals.txt".
+
+
+funzione get_num_players()
+==========================
+
+OUTPUT:
+- num_players, numero di giocatori scelti dal giocatore. Intero maggiore o 
+  uguale a MIN_NUM_PLAYERS e minore o uguale a MAX_NUM_PLAYERS.
+
+ALGORITMO:
+StampareAVideo("Inserici numero giocatori:")
+ESEGUI
+  num_players = LeggereDaTastiera()
+  StampareAVideo("Numero non valido.")
+FINCHÉ (
+        (num_players >= MIN_NUM_PLAYERS) AND 
+        (num_players <= MAX_NUM_PLAYERS)
+       )
+FINE
+
+
+funzione get_num_squares()
+==========================
+
+OUTPUT:
+- num_squares, numero di caselle scelte dal giocatore. Intero maggiore o uguale 
+  a MIN_NUM_SQUARES e minore o uguale a MAX_NUM_SQUARES.
+
+ALGORITMO:
+StampareAVideo("Inserici numero caselle:")
+ESEGUI
+  num_squares := LeggereDaTastiera()
+  StampareAVideo("Numero non valido.")
+FINCHÉ (
+        (num_squares >= MIN_NUM_SQUARES) AND 
+        (num_squares <= MAX_NUM_SQUARES)
+       )
+FINE
+
+
+funzione insert_goose_squares()
+===============================
+
+INPUT:
+- num_squares, numero di caselle scelte dal giocatore. Intero maggiore o uguale 
+  a MIN_NUM_SQUARES e minore o uguale a MAX_NUM_SQUARES;
+- board, il tabellone di gioco dove si svolgerà la partita. Board, array di 
+  interi a una dimensione.
+
+OUTPUT:
+- new_board, il tabellone di gioco dove si svolgerà la partita, modificato con 
+  l'aggiunta delle caselle oca. Board, array di interi a una dimensione.
+
+LAVORO:
+- i, contatore delle caselle del tabellone di gioco. Intero, maggiore o uguale 
+  a GOOSE_SPACING.
+
+ALGORITMO:
+i = 9;
+MENTRE (i < num_squares)
+    board in posizione i = GOOSE_SQUARE; // cambiare in fn accesso e modifica
+    i = i + 9;
+FINE
+new_board = board;
+
+
+funzione insert_special_squares()
+=================================
+
+
+funzione proportion()
+---------------------
+
+INPUT:
+- special_square, valore di posizione della casella speciale all'interno del 
+  tabellone da  gioco. Intero maggiore di zero;
+- num_squares, numero di caselle del tabellone scelto dall'utente. Intero 
+  maggiore o uguale a MIN_NUM_SQUARES e minore o uguale a MAX_NUM_SQUARES.
+
+OUTPUT:
+- new_special_square, nuovo valore di posizione della casella speciale rapportato
+  al numero di caselle ricevute in input (num_squares). Intero maggiore di zero.
+
+ALGORITMO:
+new_special_square = (special_square * num_squares) / MAX_NUM_SQUARES
+
+
+funzione is_goose_square()
+-------------------------
+
+INPUT:
+- square, valore della posizione di una casella del tabellone di cui verificare 
+  se sia casella oca o meno. Intero maggiore di zero. 
+- board, il tabellone di gioco dove si svolgerà la partita. Board, array di 
+  interi a una dimensione.
+
+OUTPUT:
+- esito, booleano che assume valore 1 se la casella "square" è una casella oca,
+  0 altrimenti.
+
+ALGORITMO:
+SE(elemento di board in posizione square = GOOSE_SQUARE) // fun accesso/modifica
+   ALLORA esito = 1
+   ALTRIMENTI esito = 0
+FINE
+
+
+funzione check_special_square()
+-------------------------------
+
+INPUT:
+
+- special_square, valore della posizione della casella speciale all'interno del 
+  tabellone di gioco. Intero maggiore di zero.
+
+- board, il tabellone di gioco dove si svolgerà la partita. Board, array di 
+  interi a una dimensione.
+
+OUTPUT:
+
+- allowed_special_pos, valore della posizione della casella speciale che 
+  non crea alcun conflitto con le caselle oca. Intero maggiore di zero.
+
+ALGORITMO:
+allowed_special_pos := special_square
+SE (is_goose_square(special_square, board) = 1) 
+  ALLORA 
+    allowed_special_pos := allowed_special_pos + 1
+FINE
