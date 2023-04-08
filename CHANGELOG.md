@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Properly format `globals.txt`
+- Complete `board.txt` module
 - Use `square` instead of `space` to improve clarity
 - Add file doxygen, remove main(), adjust Entry declaration
 - Fix typo
@@ -71,6 +73,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Prototype C fn to print out the game board
+- Add handouts from class
+- Add `@brief`s for functions
 - Almost complete pseudocode for board.txt, create file for structs
 - Create txt file for global variables
 - Add src folder, will populate with time
