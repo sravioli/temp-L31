@@ -1,5 +1,7 @@
-STRUTTURE DATI E FUNZIONI DI ACCCESSO
-=====================================
+STRUTTURE DATI E RELATIVE FUNZIONI DI ACCCESSO
+==============================================
+
+"globals.txt"
 
 
 BOARD
@@ -12,7 +14,8 @@ Il tipo di dato Board deve essere rappresentato come un record composto da:
 
 
 RECORD Board:
-- squares, lista di caselle del tabellone di gioco. Array a una dimensione.
+- squares, lista di caselle del tabellone di gioco. Array a una dimensione con 
+  lunghezza minima e massima rispettivamente di MIN_NUM_SQUARES e MAX_NUM_SQUARES;
 - dim, il numero di caselle che il tabellone di gioco possiede. Intero che è 
   compreso tra MIN_NUM_SQUARES e MAX_NUM_SQUARES inclusi.
 
@@ -29,6 +32,9 @@ Le funzioni di accesso al tipo di dato Board sono le seguenti:
 funzione get_square()
 ---------------------
 
+Estrae il valore della casella in una determinata posizione del tabellone di 
+gioco.
+
 INPUT:
 - board, tabellone di gioco dove si svolgerà la partita, Board;
 - position, posizione da cui estrarre il valore di squares, intero maggiore di 
@@ -38,10 +44,12 @@ OUTPUT:
 - square, valore della casella nella posizione position, intero.
 
 ALGORITMO:
-square := valore della casella in posizione position del campo squares di Board
+square := valore della casella in posizione position del campo squares di board
 
 funzione set_square()
 ---------------------
+
+Modifica il valore di una casella del tabellone di gioco.
 
 INPUT:
 - board, tabellone di gioco dove si svolgerà la partita, Board;
@@ -57,6 +65,8 @@ casella del campo squares di board in posizione position := value
 funzione get_dim()
 ------------------
 
+Restituisce il numero di caselle che il tabellone di gioco possiede.
+
 INPUT:
 - board, tabellone di gioco dove si svolgerà la partita, Board;
 
@@ -70,6 +80,8 @@ dim := valore del campo dim di board
 
 funzione set_dim()
 ------------------
+
+Imposta il numero di caselle che il tabellone di gioco deve avere.
 
 INPUT:
 - board, tabellone di gioco dove si svolgerà la partita, Board;
