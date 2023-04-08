@@ -1,0 +1,15 @@
+funzione get_num_players()
+==========================
+
+OUTPUT:
+- num_players, numero di giocatori scelti dal giocatore. Intero maggiore o 
+  uguale a MIN_NUM_PLAYERS e minore o uguale a MAX_NUM_PLAYERS.
+
+ALGORITMO:
+StampareAVideo("Inserici il numero di giocatori [2, 4]:")
+num_players := LeggereDaTastiera()
+MENTRE ((num_players < MIN_NUM_PLAYERS) OR (num_players > MAX_NUM_PLAYERS))
+  StampareAVideo("Il numero inserito non è valido.")
+  StampareAVideo("Inserici il numero di giocatori [2, 4]:")
+  num_players := LeggereDaTastiera()
+FINE
