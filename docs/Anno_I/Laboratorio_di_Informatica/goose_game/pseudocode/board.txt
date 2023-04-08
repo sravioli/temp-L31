@@ -88,7 +88,7 @@ OUTPUT:
 
 ALGORITMO:
 bridge_position := proportion(BRIDGE_SQUARE, new_board)
-bridge_position := check_special_square(bridge_position, new_board)
+bridge_position := check_special_square(bridge_position, board)
 game_board := set_square(board, bridge_position, BRIDGE_VALUE)
 
 inn_position := proportion(INN_SQUARE, new_board)
