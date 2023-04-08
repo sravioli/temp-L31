@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Change `new_board` for `board`
 - Properly format `globals.txt`
 - Complete `board.txt` module
 - Use `square` instead of `space` to improve clarity
