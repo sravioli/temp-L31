@@ -7,7 +7,7 @@ CREAZIONE E STAMPA DEL TABELLONE DI GIOCO
 Creazione e stampa del tabellone di gioco con le funzioni necessarie per 
 l'inizializzazione dello stesso e aggiunta di caselle speciali.
 
-Le funzioni incluse in quest file permettono di definire la dimensione del 
+Le funzioni incluse in questo file permettono di definire la dimensione del 
 tabellone, inserire caselle oca e speciali, inserire quest'ultime in maniera
 proporzionale al numero di caselle del tabellone senza creare conflitti con le 
 caselle oca.
@@ -22,7 +22,7 @@ num_squares := get_num_squares()
 board := set_dim(board, num_squares)
 board := insert_goose_squares(board)
 board := insert_special_squares(board)
-print_board(game_board)
+print_board(board)
 
 
 funzione get_num_squares()
