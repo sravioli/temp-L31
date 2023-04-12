@@ -1,7 +1,7 @@
 STRUTTURE DATI E RELATIVE FUNZIONI DI ACCCESSO
 ==============================================
 
-"globals.txt"
+@see "globals.txt"
 
 
 BOARD
