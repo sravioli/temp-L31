@@ -172,7 +172,7 @@ OUTPUT:
 
 ALGORITMO:
 square := get_square(board, position)
-SE (square = GOOSE_SQUARE)
+SE (square = GOOSE_VALUE)
    ALLORA esito := 1
    ALTRIMENTI esito := 0
 FINE
