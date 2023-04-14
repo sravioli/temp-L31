@@ -9,6 +9,12 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Rewrite board printing prototype, still WiP
+- Switch pos of `STR_END` and `LINE_END` in `globals.h`
+- Rename to `src/types`
+- Conform `GOOSE_SQUARE` to `GOOSE_VALUE`
+- Conform `recotds.txt` to syntax
+- Fix variable name in main `board.txt` algorithm
 - Change `new_board` for `board`
 - Properly format `globals.txt`
 - Complete `board.txt` module
@@ -74,6 +80,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Translate from `board.txt` to C code
+- Start converting pseudo into C code, !prototype!
 - Prototype C fn to print out the game board
 - Add handouts from class
 - Add `@brief`s for functions
