@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Convert `for` to `while` in board printing prototype
 - Rewrite board printing prototype, still WiP
 - Switch pos of `STR_END` and `LINE_END` in `globals.h`
 - Rename to `src/types`
