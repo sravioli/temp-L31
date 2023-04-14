@@ -56,10 +56,10 @@
 // value of the "skeleton" square
 #define SKELETON_VALUE -6
 
-// end of line indicator
-#define LINE_END '\n'
-
 // end of string indicator
 #define STR_END '\0'
+
+// end of line indicator
+#define LINE_END '\n'
 
 #endif  // GLOBALS_H
