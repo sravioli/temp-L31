@@ -266,7 +266,9 @@ void print_board(const Board board, const int cols, const int square_len,
 void fill_board(Board *board, const int dim) {
   set_dim(board, dim);
 
-  for (int i = 0; i < dim; i++) {
+  int i = 0;
+  while (i < dim) {
     set_square(board, i, i + 1);
+    i = i + 1;
   }
 }
