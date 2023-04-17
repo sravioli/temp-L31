@@ -25,7 +25,7 @@ board := insert_special_squares(board)
 print_board(board)
 
 
-funzione get_num_squares()
+FUNZIONE get_num_squares()
 ==========================
 
 Richiede all'utente di inserire il numero di caselle del tabellone di gioco e 
@@ -45,7 +45,7 @@ MENTRE ((num_squares < MIN_NUM_SQUARES) OR (num_squares > MAX_NUM_SQUARES))
 FINE
 
 
-funzione insert_goose_squares()
+FUNZIONE insert_goose_squares()
 ===============================
 
 Aggiunge le caselle oca al tabellone di gioco, a partire dalla casella con indice 
@@ -73,7 +73,7 @@ MENTRE (i < num_squares)
 FINE
 
 
-funzione insert_special_squares()
+FUNZIONE insert_special_squares()
 =================================
 
 Inserisce le caselle speciali nel tabellone di gioco.
@@ -112,7 +112,7 @@ skeleton_position := check_special_square(skeleton_position, game_board)
 game_board := set_square(game_board, skeleton_position, SKELETON_VALUE)
 
 
-funzione proportion()
+FUNZIONE proportion()
 ---------------------
 
 Calcola il nuovo valore di posizione della casella speciale rapportato al
@@ -131,7 +131,7 @@ ALGORITMO:
 new_special_square := floor((special_square * get_dim(board)) / MAX_NUM_SQUARES)
 
 
-funzione floor()
+FUNZIONE floor()
 ----------------
 
 Converte un numero decimale in un intero, eliminando la parte decimale.
@@ -156,7 +156,7 @@ MENTRE (i <= float_num)
 FINE
 
 
-funzione is_goose_square()
+FUNZIONE is_goose_square()
 --------------------------
 
 Verifica se una casella del tabellone è una casella oca o meno.
@@ -178,7 +178,7 @@ SE (square = GOOSE_VALUE)
 FINE
 
 
-funzione check_special_square()
+FUNZIONE check_special_square()
 -------------------------------
 
 Verifica se la posizione della casella speciale nel tabellone di gioco crea un 
@@ -200,7 +200,7 @@ SE (is_goose_square(special_square, board) = 1)
     allowed_special_pos := allowed_special_pos + 1
 FINE
 
-funzione print_board()
+FUNZIONE print_board()
 ======================
 
 INPUT:
