@@ -1,150 +1,101 @@
 // Copyright (c) 2023 Simone Fidanza. GNU-GPLv3
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../src/globals.h"
 #include "../src/types/board.h"
+#include "./board.h"
+#include "./board.private.h"
 
-void concat(char *destination, const char *source);
-void nconcat(char *destination, const char *source, const int n_times);
+#define DEFAULT_COLS 15
+#define DEFAULT_SQUARE_LENGTH 7
 
-char *nalloc_char(const char *c, const int n_times);
-char *nbuild_char(const char *c, const int n_times);
+static void concat(char *buffer, const char *source);
+static void nconcat(char *buffer, const char *source, const int n_times);
+static void fconcat(char *buffer, const int source_size, const char *format,
+                    ...);
 
-char *alloc_segment(const char *c, const char *ndash, const int square_len);
-char *build_segment(const char *c, const char *ndash, const int square_len);
+static char *alloc_char(const char *s, const int size);
 
-char *alloc_border(const char *segment, const int square_len, const int cols);
-char *build_border(const char *segments[4], const int square_len,
-                   const int cols, const int rows, const int curr_row,
-                   const int board_dim);
+static char *build_border(const char *borders[4], const int square_len,
+                          const int cols, const int rows, const int row,
+                          const Board board);
+
+static char *square_to_str(const int square);
+static char *build_squares(const char *vert, const int square_len,
+                           const int cols, const int rows, const int row,
+                           const Board board);
+
+static char *build_board(const Board board, const int cols,
+                         const int square_len, const char *borders[8]);
 
 void print_board(const Board board, const int cols, const int square_len,
-                 const char *border[8]);
+                 const char *borders[8]);
 
 void fill_board(Board *board, const int dim);
 
 int main() {
-  const char *ascii_borders[8] = {"+", "+", "+", "+", "+", "+", "-", "|"};
   const char *squar_borders[8] = {"┌", "┐", "└", "┘", "┬", "┴", "─", "│"};
   const char *round_borders[8] = {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"};
-  const char *doubl_borders[8] = {"╔", "╗", "╚", "╝", "╦", "╩", "═", "║"};
-  const char *lettr_borders[8] = {"p", "q", "b", "d", "v", "^", "-", "|"};
-
-  const int cols = 15;
-  const int square_len = 7;
 
   Board board;
-  fill_board(&board, 50);
-  print_board(board, cols, square_len, ascii_borders);
-  printf("\n");
-
-  Board board1;
-  fill_board(&board1, 55);
-  print_board(board1, cols, square_len, squar_borders);
-  printf("\n");
-
-  Board board2;
-  fill_board(&board2, 65);
-  print_board(board2, cols, square_len, round_borders);
-  printf("\n");
-
-  Board board3;
-  fill_board(&board3, 75);
-  print_board(board3, cols, square_len, doubl_borders);
-  printf("\n");
-
-  Board board4;
-  fill_board(&board4, 90);
-  print_board(board4, cols, square_len, lettr_borders);
-  printf("\n");
+  fill_board(&board, 65);
+  print_board(board, 15, DEFAULT_SQUARE_LENGTH, round_borders);
 
   return 0;
 }
 
-void concat(char *destination, const char *source) {
-  int destination_length = strlen(destination);
-  int source_length = strlen(source);
-  snprintf(destination + destination_length, source_length + 1, "%s", source);
+static void concat(char *buffer, const char *source) {
+  snprintf(buffer + strlen(buffer), strlen(source) + 1, "%s", source);
 }
 
-void nconcat(char *destination, const char *source, const int n_times) {
-  int destination_length = strlen(destination);
-  int source_length = strlen(source);
-
+static void nconcat(char *buffer, const char *source, const int n_times) {
+  int buffer_length = strlen(buffer);
   int i = 0;
   while (i < n_times) {
-    snprintf(destination + destination_length, source_length + 1, "%s", source);
-    destination_length += source_length;
+    snprintf(buffer + buffer_length, strlen(source) + 1, "%s", source);
+    buffer_length = buffer_length + strlen(source);
     i = i + 1;
   }
 }
 
-char *nalloc_char(const char *c, const int n_times) {
-  // compute the needed size for the resulting stirng
-  int nc_size = n_times * strlen(c) + 1;
+static void fconcat(char *buffer, const int source_size, const char *format,
+                    ...) {
+  va_list args;
+  va_start(args, format);
+  vsnprintf(buffer + strlen(buffer), source_size, format, args);
+  va_end(args);
+}
 
-  // allocate and check for NULL
-  char *nc = (char *)malloc(nc_size * sizeof(char));
-  if (nc == NULL) {
-    printf("failed to allocate memory for string repetition\n");
+static char *alloc_char(const char *s, const int size) {
+  char *buffer = (char *)malloc(1 + size * strlen(s) * sizeof(s));  // NOLINT
+  if (buffer == NULL) {
+    printf("error: failed to allocate memory for string of size %i\n", size);
     exit(EXIT_FAILURE);
   }
-  memset(nc, STR_END, strlen(nc));  // ensure null termination
+  // ensure null termination of the string
+  memset(buffer, STR_END, strlen(buffer));
 
-  return nc;
+  return buffer;
 }
 
-char *nbuild_char(const char *c, const int n_times) {
-  char *nc = nalloc_char(c, n_times);
-  nconcat(nc, c, n_times);
-  return nc;
-}
+static char *build_border(const char *borders[4], const int square_len,
+                          const int cols, const int rows, const int row,
+                          const Board board) {
+  /* segments contains the four segments needed to create a border:
+   * - west  0;
+   * - east  1;
+   * - join  2;
+   * - dash  3.
+   */
+  char *buffer = alloc_char(borders[0], cols * square_len);
+  char *ndash = alloc_char(borders[3], square_len - 1);
+  nconcat(ndash, borders[3], square_len - 1);
 
-char *alloc_segment(const char *c, const char *ndash, const int square_len) {
-  // compute the needed size for the resulting string
-  int segment_size = square_len * (strlen(c) + 1);
-
-  // allocate and check for NULL
-  char *section = (char *)malloc(segment_size * sizeof(char));
-  if (section == NULL) {
-    printf("failed to allocate memory for string for border segment\n");
-    exit(EXIT_FAILURE);
-  }
-  memset(section, STR_END, strlen(section));
-
-  return section;
-}
-
-char *build_segment(const char *c, const char *ndash, const int square_len) {
-  char *segment = alloc_segment(c, ndash, square_len);
-  concat(segment, c);
-  concat(segment, ndash);
-
-  return segment;
-}
-
-char *alloc_border(const char *segment, const int square_len, const int cols) {
-  int segment_size = 1 + strlen(segment) / square_len;
-  int border_size = 1 + segment_size * square_len * cols;
-  char *border = (char *)malloc(border_size * sizeof(char));
-  if (border == NULL) {
-    printf("failed to allocate memory for border\n");
-    exit(EXIT_FAILURE);
-  }
-  memset(border, STR_END, strlen(border));
-
-  return border;
-}
-
-char *build_border(const char *segments[4], const int square_len,
-                   const int cols, const int rows, const int row,
-                   const int board_dim) {
-  // segments contains the four segments needed to create a border:
-  // west_segment, east_segment, join_segment, empty_segment
-
-  char *border = alloc_border(segments[0], square_len - 1, cols);
+  const int square_size = 1 + square_len * strlen(borders[0]);
+  const int board_dim = get_dim(&board);
 
   int col = 0;
   while (col < cols) {
@@ -153,39 +104,118 @@ char *build_border(const char *segments[4], const int square_len,
       int is_last_of_row =
           ((col == cols - 1) && (row != rows - 1)) || (pos == board_dim - 1);
 
-      if (col == 0) {                    // 1st box of the row
-        concat(border, segments[0]);
-      } else if (is_last_of_row) {       // last box of the row
-        concat(border, segments[1]);
+      if (col == 0) {                    // 1st sq of the row
+        fconcat(buffer, square_size, "%s%s", borders[0], ndash);
+      } else if (is_last_of_row) {       // last sq of the row
+        fconcat(buffer, square_size, "%s%s", borders[2], ndash);
+        concat(buffer, borders[1]);
       } else if (pos < board_dim - 1) {  // between 1st & last
-        concat(border, segments[2]);
+        fconcat(buffer, square_size, "%s%s", borders[2], ndash);
       } else {                           // when traveling RtL
-        concat(border, segments[3]);
+        fconcat(buffer, square_size, "%*s", square_len, "");
       }
     } else {
-      // it it's odd we're traveling RtL (<-)
       int pos = (row + 1) * cols - col - 1;
       int is_fist = (col == 0) && (row != rows - 1);
 
-      if (is_fist) {                      // 1st box of the row
-        concat(border, segments[0]);
-      } else if (col == cols - 1) {       // last box of the row
-        concat(border, segments[1]);
-      } else if (pos < board_dim - 1) {   // between 1st & last
-        concat(border, segments[2]);
-      } else if (pos == board_dim - 1) {  // last board box
-        concat(border, segments[0]);
-      } else {                            // when traveling LtR
-        concat(border, segments[3]);
+      if (is_fist || pos == board_dim - 1) {  // 1st sq of the row and last sq
+        fconcat(buffer, square_size, "%s%s", borders[0], ndash);
+      } else if (col == cols - 1) {           // last sq of the row
+        fconcat(buffer, square_size, "%s%s", borders[2], ndash);
+        concat(buffer, borders[1]);
+      } else if (pos < board_dim - 1) {       // between 1st & last
+        fconcat(buffer, square_size, "%s%s", borders[2], ndash);
+      } else {                                // when traveling LtR
+        fconcat(buffer, square_size, "%*s", square_len, "");
       }
     }
     col = col + 1;
   }
-  return border;
+  concat(buffer, LINE_END);
+
+  return buffer;
 }
 
-void print_board(const Board board, const int cols, const int square_len,
-                 const char *borders[8]) {
+static char *square_to_str(const int square) {
+  char *buffer = alloc_char("cc", sizeof(square));
+  if (square == GOOSE_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "X2");
+  } else if (square == BRIDGE_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "BR");
+  } else if (square == INN_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "IN");
+  } else if (square == WELL_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "WE");
+  } else if (square == LABYRINTH_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "LA");
+  } else if (square == PRISON_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "PR");
+  } else if (square == SKELETON_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "SK");
+  } else {
+    snprintf(buffer, sizeof(buffer), "%2d", square);
+  }
+
+  return buffer;
+}
+
+static char *build_squares(const char *vert, const int square_len,
+                           const int cols, const int rows, const int row,
+                           const Board board) {
+  char *buffer = alloc_char(vert, cols * square_len);
+
+  const int square_size = 1 + square_len * strlen(vert);
+  const int board_dim = get_dim(&board);
+  const int lspacing = (square_len - 3) / 2;
+  int rspacing;
+  if (square_len % 2 != 0) {
+    rspacing = lspacing;
+  } else {
+    rspacing = lspacing + 1;
+  }
+
+  int col = 0;
+  while (col < cols) {
+    if (row % 2 == 0) {
+      int pos = row * cols + col;
+      int square = get_square(&board, pos);
+      char *sq = square_to_str(square);
+
+      int is_fist = (col == cols - 1) && (row != rows - 1);
+      int is_last = (pos == board_dim - 1) && (row == rows - 1);
+      if (is_fist || is_last) {
+        fconcat(buffer, square_size, "%s%*s%2s%*s%s", vert, lspacing, "", sq,
+                rspacing, "", vert);
+      } else if (pos < board_dim) {
+        fconcat(buffer, square_size, "%s%*s%2s%*s", vert, lspacing, "", sq,
+                rspacing, "");
+      } else {
+        fconcat(buffer, square_size, "%*s", square_len, "");
+      }
+    } else {
+      int pos = (row + 1) * cols - col - 1;
+      int square = get_square(&board, pos);
+      char *sq = square_to_str(square);
+
+      if (col == cols - 1) {
+        fconcat(buffer, square_size, "%s%*s%2s%*s%s", vert, lspacing, "", sq,
+                rspacing, "", vert);
+      } else if (pos < board_dim) {
+        fconcat(buffer, square_size, "%s%*s%2s%*s", vert, lspacing, "", sq,
+                rspacing, "");
+      } else {
+        fconcat(buffer, square_size, "%*s", square_len, "");
+      }
+    }
+    col = col + 1;
+  }
+  concat(buffer, LINE_END);
+
+  return buffer;
+}
+
+static char *build_board(const Board board, const int cols,
+                         const int square_len, const char *borders[8]) {
   /* border chars will be in the following order:
    * - nw_corner  0  (ex. "┌");
    * - ne_corner  1  (ex. "┐");
@@ -196,71 +226,37 @@ void print_board(const Board board, const int cols, const int square_len,
    * - dash       6  (ex. "─");
    * - vert       7  (ex. "│");
    */
+  int rows = (get_dim(&board) + cols - 1) / cols;  // calculate rows needed
 
-  int board_dim = get_dim(&board);
-  int rows = (board_dim + cols - 1) / cols;  // calculate rows needed
-
-  // concatenate together the chars that always repeat at the same rate to
-  // avoid useless computation when concatenating the border
-  char *ndash = nbuild_char(borders[6], square_len - 1);
-  char *nempty = nbuild_char(" ", square_len);
-
-  // create the other possibile segments for the border creation
-  char *nw_segment = build_segment(borders[0], ndash, square_len);
-  char *jd_segment = build_segment(borders[4], ndash, square_len);
-  char *ne_segment = build_segment(borders[4], ndash, square_len);
-  concat(ne_segment, borders[1]);
-  const char *top_segments[4] = {nw_segment, ne_segment, jd_segment, nempty};
-
-  char *sw_segment = build_segment(borders[2], ndash, square_len);
-  char *ju_segment = build_segment(borders[5], ndash, square_len);
-  char *se_segment = build_segment(borders[5], ndash, square_len);
-  concat(se_segment, borders[3]);
-  const char *bot_segments[4] = {sw_segment, se_segment, ju_segment, nempty};
-
-  // TODO(sRavioli): next step is to build the board, then print it.
+  char *game_board = alloc_char(borders[0], 3 * rows * cols * square_len);
+  const char *top_borders[4] = {borders[0], borders[1], borders[4], borders[6]};
+  const char *bot_borders[4] = {borders[2], borders[3], borders[5], borders[6]};
+  const char *vert = borders[7];
 
   int row = 0;
   while (row < rows) {
-    char *top_border =
-        build_border(top_segments, square_len, cols, rows, row, board_dim);
-    printf("%s\n", top_border);
+    char *top = build_border(top_borders, square_len, cols, rows, row, board);
+    char *squares = build_squares(vert, square_len, cols, rows, row, board);
+    char *bot = build_border(bot_borders, square_len, cols, rows, row, board);
 
-    int col = 0;
-    while (col < cols) {
-      int pos = row * cols + col;
-      int square = get_square(&board, pos);
-      if (row % 2 == 0) {
-        if ((col == cols - 1) && (row != rows - 1)) {
-          printf("%s  %2d  %s", borders[7], square, borders[7]);
-        } else if (pos < board_dim) {
-          printf("%s  %2d  ", borders[7], square);
-        } else if (pos == board_dim) {
-          printf("%s      ", borders[7]);
-        } else {
-          printf("       ");
-        }
-      } else {
-        int pos = (row + 1) * cols - col - 1;
-        int square = get_square(&board, pos);
-        if (col == cols - 1) {
-          printf("%s  %2d  %s", borders[7], square, borders[7]);
-        } else if (pos < board_dim) {
-          printf("%s  %2d  ", borders[7], square);
-        } else {
-          printf("       ");
-        }
-      }
-      col = col + 1;
-    }
-    printf("\n");
+    const int source_size = 1 + strlen(top) + strlen(squares) + strlen(bot);
+    fconcat(game_board, source_size, "%s%s%s", top, squares, bot);
 
-    char *bot_border =
-        build_border(bot_segments, square_len, cols, rows, row, board_dim);
-    printf("%s\n", bot_border);
+    free(top);
+    free(squares);
+    free(bot);
 
     row = row + 1;
   }
+
+  return game_board;
+}
+
+void print_board(const Board board, const int cols, const int square_len,
+                 const char *borders[8]) {
+  char *game_board = build_board(board, cols, square_len, borders);
+  printf("%s", game_board);
+  free(game_board);
 }
 
 void fill_board(Board *board, const int dim) {
@@ -270,5 +266,30 @@ void fill_board(Board *board, const int dim) {
   while (i < dim) {
     set_square(board, i, i + 1);
     i = i + 1;
+  }
+
+  i = 0;
+  while (i < dim) {
+    int square = get_square(board, i);
+    if (square == BRIDGE_SQUARE) {
+      set_square(board, i, BRIDGE_VALUE);
+    } else if (square == INN_SQUARE) {
+      set_square(board, i, INN_VALUE);
+    } else if (square == WELL_SQUARE) {
+      set_square(board, i, WELL_VALUE);
+    } else if (square == LABYRINTH_SQUARE) {
+      set_square(board, i, LABYRINTH_VALUE);
+    } else if (square == PRISON_SQUARE) {
+      set_square(board, i, PRISON_VALUE);
+    } else if (square == SKELETON_SQUARE) {
+      set_square(board, i, SKELETON_VALUE);
+    }
+    i = i + 1;
+  }
+
+  i = GOOSE_SPACING - 1;
+  while (i < get_dim(board) - 1) {
+    set_square(board, i, GOOSE_VALUE);
+    i = i + GOOSE_SPACING;
   }
 }
