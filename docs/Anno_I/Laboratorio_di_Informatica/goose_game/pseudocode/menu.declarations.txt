@@ -1,0 +1,76 @@
+DICHIARAZIONE DELLE FUNZIONI PRINCIPALI PER IL MENÙ DI GIOCO
+============================================================
+
+MENÙ PRINCIPALE
+===============
+
+funzione print_menu()
+---------------------
+
+Stampa a video il menù principale. Esso è composto da:
+- nuova partita
+- carica partita 
+- aiuto
+- classifica
+- esci
+
+INPUT:
+- nullo, non riceve input.
+
+OUTPUT:
+- nullo, non riceve output.
+
+
+MENÙ NUOVA PARTITA
+==================
+
+funzione print_new_game_menu()
+------------------------------
+
+Stampa a video il menù "nuova partita". Esso è composto da:
+- inizia partita;
+- salva partita;
+- abbandona partita;
+- esci.
+
+INPUT:
+- nullo, non riceve input.
+
+OUTPUT:
+- nullo, non riceve output.
+
+
+funzione print_start_game_menu()
+--------------------------------
+
+Stampa a video le opzioni che i giocatori possono scegliere, le quali sono:
+- numero di giocatori
+- lunghezza del tabellone
+Dopodiché avvia la partita.
+È sempre presente l'opzione esci.
+
+INPUT:
+- nullo, non riceve input.
+
+OUTPUT:
+- nullo, non riceve output.
+
+
+MENÙ CARICA PARTITA
+===================
+
+...
+
+
+MENÙ AIUTO
+==========
+
+...
+
+
+MENÙ CLASSIFICA
+===============
+
+...
+
+
