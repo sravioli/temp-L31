@@ -17,8 +17,9 @@
  * @version 1.0
  * @license GNU GPLv3
  */
-#ifndef BOARD_H
-#define BOARD_H
+
+#ifndef BOARD_TYPE_H
+#define BOARD_TYPE_H
 
 #include "../globals.h"
 

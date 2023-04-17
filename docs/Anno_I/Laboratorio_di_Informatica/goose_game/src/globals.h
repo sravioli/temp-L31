@@ -1,4 +1,27 @@
-// Copyright (c) 2023 {Simone Fidanza, }. GNU GPLv3
+/**
+ * @file globals.h
+ *
+ * @brief Global constants and definitions for the board game module.
+ *
+ * This file contains global constants and definitions used in all of the board
+ * game modules. These constants define the minimum and maximum number of
+ * squares and players allowed, values and positions of special squares on the
+ * board, and other global settings for the game.
+ *
+ * @attention This file should be included in any source file that needs to
+ *            access these global constants and definitions.
+ *
+ * @authors
+ *    Amorese Emanuele <e.amorese3@studenti.uniba.it>
+ *    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
+ *    Cannito Antonio <a.cannito21@studenti.uniba.it>
+ *    Fidanza Simone <s.fidanza1@studenti.uniba.it>
+ *    Lecini Fabio <f.lecini@studenti.uniba.it>
+ * @date 2023-04-17 13:13
+ * @version 1.0
+ * @license GNU GPLv3
+ */
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -60,6 +83,6 @@
 #define STR_END '\0'
 
 // end of line indicator
-#define LINE_END '\n'
+#define LINE_END "\n"
 
 #endif  // GLOBALS_H

@@ -141,7 +141,7 @@ void print_board(const Board *board) {
     }
     counter = counter + 1;
     if (counter == 10 && square_j < get_dim(board)) {
-      printf("%c|", LINE_END);
+      printf("%s|", LINE_END);
       counter = 0;
     }
     i = i + 1;
