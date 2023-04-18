@@ -18,8 +18,8 @@
  * @license GNU GPLv3
  */
 
-#ifndef BOARD_TYPE_H
-#define BOARD_TYPE_H
+#ifndef TYPE_BOARD_H_
+#define TYPE_BOARD_H_
 
 #include "../globals.h"
 
@@ -87,4 +87,4 @@ int get_dim(const Board *board);
  */
 void set_dim(Board *board, int dimension);
 
-#endif  // BOARD_H
+#endif  // TYPE_BOARD_H_
