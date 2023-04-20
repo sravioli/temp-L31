@@ -1,4 +1,4 @@
-#include "./board.h"
+#include "../inc/board_type.h"
 
 int get_square(const Board *board, int position) {
   return board->squares[position];

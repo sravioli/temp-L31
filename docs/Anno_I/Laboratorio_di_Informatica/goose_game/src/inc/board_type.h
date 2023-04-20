@@ -1,27 +1,4 @@
-/**
- * @file board.h
- *
- * @brief Declaration of the Board struct and its getter and setter functions.
- *
- * This file contains the declaration of the Board struct and its getter and
- * setter functions. The Board struct represents a game board and stores
- * information such as the values of squares and the dimension of the board.
- *
- * @authors
- *    Amorese Emanuele <e.amorese3@studenti.uniba.it>
- *    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
- *    Cannito Antonio <a.cannito21@studenti.uniba.it>
- *    Fidanza Simone <s.fidanza1@studenti.uniba.it>
- *    Lecini Fabio <f.lecini@studenti.uniba.it>
- * @date 2023-04-11 12:44
- * @version 1.0
- * @license GNU GPLv3
- */
-
-#ifndef TYPE_BOARD_H_
-#define TYPE_BOARD_H_
-
-#include "../globals.h"
+#include "./globals.h"
 
 /**
  * @struct Board
@@ -43,7 +20,7 @@ typedef struct Board {
  * This function retrieves the value of a square on the board, given its
  * position.
  *
- * @param[in] board Pointer to the Board struct.
+ * @param[in] board    Pointer to the Board struct.
  * @param[in] position Position of the square on the board.
  *
  * @return Value of the square at the given position.
@@ -56,9 +33,9 @@ int get_square(const Board *board, int position);
  * This function sets the value of a square on the board, given its position and
  * value.
  *
- * @param[in,out] board Pointer to the Board struct.
- * @param[in] position Position of the square on the board.
- * @param[in] value Value to set for the square.
+ * @param[in,out] board    Pointer to the Board struct.
+ * @param[in]     position Position of the square on the board.
+ * @param[in]     value    Value to set for the square.
  *
  * @return void.
  */
@@ -80,11 +57,9 @@ int get_dim(const Board *board);
  *
  * This function sets the dimension of the board.
  *
- * @param[in,out] board Pointer to the Board struct.
- * @param[in] dimension Dimension to set for the board.
+ * @param[in,out] board     Pointer to the Board struct.
+ * @param[in]     dimension Dimension to set for the board.
  *
  * @return void.
  */
 void set_dim(Board *board, int dimension);
-
-#endif  // TYPE_BOARD_H_

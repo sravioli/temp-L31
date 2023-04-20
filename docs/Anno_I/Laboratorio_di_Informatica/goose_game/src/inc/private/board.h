@@ -11,14 +11,14 @@
  *          code. It is for internal use within the board module only.
  *
  * @authors
- *    Amorese Emanuele <e.amorese3@studenti.uniba.it>
- *    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
- *    Cannito Antonio <a.cannito21@studenti.uniba.it>
- *    Fidanza Simone <s.fidanza1@studenti.uniba.it>
- *    Lecini Fabio <f.lecini@studenti.uniba.it>
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
  * @date 2023-04-18 09:46
  * @version 2.0
- * @license GNU GPLv3
+ * @copyright GNU GPLv3
  *
  * @see "board.h" for the public interface of the board module.
  */
@@ -26,7 +26,7 @@
 #ifndef BOARD_PRIVATE_H
 #define BOARD_PRIVATE_H
 
-#include "../types/board.h"
+#include "../board_type.h"
 
 /**
  * @brief Calculate the proportional position of a special square on the board.
@@ -118,126 +118,6 @@ void insert_goose_squares(Board *board);
 void insert_special_squares(Board *board);
 
 /**
- * @brief Concatenate a source string to a buffer.
- *
- * This function appends the contents of the source string to the end of the
- * buffer, effectively concatenating them. The buffer is updated in-place.
- *
- * @param[in,out] buffer Pointer to the buffer to concatenate to.
- * @param[in] source Pointer to the source string to append.
- *
- * @return void.
- *
- * @note The buffer parameter is expected to be a valid pointer to a
- *       null-terminated string.
- * @note The source parameter is expected to be a valid pointer to a
- *       null-terminated string.
- * @note The buffer should have enough space to accommodate the source string
- *       and its null terminator.
- * @note The source string is appended to the end of the buffer, starting from
- *       the null terminator of the buffer.
- * @attention This function does not perform any size checking or memory
- *            allocation. It is the responsibility of the caller to ensure that
- *            the buffer has enough space for the concatenated string.
- *
- * @see `snprintf()` for string formatting.
- */
-void concat(char *buffer, const char *source);
-
-/**
- * @brief Concatenate a source string to a buffer multiple times.
- *
- * This function appends the contents of the source string to the end of the
- * buffer multiple times, as specified by the `n_times` parameter. The buffer is
- * updated in-place.
- *
- * @param[in,out] buffer Pointer to the buffer to concatenate to.
- * @param[in] source Pointer to the source string to append.
- * @param[in] n_times Number of times to concatenate the source string to the
- *                    buffer.
- *
- * @return void.
- *
- * @note The buffer parameter is expected to be a valid pointer to a
- *       null-terminated string.
- * @note The source parameter is expected to be a valid pointer to a
- *       null-terminated string.
- * @note The buffer should have enough space to accommodate the concatenated
- *       strings and their null terminators.
- * @attention This function does not perform any size checking or memory
- *            allocation. It is the responsibility of the caller to ensure that
- *            the buffer has enough space for the concatenated strings.
- *
- * @see `snprintf()` for string formatting.
- */
-void nconcat(char *buffer, const char *source, const int n_times);
-
-/**
- * @brief Format and concatenate a formatted string to a buffer.
- *
- * This function appends the formatted string to the end of the buffer, using
- * the provided format specifier and variable argument list. The buffer is
- * updated in-place.
- *
- * @param[in,out] buffer Pointer to the buffer to concatenate to.
- * @param[in] source_size Maximum size of the source string to be formatted and
- *                        concatenated.
- * @param[in] format Format specifier string for the formatted string.
- * @param[in] ... Variable argument list to be formatted.
- *
- * @return void.
- *
- * @attention This function does not perform any size checking or memory
- *            allocation. It is the responsibility of the caller to ensure that
- *            the buffer has enough space for the formatted string.
- * @note The buffer parameter is expected to be a valid pointer to a
- *       null-terminated string and to have enough space to accommodate the
- *       formatted string and its null terminator.
- * @note The source_size parameter specifies the maximum size of the source
- *       string that can be formatted and concatenated to the buffer.
- * @note The format parameter is expected to be a valid format specifier string
- *       according to the rules of the C `printf()` function.
- * @note The variable argument list should correspond to the format specifier
- *       string and provide the values to be formatted.
- *
- * @see `vsnprintf()` for string formatting with a variable argument list.
- * @see `snprintf()` for string formatting.
- */
-void fconcat(char *buffer, const int source_size, const char *format, ...);
-
-/**
- * @brief Allocates memory for a character buffer with null-termination.
- *
- * This function dynamically allocates memory for a character buffer with
- * null-termination. The size of the buffer is determined by the given size
- * parameter and the length of the input character s. The resulting buffer will
- * be null-terminated.
- *
- * @param[in] s Pointer to the input string to be copied.
- * @param[in] size Size of the allocated memory for the copied string.
- *
- * @return Pointer to the dynamically allocated memory containing the copied
- *         string.
- *
- * @attention The size of the allocated buffer is determined by the size
- *            parameter multiplied by the length of the input character s. It
- *            is important to ensure that the resulting buffer is not too
- *            large to prevent memory overflow.
- * @note The input string s should be a valid null-terminated string.
- * @note The size parameter specifies the size of the allocated memory for the
- *       copied string, including space for the null terminator.
- * @note The returned pointer points to the dynamically allocated memory and
- *       should be freed by the caller when no longer needed to avoid memory
- *       leaks.
- * @note If the memory allocation fails, an error message is printed and the
- *       program exits with a failure status code.
- *
- * @see `malloc()` for memory allocation.
- * @see `free()` for deallocating memory.
- */
-char *alloc_char(const char *c, const int size);
-
-/**
  * @brief Build a border for a square board based on given border segments.
  *
  * This function dynamically allocates memory for a character string that
@@ -325,14 +205,14 @@ char *build_squares(const char *vert, const int square_len, const int cols,
  * @param[in] square_len The length of each square in the game board.
  * @param[in] borders An array of border characters for different parts of the
  *                    game board. The order of characters should be as follows:
- *                    - nw_corner  0  (e.g. "┌");
- *                    - ne_corner  1  (e.g. "┐");
- *                    - sw_corner  2  (e.g. "└");
- *                    - se_corner  3  (e.g. "┘");
- *                    - join_down  4  (e.g. "┬");
- *                    - join_up    5  (e.g. "┴");
- *                    - dash       6  (e.g. "─");
- *                    - vert       7  (e.g. "│").
+ *                    - nw_corner  (e.g. "┌");
+ *                    - ne_corner  (e.g. "┐");
+ *                    - sw_corner  (e.g. "└");
+ *                    - se_corner  (e.g. "┘");
+ *                    - join_down  (e.g. "┬");
+ *                    - join_up    (e.g. "┴");
+ *                    - dash       (e.g. "─");
+ *                    - vert       (e.g. "│").
  *
  * @return A dynamically allocated char array representing the game board. The
  *         caller is responsible for freeing the memory when no longer needed.

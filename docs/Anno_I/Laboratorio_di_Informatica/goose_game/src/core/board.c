@@ -1,26 +1,25 @@
 // Copyright (c) 2023 @authors. GNU GPLv3
 // @authors
-//    Amorese Emanuele <e.amorese3@studenti.uniba.it>
-//    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
-//    Cannito Antonio <a.cannito21@studenti.uniba.it>
-//    Fidanza Simone <s.fidanza1@studenti.uniba.it>
-//    Lecini Fabio <f.lecini@studenti.uniba.it>
+//    Amorese Emanuele
+//    Blanco Lorenzo
+//    Cannito Antonio
+//    Fidanza Simone
+//    Lecini Fabio
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../globals.h"
-#include "../types/board.h"
+#include "../common/inc/string.h"
+#include "../common/inc/term.h"
+#include "../inc/board.h"
+#include "../inc/globals.h"
 
-// PRIVATE FUNCTIONS (included in board.private.h)
-// calculate the value of the special square based on the board dimension.
 int proportion(const Board *board, int special_square) {
   return ((special_square * get_dim(board)) / MAX_NUM_SQUARES);
 }
 
-// check if the value of the square at the given position is a .goose square
 int is_goose_square(const Board *board, int position) {
   int val;
   if (get_square(board, position) == GOOSE_VALUE) {
@@ -31,16 +30,14 @@ int is_goose_square(const Board *board, int position) {
   return val;
 }
 
-// check the given square and modifies it accordingly.
 int check_special_square(const Board *board, int special_position) {
   int allowed_special_pos = special_position;
-  if (is_goose_square(board, special_position)) {
+  if (get_square(board, special_position) == GOOSE_VALUE) {
     allowed_special_pos = allowed_special_pos + 1;
   }
   return allowed_special_pos;
 }
 
-// insert all the goose squares (following GOOSE_SPACING).
 void insert_goose_squares(Board *board) {
   int i = GOOSE_SPACING - 1;
   while (i < get_dim(board) - 1) {
@@ -49,7 +46,6 @@ void insert_goose_squares(Board *board) {
   }
 }
 
-// insert all the special squares whose position is changed based on board len.
 void insert_special_squares(Board *board) {
   int special_positions[] = {BRIDGE_SQUARE,    INN_SQUARE,    WELL_SQUARE,
                              LABYRINTH_SQUARE, PRISON_SQUARE, SKELETON_SQUARE};
@@ -69,44 +65,6 @@ void insert_special_squares(Board *board) {
   }
 }
 
-// memory safe string concatenation.
-void concat(char *buffer, const char *source) {
-  snprintf(buffer + strlen(buffer), strlen(source) + 1, "%s", source);
-}
-
-// memory safe string concatenation repeated n times.
-void nconcat(char *buffer, const char *source, const int n_times) {
-  int buffer_length = strlen(buffer);
-  int i = 0;
-  while (i < n_times) {
-    snprintf(buffer + buffer_length, strlen(source) + 1, "%s", source);
-    buffer_length = buffer_length + strlen(source);
-    i = i + 1;
-  }
-}
-
-// memory safe formatted concatenation.
-void fconcat(char *buffer, const int source_size, const char *format, ...) {
-  va_list args;
-  va_start(args, format);
-  vsnprintf(buffer + strlen(buffer), source_size, format, args);
-  va_end(args);
-}
-
-// allocate memory for string or char based on `size * strlen()`.
-char *alloc_char(const char *s, const int size) {
-  char *buffer = (char *)malloc(1 + size * strlen(s) * sizeof(s));  // NOLINT
-  if (buffer == NULL) {
-    printf("error: failed to allocate memory for string of size %i\n", size);
-    exit(EXIT_FAILURE);
-  }
-  // ensure null termination of the string
-  memset(buffer, STR_END, strlen(buffer));
-
-  return buffer;
-}
-
-// build the border  bsed on the given chars (or strings).
 char *build_border(const char *borders[4], const int square_len, const int cols,
                    const int rows, const int row, const Board board) {
   /* segments contains the four segments needed to create a border:
@@ -162,7 +120,6 @@ char *build_border(const char *borders[4], const int square_len, const int cols,
   return buffer;
 }
 
-// convert the vaue of a square to a string.
 char *square_to_str(const int square) {
   char *buffer = alloc_char("cc", sizeof(square));
   if (square == GOOSE_VALUE) {
@@ -186,7 +143,6 @@ char *square_to_str(const int square) {
   return buffer;
 }
 
-// build the board squares with square values.
 char *build_squares(const char *vert, const int square_len, const int cols,
                     const int rows, const int row, const Board board) {
   char *buffer = alloc_char(vert, cols * square_len);
@@ -242,7 +198,6 @@ char *build_squares(const char *vert, const int square_len, const int cols,
   return buffer;
 }
 
-// build the complete board with borders and squares values.
 char *build_board(const Board board, const int cols, const int square_len,
                   const char *borders[8]) {
   /* border chars will be in the following order:
@@ -253,7 +208,7 @@ char *build_board(const Board board, const int cols, const int square_len,
    * - join_down  4  (ex. "┬");
    * - join_up    5  (ex. "┴");
    * - dash       6  (ex. "─");
-   * - vert       7  (ex. "│");
+   * - vert       7  (ex. "│").
    */
   int rows = (get_dim(&board) + cols - 1) / cols;  // calculate rows needed
 
@@ -281,26 +236,23 @@ char *build_board(const Board board, const int cols, const int square_len,
   return game_board;
 }
 
-// PUBLIC FUNCTIONS (included in board.h)
-// obtain the desired number of squares from the players.
 int get_num_squares() {
+  // get number of squares from user
+  int num_squares;
   printf("Insert the number of squares [%d, %d]: ", MIN_NUM_SQUARES,
          MAX_NUM_SQUARES);
-  int num_squares;
   scanf_s("%d", &num_squares, sizeof(num_squares));
 
-  // keep asking input until it's valid
+  // validate input
   while (num_squares < MIN_NUM_SQUARES || num_squares > MAX_NUM_SQUARES) {
     printf("The number entered is not valid. Insert the number of squares [%d, "
            "%d]: ",
            MIN_NUM_SQUARES, MAX_NUM_SQUARES);
     scanf_s("%d", &num_squares, sizeof(num_squares));
   }
-
   return num_squares;
 }
 
-// create an empty board with the given dimension and fill it.
 Board create_board(const int dimension) {
   Board board;
   set_dim(&board, dimension);
@@ -317,7 +269,6 @@ Board create_board(const int dimension) {
   return board;
 }
 
-// print the game board with the given colums, square length and borders.
 void print_board(const Board board, const int cols, const int square_len,
                  const char *borders[8]) {
   char *game_board = build_board(board, cols, square_len, borders);

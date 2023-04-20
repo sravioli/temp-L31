@@ -12,14 +12,14 @@
  *            access these global constants and definitions.
  *
  * @authors
- *    Amorese Emanuele <e.amorese3@studenti.uniba.it>
- *    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
- *    Cannito Antonio <a.cannito21@studenti.uniba.it>
- *    Fidanza Simone <s.fidanza1@studenti.uniba.it>
- *    Lecini Fabio <f.lecini@studenti.uniba.it>
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
  * @date 2023-04-17 13:13
  * @version 1.0
- * @license GNU GPLv3
+ * @copyright GNU GPLv3
  */
 
 #ifndef GLOBALS_H
