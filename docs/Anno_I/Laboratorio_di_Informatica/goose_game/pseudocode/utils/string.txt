@@ -1,0 +1,117 @@
+FUNZIONI PER LA MANIPOLAZIONE DELLE STRINGHE 
+=============================================
+
+@see "globals.txt"
+
+
+Questo file contiene implementazioni di diverse funzioni per la manipolazione delle stringhe.
+
+Le funzioni di questo file permettono di calcolare la lunghezza di una stringa,
+di concatenare due stringhe, di concatenare una stringa n volte ad un'altra, 
+di concatenare una lista di stringhe ad una stringa, etc.
+
+
+--------------------------------------------------------------------------------
+
+
+FUNZIONE strlen(string)
+=======================
+
+INPUT:
+- string, stringa di cui calcolare la lunghezza, array di caratteri.
+
+OUTPUT:
+- length, lunghezza calcolata della stringa, intero maggiore uguale a zero.
+
+ALGORITMO:
+length := 0
+MENTRE(elemento length-esimo di stringa <> STR_END)
+ length := length + 1
+FINE
+
+
+------------------------------------------------------------
+
+
+fUNZIONE concat(buffer, source)
+===============================
+
+Concatena una srtinga ad un'altra.
+
+INPUT:
+- buffer, stringa a cui verrà concatenata la stringa source, stringa;
+- source, stringa da concatenare alla stringa buffer, stringa.
+
+OUTPUT:
+- buffer, la stringa modificata dalla concatenazione di source, stringa.
+
+LAVORO:
+- i, contatore per iterare su buffer che assume la lunghezza di quest'ultimo come
+  valore iniziale, intero maggiore di zero;
+- j, contatore per iterare su source, intero maggiore o uguale a zero.
+
+ALGORITMO:
+i := strlen(buffer)
+j := 0
+MENTRE(elemento j-esimo di source <> STR_END)
+  elemento i-esimo di buffer := elemento j-esimo di source
+  i := i + 1
+  j := j + 1
+FINE
+elemento i-esimo di buffer := STR_END
+
+
+------------------------------------------------------------
+
+
+FUNZIONE nconcat(buffer, source, n_times)
+=========================================
+
+Concatena una stringa n volte ad un'altra stringa.
+
+INPUT:
+- buffer, stringa a cui concatenare n_times volte la stringa source, stringa;
+- source, stringa da concatenare n_times volte alla stringa buffer, stringa;
+- n_times, indica quante volte concatenare la sringa source alla stringa buffer,
+  intero maggiore di zero.
+
+OUTPUT:
+- buffer, stringa modificata dalla concatenazione di source per n_times volte,
+  stringa
+
+LAVORO:
+- i, contatore per iterare su buffer che assume la lunghezza di quest'ultimo come
+  valore iniziale, intero maggiore di zero;
+
+ALGORITMO:
+i := strlen(buffer)
+MENTRE (i < n_times)
+  elemento i-esimo di buffer := source
+  i := i + 1
+FINE
+elemento i-esimo di buffer := STR_END
+
+
+FUNZIONE fconcat(buffer, sources_len, sources)
+==============================================
+
+Concatena una stringa formattata ad un'altra stringa.
+
+INPUT:
+- buffer, stringa alla quale concatenare la stringa formattata, stringa
+- sources, stringhe nell'ordine di formattazione voluto, array di stringhe.
+
+OUTPUT:
+- buffer, stringa modificata dalla concatenazione di tutti gli elementi di 
+  sources.
+
+LAVORO:
+- i, contatore per iterare sugli elementi della lista di stringhe da concatenare,
+  intero maggiore o uguale a zero.
+
+ALGORITMO:
+i := 0
+MENTRE (i < sources_len)
+  concat(buffer, elemento i-esimo di args)
+  i := i + 1
+FINE

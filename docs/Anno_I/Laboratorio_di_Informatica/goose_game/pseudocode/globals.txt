@@ -26,5 +26,6 @@ Lista delle costanti globali con loro valore assunto e breve descrizione:
 
 ------------------
 
-- FINE_RIGA, indica di terminare la riga e andare a capo.
+- LINE_END := "\n", indica di terminare la riga e andare a capo;
+- STR_END := '\0', indica il carattere o simbolo che stabilisce la fine di una stringa.
 
