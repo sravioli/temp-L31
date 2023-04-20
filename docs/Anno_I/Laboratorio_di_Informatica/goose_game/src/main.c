@@ -1,16 +1,16 @@
 // Copyright (c) 2023 @authors. GNU GPLv3
 // @authors
-//    Amorese Emanuele <e.amorese3@studenti.uniba.it>
-//    Blanco Lorenzo <l.blanco1@studenti.uniba.it>
-//    Cannito Antonio <a.cannito21@studenti.uniba.it>
-//    Fidanza Simone <s.fidanza1@studenti.uniba.it>
-//    Lecini Fabio <f.lecini@studenti.uniba.it>
+//    Amorese Emanuele
+//    Blanco Lorenzo
+//    Cannito Antonio
+//    Fidanza Simone
+//    Lecini Fabio
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./globals.h"
-#include "./modules/board.h"
+#include "./common/inc/term.h"
+#include "./inc/board.h"
 
 int main(void) {
   const char *round_borders[8] = {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"};
