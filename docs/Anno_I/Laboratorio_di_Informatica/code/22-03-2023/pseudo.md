@@ -86,8 +86,8 @@ FINE
 **ALGORITMO**:
 
 ```txt title="Pseudocodice"
-copia = CopiaStringa(stringa)
-invertita = InvertiStringa(copia)
+copia := CopiaStringa(stringa)
+invertita := InvertiStringa(copia)
 SE (ComparaStringhe(invertita, stringa) == 0) ALLORA
     palindroma := 1
 ALTRIMENTI
