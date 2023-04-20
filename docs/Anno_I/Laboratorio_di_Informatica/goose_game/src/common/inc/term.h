@@ -1,5 +1,5 @@
-#ifndef TERMINAL_UTILS_H_
-#define TERMINAL_UTILS_H_
+#ifndef TERMINAL_UTILS_H
+#define TERMINAL_UTILS_H
 
 /**
  * @brief Retrieve the terminal size (width and height).
@@ -42,4 +42,4 @@ void print_justified(const char *justification, const char *text,
 
 void justify_text(char *text, int term_width, const char *justification);
 
-#endif  // !TERMINAL_UTILS_H_
+#endif  // !TERMINAL_UTILS_H

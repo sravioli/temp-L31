@@ -8,8 +8,8 @@
  * squares and players allowed, values and positions of special squares on the
  * board, and other global settings for the game.
  *
- * @attention This file should be included in any source file that needs to
- *            access these global constants and definitions.
+ * @warning This file should be included in any source file that needs to
+ *          access these global constants and definitions.
  *
  * @authors
  *    Amorese Emanuele
@@ -17,6 +17,7 @@
  *    Cannito Antonio
  *    Fidanza Simone
  *    Lecini Fabio
+ *
  * @date 2023-04-17 13:13
  * @version 1.0
  * @copyright GNU GPLv3

@@ -19,8 +19,8 @@
  * @copyright GNU GPLv3
  */
 
-#ifndef BOARD_H_
-#define BOARD_H_
+#ifndef BOARD_H
+#define BOARD_H
 
 #include "../inc/board_type.h"
 #include "../inc/globals.h"
@@ -89,4 +89,4 @@ Board create_board(const int dimension);
 void print_board(const Board board, const int cols, const int square_len,
                  const char *borders[8]);
 
-#endif  // !BOARD_H_
+#endif  // !BOARD_H

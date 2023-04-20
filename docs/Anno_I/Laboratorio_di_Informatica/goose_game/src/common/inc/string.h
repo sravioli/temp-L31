@@ -1,32 +1,31 @@
-#ifndef STRING_UTILS_H_
-#define STRING_UTILS_H_
+#ifndef STRING_UTILS_H
+#define STRING_UTILS_H
 
 /**
- * @brief Concatenate a source string to the given buffer.
+ * @brief Concatenates a string to a buffer of any type (narrow or wide
+ *        character).
  *
- * This function appends the contents of the given @e source string to the end
- * of the given @e buffer, effectively concatenating them. The @e buffer is
- * updated in-place.
+ * This function concatenates a string to a buffer of any type (narrow or wide
+ * character) based on the type of the buffer pointer. It determines the type of
+ * strings to concatenate based on the size of the buffer pointer, and calls the
+ * appropriate helper function.
  *
- * @param[in,out] buffer Pointer to the buffer to concatenate to.
- * @param[in]     source Pointer to the source string to append.
+ * @param[in,out] buffer A pointer to the buffer to concatenate to.
+ * @param[in]     source A pointer to the string to concatenate.
  *
  * @return void.
  *
- * @warning This function does not perform any size checking or memory
- *          allocation! It is responsibility of the caller to ensure that the
- *          @e buffer has enough space for the concatenated string.
+ * @warning This function does not perform any type checking on the buffer and
+ *          source pointers! It is the caller's responsibility to ensure proper
+ *          usage of this function.
  *
- * @note The @e buffer is espected to be a valid pointer to a null-terminated
- *       string. It should have enough space to accommodate the source string
- *       and its null-terminator.
- * @note The @e source parameter is expected to be a valid pointer to a
- *       null-terminated string. The @e source string is appended to the end of
- *       the @e buffer, starting from the null-terminator of the @e buffer.
- *
- * @see @c snprintf() for string formatting.
+ * @note The @e buffer and @e source strings must be null-terminated. It must
+ *       have enough space to accommodate the concatenated string, including the
+ *       null-terminator. The @e buffer pointer @b must be of either @c char* or
+ *       @c wchar_t* type.
+ * @note If the @e buffer pointer is not of @c char* or @c wchar_t* type, an
+ *       error message will be printed to indicate unsupported values.
  */
-// void concat(char *buffer, const char *source);
 void concat(void *buffer, const void *source);
 
 /**
@@ -122,4 +121,4 @@ void fconcat(char *buffer, const int source_size, const char *format, ...);
  */
 char *alloc_char(const char *c, const int size);
 
-#endif  // !STRING_UTILS_H_
+#endif  // !STRING_UTILS_H

@@ -1,3 +1,6 @@
+#ifndef BOARD_TYPE_H
+#define BOARD_TYPE_H
+
 #include "./globals.h"
 
 /**
@@ -63,3 +66,5 @@ int get_dim(const Board *board);
  * @return void.
  */
 void set_dim(Board *board, int dimension);
+
+#endif  // !BOARD_TYPE_H
