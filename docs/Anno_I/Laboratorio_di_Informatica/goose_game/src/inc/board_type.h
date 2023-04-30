@@ -1,3 +1,25 @@
+/**
+ * @file board_type.h
+ *
+ * @brief Header file for the Board struct and associated functions.
+ *
+ * This header file defines the Board struct, which represents a game board,
+ * along with functions to manipulate the board, such as getting and setting
+ * the value of a square, as well as getting and setting the dimension of the
+ * board.
+ *
+ * @authors
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
+ *
+ * @date 2023-04-22 15:49
+ * @version 1.0
+ * @copyright GNU GPLv3
+ */
+
 #ifndef BOARD_TYPE_H
 #define BOARD_TYPE_H
 
