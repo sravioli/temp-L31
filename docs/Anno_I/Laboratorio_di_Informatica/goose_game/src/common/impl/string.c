@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "../../inc/globals.h"
-#include "../inc/private/string.h"
+// #include "../inc/private/string.h"
 
 void concat_narrow(char *buffer, const char *source) {
   snprintf(buffer + strlen(buffer), strlen(source) + 1, "%s", source);
@@ -23,7 +23,7 @@ void concat(void *buffer, const void *source) {
   } else {
     printf("error: concat function got unsupported values! Use one of 'char', "
            "'wchar_t'");
-    return;
+    exit(EXIT_FAILURE);
   }
 }
 
@@ -65,7 +65,7 @@ void fconcat(char *buffer, const int source_size, const char *format, ...) {
 
 char *alloc_char(const char *s, const int size) {
   char *buffer = (char *)malloc(1 + size * strlen(s) * sizeof(s));  // NOLINT
-  if (buffer == NULL) {
+  if (!buffer) {
     printf("error: failed to allocate memory for string of size %i\n", size);
     exit(EXIT_FAILURE);
   }

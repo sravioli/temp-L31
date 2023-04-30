@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
 #include <Windows.h>
+
 void get_term_size(int *width, int *height) {
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_SCREEN_BUFFER_INFO csbi;

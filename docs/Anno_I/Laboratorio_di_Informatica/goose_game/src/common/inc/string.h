@@ -97,7 +97,7 @@ void fconcat(char *buffer, const int source_size, const char *format, ...);
  * parameter and the length of the input character s. The resulting buffer will
  * be null-terminated.
  *
- * @param[in] s Pointer to the input string to be copied.
+ * @param[in] s    Pointer to the input string to be copied.
  * @param[in] size Size of the allocated memory for the copied string.
  *
  * @return Pointer to the dynamically allocated memory containing the copied

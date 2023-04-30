@@ -1,4 +1,4 @@
-// Copyright (c) 2023 @authors. GNU GPLv3
+// Copyright (c) 2023 @authors. GNU GPLv3.
 // @authors
 //    Amorese Emanuele
 //    Blanco Lorenzo
