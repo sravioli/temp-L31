@@ -137,7 +137,6 @@ Se una funzione restituisce dei valori di errore questi vanno verificati dal
 chiamante:
 
 ```c
-
 range = num_to_range(age);
 if (strcmp(range, "???") == 0) {
   /* errore */
@@ -239,7 +238,7 @@ sulla conoscienza dei dati di input.
 I test devono garantire che ogni istruzione sia eseguita almeno una volta,
 questo equivale a testare:
 
-- i tami `then..else`
+- i rami `then..else`
 - tutti i case di una `#!c switch`
 - che l'esecuzione dei cicli avvenga:
       - \(0\), \(1\), \(n\), \(n - 1\) volte, con \(n\) massimo.
@@ -422,7 +421,7 @@ Il programma da testare è costituito da diversi file `.c` (detti moduli)
 contenenti diverse funzioni e/o procedure (es. `#!c func_1()`, `#!c func_n()`o
 `#!c proc_n()`, `#!c proc_m()`). Queste funzioni e procedure sono detti
 **methods under test**. Per ciascun metodo da testare occorre scrivere almeno
-un test method. Ciascun metodo di test va chiamato `#!c test_xyz()` (es
+un test method. Ciascun metodo di test va chiamato `#!c test_xyz()` (es.
 `#!c test_funz_1()`, `#!c test_funz_n()`, o `#!c test_proc_1()`,
 `#!c test_proc_m()`).
 
@@ -431,7 +430,7 @@ sotto test. Con errore si intende un comportamento diverso da quello atteso.
 
 !!! warning "Attenzione"
     L'ordine di inserimento ha importanza! Le test suite sono eseguite nello
-    stesso ordine di inserimento nel registry mentre i  test method sono
+    stesso ordine di inserimento nel registry mentre i test method sono
     eseguiti nello stesso ordine di inserimento nella suite.
 
 ### Ciclo di unit test
@@ -460,497 +459,455 @@ header in questo modo:
 #include <stdlib.h>
 ```
 
-#### Scrivere un test method
+### Scrivere un test method
 
 Un metodo di test in CUnit si presenta sempre nella forma di procedura senza
-parametri.
-◆ void test_xyz(void)
-➔ Un metodo di test è un contratto che stabilisce i vincoli
-che devono essere soddisfatti dal software
-◆ I vincoli sono stabiliti attraverso delle asserzioni
-◆ Un'asserzione in un linguaggio di programmazione è
-una funzione che verifica una condizione logica e
-restituisce:
-● Vero, se l'asserzione è rispettata
-● Falso, altrimenti
+parametri, ad esempio `#!c void test_xyz(void)`. Un metodo di test è un
+contratto che stabilisce i vincoli che devono essere soddisfatti dal software:
 
-Asserzioni di base (CUnit)
-Asserzione
-Significato
-CU_ASSERT(int espressione)
-CU_TEST(int espressione)
-Asserisce che espressione è TRUE (diverso da 0)
-CU_ASSERT_TRUE(valore)
-Asserisce che valore è TRUE (diverso da 0)
-CU_ASSERT_FALSE(valore)
-Asserisce che valore è FALSE (uguale a 0)
-CU_ASSERT_EQUAL(reale, atteso)
-Asserisce che reale == atteso
-CU_ASSERT_NOT_EQUAL(reale, atteso)
-Asserisce che reale != atteso
-CU_ASSERT_STRING_EQUAL(reale, atteso)
-Asserisce che le stringhe reale e atteso coincidono
-CU_ASSERT_STRING_NOT_EQUAL(reale,
-atteso)
-Asserisce che le stringhe reale e atteso
-differiscono
+- i vincoli sono stabiliti attraverso delle asserzioni;
+- Un'asserzione in un linguaggio di programmazione è una funzione che verifica
+  una condizione logica e restituisce:
+      - Vero, se l'asserzione è rispettata;
+      - Falso, altrimenti.
 
+#### Asserzioni di base (CUnit)
+
+<!-- markdownlint-disable MD033 MD013 -->
+| Asserzione                                                 | Significato                                           |
+| ---------------------------------------------------------- | ----------------------------------------------------- |
+| `CU_ASSERT(int espressione)`<br>`CU_TEST(int espressione)` | Asserisce che espressione è `TRUE` (diverso da 0)     |
+| `CU_ASSERT_TRUE(valore)`                                   | Asserisce che valore è `TRUE` (diverso da 0)          |
+| `CU_ASSERT_FALSE(valore)`                                  | Asserisce che valore è `FALSE` (uguale a 0)           |
+| `CU_ASSERT_EQUAL(reale, atteso)`                           | Asserisce che reale `==` atteso                       |
+| `CU_ASSERT_NOT_EQUAL(reale, atteso)`                       | Asserisce che reale `!=` atteso                       |
+| `CU_ASSERT_STRING_EQUAL(reale, atteso)`                    | Asserisce che le stringhe reale e atteso coincidono   |
+| `CU_ASSERT_STRING_NOT_EQUAL(reale, atteso)`                | Asserisce che le stringhe reale e atteso differiscono |
+<!-- markdownlint-disable 033 013 -->
+
+#### Esempio di test method per la funzione `max(a,b)`
+
+```c
 void test_max(void) {
-CU_ASSERT_EQUAL(max(0,2), 2);
-CU_ASSERT_TRUE(max(0,-2) == 0);
-CU_TEST(max(2,2) == 2);
-// questa asserzione è sbagliata e fallisce
-CU_ASSERT_TRUE(max(5,6) == 2);
+  CU_ASSERT_EQUAL(max(0, 2), 2);
+  CU_ASSERT_TRUE(max(0, -2) == 0);
+  CU_TEST(max(2, 2) == 2);
+  // questa asserzione è sbagliata e fallisce
+  CU_ASSERT_TRUE(max(5, 6) == 2);
 }
-Esempio di test method per
-la funzione max(a,b)
+```
 
+#### Esempio di metodo di test per la funzione `factorial(x)`
+
+\[
+  n! = \begin{cases}
+         1       & \text{se } n = 0 \\
+         n(n-1)! & \text{se } n > 1 \\
+       \end{cases}
+\]
+
+```c
 void test_factorial(void) {
-// fallisce
-CU_ASSERT_EQUAL(factorial(4), 12 );
-CU_ASSERT(factorial(3) == 6);
-CU_TEST(factorial(6) == 720);
+  // fallisce
+  CU_ASSERT_EQUAL(factorial(4), 12);
+  CU_ASSERT(factorial(3) == 6);
+  CU_TEST(factorial(6) == 720);
 }
-Esempio di metodo di test
-per la funzione factorial(x)
-1
-se n = 0
-n! =
-n(n-1)!
-se n > 1
+```
 
-Ciclo di Unit Test
-1.Scrivi tutti i test method necessari
-2.Crea il test registry
-3.Crea la test suite e aggiungila al test registry
-4.Aggiungi i test method alle test suite definite
-5.Se necessario, ripeti i passi 3-4 per un'altra suite
-6.Esegui il test registry
-7.Pulisci il test registry
+### Il Test Registry
 
-Il Test Registry
-➔Raccoglie tutte le test suite
-➔Quando si esegue un Test Registry si
-eseguono tutte le suite al suo interno e, di
-conseguenza, tutti i test method all'interno
-delle suite
+Raccoglie tutte le test suite. Quando si esegue un Test Registry si
+eseguono tutte le suite al suo interno e, di conseguenza, tutti i test method
+all'interno delle suite.
 
-Inizializzazione del
-Test Registry
-46
-L'inizializzazione del test registry è la prima
-operazione da effettuare
+```mermaid
+flowchart TD 
+  testRegistry(Test Registry) --> suite1(Suite 1) & suiten(Suite n);
+  suite1 --> test1[Test 1] & testm[Test m];
+  suiten --> testn1[Test 1,n] & testnm[Test n,m];
+```
 
-47
-Ciclo di Unit Test
-1.Scrivi tutti i test method necessari
-2.Crea il test registry
-3.Crea la test suite e aggiungila al test registry
-4.Aggiungi i test method alle test suite definite
-5.Se necessario, ripeti i passi 3-4 per un'altra suite
-6.Esegui il test registry
-7.Pulisci il test registry
+#### Inizializzazione del Test Registry
 
-Test Suite
-48
-➔Una test suite è definita da:
-◆ Una descrizione testuale
-◆ Una procedura di inizializzazione (init)
-◆ Una procedura di pulitura (clean)
-➔Le test suite definite vengono aggiunte al
-test registry (l'ordine è rilevante!)
-➔
+L'inizializzazione del test registry è la prima operazione da effettuare:
+
+```c
+// *************************************************
+// TEST DI UNITÀ
+
+int main() {
+  /* inizializza registro - è la prima istruzione */
+  CU_initialize_registry();
+  // ...
+}
+```
+
+### Test Suite
+
+Una test suite è definita da:
+
+- una descrizione testuale;
+- una procedura di inizializzazione (init);
+- una procedura di pulitura (clean).
+
+Le test suite definite vengono aggiunte al test registry (l'ordine è rilevante!)
+
+```c
+/* aggiungi le suite al test registry */
+CU_pSuite pSuite_A =
+    CU_add_suite("Suite_A", init_suite_default, clean_suite_default);
+CU_pSuite pSuite_B =
+    CU_add_suite("Suite_B", init_suite_default, clean_suite_default);
+```
+
 Di default inizializzazione e pulitura sono procedure vuote.
 
-Inizializzazione e pulizia
-delle suite
-➔Le test suite devono essere inizializzate e
-ripulite prima e dopo l'uso
-◆ I metodi non sono forniti da CUnit ma devono essere
-scritti dal programmatore
-➔Perché?
-◆ Perché devono liberare le risorse allocate
-specificatamente per eseguire il caso di test
-●
-Es. file, connessioni, etc.
-49
+#### Inizializzazione e pulizia delle suite
 
-Inizializzazione e pulizia
-// Alloca tutte le risorse necessarie all'esecuzione
-// dei test
+Le test suite devono essere inizializzate e ripulite prima e dopo l'uso.
+I metodi non sono forniti da CUnit ma devono essere scritti dal programmatore.
+
+!!! question "Perché?"
+    Perché devono liberare le risorse allocate specificatamente per eseguire il
+    caso di test (es. file, connessioni, etc.).
+
+##### Inizializzazione e pulizia
+
+```c
+// Alloca tutte le risorse necessarie all'esecuzione dei test
 int init_suite_default(void) {
-return 0; // tutto ok
+  return 0;  // tutto ok
 }
+
 // dealloca tutte le risorse allocate all'inizializzazione
 int clean_suite_default(void) {
-return 0; // tutto ok
+  return 0;  // tutto ok
 }
-50
+```
 
-51
-Ciclo di Unit Test
-1.Scrivi tutti i test method necessari
-2.Crea il test registry
-3.Crea la test suite e aggiungila al test registry
-4.Aggiungi i test method alle test suite definite
-5.Se necessario, ripeti i passi 3-4 per un'altra suite
-6.Esegui il test registry
-7.Pulisci il test registry
+### Test method e test suite
 
-Test method e test suite
-52
-➔
-Un test method viene aggiunto ad una
-test suite specificando:
-◆
-il puntatore alla suite
-◆
-una descrizione testuale del test
-◆
-il puntatore al test method
+Un test method viene aggiunto ad una test suite specificando:
+
+- il puntatore alla suite
+- una descrizione testuale del test
+- il puntatore al test method
+
+```c
+/* Aggiungi i test alle suite
+ * NOTA - L'ORDINE DI INSERIMENTO È IMPORTANTE
+ */
+CU_add_test(pSuite_A, "test of f1()", test_f1);
+CU_add_test(pSuite_A, "test of f3()", test_f3);
+
+CU_add_test(pSuite_B, "test of f4()", test_f4);
+CU_add_test(pSuite_B, "test of f2()", test_f2);
+```
+
 L'ordine dei test nelle suite è rilevante!
 
-53
-Ciclo di Unit Test
-1.Scrivi tutti i test method necessari
-2.Crea il test registry
-3.Crea la test suite e aggiungila al test registry
-4.Aggiungi i test method alle test suite definite
-5.Se necessario, ripeti i passi 3-4 per un'altra suite
-6.Esegui il test registry
-7.Pulisci il test registry
+### Registrazione ed esecuzione dei test
 
-Registrazione ed
-esecuzione dei test
-54
-➔La procedura CU_basic_run_tests esegue tutte
-le suite del registry e mostra i risultati
-È possibile impostare il livello di "verbosità"
-dell'output
+La procedura `CU_basic_run_tests()` esegue tutte le suite del registry e mostra
+i risultati.
 
-1.Scrivi tutti i test method necessari
-2.Crea il test registry
-3.Crea la test suite e aggiungila al test registry
-4.Aggiungi i test method alle test suite definite
-5.Se necessario, ripeti i passi 3-4 per un'altra suite
-6.Esegui il test registry
-7.Pulisci il test registry
-55
-Ciclo di Unit Test
+```c
+/* esegue tutti i casi di test con output sulla console */
+CU_basic_set_mode(CU_BRM_VERBOSE);
+CU_basic_run_tests();
+```
 
-56
-Pulire il registry
-➔Pulizia – dopo aver eseguito tutti i test nel
-registro
-◆ Procedura void CU_cleanup_registry(void)
-➔
-Il main() termina con la return dell'eventuale codice di errore di CUnit
+È possibile impostare il livello di "verbosità" dell'output.
 
-Esercitazione 1
-CUnit
-Link all'esercitazione
-<http://goo.gl/VYfhsN>
-Implementazione di una serie di funzioni e
-testing di queste con l'utilizzo di CUnit
-template di CUnit disponibile a
-<http://goo.gl/uevMHu>
-57
+### Pulire il registry
 
-58
-Debugging
+Pulizia – dopo aver eseguito tutti i test nel registro. Procedura
+`void CU_cleanup_registry(void)`.
 
-59
-Ariane 5 Flight 501
+```c
+/* pulisce il registro e termina lo unit test */
+CU_cleanup_registry();
 
-testing vs. debugging
-➔Il testing è una fase di verifica sistematica
-della correttezza di un software.
-➔Il debugging è un processo atto a
-scovare la causa di un errore.
-◆ è un processo costoso, dai tempi non prevedibili
-◆ l'esperienza è importante
-◆ gli strumenti possono velocizzare il debugging
-60
+return CU_get_error();
+```
 
-Supporto del compilatore
-➔Molti compilatori emettono dei "warning",
-cioé dei messaggi di avvertimento
-◆ if (a=0) …
-◆ x = x
-◆ nessun return
-◆ codice orfano
-◆ condizioni tautologiche
-◆ ...
-61
+Il `main()` termina con la return dell'eventuale codice di errore di CUnit.
 
-Backward reasoning
-➔Quando si scopre un bug, occorre "pensare
-al contrario"
-◆ Partendo dal risultato, occorre risalire alla catena
-delle cause che lo hanno portato.
-◆ Una delle cause della catena sarà errata
-➔Scrivere codice leggibile aiuta al backward
-reasoning e, quindi, a localizzare i bug
-62
+## Esercitazione 1 CUnit
 
-Pattern familiari
-➔Riconoscere variazioni rispetto a "modelli"
-(pattern) di codice familiari
-➔L'uso di un corretto stile di programmazione
-aiuta a ridurre la presenza di bug
-63
+Link all'esercitazione: <http://goo.gl/VYfhsN>
+
+Implementazione di una serie di funzioni e testing di queste con l'utilizzo di
+CUnit template di CUnit disponibile a <http://goo.gl/uevMHu>.
+
+## Debugging
+
+### Supporto del compilatore
+
+Molti compilatori emettono dei "warning", cioé dei messaggi di avvertimento:
+
+- `#!c if (a = 0)`;
+- `#!c x = x`;
+- nessun return;
+- codice orfano;
+- condizioni tautologiche.
+
+### Backward reasoning
+
+Quando si scopre un bug, occorre "pensare al contrario". Partendo dal risultato,
+occorre risalire alla catena delle cause che lo hanno portato. Una delle cause
+della catena sarà errata.
+
+Scrivere codice leggibile aiuta al backward reasoning e, quindi, a localizzare
+i bug.
+
+### Pattern familiari
+
+Riconoscere variazioni rispetto a "modelli" (pattern) di codice familiari.
+
+```c
 int n;
 scanf("%d", n);
+
 int n;
 scanf("%d", &n);
+```
 
-Sviluppo incrementale
-➔Testare le procedure man mano che
-vengono sviluppate
-◆ Se i test all'istante t hanno successo ma falliscono
-all'istante t+1, allora molto probabilmente i big si
-annidano nel codice sviluppato tra t e t+1
-➔La progettazione modulare del codice aiuta a
-individuare meglio la posizione dei bug
-64
+L'uso di un corretto stile di programmazione aiuta a ridurre la presenza di bug.
 
-Esaminare codice simile
-➔Se un bug è presente in una porzione di
-codice, allora è probabile che se ne annidi
-un altro in un codice simile
-◆ problema del "copy-and-paste"
-➔Una buona progettazione del codice riduce
-la ridondanza e, quindi, la possibilità di bug
+### Sviluppo incrementale
+
+Testare le procedure man mano che vengono sviluppate. Se i test all'istante \(t\)
+hanno successo ma falliscono all'istante \(t + 1\), allora molto probabilmente
+i bug si annidano nel codice sviluppato tra \(t\) e \(t + 1\).
+
+La progettazione modulare del codice aiuta a individuare meglio la posizione dei
+bug.
+
+### Esaminare codice simile
+
+Se un bug è presente in una porzione di codice, allora è probabile che se ne
+annidi un altro in un codice simile. Problema del "copy-and-paste". Una buona
+progettazione del codice riduce la ridondanza e, quindi, la possibilità di bug
 duplicati
-65
 
-Non rimandare il debugging
-➔Se un bug è individuato, va eliminato subito
-◆ Il trasferimento di un bug nei passi successivi del
-ciclo di sviluppo di un software fa crescere il costo
-del debugging in termini esponenziali.
-66
-"The Mars Pathfinder mission was widely
-proclaimed as "flawless" in the early days after its
-July 4th, 1997 landing on the Martian surface. [...]
-But a few days into the mission, not long after
-Pathfinder started gathering meteorological data,
-the spacecraft began experiencing total system
-resets, each resulting in losses of data."
-(D. Wilner, 1997 IEEE Real-Time Systems Symposium)
+### Non rimandare il debugging
 
-Leggere e spiegare il codice
-➔Leggere il codice e comprenderne il
-significato
-◆ Il codice è un pezzo di conoscenza che deve essere
-compreso dalla macchina e da chi la programma
-◆ La leggibilità del codice è fondamentale
-➔Spiegare ad altri il codice aiuta a ridurre
-"bias" cognitivi
-67
+Se un bug è individuato, va eliminato subito. Il trasferimento di un bug nei
+passi successivi del ciclo di sviluppo di un software fa crescere il costo del
+debugging in termini esponenziali.
 
-Rendere riproducibile un
-bug
-➔Individuare tutte le condizioni che portano
-alla manifestazione di un bug
-◆ Input e altri parametri
-◆ Condizioni della macchina
-◆ Seed di numeri casuali
-◆ ...
-68
+??? quote "D. Wilner, 1997 IEEE Real-Time Systems Symposium"
+    The Mars Pathfinder mission was widely proclaimed as "flawless" in the
+    early days after its July \(4\)th, \(1997\) landing on the Martian surface.
+    [...] But a few days into the mission, not long after Pathfinder started
+    gathering meteorological data, the spacecraft began experiencing total system
+    resets, each resulting in losses of data.
 
-Divide et impera
-➔Individuare le condizioni minimali che
-rendono manifesto un bug
-◆ es. il più piccolo array, la stringa più breve
-●
-Test dei casi limite è fondamentale
-◆ Le condizioni minimali possono facilitare la
-localizzazione di un bug
-◆ Se il bug non si manifesta in un caso limite, provare
-mediante dimezzamenti successivi dell'input
-●
-Ricerca binaria sulla lunghezza dell'input
-69
+### Leggere e spiegare il codice
 
-Ricerca di regolarità
-➔Alcuni bug si presentano con regolarità, ma
-non sempre
-➔In questo caso, occorre capire il modello
-("pattern") che genera la regolarità
-◆ Es. Un editor di testi salta la visualizzazione di alcuni
-caratteri
-◆ L'analisi del testo mostra che i caratteri saltati sono
-sempre intervallati da 1023 caratteri stampati
-●
-Regolarità: 1 carattere saltato ogni 1023
-◆ L'analisi del codice rivela che gli array che
-memorizzano le stringhe sono da 1024 byte
-●
-1023 caratteri + ‘\0' → BUG
-70
+Leggere il codice e comprenderne il significato. Il codice è un pezzo di
+conoscenza che deve essere compreso dalla macchina e da chi la programma. La
+leggibilità del codice è fondamentale.
 
-Stampe ausiliarie
-➔Per seguire l'esecuzione di un programma
-può essere utile introdurre stampe ausiliarie
-◆ Valido soprattutto per situazioni che non possono
-essere tracciate da un debugger
-●
-es. sistemi distribuiti, programmi paralleli, etc.
-➔Le stampe ausiliarie devono
-necessariamente essere eliminate dopo aver
-scovato il bug
-◆ Rischio di violazione delle specifiche
-◆ Possono essere commentate anziché eliminate
-➔Per situazioni complesse, si possono usare
-strumenti di logging
-71
+Spiegare ad altri il codice aiuta a ridurre "bias" cognitivi.
 
-Altre tecniche
-➔Visualizzazioni grafiche
-➔Test statistici
-➔Strumenti di analisi di testo
-◆ grep
-◆ diff
-◆ ...
-72
+### Rendere riproducibile un bug
 
-Debugger
-➔Un debugger guarda "dentro" il programma
-durante l'esecuzione
-◆ Tracing del programma
-◆ Visualizzazione del contenuto delle variabili
-◆ Valutazione dinamica di espressioni
-◆ Breakpoint, anche condizionali
-◆ Stack trace
-◆ …
-➔Sono strumenti molto sofisticati, abituarsi al
-loro uso può migliorare significativamente la
-produttività nella programmazione.
-73
+Individuare tutte le condizioni che portano alla manifestazione di un bug
 
-Compilazione per il debug
-➔Un debugger ha bisogno di informazioni
-aggiuntive nel codice compilato
-◆ link tra il codice compilato e il codice sorgente
-➔Per stabilire la corrispondenza tra codice
-compilato e codice sorgente, la compilazione
-per il debug non deve essere ottimizzata
-➔Due modalità di compilazione
-◆ Debug
-●
-Meno efficiente, per il debug
-◆ Release
-●
-Ottimizzata
-74
+- Input e altri parametri;
+- Condizioni della macchina;
+- Seed di numeri casuali.
 
-la debug perspective in Eclipse
-75
+### Divide et impera
 
-Esecuzione passo-passo
-➔Il debugger consente di eseguire il
-programma una istruzione alla volta
-◆ Al termine dell'esecuzione di una istruzione, il
-controllo passa al debugger, che può visualizzare lo
-stato della macchina (variabili, stack, etc.)
-➔Per velocizzare il processo di debugging, si
-può optare per eseguire il programma fino a
-un'istruzione specifica, segnalata da un
-breakpoint.
-76
+Individuare le condizioni minimali che rendono manifesto un bug (es. il più
+piccolo array, la stringa più breve). Il test dei casi limite è fondamentale.
 
-Esecuzione passo-passo
-77
-Step into
-Esegue l'istruzione
-corrente, e procede
-all'istruzione
-successiva che sarà
-effettivamente eseguita
-Step over
-Esegue l'istruzione
-corrente, trattando le
-routine come istruzioni
-primitive.
-Step return
-continua l'esecuzione
-fino al termine della
-procedura.
+Le condizioni minimali possono facilitare la localizzazione di un bug. Se il
+bug non si manifesta in un caso limite, provare mediante dimezzamenti successivi
+dell'input. Ricerca binaria sulla lunghezza dell'input.
 
-Step Into
-78
+### Ricerca di regolarità
 
-Step over
-79
+Alcuni bug si presentano con regolarità, ma non sempre. In questo caso, occorre
+capire il modello (*pattern*) che genera la regolarità.
 
-Step return
-80
+Ad esempio un editor di testi salta la visualizzazione di alcuni caratteri,
+l'analisi del testo mostra che i caratteri saltati sono sempre intervallati da
+\(1023\) caratteri stampati. Regolarità: un carattere saltato ogni \(1023\).
+L'analisi del codice rivela che gli array che memorizzano le stringhe sono da
+\(1024 \byte\) \(1023\) caratteri + `‘\0'` portano al bug.
 
-Informazioni di debug:
-variabili
-➔Le variabili visibili
-nell'ambito
-dell'istruzione
-corrente sono
-visualizzate
-◆ Nome, tipo, valore
-➔Le variabili che
-cambiano valore
-sono evidenziate
-81
+### Stampe ausiliarie
 
-Informazioni di debug:
-espressioni
-➔Un'espressione è un
-pezzo ben formato
-di codice (snippet)
-che può essere
-valutato per
-produrre un risultato
-82
+Per seguire l'esecuzione di un programma può essere utile introdurre stampe
+ausiliarie. Valido soprattutto per situazioni che non possono essere tracciate
+da un debugger (es. sistemi distribuiti, programmi paralleli, etc.).
 
-Informazioni di debug:
-stack trace
-➔Visualizza la pila
-delle chiamate
-➔Si può selezionare
-un elemento della
-pila per conoscerne
-lo stato corrente
-83
+Le stampe ausiliarie devono necessariamente essere eliminate dopo aver
+scovato il bug. Rischio di violazione delle specifiche. Possono essere
+commentate anziché eliminate.
 
-Breakpoint
-➔Un breakpoint interrompe il flusso di
-esecuzione su una linea selezionata
-◆ I breakpoint possono essere inseriti o rimossi
-◆ I breakpoint inseriti possono essere attivati o
-disattivati
-84
+Per situazioni complesse, si possono usare strumenti di logging.
 
-Resume & Terminate
-➔Resume
-◆ Esegue le istruzioni fino al prossimo
-breakpoint oppure al termine del
-programma
-➔Terminate
-◆ Interrompe l'esecuzione del programma
-●
-Utile quando il programma va in loop infinito
-●
-Utile quando si scova un programma
-◆ Attenzione: i programmi non terminati
-rimangono in esecuzione per il sistema
-operativo
-●
-Occupazione inutile di memoria
-●
-Problemi per la ricompilazione
-85
+#### Altre tecniche
 
-Breakpoint condizionali
-➔I breakpoint possono interrompere
-l'esecuzione solo quando una condizione
-diventa vera
-◆ Condizione: espressione booleana
-86
+Esse sono:
+
+- visualizzazioni grafiche;
+- test statistici;
+- strumenti di analisi di testo, come:
+      - grep;
+      - diff;
+      - etc.
+
+### Debugger
+
+Un debugger guarda "dentro" il programma durante l'esecuzione:
+
+- tracing del programma;
+- visualizzazione del contenuto delle variabili;
+- valutazione dinamica di espressioni;
+- breakpoint, anche condizionali;
+- stack trace.
+
+Sono strumenti molto sofisticati, abituarsi al loro uso può migliorare
+significativamente la produttività nella programmazione.
+
+#### Compilazione per il debug
+
+Un debugger ha bisogno di informazioni aggiuntive nel codice compilato, link tra
+il codice compilato e il codice sorgente.
+
+Per stabilire la corrispondenza tra codice compilato e codice sorgente, la
+compilazione per il debug non deve essere ottimizzata.
+
+Due modalità di compilazione:
+
+- Debug, meno efficiente, per il debug;
+- Release, Ottimizzata.
+
+#### Esecuzione passo-passo
+
+Il debugger consente di eseguire il programma un'istruzione alla volta.
+Al termine dell'esecuzione di una istruzione, il controllo passa al debugger,
+che può visualizzare lo stato della macchina (variabili, stack, etc.).
+
+Per velocizzare il processo di debugging, si può optare per eseguire il
+programma fino a un'istruzione specifica, segnalata da un breakpoint.
+
+| Nome        | Descrizione                                                                                        |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| Step into   | Esegue l'istruzione corrente, e procede all'istruzione successiva che sarà effettivamente eseguita |
+| Step over   | Esegue l'istruzione corrente, trattando le routine come istruzioni primitive                       |
+| Step return | continua l'esecuzione fino al termine della procedura                                              |
+
+##### Step Into
+
+```c title="Stato iniziale" hl_lines="3"
+int i;
+for (i = 0; i < b; i++) {
+  result = sum(result, a);
+}
+```
+
+```c title="Step into" hl_lines="2"
+int sum(int a, int b) {
+  if (b == 0) {
+    return a;
+  } else if (b > 0) {
+    return a + b;
+  }
+}
+```
+
+##### Step over
+
+```c title="Stato iniziale" hl_lines="3"
+int i;
+for (i = 0; i < b; i++) {
+  result = sum(result, a);
+}
+```
+
+```c title="Step over" hl_lines="2"
+int i;
+for (i = 0; i < b; i++) {
+  result = sum(result, a);
+}
+```
+
+##### Step return
+
+```c title="Passo iniziale" hl_lines="7"
+int product(int a, int b) {
+  if (b == 0) {
+    return 0;
+  } else if (b > 0) {
+    int result = 0;
+    int a;
+    for (int i = 0; i < b; i++) {
+      result = sum(result, a);
+    }
+    return result;
+  } else {
+    return product(a, b);
+  }
+}
+```
+
+```c title="Step return" hl_lines="3"
+int factorial(int n) {
+  // printf("%d ", n);
+  return /* ... */;
+}
+```
+
+### Informazioni di debug
+
+#### Variabili
+
+Le variabili visibili nell'ambito dell'istruzione corrente sono visualizzate:
+
+- Nome, tipo, valore.
+
+Le variabili che cambiano valore sono evidenziate.
+
+#### Espressioni
+
+Un'espressione è un pezzo ben formato di codice (*snippet*) che può essere
+valutato per produrre un risultato.
+
+#### Stack trace
+
+Visualizza la pila delle chiamate, Si può selezionare un elemento della pila per
+conoscerne lo stato corrente.
+
+### Breakpoint
+
+Un breakpoint interrompe il flusso di esecuzione su una linea selezionata
+
+- i breakpoint possono essere inseriti o rimossi;
+- i breakpoint inseriti possono essere attivati o disattivati.
+
+### Resume & Terminate
+
+- Resume: esegue le istruzioni fino al prossimo breakpoint oppure al termine del
+  programma;
+- Terminate: interrompe l'esecuzione del programma. Utile quando:
+      - il programma va in loop infinito;
+      - si scova un programma.
+
+Attenzione: i programmi non terminati rimangono in esecuzione per il sistema
+operativo:
+
+- occupazione inutile di memoria;
+- problemi per la ricompilazione.
+
+### Breakpoint condizionali
+
+I breakpoint possono interrompere l'esecuzione solo quando una condizione
+diventa vera. Condizione: espressione booleana.

@@ -17,6 +17,7 @@
 *[RISC]: Reduced Instruction Set Computer
 *[RLTDP]: Registro Limite della Tabella di Descrizione delle Partizioni
 *[RLTDS]: Registro Limite della Tabella dei Descrittori di Segmento
+*[TDD]: Test Driven Development
 *[TDF]: Tabella di Descrizione del File
 *[TDM]: Tabella Di Memoria
 *[TDP]: Tabella di Descrizione delle Partizioni
