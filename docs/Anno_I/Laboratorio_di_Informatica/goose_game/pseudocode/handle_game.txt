@@ -601,8 +601,8 @@ FUNZIONE game_loop()
 Il ciclo di gioco vero e proprio che stampa il tabellone e fa giocare i giocatori.
 
 INPUT:
-- players, lista di players, type;
-- board, tabellone, Board;
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
 
 OUTPUT:
 - nullo, non ha output.
@@ -644,11 +644,12 @@ MENTRE (is_player_winner() <> 1) OR (NOT(break) = TRUE)
       ALLORA
         throw := random(MIN_DICE_THROW, MAX_DICE_THROW)
         elemento in posizione current_player di players :=
-          move_player(elemento in posizione current_player di players, throw)
+          move_player(players, elemento in posizione current_player di players,
+                      throw, board)
       ALTRIMENTI SE (player_action = 0)
         ALLORA break := TRUE
         ALTRIMENTI SE (player_action = 2)
-          ALLORA // salva la partita
+          ALLORA save_game()  // salva la partita
         FINE
       FINE
     FINE
@@ -664,13 +665,14 @@ FINE
 FUNZIONE ask_player_action()
 ============================
 
-Chiede al giocatore cosa fare ed elenca le possibili scelte
+Chiede al giocatore cosa fare ed elenca le possibili scelte.
 
 INPUT:
-- nullo, non riceve input, vuoto.
+- nullo, non riceve input.
 
 OUTPUT:
-- player_choice, scelta del giocatore, intero >= 0 AND <=2 .
+- player_choice, scelta del giocatore, intero compreso tra MIN_NUM_PLAYERS e
+  MAX_NUM_PLAYERS inclusi.
 
 ALGORITMO:
 StampareAVideo("Che vuoi fare?:")
@@ -679,7 +681,7 @@ StampareAVideo("Per lanciare i dadi premere 1")
 StampareAVideo("Per salvare la partita premere 2")
 player_choice := LeggereDaTastiera()
 MENTRE ((player_choice < 0) AND (player_choice > 2))
-  StampareAVideo("Il numero inserito non Ã¨ valido.")
+  StampareAVideo("Il numero inserito non è valido.")
   StampareAVideo("Che vuoi fare?:")
   StampareAVideo("Per abbandonare la partita premere 0")
   StampareAVideo("Per lanciare i dadi premere 1")
@@ -694,19 +696,20 @@ FINE
 FUNZIONE move_player()
 ======================
 
-Sposta il giocatore di un numero di caselle uguali al lancio
+Sposta il giocatore di un numero di caselle uguali al lancio.
 
 INPUT:
-- players, lista player, Players;
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
 - player, giocatore attuale, Player;
-- throw, valore del lancio dei dadi, intero >= MIN_DICE_THROW AND <= MAX_DICE_THROW;
-- board, tabellone, Board.
+- throw, valore del lancio dei dadi, intero compreso tra MIN_DICE_THROW e
+  MAX_DICE_THROW inclusi;
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
 
 OUTPUT:
 - player, player con nuova posizione, Player.
 
 ALGORITMO:
-position := check_player_pos(players,player,board,throw)
+position := check_player_pos(players, player, board, throw)
 player := set_position(player, position)
 
 
@@ -717,14 +720,14 @@ Controlla la posizione di arrivo con il lancio effettuato e restituisce la
 posizione di arrivo corretta.
 
 INPUT:
-- players, lista player, Players;
-- player, giocatore attuale, Player;
-- board, tabellone, Board;
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
+- player, giocatore attuale da inserire nella lista di giocatori, Player;
+- board, tabellone di gioco su cui svolgerà la partita, Board;
 - throw, valore del lancio dei dadi, intero maggiore di zero.
 
 OUTPUT:
-- pos, posizione corretta dove arriverà il giocatore, intero maggiore o uguale
-  di MIN_NUM_SQUARES AND minore o uguale di MAX_NUM_SQUARES.
+- pos, posizione corretta dove arriverà il giocatore, intero compreso tra
+  MIN_NUM_SQUARES e MAX_NUM_SQUARES inclusi.
 
 LAVORO:
 - position, posizione del player prima del lancio dei dadi, intero maggiore o
@@ -740,64 +743,34 @@ pos := 1
 position := get_position(player)
 new_sq := get_square(throw + position)
 turns_blocked := get_turns_blocked(player)
- SE (turns_blocked = 0)
-   ALLORA
-    SE (new_sq = GOOSE_VALUE) OR (new_sq = BRIDGE_VALUE)
-      ALLORA pos = (throw * 2) + position
-    ALTRIMENTI SE (new_sq = SKELETON_VALUE)
-      ALLORA pos = 1
-    ALTRIMENTI SE((new_sq = PRISON_VALUE) OR (new_sq = WELL_VALUE))
-      ALLORA
-        SE ((throw = 5) OR (throw = 7))
-          ALLORA
-            player := set_turns_blocked(player,0)
-            check_player_pos(players, board, throw + position)
-        ALTRIMENTI SE((is_player_in_square(players, player, new_sq)))
-          ALLORA
-            new_player := get_player_in_square(players,player,new_sq)
-            new_player := set_turns_blocked(player,0)
-            player := set_turns_blocked(player, turns_blocked -1)
-          ALTRIMENTI
-            player := set_turns_blocked(player, turns_blocked -1)
-        FINE
-      ALTRIMENTI
-        pos := new_sq
-      FINE
-  ALTRIMENTI SE (turns_blocked > 0)
-      ALLORA
-        player := set_turns_blocked(player, turns_blocked - 1)
-        pos := position
-    FINE
-  FINE
-FINE
-
-// quale delle due?
-/*
 SE (turns_blocked = 0)
   ALLORA
     SE ((new_sq = GOOSE_VALUE) OR (new_sq = BRIDGE_VALUE))
-      ALLORA pos = (throw * 2) + position
-        ALTRIMENTI SE (new_sq = SKELETON_VALUE)
-          ALLORA pos = 1
-          ALTRIMENTI SE ((new_sq = PRISON_VALUE) OR (new_sq = WELL_VALUE))
-            ALLORA
-              SE ((throw = 5) OR (throw = 7))
+      ALLORA
+        pos = (throw * 2) + position
+      ALTRIMENTI SE (new_sq = SKELETON_VALUE)
+        ALLORA
+          pos = 1
+        ALTRIMENTI SE ((new_sq = PRISON_VALUE) OR (new_sq = WELL_VALUE))
+          ALLORA
+            SE ((throw = 5) OR (throw = 7))
+              ALLORA
+                player := set_turns_blocked(player, 0)
+                check_player_pos(players, board, throw + position)
+              ALTRIMENTI SE (is_player_in_square(players, player, new_sq) = TRUE)
                 ALLORA
-                  player := set_turns_blocked(player, 0)
-                  check_player_pos(players, board, throw + position)
-                ALTRIMENTI SE (is_player_in_square(players, player, new_sq) = TRUE)
-                  ALLORA
-                    new_player := get_player_in_square(players, player, new_sq)
-                    new_player := set_turns_blocked(player, 0)
-                    player := set_turns_blocked(player, turns_blocked - 1)
-                    ALTRIMENTI
-                      player := set_turns_blocked(player, turns_blocked - 1)
+                  new_player := get_player_in_square(players, player, new_sq)
+                  new_player := set_turns_blocked(player, 0)
+                  player := set_turns_blocked(player, turns_blocked - 1)
+                ALTRIMENTI
+                  player := set_turns_blocked(player, turns_blocked - 1)
                 FINE
               FINE
-            ALTRIMENTI
-              pos := new_sq
-          FINE
+            FINE
+          ALTRIMENTI
+            pos := new_sq
         FINE
+      FINE
     FINE
   ALTRIMENTI SE (turns_blocked > 0)
     ALLORA
@@ -805,7 +778,6 @@ SE (turns_blocked = 0)
       pos := position
   FINE
 FINE
-*/
 
 
 FUNZIONE is_player_in_square()
@@ -815,7 +787,7 @@ Controlla se un altro giocatore, diverso dal giocatore attuale, è posizionato
 nella casella data.
 
 INPUT:
-- players, lista players, Players;
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
 - player, player che sta attualmente giocando, Players;
 - square, posizione da verificare se un altro giocatore è presente, intero
   maggiore di zero.
@@ -845,7 +817,7 @@ FUNZIONE get_player_in_square()
 Restituisce il giocatore, diverso dal giocatore attuale,  posizionato nella casella data
 
 INPUT:
-- players, lista players, Players;
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
 - player, player che sta attualmente giocando, Players;
 - square, posizione da verificare se un altro giocatore è presente, intero
   maggiore di zero.
@@ -874,8 +846,8 @@ Controlla se c'è un vincitore tra i giocatori, ovvero se un giocatore è
 arrivato alla casella finale
 
 INPUT:
-- players, lista players, Players;
-- board, tabellone, Board.
+- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
 
 OUTPUT:
 - result, esito della ricerca se c'è un vincitore, booleano che assume valore FALSE
@@ -893,4 +865,3 @@ MENTRE (i < num_players)
     ALLORA result = TRUE
   i := i + 1
 FINE
-
