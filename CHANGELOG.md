@@ -9,6 +9,23 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix game_loop() syntax
+- Minor fixies for prototypes
+- Remove temp file
+- Minor fixes
+- Fix typo in roadmap
+- Remove code folder
+- Rename notes to have months before days to respect sortin
+- Change header tags, add/remove imports
+- Correct syntax for main file
+- [**BREAKING**] Move miscellaneous folders to dedicated misc folder
+- Fix syntax in prototype
+- Remove `board` prototype, move to src
+- Remove old `board.c` in favour of module, add a `main.c` file
+- Change header tag to avid conflicts
+- Fix board.c prototype, add its interface
+- Fix src file contents, avoid conficts with tags
+- Make the `funzione` keyword uppercase
 - Convert `for` to `while` in board printing prototype
 - Rewrite board printing prototype, still WiP
 - Switch pos of `STR_END` and `LINE_END` in `globals.h`
@@ -81,6 +98,16 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Complete and fix pseudocode
+- Add file doxygen for board_type.h
+- Complete class notes, add glossary entry
+- Add new note
+- Add new note and code prototype
+- [**BREAKING**] Overhaul folder structure, move source and header files, organize source code
+- Adjust pseudocode, still WiP
+- Create `board` module with public and private interfaces
+- Create pseudocode for menu functions declarations
+- Add menu prototype
 - Translate from `board.txt` to C code
 - Start converting pseudo into C code, !prototype!
 - Prototype C fn to print out the game board
