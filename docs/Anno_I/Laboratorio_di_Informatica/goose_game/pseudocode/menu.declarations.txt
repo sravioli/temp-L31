@@ -4,10 +4,11 @@ DICHIARAZIONE DELLE FUNZIONI PRINCIPALI PER IL MENÙ DI GIOCO
 Questo file contiene le dichiarazioni delle funzioni del menù principale di 
 gioco.
 
-FUNZIONE print_menu(filename)
------------------------------
 
-Stampa il menu che è contenuto all'interno di filename.
+FUNZIONE print_menu()
+---------------------
+
+Stampa il menu che è contenuto all'interno di un file di testo.
 
 INPUT:
 - filename, il nome del file da cui leggere il menù da stampare, file.
@@ -22,9 +23,15 @@ MENÙ PRINCIPALE
 FUNZIONE main_menu()
 --------------------
 
-Stampa il menù principale contenuto in un file di testo apposito utilizzando la 
-funzione print_menu(), dopodiché fa scegliere all'utente la voce di menù che 
+Stampa il menù principale contenuto in un file di testo apposito, utilizzando
+la funzione print_menu(). Successivamente fa scegliere all'utente la voce che 
 desidera.
+Il menù principale contiene le seguenti voci:
+- new game
+- saved games
+- help
+- leaderboard
+- quit
 
 INPUT:
 - nullo, non riceve nulla.
@@ -32,74 +39,42 @@ INPUT:
 OUTPUT:
 - nullo, non restituisce nulla.
 
-FUNZIONE print_menu()
----------------------
 
-Stampa a video il menù principale. Esso è composto da:
-- nuova partita;
-- carica partita;
-- classifica;
-- aiuto;
-- esci.
+MENÙ DI PAUSA
+=============
 
-INPUT:
-- nullo, non riceve input.
-
-OUTPUT:
-- nullo, non riceve output.
-
-
-MENÙ NUOVA PARTITA
-==================
-
-FUNZIONE print_new_game_menu()
-------------------------------
-
-Stampa a video il menù "nuova partita". Esso è composto da:
-- inizia partita;
-- salva partita;
-- abbandona partita;
-- esci.
+Stampa il menù di pausa contenuto in un file di testo apposito, utilizzando la 
+funzione print_menu(). Successivamente fa scegliere all'utente la voce che 
+desidera.
+Il menù di pausa contiene le seguenti voci:
+- save game
+- leave game
+- go back
 
 INPUT:
-- nullo, non riceve input.
+- nullo, non riceve nulla.
 
 OUTPUT:
-- nullo, non riceve output.
-
-
-FUNZIONE start_new_game()
--------------------------
-
-Stampa a video le opzioni che i giocatori possono scegliere, le quali sono:
-- numero di giocatori;
-- lunghezza del tabellone;
-È sempre presente l'opzione esci.
-Dopodiché avvia la partita.
-
-INPUT:
-- nullo, non riceve input.
-
-OUTPUT:
-- nullo, non riceve output.
+- nullo, non restituisce nulla.
 
 
 FUNZIONE save_game()
 --------------------
 
-Chiede all'utente tramite la FUNZIONE get_save_file_name() il nome del file di 
+Chiede all'utente tramite la funzione get_save_filename() il nome del file di 
 salvataggio e successivamente salva la partita in corso.
 
 INPUT:
-- file, file contente la partita da salvare, FILE.
+- file, nome del file che conterrà la partita da salvare, FILE.
 
 OUTPUT:
 - nullo, non restituisce nessun tipo di dato.
 
-FUNZIONE get_save_file_name()
+FUNZIONE get_save_filename()
 -----------------------------
 
-Chiede all'utente il nome con cui salvare la partita in corso.
+Chiede all'utente il nome con cui salvare la partita in corso, che corrisponde
+al nome del file.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
@@ -110,6 +85,7 @@ OUTPUT:
 FUNZIONE leave_game()
 ---------------------
 
+Permette di abbandonare la partita corrente.
 Se l'utente è in partita, chiede all'utente se la voglia salvare, se sì chiama
 la funzione save_game(), altrimenti torna al menù principale senza salvare.
 
@@ -120,14 +96,31 @@ OUTPUT:
 - nullo, non restituisce nessun tipo di dato.
 
 
+MENÙ NUOVA PARTITA
+==================
+
+FUNZIONE new_game()
+-------------------
+
+Fa scegliere all'utente il numero di giocatori e di caselle, dopodiché chiede
+se si desidera avviare la parita o tornare indietro.
+
+INPUT:
+- nullo, non riceve nulla.
+
+OUTPUT:
+- nullo, non restituisce nulla.
+
+
 MENÙ CARICA PARTITA
 ===================
 
-FUNZIONE print_load_game_menu()
--------------------------------
+FUNZIONE load_game()
+--------------------
 
-Stampa a video i file salvati (massimo cinque) e chiama choose_saved_file().
-È presente il tasto esci, che fa tornare al menù principale.
+Stampa a video i nomi dei file salvati e permette all'utente di scegliere quale
+file desidera con choose_saved_file() dopodiché avvia la partita scelta 
+dall'utente. Presenta l'opzione "go back" che fa tornare al menù precedente.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
@@ -139,26 +132,14 @@ OUTPUT:
 FUNZIONE choose_saved_file()
 ----------------------------
 
-Chiede all'utente quale file vuole scegliere tra quelli salvati.
-È presente il tasto esci, che fa tornare al menù principale.
+Chiede all'utente quale file vuole scegliere tra quelli salvati. Presenta 
+l'opzione "go back" che fa tornare al menù precedente.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
 
 OUTPUT:
 - filename, file scelto dall'utente che dev'essere caricato, FILE.
-
-
-FUNZIONE load_game()
---------------------
-
-Carica una partita da un file di testo.
-
-INPUT:
-- file, file contenente le opzioni e la partita scelta dall'utente, FILE.
-
-OUTPUT:
-- nullo, non restituisce nessun tipo di dato.
 
 
 MENÙ AIUTO
@@ -168,7 +149,15 @@ FUNZIONE print_help()
 ---------------------
 
 Stampa a video il menù aiuto contenente manuale e regole.
-È presente il tasto esci, che fa tornare al menù principale.
+Presenta l'opzione "go back" che fa tornare al menù precedente.
+
+Stampa il menù di aiuto contenuto in un file di testo apposito, utilizzando
+la funzione print_menu(). Successivamente fa scegliere all'utente la voce che 
+desidera.
+Il menù di aiuto contiene le seguenti voci:
+- manual
+- rules
+- go back
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
@@ -176,13 +165,11 @@ INPUT:
 OUTPUT:
 - nullo, non restituisce nessun tipo di dato.
 
-
-
 FUNZIONE print_manual()
 -----------------------
 
 Stampa a video tutto il manuale di gioco salvato su un file di testo.
-È presente il tasto esci, che fa tornare al menù principale.
+Presenta l'opzione "go back" che fa tornare al menù precedente.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
@@ -195,13 +182,14 @@ FUNZIONE print_rules()
 ----------------------
 
 Stampa a video tutte le regole di gioco salvate su un file di testo.
-È presente il tasto esci, che fa tornare al menù principale.
+Presenta l'opzione "go back" che fa tornare al menù precedente.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
 
 OUTPUT:
 - nullo, non restituisce nessun tipo di dato.
+
 
 MENÙ CLASSIFICA
 ===============
@@ -210,13 +198,10 @@ FUNZIONE print_leaderboard()
 ----------------------------
 
 Stampa a video la classifica salvata su file di testo.
-È presente il tasto esci, che fa tornare al menù principale.
+Presenta l'opzione "go back" che fa tornare al menù precedente.
 
 INPUT:
 - nullo, non riceve nessun tipo di dato.
 
 OUTPUT:
 - nullo, non restituisce nessun tipo di dato.
-
-
-

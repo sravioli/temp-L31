@@ -1,9 +1,10 @@
 CREAZIONE E STAMPA DEL TABELLONE DI GIOCO
 =========================================
 
-vedere "globals.txt"
-vedere "records.txt"
-vedere "utils/string.txt"
+vedere "./common/globals.txt"
+vedere "./common/records.txt"
+vedere "./common/string.txt"
+vedere "./common/math.txt"
 
 Creazione e stampa del tabellone di gioco con le funzioni necessarie per 
 l'inizializzazione dello stesso e aggiunta di caselle speciali.
@@ -21,7 +22,7 @@ LAVORO:
 ALGORITMO:
 num_squares := get_num_squares()
 board := create_board(num_squares)
-print_board(board)
+print_board(board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, DEFAULT_BORDERS)
 
 
 --------------------------------------------------------------------------------
@@ -50,19 +51,18 @@ FINE
 ------------------------------------------------------------
 
 
-FUNZIONE create_board(dimension)
-================================
+FUNZIONE create_board()
+=======================
 
 Crea un tabellone vuoto con la dimensione data, lo riempie di caselle e inserisce
 le caselle oca e caselle speciali.
 
 INPUT:
-- dimension, rappresenta la dimensione del tabellone da creare, intero maggiore
+- dimension, dimensione del tabellone di gioco che va creato, intero maggiore
   di zero
 
 OUTPUT:
-- game_board, tabellone creato con le caselle inizializzate e le caselle oca e 
-  speciali inserite, Board.
+- game_board, tabellone con tutte le caselle inserite, Board.
 
 LAVORO:
 - i, contatore delle caselle del tabellone di gioco, intero maggiore di zero.
@@ -74,22 +74,21 @@ MENTRE (i < dimension)
   set_square(game_board, i, i + 1);
   i := i + 1;
 FINE
-insert_goose_squares(game_board)
-insert_special_squares(game_board)
+game_board := insert_goose_squares(game_board)
+game_board := insert_special_squares(game_board)
 
 
-FUNZIONE insert_goose_squares(board)
-====================================
+FUNZIONE insert_goose_squares()
+===============================
 
-Aggiunge le caselle oca al tabellone di gioco, a partire dalla casella con indice 
-GOOSE_SPACING, con un intervallo tra di esse sempre pari a GOOSE_SPACING.
+Aggiunge le caselle oca al tabellone di gioco, a partire dalla casella con 
+indice GOOSE_SPACING, con un intervallo tra di esse sempre pari a GOOSE_SPACING.
 
 INPUT:
 - board, il tabellone di gioco dove si svolgerà la partita, Board.
 
 OUTPUT:
-- board, il tabellone di gioco dove si svolgerà la partita, modSEicato con 
-  l'aggiunta delle caselle oca, Board.
+- board, tabellone di gioco dove si svolgerà la partita con le caselle oca, Board.
 
 LAVORO:
 - num_squares, il numero di caselle scelto dal giocatore, intero compreso tra
@@ -106,98 +105,59 @@ MENTRE (i < num_squares)
 FINE
 
 
-FUNZIONE insert_special_squares(board)
-======================================
+FUNZIONE insert_special_squares()
+=================================
 
 Inserisce le caselle speciali nel tabellone di gioco.
 
 INPUT:
-- board, il tabellone di gioco dove si svolgerà la partita, modSEicato con 
-  l'aggiunta delle caselle oca. Board.
+- board, tabellone di gioco dove si svolgerà la partita, Board.
 
 OUTPUT:
-- board, il tabellone di gioco dove si svolgerà la partita, completo di 
-  oca e speciali. Board.
+- board, tabellone di gioco dove si svolgerà la partita con caselle oca e 
+  speciali, Board.
+
+LAVORO:
+- board_dim, il valore della dimensione del tabellone di gioco, intero maggiore 
+  di zero.
 
 ALGORITMO:
-bridge_position := proportion(BRIDGE_SQUARE, new_board)
+board_dim := get_dim(board)
+
+bridge_position := proportion(BRIDGE_SQUARE, board_dim, MAX_NUM_SQUARES)
 bridge_position := check_special_square(bridge_position, board)
 set_square(board, bridge_position, BRIDGE_VALUE)
 
-inn_position := proportion(INN_SQUARE, new_board)
-inn_position := check_special_square(inn_position, new_board)
+inn_position := proportion(INN_SQUARE, board_dim, MAX_NUM_SQUARES)
+inn_position := check_special_square(inn_position, board)
 set_square(board, inn_position, INN_VALUE)
 
-well_position := proportion(WELL_SQUARE, game_board)
-well_position := check_special_square(well_position, game_board) 
+well_position := proportion(WELL_SQUARE, board_dim, MAX_NUM_SQUARES)
+well_position := check_special_square(well_position, board) 
 set_square(board, well_position, WELL_VALUE)
 
-labyrinth_position := proportion(LABYRINTH_SQUARE, game_board)
-labyrinth_position := check_special_square(labyrinth_position, game_board)
+labyrinth_position := proportion(LABYRINTH_SQUARE, board_dim, MAX_NUM_SQUARES)
+labyrinth_position := check_special_square(labyrinth_position, board)
 set_square(board, labyrinth_position, LABYRINTH_VALUE)
 
-prison_position := proportion(PRISON_SQUARE, game_board)
-prison_position := check_special_square(prison_position, game_board)
+prison_position := proportion(PRISON_SQUARE, board_dim, MAX_NUM_SQUARES)
+prison_position := check_special_square(prison_position, board)
 set_square(board, prison_position, PRISON_VALUE)
 
-skeleton_position := proportion(SKELETON_SQUARE, game_board)
-skeleton_position := check_special_square(skeleton_position, game_board)
+skeleton_position := proportion(SKELETON_SQUARE, board_dim, MAX_NUM_SQUARES)
+skeleton_position := check_special_square(skeleton_position, board)
 set_square(board, skeleton_position, SKELETON_VALUE)
 
 
-FUNZIONE proportion(board, special_square)
-------------------------------------------
+FUNZIONE is_goose_square()
+--------------------------
 
-Calcola il nuovo valore di posizione della casella speciale rapportato al
-numero di caselle ricevute in input.
-
-INPUT:
-- board, il tabellone di gioco dove si svolgerà la partita, Board
-- special_square, valore di posizione della casella speciale all'interno del 
-  tabellone da gioco, intero maggiore di zero;
-
-OUTPUT:
-- new_special_square, nuovo valore di posizione della casella speciale rapportato
-  al numero di caselle ricevute in input (num_squares), intero maggiore di zero.
-
-ALGORITMO:
-new_special_square := floor((special_square * get_dim(board)) / MAX_NUM_SQUARES)
-
-
-FUNZIONE floor(float_num)
--------------------------
-
-Converte un numero decimale in un intero, eliminando la parte decimale.
+Verica se una casella del tabellone è una casella oca o meno.
 
 INPUT:
-- float_num, numero decimale da convertire in intero, reale maggiore di zero.
-
-OUTPUT:
-- int_num, numero intero senza la parte decimale, intero maggiore di zero.
-
-LAVORO:
-- i, indice per scorrere gli interi, intero maggiore di zero.
-
-ALGORITMO:
-int_num := 1
-i := 1
-MENTRE (i <= float_num)
-  SE (float_num > i)
-    ALLORA int_num := i
-  FINE
-  i := i + 1
-FINE
-
-
-FUNZIONE is_goose_square(board, position)
------------------------------------------
-
-VerSEica se una casella del tabellone è una casella oca o meno.
-
-INPUT:
-- board, il tabellone di gioco dove si svolgerà la partita, Board.
-- position, valore della posizione di una casella del tabellone di cui verSEicare 
-  se sia casella oca o meno, intero maggiore di zero. 
+- board, il tabellone di gioco dove si svolgerà la partita, Board;
+- position, posizione della casella del tabellone di cui verificare se sia oca o 
+  meno, intero maggiore di zero.
 
 OUTPUT:
 - esito, booleano che assume valore 1 se la casella "square" è una casella oca,
@@ -211,24 +171,24 @@ SE (square = GOOSE_VALUE)
 FINE
 
 
-FUNZIONE check_special_square(board, special_position)
-------------------------------------------------------
+FUNZIONE check_special_square()
+-------------------------------
 
-VerSEica se la posizione della casella speciale nel tabellone di gioco crea un 
+Verifica se la posizione della casella speciale nel tabellone di gioco crea un 
 conflitto con una casella oca.
 
 INPUT:
-- special_square, valore della posizione della casella speciale all'interno del 
-  tabellone di gioco, intero maggiore di zero.
+- special_square, posizione della casella speciale all'interno del tabellone di 
+  gioco, intero maggiore di zero;
 - board, il tabellone di gioco dove si svolgerà la partita, Board.
 
 OUTPUT:
-- allowed_special_pos, valore della posizione della casella speciale che 
-  non crea alcun conflitto con le caselle oca. Intero maggiore di zero.
+- allowed_special_pos, posizione della casella speciale che non crea conflitto 
+  con le caselle oca, intero maggiore di zero.
 
 ALGORITMO:
 allowed_special_pos := special_square
-SE (is_goose_square(special_square, board) = 1) 
+SE (is_goose_square(special_square, board) = 1)
   ALLORA 
     allowed_special_pos := allowed_special_pos + 1
 FINE
@@ -236,223 +196,283 @@ FINE
 
 ------------------------------------------------------------
 
-FUNZIONE build_border(borders, square_len, cols, rows, row, board)
-------------------------------------------------------------------
-
-INPUT:
-- borders, array di 4 stringhe che rappresentano i bordi da utilizzare nella
-  creazione del bordo, array di strighe;
-- square_len, lunghezza desiderata della singola casella, intero maggiore di 
-  zero;
-- cols, numero di colonne desiderato, intero maggiore di zero;
-- rows, numero di righe desiderato, intero maggiore di zero;
-- row, il valore della riga corrente;
-- board, il tabellone di gioco su cui si svolgerà la partita.
-
-OUTPUT:
-- buffer, la stringa contenente il bordo che viene generato, stringa.
-
-LAVORO:
-- ndash, stringa che contiene il carattere che in borders rappresenta il trattino
-  orizzontale ripetuto square_len - 1 volte, stringa;
-- pos, posizione all'intero del tabellone, intero maggiore di zero;
-- is_last_of_row, variabile booleana che determina se un elemento è l'ultimo 
-  della riga, assume 1 se vero e 0 se falso, intero;
-- is_first, variabile booleana che determina se un numero è il primo del 
-  tabellone, assume 1 se vero e 0 se falso, intero:
-
-ALGORITMO:
-nconcat(ndash, borders[3], square_len - 1)
-square_size := 1 + square_len * strlen(primo elemento di borders)
-board_dim := get_dim(board)
-
-col := 0
-MENTRE (col < cols)
-  SE (row mod 2 = 0)
-    ALLORA
-      pos := row * cols + col
-      is_last_of_row := 
-        ((col = cols - 1) AND (row <> rows - 1)) OR (pos = board_dim - 1)
-
-      SE (col = 0)
-        ALLORA
-          fconcat(buffer, 2, {borders[0], ndash})
-        ALTRIMENTI SE (is_last_of_row)
-          ALLORA 
-            fconcat(buffer, 3 {borders[2], ndash, borders[1]})
-          ALTRIMENTI SE (pos < board_dim - 1)
-            ALLORA
-              fconcat(buffer, 2, {borders[2], ndash})
-            ALTRIMENTI
-              nconcat(buffer, " ", square_len)            
-          FINE
-        FINE
-      FINE
-    ALTRIMENTI
-      pos := (row + 1) * cols - col - 1
-      is_fist := (col = 0) AND (row <> rows - 1)
-
-      SE (is_first OR pos = board_dim - 1)
-        ALLORA
-          fconcat(buffer, 2, {borders[0], ndash})
-        ALTRIMENTI SE (col = cols - 1)
-          ALLORA
-            fconcat(buffer, 3 {borders[2], ndash, borders[1]})
-          ALTRIMENTI SE (pos < board_dim - 1)
-            ALLORA
-              fconcat(buffer, 2 {borders[2], ndash});
-            ALTRIMENTI
-              nconcat(buffer, " ", square_len)
-          FINE
-        FINE
-      FINE
-  FINE
-  col := col + 1
-FINE
-fconcat(buffer, 2, {STR_END, LINE_END})
-
-
-FUNZIONE square_to_str(square)
-==============================
-
-INPUT:
-- square, valore in una qualsiasi posizione del campo squares di un Board, 
-  intero maggiore di zero.
-
-OUTPUT:
-- buffer, stringa che contiene il valore sotto forma di stringa di square, 
-  stringa.
-
-ALGORITMO:
-SE (square = GOOSE_VALUE)
-  ALLORA
-      concat(buffer, "X2")
-  ALTRIMENTI SE (square = BRIDGE_VALUE)
-    ALLORA
-      concat(buffer, "BR")
-    ALTRIMENTI SE (square = INN_VALUE)
-      ALLORA
-        concat(buffer, "IN");
-      ALTRIMENTI SE (square = WELL_VALUE)
-        concat(buffer, "WE");
-      ALTRIMENTI SE (square = LABYRINTH_VALUE)
-        ALLORA
-          concat(buffer, "LA");
-        ALTRIMENTI SE (square = PRISON_VALUE)
-          ALLORA
-            concat(buffer, "PR");
-          ALTRIMENTI SE (square = SKELETON_VALUE)
-            ALLORA
-              concat(buffer, "SK");
-            ALTRIMENTI
-              converti square in stringa
-              concat(buffer, square);
-          FINE
-        FINE
-      FINE
-    FINE
-  FINE
-FINE
-
-
-FUNZIONE build_board(board, cols, square_len, borders)
-------------------------------------------------------
-
-INPUT:
-- board, il tabellone di gioco dove si svolgerà la partita che va stampato, Board;
-- cols, numero di colonne desiderato per il tabellone, intero maggiore di zero;
-- square_len, lunghezza desiderata della singola casella, intero maggiore di 
-  zero;
-- borders, lista di caratteri che formano il bordo del tabellone, l'ordine dei 
-  singoli caratteri è arbitrario ed è il seguente:
-  - 1 := nw_corner (es. "┌");
-  - 2 := ne_corner (es. "┐");
-  - 3 := sw_corner (es. "└");
-  - 4 := se_corner (es. "┘");
-  - 5 := join_down (es. "┬");
-  - 6 := join_up   (es. "┴");
-  - 7 := dash      (es. "─");
-  - 8 := vert      (es. "│").
-
-LAVORO:
-- rows, numero di righe calcolato in base al numero di colonne ricevuto, intero
-  maggiore di zero;
-- top_borders, utilizzato per individuare i bordi superiori presenti all'interno 
-  di borders, array di stringhe;
-- bot_borders, utilizzato per individuare i bordi inferiori presenti all'interno 
-  di borders, array di stringhe;
-- vert, indica il separatore verticale, stringa.
-- row, contatore utilizzato per iterare sulle righe del tabellone, intero 
-  maggiore o uguale a zero;
-- top, contiene il bordo ottenuto utilizzando top_borders, stringa;
-- squares, contiene le caselle con il separatore verticale, stringa;
-- bot, contiene il bordo ottenuto utilizzando bot_borders, stringa.
-
-OUTPUT:
-- game_board, il tabellone di gioco completo con bordi, caselle, caselle oca e 
-  caselle speciali, stringa.
-
-ALGORITMO:
-rows = (get_dim(board) + cols - 1) / cols
-top_borders = {primo elemento di borders, secondo elemento di borders,
-               quinto elemento di borders, settimo elemento di borders}
-bot_borders = {terzo elemento di borders, quarto elemento di borders, 
-               sesto elemento di borders, settimo elemento di borders}
-vert = ottavo elemento di borders
-
-row = 0;
-MENTRE (row < rows)
-  top = build_border(top_borders, square_len, cols, rows, row, board);
-  squares = build_squares(vert, square_len, cols, rows, row, board);
-  bot = build_border(bot_borders, square_len, cols, rows, row, board);
-  fconcat(game_board, 3, {top, squares, bot});
-
-  row = row + 1;
-FINE
-
 
 FUNZIONE print_board()
 ======================
 
 INPUT:
-- board, il tabellone di gioco dove si svolgerà la partita che va stampato, Board.
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
+- cols, numero di colonne che il tabellone deve avere, intero maggiore di zero;
+- square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
+- borders, definisce quali caratteri utilizzare per costruire il bordo, array di 
+  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"), 
+  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"), 
+  join_down (es. "┬"), join_up (es. "┴"), dash (es. "─"), vert (es. "│"),
+
+OUTPUT:
+- nullo, non restituisce niente, vuoto.
 
 LAVORO:
-- i, contatore per iterare sul campo squares di board, intero meggiore di zero
+- game_board, tabellone di gioco generato, stringa.
 
 ALGORITMO:
-i := 1
-counter := 1
-MENTRE (i < get_dim(board))
-  square_j := elemento di squares in posizione j
-  SE (square_j = GOOSE_VALUE)
-    ALLORA StampareAVideo("x2")
-    ALTRIMENTI SE (square_j = BRIDGE_VALUE)
-      ALLORA StampareAVideo("ponte")
-      ALTRIMENTI SE (square_j = INN_VALUE)
-        ALLORA StampareAVideo("locanda")
-        ALTRIMENTI SE (square_j = WELL_VALUE)
-          ALLORA StampareAVideo("pozzo")
-          ALTRIMENTI SE (square_j = LABYRINTH_VALUE)
-            ALLORA StampareAVideo("labirinto")
-            ALTRIMENTI SE (square_j = PRISON_VALUE)
-              ALLORA StampareAVideo("prigione")
-              ALTRIMENTI SE (square_j = SKELETON_VALUE)
-                ALLORA StampareAVideo("scheletro")
-                ALTRIMENTI
-                  StampareAVideo(square_j)
-              FINE
+game_board := build_board(board, cols, square_len, borders)
+StampareAVideo(game_board)
+
+
+FUNZIONE build_border()
+-----------------------
+
+INPUT:
+- borders, lista di caratteri da utilizzare per il bordo, array di caratteri che 
+  deve seguire il seguente ordine: west_char, east_char, join_char, dash_char;
+- square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
+- cols, numero di colonne con cui costruire il tabellone, intero maggiore di zero;
+- rows, numero di righe con cui costruire il tabellone, intero maggiore di zero;
+- row, colonna corrente all'interno del tabellone, intero maggiore di zero;
+- board, tabellone di gioco su cui si svolge la partita, Board.
+
+OUTPUT:
+- buffer, bordo che è stato costruito secondo i dati di input, stringa.
+
+LAVORO:
+- ndash, parte del bordo che contiene solo dash_char, stringa;
+- square_size, dimensione effettiva della casella, intero maggiore di zero;
+- board_dim, dimensione del tabellone di gioco, intero maggiore di zero;
+- col, contatore per iterare sul numero di colonne, intero maggiore o uguale a 
+  zero;
+- pos, valore della posizione all'interno del tabellone, intero maggiore di zero;
+- is_last_of_row, indica se la casella è l'ultima della riga, booleano che assume
+  valore 1 se vero, 0 altrimenti;
+- is_fist, indica se la casella è la prima del tabellone, booleano che assume
+  valore 1 se vero, 0 altrimenti;
+
+ALGORITMO:
+ndash := str_nconcat(ndash, dash_char, square_len - 1)
+square_size := 1 + square_len * str_length(west_char);
+board_dim := get_dim(board);
+
+col := 0;
+MENTRE (col < cols)
+  SE (mod(row, 2) == 0) {
+    ALLORA
+      pos := row * cols + col;
+      is_last_of_row :=
+          ((col = cols - 1) AND (row <> rows - 1)) OR (pos = board_dim - 1)
+
+      SE (col == 0)                             // 1st sq of the row
+        ALLORA 
+          str_concat(buffer, west_char)
+          str_concat(buffer, ndash)
+        ALTRIMENTI SE (is_last_of_row)          // last sq of the row
+          ALLORA
+            str_concat(buffer, join_char)
+            str_concat(buffer, ndash)
+            str_concat(buffer, east_char)
+          ALTRIMENTI SE (pos < board_dim - 1)   // between 1st & last
+            ALLORA
+              str_concat(buffer, join_char)
+              str_concat(buffer, ndash)
+            ALTRIMENTI                          // when traveling RtL
+              str_nconcat(buffer, SPACE_CHAR, square_len)
+            FINE
+          FINE
+        FINE
+      FINE
+  ALTRIMENTI
+    pos = (row + 1) * cols - col - 1;
+    is_fist = (col == 0) && (row != rows - 1);
+
+    SE (is_fist OR pos = board_dim - 1)       // 1st sq of the row and last sq
+      ALLORA
+        str_concat(buffer, west_char)
+        str_concat(buffer, ndash)
+      ALTRIMENTI SE (col = cols - 1)          // last sq of the row
+        ALLORA
+          str_concat(buffer, east_char)
+          str_concat(buffer, ndash)
+          str_concat(buffer, join_char)
+        ALTRIMENTI SE (pos < board_dim - 1)   // between 1st & last
+          ALLORA
+            str_concat(buffer, east_char)
+            str_concat(buffer, ndash)
+          ALTRIMENTI                          // when traveling LtR
+            str_nconcat(buffer, SPACE_CHAR, square_len)
+        FINE
+      FINE
+    FINE
+  FINE
+  col := col + 1
+FINE
+str_concat(buffer, LINE_END)
+
+
+FUNZIONE square_to_str()
+------------------------
+
+INPUT:
+- square, valore della casella del tabellone, intero maggiore di zero;
+
+OUTPUT:
+- buffer, valore della casella del tabellone, stringa.
+
+ALGORITMO:
+SE (square = GOOSE_VALUE)
+  ALLORA str_concat(buffer, "X2")
+  ALTRIMENTI SE (square = BRIDGE_VALUE)
+    ALLORA str_concat(buffer, "BR")
+    ALTRIMENTI SE (square = INN_VALUE)
+      ALLORA str_concat(buffer, "IN")
+      ALTRIMENTI SE (square = WELL_VALUE)
+        ALLORA str_concat(buffer, "WE")
+        ALTRIMENTI SE (square = LABYRINTH_VALUE)
+          ALLORA str_concat(buffer, "LA")
+          ALTRIMENTI SE (square = PRISON_VALUE)
+            ALLORA str_concat(buffer, "PR")
+            ALTRIMENTI SE (square = SKELETON_VALUE)
+              ALLORA str_concat(buffer, "SK")
+              ALTRIMENTI str_concat(buffer, ConvertireInStringa(square))
             FINE
           FINE
         FINE
       FINE
     FINE
   FINE
-  counter := counter + 1
-  SE (counter = 15)
-    ALLORA 
-      StampareAVideo(FINE_RIGA)
-      counter := 0
+FINE
+
+
+FUNZIONE build_squares()
+------------------------
+
+INPUT:
+- vert, separatore verticale da utilizzare, carattere;
+- square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
+- cols, numero di colonne del tabellone di gioco, intero maggiore di zero;
+- rows, numero di righe del tabellone di gioco, intero maggiore di zero;
+- row, riga corrente del tabellone, intero maggiore o uguale a zero;
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
+
+OUTPUT:
+- buffer, caselle per la riga row del tabellone, stringa.
+
+LAVORO:
+- board_dim, numero di caselle del tabellone di gioco, intero maggiore o uguale
+  a MIN_NUM_SQUARES e minore o uguale di MAX_NUM_SQUARES;
+- lspacing, numero di spazi da inserire tra vert e il valore della casella, intero 
+  maggiore di zero;
+- rspacing, numero di spazi da inserire tra il valore della casella e vert, intero 
+  maggiore di zero;
+- col, numero corrente della colonna, intero maggiore o uguale a zero;
+- pos, posizione all'interno del tabellone, intero maggiore di zero;
+- square, valore della casella del tabellone, intero maggiore o uguale a zero;
+- sq, valore di square convertito a stringa, stringa;
+- is_fist, indica se la casella è la prima del tabellone, booleano che assume 
+  valore 1 se vero, 0 altrimenti;
+- is_last, indica se la casella è l'ultima del tabellone, booleano che assume
+  valore 1 se vero, 0 altrimenti;
+
+ALGORITMO:
+board_dim := get_dim(board)
+lspacing := (square_len - 3) / 2;
+SE (mod(square_len, 2) <> 0)
+  ALLORA rspacing := lspacing
+  ALTRIMENTI rspacing := lspacing + 1
+FINE
+
+col := 0
+MENTRE (col < cols)
+  SE (mod(row, 2) = 0)
+    ALLORA
+      pos := row * cols + col
+      square := get_square(board, pos)
+      sq := square_to_str(square)
+
+      is_first := (col = cols - 1) AND (row <> rows - 1)
+      is_last := (pos = board_dim - 1) AND (row = rows - 1)
+
+      SE (is_fist || is_last)
+        ALLORA
+          str_concat(buffer, vert)
+          str_nconcat(buffer, SPACE_CHAR, lspacing)
+          str_concat(buffer, sq)
+          str_nconcat(buffer, SPACE_CHAR, rspacing)
+          str_concat(buffer, vert)
+        ALTRIMENTI SE (pos < board_dim)
+          ALLORA
+            str_concat(buffer, vert)
+            str_nconcat(buffer, SPACE_CHAR, lspacing)
+            str_concat(buffer, sq)
+            str_nconcat(buffer, SPACE_CHAR, rspacing)
+          ALTRIMENTI 
+            str_nconcat(buffer, SPACE_CHAR, square_len)
+        FINE
+      FINE
+    ALTRIMENTI
+      pos := (row + 1) * cols - col - 1
+      square := get_square(board, pos)
+      sq := square_to_str(square)
+
+      SE (col = cols - 1)
+        ALLORA
+          str_concat(buffer, vert)
+          str_nconcat(buffer, SPACE_CHAR, lspacing)
+          str_concat(buffer, sq)
+          str_nconcat(buffer, SPACE_CHAR, rspacing)
+          str_concat(buffer, vert)
+        ALTRIMENTI SE (pos < board_dim)
+          ALLORA
+            str_concat(buffer, vert)
+            str_nconcat(buffer, SPACE_CHAR, lspacing)
+            str_concat(buffer, sq)
+            str_nconcat(buffer, SPACE_CHAR, rspacing)
+          ALTRIMENTI
+            str_nconcat(buffer, SPACE_CHAR, square_len)
+        FINE
+      FINE
   FINE
-  i := i + 1
+  col := col + 1
+FINE
+str_concat(buffer, LINE_END)
+
+
+FUNZIONE build_board()
+----------------------
+
+INPUT:
+- board, tabellone di gioco su cui si svolgerà la partita, Board;
+- cols, numero di colonne con cui stampare il tabellone, intero maggiore di zero;
+- square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
+- borders, definisce quali caratteri utilizzare per costruire il bordo, array di 
+  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"), 
+  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"), 
+  join_down (es. "┬"), join_up (es. "┴"), dash (es. "─"), vert (es. "│").
+
+OUTPUT:
+- game_board,
+
+LAVORO:
+- rows, il numero di colonne che il tabellone possiederà, intero maggiore di zero;
+- top_borders, i caratteri che il bordo superiore utilizza, array di caratteri;
+- bot_borders, i caratteri che il bordo inferiore utilizza, array di caratteri;
+- top, bordo superiore del tabellone per la riga row, stringa;
+- squares, caselle del tabellone per la riga row, stringa;
+- bot, bordo inferiore del tabellone per la tiga row, stringa.
+
+ALGORITMO:
+rows := (get_dim(board) + cols - 1) / cols  // calculate needed rows
+top_borders := {nw_corner, ne_corner, join_down, dash}
+bot_borders := {sw_corner, se_corner, join_up, dash}
+
+row := 0;
+MENTRE (row < rows)
+  top = build_border(top_borders, square_len, cols, rows, row, board)
+  str_concat(game_board, top)
+
+  squares = build_squares(vert, square_len, cols, rows, row, board)
+  str_concat(game_board, squares)
+
+  bot = build_border(bot_borders, square_len, cols, rows, row, board)
+  str_concat(game_board, bot)
+
+  row := row + 1
 FINE

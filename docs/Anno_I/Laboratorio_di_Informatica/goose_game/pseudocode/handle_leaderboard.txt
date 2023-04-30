@@ -1,0 +1,4 @@
+MODULO DI GESTIONE DELLA CLASSIFICA
+===================================
+
+Questo modulo contiene le funzioni per lavorare con la classifica di gioco.
