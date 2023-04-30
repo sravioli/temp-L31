@@ -3,11 +3,9 @@
  * @brief A program to manage a leaderboard of players.
  *
  * This program allows the user to create, read, update and delete entries in a
- * leaderboard of players. Each entry consists of a player name (up to 3
+ * leaderboard of players. Each entry consists of a player username (up to 3
  * characters), and a score. The program can store up to 10 entries. The program
  * reads and writes entries from/to a file named "leaderboard.txt".
- *
- * @see https://github.com/simonefidanza/leaderboard
  *
  * @note This program uses the scanf_s function to read input, which is a
  *       Microsoft-specific function. If you're using a different compiler, you
@@ -20,13 +18,14 @@
  * @date April 2023
  * @licence GNU GPLv3
  */
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define STR_END '\0'
-#define LINE_END '\n'
+#define LINE_END "\n"
 
 #define MAX_NAME_LENGTH 20
 #define MAX_USERNAME_LENGTH 3
@@ -35,16 +34,15 @@
 #define MAX_NUM_PLAYERS 4
 
 #define MAX_ENTRIES 10
-typedef struct Entry Entry;
-struct Entry {
-  char name[MAX_USERNAME_LENGTH + 1];
+typedef struct Entry {
+  char username[MAX_USERNAME_LENGTH + 1];
   int score;
-};
+} Entry;
 
-void get_name(char *name);
-int is_name_valid(const char *name);
-void truncate_string(char name[], int length);
-void make_uppercase(char name[]);
+void get_name(char *username);
+int is_name_valid(const char *username);
+void truncate_string(char username[], int length);
+void make_uppercase(char username[]);
 
 Entry *create_entry(Entry entries[]);
 void store_entries(Entry entries[], int num_entries);
@@ -72,25 +70,25 @@ void print_leaderboard(Entry entries[], int num_entries);
  * to try again. If the username is valid, it truncates it if necessary using
  * truncate_string and converts it to uppercase using make_uppercase.
  *
- * @param name The character array to store the username. It's as long as the
- *             maximum allowed name length.
+ * @param username The character array to store the username. It's as long as
+ * the maximum allowed username length.
  *
  * @see is_name_valid()
  * @see truncate_string()
  * @see make_uppercase()
  */
-void get_name(char name[]) {
+void get_name(char username[]) {
   // HACK: this clears the current line. there has to be a better way.
   // printf("\033[A\33[2K\r");
   int valid = 0;
   while (!valid) {
     printf("Enter your username: ");
-    scanf_s("%20s", name, MAX_NAME_LENGTH);
+    scanf_s("%20s", username, MAX_NAME_LENGTH);
 
-    if (is_name_valid(name)) {
+    if (is_name_valid(username)) {
       valid = 1;
-      truncate_string(name, MAX_USERNAME_LENGTH);
-      make_uppercase(name);
+      truncate_string(username, MAX_USERNAME_LENGTH);
+      make_uppercase(username);
     } else {
       printf("Invalid username. Please try again.\n");
     }
@@ -105,22 +103,22 @@ void get_name(char name[]) {
  * valid if it contains only letters and spaces (no digits or punctuation
  * marks). The function returns 1 if the username is valid, and 0 otherwise.
  *
- * @param name The username to validate.
+ * @param username The username to validate.
  * @return 1 if the username is valid, 0 otherwise.
  *
  * @see get_name()
  */
-int is_name_valid(const char name[]) {
+int is_name_valid(const char username[]) {
   // handle NULL values
-  if (name == NULL) {
+  if (username == NULL) {
     printf("Error while checking string: the string is NULL\n");
     return 0;
   }
   int i = 0;
-  while (name[i]) {
+  while (username[i]) {
     // no need to check for spaces since scanf_s stops at the first whitespace
     // character
-    if (ispunct(name[i]) || isdigit(name[i])) {
+    if (ispunct(username[i]) || isdigit(username[i])) {
       return 0;
     }
     i = i + 1;
@@ -135,19 +133,19 @@ int is_name_valid(const char name[]) {
  * (MAX_USERNAME_LENGTH). If the username is already shorter than the maximum
  * length, it does nothing.
  *
- * @param name The username to truncate. Should be as long as the maximum
+ * @param username The username to truncate. Should be as long as the maximum
  *             allowed length + 1.
  *
  * @see get_name()
  */
-void truncate_string(char name[], int length) {
+void truncate_string(char username[], int length) {
   // handle NULL
-  if (name == NULL) {
+  if (username == NULL) {
     printf("Error while truncating string: the string is NULL\n");
     return;
   }
-  if (strlen(name) > MAX_USERNAME_LENGTH) {
-    strncpy_s(name, MAX_NAME_LENGTH, name, length);
+  if (strlen(username) > MAX_USERNAME_LENGTH) {
+    strncpy_s(username, MAX_NAME_LENGTH, username, length);
   }
 }
 
@@ -158,28 +156,28 @@ void truncate_string(char name[], int length) {
  * function from <ctype.h>. If the username is already in uppercase, it does
  * nothing.
  *
- * @param name The string to convert to uppercase.
+ * @param username The string to convert to uppercase.
  *
  * @see get_name
  */
-void make_uppercase(char name[]) {
-  if (name == NULL) {
+void make_uppercase(char username[]) {
+  if (username == NULL) {
     return;
   }
   int i = 0;
-  while (i < strlen(name)) {
-    name[i] = toupper(name[i]);
+  while (i < strlen(username)) {
+    username[i] = toupper(username[i]);
     i = i + 1;
   }
 }
 
 /**
- * @brief Creates a new Entry struct and prompts the user to enter their name
- * and score.
+ * @brief Creates a new Entry struct and prompts the user to enter their
+ * username and score.
  *
- * This function prompts the user to enter their name and score, validates the
- * input, and returns a new dynamically allocated Entry struct containing the
- * input values.
+ * This function prompts the user to enter their username and score, validates
+ * the input, and returns a new dynamically allocated Entry struct containing
+ * the input values.
  *
  * @param entries An array of Entry structs that will be populated with the new
  *                entry.
@@ -197,8 +195,8 @@ Entry *create_entry(Entry entries[]) {
   }
   int valid = 0;
   while (!valid) {
-    get_name(new_entry->name);
-    // TODO: the score should be calculated in some way during the
+    get_name(new_entry->username);
+    // TODO: (NOLINT) the score should be calculated in some way during the
     // game, this is just temporary since that calculation is not implemented
     // yet
     printf("Enter your score: ");
@@ -214,12 +212,12 @@ Entry *create_entry(Entry entries[]) {
 }
 
 /**
- * @brief Prompts the user to enter the name and score for a specified number of
- *        players.
+ * @brief Prompts the user to enter the username and score for a specified
+ * number of players.
  *
- * This function prompts the user to enter the name and score for a specified
- * number of players, validates the input, and populates an array of Entry
- * structs with the input values.
+ * This function prompts the user to enter the username and score for a
+ * specified number of players, validates the input, and populates an array of
+ * Entry structs with the input values.
  *
  * @param entries     An array of Entry structs that will be populated with the
  *                    new entries.
@@ -253,11 +251,11 @@ void swap_entries(Entry *entry1, Entry *entry2) {
 }
 
 /**
- * @brief Sorts an array of entries based on score and name.
+ * @brief Sorts an array of entries based on score and username.
  *
- * The function sorts an array of Entry structs based on the score and name
+ * The function sorts an array of Entry structs based on the score and username
  * fields in each struct. Entries with higher scores come first, and if two
- * entries have the same score, they are sorted alphabetically by name.
+ * entries have the same score, they are sorted alphabetically by username.
  *
  * @param entries     The array of Entry structs to sort.
  * @param num_entries The number of entries in the array.
@@ -269,7 +267,8 @@ void sort_entries(Entry entries[], int num_entries) {
     while (j < num_entries) {
       int is_score_greater = entries[j].score > entries[i].score;
       int is_score_equal = entries[j].score == entries[i].score;
-      int is_name_previous = strcmp(entries[j].name, entries[i].name) < 0;
+      int is_name_previous =
+          strcmp(entries[j].username, entries[i].username) < 0;
       int should_swap_entries =
           is_score_greater || (is_score_equal && is_name_previous);
 
@@ -290,7 +289,7 @@ void sort_entries(Entry entries[], int num_entries) {
  * and stores it in the given array.
  *
  * @param entries  The array to store the entries in.
- * @param filename The name of the file to read from.
+ * @param filename The username of the file to read from.
  *
  * @return The number of entries read from the file.
  */
@@ -322,12 +321,12 @@ int read_entries(Entry entries[], const char *filename) {
 /**
  * @brief Parse a string representing a score entry and fill an Entry struct.
  *
- * The input string should be formatted as "[name] [score]", where [name] is a
- * string of up to MAX_NAME_LENGTH characters and [score] is an integer. The
- * function copies the name to the Entry struct's name field, and the score to
- * its score field.
+ * The input string should be formatted as "[username] [score]", where
+ * [username] is a string of up to MAX_NAME_LENGTH characters and [score] is an
+ * integer. The function copies the username to the Entry struct's username
+ * field, and the score to its score field.
  *
- * If the input string is not in the expected format, or if the name is too
+ * If the input string is not in the expected format, or if the username is too
  * long, the function prints an error message and returns without modifying the
  * Entry struct.
  *
@@ -335,27 +334,27 @@ int read_entries(Entry entries[], const char *filename) {
  * @param entry A pointer to the Entry struct to fill.
  */
 void parse_entry(const char *str, Entry *entry) {
-  // Find the space character that separates the name and score. if not present
-  // throw an error.
+  // Find the space character that separates the username and score. if not
+  // present throw an error.
   const char *space = strchr(str, ' ');
   if (space == NULL) {
     printf("Invalid input string: '%s'\n", str);
     return;
   }
 
-  // Calculate the length of the name
+  // Calculate the length of the username
   int name_len = space - str;
 
-  // Copy the name to the output buffer
-  size_t num_chars_copied;
-  errno_t err = strncpy_s(entry->name, sizeof(entry->name), str, name_len);
+  // Copy the username to the output buffer
+  errno_t err =
+      strncpy_s(entry->username, sizeof(entry->username), str, name_len);
   if (err != 0) {
     char buf[256];
     strerror_s(buf, sizeof(buf), err);
-    printf("Error copying name: %s\n", buf);
+    printf("Error copying username: %s\n", buf);
     return;
   }
-  entry->name[name_len] = STR_END;
+  entry->username[name_len] = STR_END;
 
   // Parse the score as an integer
   entry->score = atoi(space + 1);
@@ -372,7 +371,7 @@ void parse_entry(const char *str, Entry *entry) {
  *
  * @param entries     The array of entries to write to the file.
  * @param num_entries The number of entries in the array.
- * @param filename    The name of the file to write to.
+ * @param filename    The username of the file to write to.
  */
 void write_entries(Entry entries[], int num_entries, const char *filename) {
   // Check if entries is NULL
@@ -414,7 +413,7 @@ void write_entries(Entry entries[], int num_entries, const char *filename) {
   int i = 0;
   while (i <= MAX_ENTRIES) {
     const Entry *entry = &file_entries[i];
-    fprintf(fp, "%s %d\n", entry->name, entry->score);
+    fprintf(fp, "%s %d\n", entry->username, entry->score);
     i = i + 1;
   }
 
@@ -458,7 +457,7 @@ int append_entries(Entry *existing_entries, int existing_num_entries,
 void remove_duplicates(Entry entries[], int num_entries) {
   int i = 0;
   while (i < num_entries - 1) {
-    if (strcmp(entries[i].name, entries[i + 1].name) == 0) {
+    if (strcmp(entries[i].username, entries[i + 1].username) == 0) {
       int j = i + 1;
       while (j < num_entries - 1) {
         entries[j] = entries[j + 1];
@@ -476,18 +475,18 @@ void remove_duplicates(Entry entries[], int num_entries) {
 /**
  * @brief Prints a leaderboard of entries to the console.
  *
- * The function prints a leaderboard to the console with the rank, name, and
+ * The function prints a leaderboard to the console with the rank, username, and
  * score of each entry. The entries are sorted by score in descending order, and
  * entries with the same score are assigned the same rank. The leaderboard is
  * printed with a fixed-width format for each column with the following format:
- * "[rank] [name] [score]"
+ * "[rank] [username] [score]"
  *
  * @param entries     An array of Entry structs containing the entries to print.
  * @param num_entries The number of entries in the entries array.
  *
  */
 void print_leaderboard(Entry entries[], int num_entries) {
-  printf("%6s  %-4s  %-5s\n", "RANK", "NAME", "SCORE");
+  printf("%6s  %-4s  %-5s\n", "RANK", "username", "SCORE");
   int i = 0;
   int rank = 1;
   int prev_score = -1;
@@ -497,7 +496,7 @@ void print_leaderboard(Entry entries[], int num_entries) {
       prev_score = entry.score;
       rank = i + 1;
     }
-    printf("%6d  %-4s  %-5d\n", rank, entry.name, entry.score);
+    printf("%6d  %-4s  %-5d\n", rank, entry.username, entry.score);
     i = i + 1;
   }
 }

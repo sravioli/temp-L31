@@ -48,7 +48,7 @@ void test_truncate_name() {
   assert(strcmp(test_name, "") == 0);
 
   // Test case 5: Name is null
-  truncate_name(NULL); // Function should handle null gracefully
+  truncate_name(NULL);  // Function should handle null gracefully
 }
 
 int main(void) {
