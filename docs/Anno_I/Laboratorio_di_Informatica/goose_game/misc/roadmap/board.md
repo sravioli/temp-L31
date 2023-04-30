@@ -28,7 +28,7 @@ FINE
 
 ## get_num_squares()
 
-**ALGORTIMO**
+**ALGORTIMO**:
 
 ```txt
 chiedi numero.
@@ -127,7 +127,7 @@ SE (casella square-esima di board = GOOSE_VALUE)
 FINE
 ```
 
-### `check_special_position(special_square_position, board)`
+### check_special_position(special_square_position, board)
 
 **INPUT**:
 
