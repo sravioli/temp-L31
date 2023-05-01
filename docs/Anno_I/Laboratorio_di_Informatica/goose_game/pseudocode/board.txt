@@ -6,12 +6,12 @@ vedere "./common/records.txt"
 vedere "./common/string.txt"
 vedere "./common/math.txt"
 
-Creazione e stampa del tabellone di gioco con le funzioni necessarie per 
+Creazione e stampa del tabellone di gioco con le funzioni necessarie per
 l'inizializzazione dello stesso e aggiunta di caselle speciali.
 
-Le funzioni incluse in questo file permettono di definire la dimensione del 
+Le funzioni incluse in questo file permettono di definire la dimensione del
 tabellone, inserire caselle oca e speciali, inserire quest'ultime in maniera
-proporzionale al numero di caselle del tabellone senza creare conflitti con le 
+proporzionale al numero di caselle del tabellone senza creare conflitti con le
 caselle oca.
 
 LAVORO:
@@ -31,7 +31,7 @@ print_board(board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, DEFAULT_BORDERS)
 FUNZIONE get_num_squares()
 ==========================
 
-Richiede all'utente di inserire il numero di caselle del tabellone di gioco e 
+Richiede all'utente di inserire il numero di caselle del tabellone di gioco e
 restituisce il valore inserito.
 
 OUTPUT:
@@ -81,7 +81,7 @@ game_board := insert_special_squares(game_board)
 FUNZIONE insert_goose_squares()
 ===============================
 
-Aggiunge le caselle oca al tabellone di gioco, a partire dalla casella con 
+Aggiunge le caselle oca al tabellone di gioco, a partire dalla casella con
 indice GOOSE_SPACING, con un intervallo tra di esse sempre pari a GOOSE_SPACING.
 
 INPUT:
@@ -93,7 +93,7 @@ OUTPUT:
 LAVORO:
 - num_squares, il numero di caselle scelto dal giocatore, intero compreso tra
   MIN_NUM_SQUARES e MAX_NUM_SQUARES inclusi.
-- i, contatore delle caselle del tabellone di gioco, intero maggiore o uguale 
+- i, contatore delle caselle del tabellone di gioco, intero maggiore o uguale
   a GOOSE_SPACING.
 
 ALGORITMO:
@@ -114,11 +114,11 @@ INPUT:
 - board, tabellone di gioco dove si svolgerà la partita, Board.
 
 OUTPUT:
-- board, tabellone di gioco dove si svolgerà la partita con caselle oca e 
+- board, tabellone di gioco dove si svolgerà la partita con caselle oca e
   speciali, Board.
 
 LAVORO:
-- board_dim, il valore della dimensione del tabellone di gioco, intero maggiore 
+- board_dim, il valore della dimensione del tabellone di gioco, intero maggiore
   di zero.
 
 ALGORITMO:
@@ -133,7 +133,7 @@ inn_position := check_special_square(inn_position, board)
 set_square(board, inn_position, INN_VALUE)
 
 well_position := proportion(WELL_SQUARE, board_dim, MAX_NUM_SQUARES)
-well_position := check_special_square(well_position, board) 
+well_position := check_special_square(well_position, board)
 set_square(board, well_position, WELL_VALUE)
 
 labyrinth_position := proportion(LABYRINTH_SQUARE, board_dim, MAX_NUM_SQUARES)
@@ -156,7 +156,7 @@ Verica se una casella del tabellone è una casella oca o meno.
 
 INPUT:
 - board, il tabellone di gioco dove si svolgerà la partita, Board;
-- position, posizione della casella del tabellone di cui verificare se sia oca o 
+- position, posizione della casella del tabellone di cui verificare se sia oca o
   meno, intero maggiore di zero.
 
 OUTPUT:
@@ -174,22 +174,22 @@ FINE
 FUNZIONE check_special_square()
 -------------------------------
 
-Verifica se la posizione della casella speciale nel tabellone di gioco crea un 
+Verifica se la posizione della casella speciale nel tabellone di gioco crea un
 conflitto con una casella oca.
 
 INPUT:
-- special_square, posizione della casella speciale all'interno del tabellone di 
+- special_square, posizione della casella speciale all'interno del tabellone di
   gioco, intero maggiore di zero;
 - board, il tabellone di gioco dove si svolgerà la partita, Board.
 
 OUTPUT:
-- allowed_special_pos, posizione della casella speciale che non crea conflitto 
+- allowed_special_pos, posizione della casella speciale che non crea conflitto
   con le caselle oca, intero maggiore di zero.
 
 ALGORITMO:
 allowed_special_pos := special_square
 SE (is_goose_square(special_square, board) = 1)
-  ALLORA 
+  ALLORA
     allowed_special_pos := allowed_special_pos + 1
 FINE
 
@@ -204,9 +204,9 @@ INPUT:
 - board, tabellone di gioco su cui si svolgerà la partita, Board.
 - cols, numero di colonne che il tabellone deve avere, intero maggiore di zero;
 - square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
-- borders, definisce quali caratteri utilizzare per costruire il bordo, array di 
-  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"), 
-  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"), 
+- borders, definisce quali caratteri utilizzare per costruire il bordo, array di
+  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"),
+  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"),
   join_down (es. "┬"), join_up (es. "┴"), dash (es. "─"), vert (es. "│"),
 
 OUTPUT:
@@ -224,7 +224,7 @@ FUNZIONE build_border()
 -----------------------
 
 INPUT:
-- borders, lista di caratteri da utilizzare per il bordo, array di caratteri che 
+- borders, lista di caratteri da utilizzare per il bordo, array di caratteri che
   deve seguire il seguente ordine: west_char, east_char, join_char, dash_char;
 - square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
 - cols, numero di colonne con cui costruire il tabellone, intero maggiore di zero;
@@ -239,7 +239,7 @@ LAVORO:
 - ndash, parte del bordo che contiene solo dash_char, stringa;
 - square_size, dimensione effettiva della casella, intero maggiore di zero;
 - board_dim, dimensione del tabellone di gioco, intero maggiore di zero;
-- col, contatore per iterare sul numero di colonne, intero maggiore o uguale a 
+- col, contatore per iterare sul numero di colonne, intero maggiore o uguale a
   zero;
 - pos, valore della posizione all'interno del tabellone, intero maggiore di zero;
 - is_last_of_row, indica se la casella è l'ultima della riga, booleano che assume
@@ -261,7 +261,7 @@ MENTRE (col < cols)
           ((col = cols - 1) AND (row <> rows - 1)) OR (pos = board_dim - 1)
 
       SE (col == 0)                             // 1st sq of the row
-        ALLORA 
+        ALLORA
           str_concat(buffer, west_char)
           str_concat(buffer, ndash)
         ALTRIMENTI SE (is_last_of_row)          // last sq of the row
@@ -358,15 +358,15 @@ OUTPUT:
 LAVORO:
 - board_dim, numero di caselle del tabellone di gioco, intero maggiore o uguale
   a MIN_NUM_SQUARES e minore o uguale di MAX_NUM_SQUARES;
-- lspacing, numero di spazi da inserire tra vert e il valore della casella, intero 
+- lspacing, numero di spazi da inserire tra vert e il valore della casella, intero
   maggiore di zero;
-- rspacing, numero di spazi da inserire tra il valore della casella e vert, intero 
+- rspacing, numero di spazi da inserire tra il valore della casella e vert, intero
   maggiore di zero;
 - col, numero corrente della colonna, intero maggiore o uguale a zero;
 - pos, posizione all'interno del tabellone, intero maggiore di zero;
 - square, valore della casella del tabellone, intero maggiore o uguale a zero;
 - sq, valore di square convertito a stringa, stringa;
-- is_fist, indica se la casella è la prima del tabellone, booleano che assume 
+- is_fist, indica se la casella è la prima del tabellone, booleano che assume
   valore 1 se vero, 0 altrimenti;
 - is_last, indica se la casella è l'ultima del tabellone, booleano che assume
   valore 1 se vero, 0 altrimenti;
@@ -403,7 +403,7 @@ MENTRE (col < cols)
             str_nconcat(buffer, SPACE_CHAR, lspacing)
             str_concat(buffer, sq)
             str_nconcat(buffer, SPACE_CHAR, rspacing)
-          ALTRIMENTI 
+          ALTRIMENTI
             str_nconcat(buffer, SPACE_CHAR, square_len)
         FINE
       FINE
@@ -442,9 +442,9 @@ INPUT:
 - board, tabellone di gioco su cui si svolgerà la partita, Board;
 - cols, numero di colonne con cui stampare il tabellone, intero maggiore di zero;
 - square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
-- borders, definisce quali caratteri utilizzare per costruire il bordo, array di 
-  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"), 
-  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"), 
+- borders, definisce quali caratteri utilizzare per costruire il bordo, array di
+  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"),
+  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"),
   join_down (es. "┬"), join_up (es. "┴"), dash (es. "─"), vert (es. "│").
 
 OUTPUT:

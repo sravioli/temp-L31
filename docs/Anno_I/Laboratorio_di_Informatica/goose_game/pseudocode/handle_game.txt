@@ -1,8 +1,15 @@
 MODULO DI GESTIONE DELLA PARTITA
 ================================
 
-Questo modulo gestisce la creazione e la partita stessa. Lancia i dadi utlizzando
-la funzione random(), crea il tabellone, lo stampa a video, etc.
+vedere "./common/math.txt"
+vedere "./common/string.txt"
+vedere "./common/globals.txt"
+vedere "./common/records.txt"
+
+Questo modulo contiene le funzioni per la gestione della partita stessa.
+
+
+------------------------------------------------------------
 
 
 FUNZIONE ask_num_squares()
@@ -50,8 +57,8 @@ FINE
 ------------------------------------------------------------
 
 
-FUNZIONE create_board()
-=======================
+FUNZIONE init_board()
+=====================
 
 Crea un tabellone vuoto con la dimensione data, lo riempie di caselle e inserisce
 le caselle oca e caselle speciali.
@@ -643,9 +650,8 @@ MENTRE (is_player_winner() <> 1) OR (NOT(break) = TRUE)
     SE (player_action = 1)
       ALLORA
         throw := random(MIN_DICE_THROW, MAX_DICE_THROW)
-        elemento in posizione current_player di players :=
-          move_player(players, elemento in posizione current_player di players,
-                      throw, board)
+        set_players(players, current_player) :=
+          move_player(players, get_players(players, current_player), throw, board)
       ALTRIMENTI SE (player_action = 0)
         ALLORA break := TRUE
         ALTRIMENTI SE (player_action = 2)
