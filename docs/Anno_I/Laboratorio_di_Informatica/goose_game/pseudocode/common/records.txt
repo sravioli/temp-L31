@@ -24,10 +24,10 @@ funzioni di accesso
 ===================
 
 Le funzioni di accesso al tipo di dato Board sono le seguenti:
-- get_square()
-- set_square()
-- get_dim()
-- set_dim()
+- get_square();
+- set_square();
+- get_dim();
+- set_dim().
 
 
 FUNZIONE get_square()
@@ -394,3 +394,156 @@ OUTPUT:
 
 ALGORITMO
 valore del campo turn_order in posizione pos di players := turn
+
+
+--------------------------------------------------------------------------------
+
+
+ENTRY
+=====
+
+Il tipo di dato Entry deve essere rappresentato come un record composto da:
+- una stringa contenente l'username del giocatore;
+- un numero intero che rappresenti il punteggio del giocatore.
+
+RECORD Entry:
+- name, nome utente del giocatore, stringa con lunghezza massima di
+  MAX_USERNAME_LENGTH + 1;
+- score, punteggio del giocatore, intero.
+
+
+funzioni di accesso
+===================
+
+Le funzioni di accesso al tipo di dato Board sono le seguenti:
+- get_name();
+- get_score();
+- set_name();
+- set_score().
+
+
+FUNZIONE get_name()
+===================
+
+INPUT:
+- entry, struttura contenente nome utente e punteggio, Entry.
+
+OUTPUT:
+- name, username del giocatore, stringa.
+
+ALGORITMO:
+name := valore del campo name di entry
+
+FUNZIONE get_score()
+====================
+
+INPUT:
+- entry, struttura contenente nome utente e punteggio, Entry.
+
+OUTPUT:
+- score, punteggio del giocatore, intero.
+
+ALGORITMO:
+score := valore del campo score di entry
+
+FUNZIONE set_name()
+===================
+
+INPUT:
+- entry, struttura contenente nome utente e punteggio, Entry;
+- name, username da assegnare al giocatore, stringa;
+
+OUTPUT:
+- entry, struttura contenente nome utente e punteggio, Entry.
+
+ALGORITMO:
+valore del campo name di entry := name
+
+FUNZIONE set_score()
+====================
+
+INPUT:
+- entry, struttura contenente nome utentee punteggio, Entry;
+- score, punteggio da assegnare al giocatore, intero;
+
+OUTPUT:
+- entry, struttura contenente nome utente, Entry.
+
+ALGORITMO:
+valore del campo score di entry := score
+
+
+--------------------------------------------------------------------------------
+
+
+ENTRIES
+=======
+
+Il tipo di dato Entries deve essere rappresentato come un record composto da:
+- un vettore di Entry a una dimensione;
+- un numero intero che rappresenti la lunghezza del vettore.
+
+
+RECORD Entries:
+- entries, vettore di Entry, array a una dimensione di Entry;
+- num_entries, numero di elementi all'intero di entries, intero.
+
+
+funzioni di accesso
+===================
+
+Le funzioni di accesso al tipo di dato Board sono le seguenti:
+- get_entry();
+- get_num_entries();
+- set_entry();
+- set_num_entries();
+
+FUNZIONE get_entry()
+====================
+
+INPUT:
+- entries, lista di Entry, Entries.
+
+OUTPUT:
+- entry, valore della singola entry, Entry.
+
+ALGORITMO:
+entry := valore del campo entry di entries
+
+FUNZIONE set_entry()
+====================
+
+INPUT:
+- entries, lista di Entry, Entries;
+- entry, valore di una coppia username-score, Entry;
+
+OUTPUT:
+- entries, lista di entry, Entries
+
+ALGORITMO:
+valore del campo entry di entries := entry
+
+FUNZIONE get_num_entries()
+==========================
+
+INPUT:
+- entries, lista di Entry, Entries.
+
+OUTPUT:
+- num_entries, numero di coppie username-score presenti nel vettore, intero.
+
+ALGORITMO:
+num_entries := valore del campo num_entries di entries
+
+FUNZIONE set_num_entries()
+==========================
+
+INPUT:
+- entries, lista di Entry, Entries;
+- num_entries, numero di coppie username-score presenti nel vettore, intero;
+
+OUTPUT:
+- entries, lista di Entry, Entries
+
+ALGORITMO:
+valore del campo num_entries di entries := num_entries
