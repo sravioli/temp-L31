@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Minor pseudocode fixes
+- Change tab width
 - Fix game_loop() syntax
 - Minor fixies for prototypes
 - Remove temp file
@@ -98,6 +100,11 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Move functions, add new files
+- Add more modules, minor fixes
+- Add game modules
+- Add new records
+- Add prototypes
 - Complete and fix pseudocode
 - Add file doxygen for board_type.h
 - Complete class notes, add glossary entry
