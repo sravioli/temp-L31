@@ -196,44 +196,4 @@ char *square_to_str(const int square);
 char *build_squares(const char *vert, const int square_len, const int cols,
                     const int rows, const int row, const Board board);
 
-/**
- * @brief Builds the game board as a string representation of the provided Board
- *        using the given border characters and other formatting options.
- *
- * @param[in] board The Board to build the game board from.
- * @param[in] cols The number of columns to use for the game board.
- * @param[in] square_len The length of each square in the game board.
- * @param[in] borders An array of border characters for different parts of the
- *                    game board. The order of characters should be as follows:
- *                    - nw_corner  (e.g. "┌");
- *                    - ne_corner  (e.g. "┐");
- *                    - sw_corner  (e.g. "└");
- *                    - se_corner  (e.g. "┘");
- *                    - join_down  (e.g. "┬");
- *                    - join_up    (e.g. "┴");
- *                    - dash       (e.g. "─");
- *                    - vert       (e.g. "│").
- *
- * @return A dynamically allocated char array representing the game board. The
- *         caller is responsible for freeing the memory when no longer needed.
- *
- * @note The returned game board string will contain multiple rows and columns
- *       of squares separated by borders, formatted according to the provided
- *       options.
- * @note The Board parameter must be properly initialized and contain valid
- *       data.
- * @note The cols parameter should be greater than 0 to avoid division by zero.
- * @note The `square_len` parameter should be greater than 0 to represent the
- *       length of each square.
- * @note The borders array should contain valid characters for each border
- *       position.
- * @note The game_board string will be allocated using the `alloc_char()`
- *       function, and the caller is responsible for freeing the memory when no
- *       longer needed.
- * @note The function uses the `build_border()` and `build_squares()` helper
- *       functions to generate the game board string.
- */
-char *build_board(const Board board, const int cols, const int square_len,
-                  const char *borders[8]);
-
 #endif  // !BOARD_PRIVATE_H

@@ -26,64 +26,59 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-// minimum number of squares allowed
-#define MIN_NUM_SQUARES 50
+// GLOBAL CONSTANTS LIST
 
-// maximum number of squares allowed
+// Minimum and maximum number of squares allowed
+#define MIN_NUM_SQUARES 50
 #define MAX_NUM_SQUARES 90
 
-// minimum number of players allowed
+// Minimum and maximum number of players allowed
 #define MIN_NUM_PLAYERS 2
-
-// maximum number of players allowed
 #define MAX_NUM_PLAYERS 4
 
-// value of a "goose" square
+// Goose square spacing and value
+#define GOOSE_SPACING 9
 #define GOOSE_VALUE 0
 
-// spacing between "goose" squares
-#define GOOSE_SPACING 9
-
-// base position of the "bridge" square on the board
+// Board squares positions
 #define BRIDGE_SQUARE 6
-
-// base position of the "inn" square on the board
 #define INN_SQUARE 19
-
-// base position of the "well" square on the board
 #define WELL_SQUARE 31
-
-// base position of the "labyrinth" square on the board
 #define LABYRINTH_SQUARE 42
-
-// base position of the "prison" square on the board
 #define PRISON_SQUARE 52
-
-// base position of the "skeleton" square on the board
 #define SKELETON_SQUARE 58
 
-// value of the "bridge" square
+// Board squares values
 #define BRIDGE_VALUE -1
-
-// value of the "inn" square
 #define INN_VALUE -2
-
-// value of the "well" square
 #define WELL_VALUE -3
-
-// value of the "labyrinth" square
 #define LABYRINTH_VALUE -4
-
-// value of the "prison" square
 #define PRISON_VALUE -5
-
-// value of the "skeleton" square
 #define SKELETON_VALUE -6
 
-// end of string indicator
-#define STR_END '\0'
+// Default board properties
+#define DEFAULT_COLS 15
+#define DEFAULT_SQUARE_LEN 7
+#define DEFAULT_BORDERS                                                        \
+  { "╭", "╮", "╰", "╯", "┬", "┴", "─", "│" }
 
-// end of line indicator
+// Player default properties
+#define INITIAL_POSITION 0
+#define INITIAL_SCORE 0
+#define MAX_NAME_LENGTH 20
+#define MAX_USERNAME_LENGTH 3
+
+// Dice properties
+#define MIN_DICE_THROW 1
+#define MAX_DICE_THROW 6
+
+// Other constants
 #define LINE_END "\n"
+#define STR_END '\0'
+#define STR_EMPTY ""
+#define SPACE_CHAR ' '
+
+#define FALSE 0
+#define TRUE (!FALSE)
 
 #endif  // GLOBALS_H

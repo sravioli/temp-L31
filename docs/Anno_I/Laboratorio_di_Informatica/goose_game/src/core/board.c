@@ -6,29 +6,7 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../common/inc/string.h"
-#include "../common/inc/term.h"
 #include "../inc/board.h"
-#include "../inc/globals.h"
-
-int proportion(const Board *board, int special_square) {
-  return ((special_square * get_dim(board)) / MAX_NUM_SQUARES);
-}
-
-int is_goose_square(const Board *board, int position) {
-  int val;
-  if (get_square(board, position) == GOOSE_VALUE) {
-    val = 1;
-  } else {
-    val = 0;
-  }
-  return val;
-}
 
 int check_special_square(const Board *board, int special_position) {
   int allowed_special_pos = special_position;
@@ -58,7 +36,8 @@ void insert_special_squares(Board *board) {
   while (i < num_special_squares) {
     // subtract one to match with the actual board value since it starts
     // counting from 0
-    int special_position = proportion(board, special_positions[i]) - 1;
+    int special_position =
+        proportion(get_dim(board), special_positions[i], MAX_NUM_SQUARES);
     special_position = check_special_square(board, special_position);
     set_square(board, special_position, special_values[i]);
     i = i + 1;
@@ -253,7 +232,7 @@ int get_num_squares() {
   return num_squares;
 }
 
-Board create_board(const int dimension) {
+Board init_board(const int dimension) {
   Board board;
   set_dim(&board, dimension);
 
@@ -269,9 +248,4 @@ Board create_board(const int dimension) {
   return board;
 }
 
-void print_board(const Board board, const int cols, const int square_len,
-                 const char *borders[8]) {
-  char *game_board = build_board(board, cols, square_len, borders);
-  printf("%s", game_board);
-  free(game_board);
-}
+void print_board(char *board) { printf("%s", board); }

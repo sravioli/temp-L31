@@ -9,18 +9,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./common/inc/string.h"
-#include "./common/inc/term.h"
 #include "./inc/board.h"
-#include "./inc/globals.h"
 
 int main(void) {
   const char *round_borders[8] = {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"};
 
   // int num_squares = get_num_squares();
   int num_squares = 50;
-  Board board = create_board(num_squares);
-  print_board(board, 15, 7, round_borders);
+  Board board = init_board(num_squares);
+  char *game_board = build_board(board, 15, 7, round_borders);
 
+  print_board(game_board);
+
+  free(game_board);
   return 0;
 }

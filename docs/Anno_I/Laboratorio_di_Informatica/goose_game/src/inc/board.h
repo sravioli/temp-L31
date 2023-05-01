@@ -22,6 +22,14 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "../common/inc/math.h"
+#include "../common/inc/string.h"
+#include "../common/inc/term.h"
 #include "../inc/board_type.h"
 #include "../inc/globals.h"
 
@@ -60,33 +68,58 @@ int get_num_squares();
  *       board data may be involved depending on the size of the Board
  *       structure.
  */
-Board create_board(const int dimension);
+Board init_board(const int dimension);
 
 /**
- * @brief Prints the game board with borders using provided characters.
+ * @brief Builds the game board as a string representation of the provided Board
+ *        using the given border characters and other formatting options.
  *
- * This function prints the game board with borders using the provided
- * characters for each border type; it calls the @c build_board() function to
- * build the game board as a dynamically allocated string, then prints the
- * resulting string using @c printf() function; after printing, it frees the
- * memory allocated by @c build_board() function.
+ * @param[in] board      The Board to build the game board from.
+ * @param[in] cols       The number of columns to use for the game board.
+ * @param[in] square_len The length of each square in the game board.
+ * @param[in] borders    An array of border characters for different parts of
+ *                       the game board. The order of characters should be as
+ *                       follows:
+ *                       @li @c nw_corner  (e.g. "┌");
+ *                       @li @c ne_corner  (e.g. "┐");
+ *                       @li @c sw_corner  (e.g. "└");
+ *                       @li @c se_corner  (e.g. "┘");
+ *                       @li @c join_down  (e.g. "┬");
+ *                       @li @c join_up    (e.g. "┴");
+ *                       @li @c dash       (e.g. "─");
+ *                       @li @c vert       (e.g. "│").
  *
- * @param board      The game board to be printed.
- * @param cols       The number of columns on the game board.
- * @param square_len The length of each square.
- * @param borders    An array of strings representing the characters for each
- *                   border type. The array should contain 8 strings in the
- *                   following order:
- *                   @li @c nw_corner (ex. "┌");
- *                   @li @c ne_corner (ex. "┐");
- *                   @li @c sw_corner (ex. "└");
- *                   @li @c se_corner (ex. "┘");
- *                   @li @c join_down (ex. "┬");
- *                   @li @c join_up (ex. "┴");
- *                   @li @c dash (ex. "─");
- *                   @li @c vert (ex. "│").
+ * @return A dynamically allocated char array representing the game board. The
+ *         caller is responsible for freeing the memory when no longer needed.
+ *
+ * @note The returned game board string will contain multiple rows and columns
+ *       of squares separated by borders, formatted according to the provided
+ *       options.
+ * @note The @e Board parameter must be properly initialized and contain valid
+ *       data.
+ * @note The @e cols parameter should be greater than 0 to avoid division by
+ *       zero.
+ * @note The @e square_len parameter should be greater than 0 to represent the
+ *       length of each square.
+ * @note The @e borders array should contain valid characters for each border
+ *       position.
+ * @note The @e game_board string will be allocated using the @c alloc_char()
+ *       function, and the caller is responsible for freeing the memory when no
+ *       longer needed.
+ * @note The function uses the @c build_border() and @c build_squares() helper
+ *       functions to generate the game board string.
  */
-void print_board(const Board board, const int cols, const int square_len,
-                 const char *borders[8]);
+char *build_board(const Board board, const int cols, const int square_len,
+                  const char *borders[8]);
+/**
+ * @brief Prints a string representation of a board.
+ *
+ * This function prints a string representation of a board to the console.
+ *
+ * @param[in] board A pointer to the board string.
+ *
+ * @return void.
+ */
+void print_board(char *board);
 
 #endif  // !BOARD_H
