@@ -522,7 +522,7 @@ INPUT:
 - source, stringa da convertire in maiuscolo, stringa.
 
 OUTPUT:
-- buffer, stringa convertita in maiuscolo, stringa.
+- source, stringa convertita in maiuscolo, stringa.
 
 LAVORO:
 - source_len, lunghezza della stringa, intero maggiore di zero.

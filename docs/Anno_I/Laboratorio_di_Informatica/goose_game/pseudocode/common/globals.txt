@@ -32,8 +32,8 @@ Lista delle costanti globali con loro valore assunto e breve descrizione:
 - INITIAL_SCORE := 0, punteggio iniziale di qualsiasi giocatore in gioco;
 - MAX_USERNAME_LENGTH := 3, lunghezza massima dell'username di un utente;
 
-- MIN_DICE_THROW := 2, numero più basso di un lancio doppio di dadi;
-- MAX_DICE_THROW := 12, numero più alto di un lancio doppio di dadi;
+- MIN_DICE_THROW := 1, numero più basso di un lancio di dadi;
+- MAX_DICE_THROW := 6, numero più alto di un lancio di dadi;
 
 ------------------
 
