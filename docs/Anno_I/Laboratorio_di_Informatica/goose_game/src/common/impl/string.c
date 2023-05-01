@@ -1,30 +1,15 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+// Copyright (c) 2023 @authors. GNU GPLv3.
+// @authors
+//    Amorese Emanuele
+//    Blanco Lorenzo
+//    Cannito Antonio
+//    Fidanza Simone
+//    Lecini Fabio
 
-#include "../../inc/globals.h"
-// #include "../inc/private/string.h"
+#include "../inc/string.h"
 
-void concat_narrow(char *buffer, const char *source) {
+void concat(char *buffer, const char *source) {
   snprintf(buffer + strlen(buffer), strlen(source) + 1, "%s", source);
-}
-
-void concat_wide(wchar_t *buffer, const wchar_t *source) {
-  swprintf(buffer + wcslen(buffer), wcslen(source) + 1, L"%ls", source);
-}
-
-void concat(void *buffer, const void *source) {
-  // Determine the type of strings based on the buffer pointer
-  if (sizeof(*((char *)buffer)) == sizeof(char)) {               // NOLINT
-    concat_narrow((char *)buffer, (const char *)source);         // NOLINT
-  } else if (sizeof(*((wchar_t *)buffer)) == sizeof(wchar_t)) {  // NOLINT
-    concat_wide((wchar_t *)buffer, (const wchar_t *)source);     // NOLINT
-  } else {
-    printf("error: concat function got unsupported values! Use one of 'char', "
-           "'wchar_t'");
-    exit(EXIT_FAILURE);
-  }
 }
 
 void nconcat(char *buffer, const char *source, const int n_times) {
@@ -38,24 +23,6 @@ void nconcat(char *buffer, const char *source, const int n_times) {
   }
 }
 
-void nconcatw(wchar_t *buffer, const wchar_t *source, const int n_times) {
-  int buffer_length = wcslen(buffer);
-  int source_length = wcslen(source);
-
-  int i = 0;
-  while (i < n_times) {
-    int remaining_space =
-        wcslen(buffer) - buffer_length;  // Calculate remaining space in buffer
-    if (remaining_space <= 0) {
-      break;
-    }
-    // Use swprintf with the remaining space as buffer size
-    swprintf(buffer + buffer_length, remaining_space, L"%ls", source);
-    buffer_length += source_length;  // Update buffer length
-    i = i + 1;
-  }
-}
-
 void fconcat(char *buffer, const int source_size, const char *format, ...) {
   va_list args;
   va_start(args, format);
@@ -65,7 +32,7 @@ void fconcat(char *buffer, const int source_size, const char *format, ...) {
 
 char *alloc_char(const char *s, const int size) {
   char *buffer = (char *)malloc(1 + size * strlen(s) * sizeof(s));  // NOLINT
-  if (!buffer) {
+  if (buffer == NULL) {
     printf("error: failed to allocate memory for string of size %i\n", size);
     exit(EXIT_FAILURE);
   }
@@ -73,4 +40,21 @@ char *alloc_char(const char *s, const int size) {
   memset(buffer, STR_END, strlen(buffer));
 
   return buffer;
+}
+
+void str_copy(char *buffer, const char *source) {
+  snprintf(buffer, strlen(source) + 1, "%s", source);
+}
+
+void str_truncate(char *buffer, const int len) {
+  strncpy_s(buffer, sizeof(buffer), buffer, len);
+}
+
+void str_to_uppercase(char *buffer) {
+  int buffer_len = strlen(buffer);
+  int i = 0;
+  while (i < buffer_len) {
+    buffer[i] = toupper(buffer[i]);
+    i = i + 1;
+  }
 }

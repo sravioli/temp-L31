@@ -1,6 +1,12 @@
-#include <stdio.h>
-#include <string.h>
-#include <wchar.h>
+// Copyright (c) 2023 @authors. GNU GPLv3.
+// @authors
+//    Amorese Emanuele
+//    Blanco Lorenzo
+//    Cannito Antonio
+//    Fidanza Simone
+//    Lecini Fabio
+
+#include "../inc/term.h"
 
 #ifdef _WIN32
 #include <Windows.h>

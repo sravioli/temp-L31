@@ -1,6 +1,10 @@
 #ifndef TERMINAL_UTILS_H
 #define TERMINAL_UTILS_H
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 /**
  * @brief Retrieve the terminal size (width and height).
  *

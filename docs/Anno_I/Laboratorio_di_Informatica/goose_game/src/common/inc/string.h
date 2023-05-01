@@ -1,5 +1,32 @@
+/**
+ * @file string.h
+ * @brief Header file for string related functions
+ *
+ * This file contains declarations for functions related to string operations
+ * such as concatening two string or more, truncating a string, etc.
+ *
+ * @authors
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
+ *
+ * @date 2023-05-01 12:38
+ * @version 2.0
+ * @copyright GNU GPLv3
+ */
+
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
+
+#include <ctype.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "../../inc/globals.h"
 
 /**
  * @brief Concatenates a string to a buffer of any type (narrow or wide
@@ -26,7 +53,7 @@
  * @note If the @e buffer pointer is not of @c char* or @c wchar_t* type, an
  *       error message will be printed to indicate unsupported values.
  */
-void concat(void *buffer, const void *source);
+void concat(char *buffer, const char *source);
 
 /**
  * @brief Concatenate a source string to the given buffer "n" times.
@@ -120,5 +147,49 @@ void fconcat(char *buffer, const int source_size, const char *format, ...);
  * @see `free()` for deallocating memory.
  */
 char *alloc_char(const char *c, const int size);
+
+/**
+ * @brief Copies the contents of the source string to the destination buffer.
+ *
+ * This function copies the contents of the source string to the destination
+ * buffer, ensuring that the buffer is null-terminated.
+ *
+ * @param[in,out] buffer A pointer to the destination buffer.
+ * @param[in]     source A pointer to the source string.
+ *
+ * @return void.
+ *
+ * @note The destination buffer must be large enough to hold the entire source
+ *       string, including the null terminator.
+ */
+void str_copy(char *buffer, const char *source);
+
+/**
+ * @brief Truncates the buffer at the specified length.
+ *
+ * This function truncates the contents of the buffer to the specified length,
+ * ensuring that the buffer is null-terminated.
+ *
+ * @param[in,out] buffer A pointer to the buffer to truncate.
+ * @param[in]     len    The length at which to truncate the buffer.
+ *
+ * @return void.
+ *
+ * @note The buffer must be large enough to hold the entire truncated string,
+ *       including the null terminator.
+ */
+void str_truncate(char *buffer, const int len);
+
+/**
+ * @brief Converts a string to uppercase.
+ *
+ * This function modifies the contents of the buffer by converting all
+ * alphabetic characters to uppercase.
+ *
+ * @param[in,out] buffer A pointer to the string to convert to uppercase.
+ *
+ * @return void.
+ */
+void str_to_uppercase(char *source);
 
 #endif  // !STRING_UTILS_H
