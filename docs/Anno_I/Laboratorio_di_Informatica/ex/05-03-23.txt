@@ -1,0 +1,449 @@
+ESERCIZIO DEL 03/05/2023
+========================
+
+Costanti globali:
+- MAX_ROWS := 15, numero massimo di righe;
+- MAX_COLS := 15, numero massimo di colonne;
+- LINE_END := "\n", fine riga;
+- INT_MAX := 1000000, numero massimo intero.
+
+
+ALGORITMO:
+matrix1 := read_matrix("matrices.bin")
+matrix2 := read_matrix("matrices.bin")
+sum := add_matrices(matrix1, matrix2)
+
+StampareAVideo("Sum matrix is the following:")
+StampareAVideo(LINE_END)
+print_matrix(sum)
+
+StampareAVideo("Column with the minimum maximum difference between two consecutive")
+StampareAVideo("items is column #")
+StampareAVideo(index)
+print_matrix_col(sum, index)
+
+
+FUNZIONE print_matrix()
+=======================
+
+INPUT:
+- matrix, matrice da stampare, Matrix;
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- i, contatore per iterare sul numero di righe, intero maggiore di zero;
+- j, contatore per iterare sul numero di colonne, intero maggiore di zero;
+
+
+ALGORITMO:
+i := 1
+MENTRE (i <= get_rows(matrix))
+  j := 1
+  MENTRE (j <= get_cols(matrix))
+    StampareAVideo("  ")
+    StampareAVideo(get_value(matrix, i, j))
+    StampareAVideo("  ")
+    j := j + 1
+  FINE
+  StampareAVideo(LINE_END)
+  i := i + 1
+FINE
+StampareAVideo(LINE_END)
+
+
+FUNZIONE print_matrix_col()
+===========================
+
+INPUT:
+- matrix, matrice di cui stampare la colonna, Matrix;
+- index, indice della colonna da stampare, intero maggiore di zero;
+
+OUTPUT:
+- nullo, non ha output.
+
+ALGORITMO:
+SE (index < 0 OR index >= get_cols(matrix))
+  ALLORA StampareAVideo("error: column index is out of bounds.")
+FINE
+
+i := 1
+MENTRE (i <= get_rows(matrix))
+  StampareAVideo(get_value(matrix, i, index))
+  StampareAVideo(LINE_END)
+  i := i + 1
+FINE
+
+
+FUNZIONE add_matrices()
+=======================
+
+Somma due matrici se sommabili, altrimenti restituisce la prima delle due matrici.
+
+INPUT:
+- matrix1, prima matrice da sommare, Matrix;
+- matrix2, seconda matrice da sommare, Matrix;
+
+OUTPUT:
+- sum, matrice somma delle due matrici, Matrix;
+
+ALGORITMO:
+set_cols(sum, get_cols(matrix1))
+set_rows(sum, get_rows(matrix1))
+SE ((get_rows(matrix1) <> get_rows(matrix2)) OR
+    (get_cols(matrix1) <> get_cols(matrix2)))
+  ALLORA
+    // se le matrici hanno dimensione diversa, restituisci la prima matrice
+    StampareAVideo("error: matrices have different dimensions, cannot be added")
+    StampareAVideo(LINE_END)
+    i := 1
+    MENTRE (i <= get_rows(matrix1))
+      j := 1
+      MENTRE (j <= get_cols(matrix1))
+        set_value(sum, get_value(matrix1, i, j), i, j)
+        j := j + 1
+      FINE
+      i := i + 1
+    FINE
+FINE
+
+i := 1
+MENTRE (i <= get_rows(matrix1))
+  j := 1
+  MENTRE (j <= get_cols(matrix1))
+    set_value(sum, get_value(matrix1, i, j) + get_value(matrix2, i, j) i, j)
+    j := j + 1
+  FINE
+  i := i + 1
+FINE
+
+
+FUNZIONE min_diff_col()
+=======================
+
+INPUT:
+- matrix, matrice di cui trovare la colonna con il valore minimo della massima
+  differenza tra due elementi consecutivi, Matrix.
+
+OUTPUT:
+- min_col, indice della colonna trovata, intero maggiore di zero.
+
+LAVORO:
+- min_diff, valore della più piccola differenza, intero maggiore o uguale a zero;
+- max_diff, valore della più grande differenza, intero maggior o uguale a zero;
+- diff, valore della differenza tra due elementi consecutivi, intero maggiore
+  o uguale a zero;
+- i, contatore per iterare sul numero di righe, intero maggiore di zero;
+- j, contatore per iterare sul numero di colonne, intero maggiore di zero;
+
+ALGORITMO:
+min_col = -1
+min_diff = INT_MAX
+
+j := 1
+MENTRE (j <= get_cols(matrix))
+  max_diff = 0
+  i := 1
+  MENTRE (i <= get_rows(matrix))
+    diff := abs(get_value(matrix, i, j) - get_value(matrix, i - 1, j))
+    SE (diff > max_diff)
+      ALLORA max_diff := diff
+    FINE
+    i := i + 1
+  FINE
+  SE (max_diff < min_diff)
+    ALLORA
+      min_diff := max_diff
+      min_col = j
+  FINE
+  j := j + 1
+FINE
+
+
+-------------------------------------------------------------------------------
+
+
+MATRIX
+======
+
+Il tipo di dato Matrix deve essere rappresentato come:
+- un vettore bidimensionale contenente i valori della matrice;
+- un intero rappresentante il numero di colonne;
+- un intero rappresentante il numero di righe;
+
+RECORD Matrix:
+- data, valori della matrice, array bidimensionale di interi;
+- cols, numero di colonne della matrice, intero maggiore di 1;
+- rows, numero di righe della matrice, intero maggiore di 1;
+
+
+funzioni di accesso
+===================
+
+FUNZIONE get_cols()
+===================
+
+INPUT:
+- matrix, matrice di cui leggere il numero di colonne, Matrix.
+
+OUTPUT:
+- cols, numero di colonne della matrice, intero maggiore di 1.
+
+ALGORITMO:
+cols := valore del campo cols di matrix
+
+FUNZIONE set_cols()
+===================
+
+INPUT:
+- matrix, matrice di cui leggere il numero di colonne, Matrix;
+- cols, numero di colonne da impostare, intero maggiore di zero;
+
+OUTPUT:
+- matrix, matrice con il campo cols aggiornato, Matrix.
+
+ALGORITMO:
+valore del campo cols di matrix := cols
+
+
+FUNZIONE get_rows()
+===================
+
+INPUT:
+- matrix, matrice di cui leggere il numero di righe, Matrix.
+
+OUTPUT:
+- rows, numero di righe della matrice, intero maggiore di 1.
+
+ALGORITMO:
+rows := valore del campo rows di matrix
+
+FUNZIONE set_rows()
+===================
+
+INPUT:
+- matrix, matrice di cui aggiornare il numero di righe, Matrix;
+- rows, numero di righe da impostare, intero maggiore di zero;
+
+OUTPUT:
+- matrix, matrice col campo rows aggiornato, Matrix.
+
+ALGORITMO:
+valore del campo rows di matrix := rows
+
+
+FUNZIONE get_row()
+==================
+
+INPUT:
+- matrix, matrice da cui leggere la riga all'indice dato, Matrix.
+- index, indice della riga da leggere, intero maggiore di zero;
+
+OUTPUT:
+- row, riga della matrice, array di interi monodimensionale.
+
+ALGORITMO:
+row := valore del campo data alla colonna index di matrix
+
+
+FUNZIONE get_col()
+==================
+
+INPUT:
+- matrix, matrice da cui leggere la colonna all'indice dato, Matrix.
+- index, indice della colonna da leggere, intero maggiore di zero;
+
+OUTPUT:
+- col, colonna della matrice, array di interi monodimensionale.
+
+ALGORITMO:
+col := valore del campo data alla colonna index di matrix
+
+
+FUNZIONE get_value()
+====================
+
+INPUT:
+- matrix, matrice di cui leggere il valore alla posizione riga*colonna, Matrix.
+- row, indice della riga da cui leggere il valore, intero maggiore o uguale a
+  zero;
+- col, indice della colonna da cui leggere il valore, intero maggiore o uguale
+  a zero;
+
+OUTPUT:
+- value, valore alla posizione riga*colonna, intero maggiore o uguale a zero.
+
+ALGORITMO:
+value := valore del campo value di matrix alla riga row e colonna col
+
+FUNZIONE set_value()
+====================
+
+INPUT:
+- matrix, matrice di cui aggiornare il campo value, Matrix;
+- value, valore da impostare, intero maggiore o uguale a zero;
+- row, indice della riga di cui impostare il valore, intero maggiore o uguale a
+  zero;
+- col, indice della colonna di cui impostare il valore, intero maggiore o uguale
+  a zero;
+
+OUTPUT:
+- matrix, matrice col campo value aggiornato, Matrix.
+
+ALGORITMO:
+valore del campo value alla riga row e colonna col di matrix := value
+
+
+-------------------------------------------------------------------------------
+
+
+FUNZIONE mod()
+==============
+
+Trova il resto della divisione.
+
+INPUT:
+- dividend, dividendo da dividere per il divisore, intero maggiore di zero;
+- divisor, divisore per cui dividere il dividendo, intero maggiore di zero.
+
+OUTPUT:
+- remainder, resto della divisione, intero maggiore o uguale a zero.
+
+ALGORITMO:
+remainder := dividend
+MENTRE (remainder >= divisor)
+  remainder := remainder - divisor;
+FINE
+
+
+FUNZIONE abs()
+==============
+
+Trova il valore assoluto di un numero.
+
+INPUT:
+- number, numero di cui trovare il valore assoluto, intero;
+
+OUTPUT:
+- result, valore assoluto del numero, intero maggiore o uguale a zero;
+
+ALGORITMO:
+SE (number < 0)
+  ALLORA result := -number
+  ALTRIMENTI result := number
+FINE
+
+
+-------------------------------------------------------------------------------
+
+
+SCRIVI MATRICE SU FILE
+======================
+
+Genera due matrici e le scrive su file.
+
+LAVORO:
+- rows, numero di righe calcolato casualmente, intero maggiore di zero;
+- cols, numero di colonne calcolato casualmente, intero maggiore di zero;
+- matrix1, prima matrice da stampare su file, Matrix;
+- matrix2, seconda matrice da stampare su file, Matrix;
+
+
+ALGORITMO:
+rows := mod(random(), MAX_ROWS) + 2
+cols := mod(random(), MAX_COLS) + 2
+fill_matrix(matrix1, rows, cols)
+fill_matrix(matrix1, rows, cols)
+write_matrix("matrices.bin", matrix1)
+write_matrix("matrices.bin", matrix2)
+
+
+FUNZIONE write_matrix()
+=======================
+
+Scrive una matrice su file binario.
+
+INPUT:
+- filename, nome del file su cui scrivere la matrice, file;
+- matrix, matrice da scrivere su file, Matrix;
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- i, contatore per iterare sul numero di colonne, intero maggiore di zero;
+
+
+ALGORITMO:
+ScrivereSuFile(filename, get_rows(matrix))
+ScrivereSuFile(filename, get_cols(matrix))
+i := 0
+MENTRE (i < get_rows(matrix))
+  ScrivereSuFile(filename, get_cols(matrix))
+  i := i + 1
+FINE
+
+
+FUNZIONE fill_matrix()
+======================
+
+INPUT:
+- matrix, matrice da riempire di numeri casuali, Matrix;
+- rows, numero di righe che la matrice deve avere, intero maggiore di zero;
+- cols, numero di colonne che la matrice deve avere, intero maggiore di zero;
+
+OUTPUT:
+- matrix, matrice riempita di numeri casuali, Matrix;
+
+LAVORO:
+- i, contatore per iterare sul numero di righe, intero maggiore di zero;
+- j, contatore per iterare sul numero di colonne, intero maggiore di zero;
+
+ALGORITMO:
+set_cols(matrix, cols)
+set_rows(matrix, rows)
+i := 1
+MENTRE (i <= rows)
+  j := 1
+  MENTRE (j <= cols)
+    set_value(matrix, mod(random(), 10), i, j)
+    j := j + 1
+  FINE
+  i := i + 1
+FINE
+
+
+-------------------------------------------------------------------------------
+
+
+LEGGI MATRICE DA FILE
+=====================
+
+
+FUNZIONE read_matrix()
+======================
+
+Legge due matrici da file.
+
+INPUT:
+- filename, nome del file da cui leggere la matrice, file;
+
+OUTPUT:
+- matrix, matrice letta da file, Matrix;
+
+ALGORITMO:
+rows := LeggereDaFile("matrices.bin")
+cols := LeggereDaFile("matrices.bin")
+set_rows(matrix, rows)
+set_cols(matrix, cols)
+i := 1
+MENTRE (i <= rows)
+  j := 1
+  MENTRE (j <= cols)
+    value := LeggereDaFile("matrices.bin")
+    set_value(matrix, value, i, j)
+    j := j + 1
+  FINE
+  i := i + 1
+FINE
