@@ -48,7 +48,7 @@ void read_menu(const char filename[]) {
   free(buffer);
 }
 
-int main(void) {
-  read_menu("main_menu.bin");
-  return EXIT_SUCCESS;
-}
+// int main(void) {
+//   read_menu("main_menu.bin");
+//   return EXIT_SUCCESS;
+// }
