@@ -1,40 +1,52 @@
 #!/bin/sh
 source "$(dirname "$0")/_/husky.sh"
 
+info() { printf " \e[1;34m\e[0m  $1\n"; }
+success() { printf " \e[1;32m\e[0m  $1\n"; }
+warn() { printf " \e[1;33m\e[0m  $1\n"; }
+commit() { printf " \e[1;35m\e[0m  $1\n"; }
+generate() { printf " \e[1;35m\e[0m  Generating $1\n"; }
+cblock() { printf "\e[38;2;237;86;122;48;2;60;60;60m $1 \e[0m"; }
+newln() {
+  n=${1:-1} # set n to 1 if $1 is not set
+  printf "%0.s\n" $(seq 1 $n)
+}
+
 # check diff
 function check() {
-    local name="$code ./$1 \e[0m"
+  local name=$(cblock "$1")
 
-    printf "\n \e[1;34m\e[0m  Checking $name for changes\n"
-    if git diff --quiet --exit-code ./$1; then
-        printf " \e[1;32m\e[0m  No changes detected to $name since last commit\n"
-    else
-        printf " \e[1;33m\e[0m  Detected changes to $name since last commit\n"
-        printf " \e[1;35m\e[0m  Tracking and committing changes...\n "
-        git add ./$1
-        git commit -m "feat(auto): :robot:  update \`./$1\`"
+  newln
+  info "Checking $name for changes"
+  if git diff --quiet --exit-code ./$1; then
+    success "No changes detected to $name since last commit"
+  else
+     warn "Detected changes to $name since last commit"
+     commit "Tracking and committing changes..."
+     git add ./$1
+     git commit -m "chore(auto): :robot:  update \`./$1\`"
 
-    fi
-    return
+  fi
+  return
 }
 
 # generate changelog
-function changelog() {
-    local name="$code ./CHANGELOG.md \e[0m"
-    printf "\n \e[1;35m\e[0m  Generating $name"
-    git cliff --output ./CHANGELOG.md
-    return
+function gen_changelog() {
+  local name=$(cblock "./CHANGELOG.md")
+  newln 2
+  generate "$name"
+  git cliff --output ./CHANGELOG.md
+  return
 }
 
 function main() {
-    declare code="\e[38;2;237;86;122;48;2;60;60;60m"
+  check ".vscode/*"
+  gen_changelog
+  check "./CHANGELOG.md"
 
-    check ".vscode/*"
-    changelog
-    check "CHANGELOG.md"
-
-    printf "\n \e[1;32m\e[0m  All done!\n"
-    return
+  newln
+  success "All done!"
+  return
 }
 
 main
