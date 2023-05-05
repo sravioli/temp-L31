@@ -1,4 +1,13 @@
-#include "../inc/board_type.h"
+// Copyright (c) 2023 @authors. GNU GPLv3.
+// @authors
+//    Amorese Emanuele
+//    Blanco Lorenzo
+//    Cannito Antonio
+//    Fidanza Simone
+//    Lecini Fabio
+
+#include "./board.h"
+#include <stdlib.h>
 
 int get_square(const Board *board, int position) {
   return board->squares[position];

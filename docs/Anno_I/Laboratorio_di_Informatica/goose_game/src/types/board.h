@@ -23,20 +23,25 @@
 #ifndef BOARD_TYPE_H
 #define BOARD_TYPE_H
 
-#include "./globals.h"
+#include "../inc/globals.h"
 
 /**
- * @struct Board
- * @brief Struct representing a board.
- * @var Board::squares
- * Array to store the values of squares on the board.
+ * @brief A struct representing a board for a game.
+ *
+ * This struct contains an array of integers called @c squares, which represents
+ * the state of the board, and an integer called @c dim, which represents the
+ * dimensions of the board.
+ *
+ * @var int Board::squares
+ * An array of integers representing the state of the board.
+ *
  * @var Board::dim
- * Dimension of the board.
+ * An integer representing the dimensions of the board.
  */
 typedef struct Board {
-  int squares[MAX_NUM_SQUARES];  ///< Array to store the values of squares on
-                                 ///< the board.
-  int dim;                       ///< Dimension of the board.
+  int squares[MAX_NUM_SQUARES];  ///< An array of integers representing the
+                                 ///< state of the board.
+  int dim;  ///< An integer representing the dimensions of the board.
 } Board;
 
 /**
