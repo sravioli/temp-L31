@@ -9,18 +9,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./inc/board.h"
+#include "./inc/globals.h"
+#include "./inc/handle_game.h"
+
+const char *BORDERS[8] = DEFAULT_BORDERS;
 
 int main(void) {
-  const char *round_borders[8] = {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"};
+  int num_squares =
+      ask_num_in_range(MIN_NUM_SQUARES, MAX_NUM_SQUARES, "squares");
+  int num_players =
+      ask_num_in_range(MIN_NUM_PLAYERS, MAX_NUM_PLAYERS, "players");
+  char *username = ask_username();
+  printf("username: %s\n", username);
 
-  // int num_squares = get_num_squares();
-  int num_squares = 50;
-  Board board = init_board(num_squares);
-  char *game_board = build_board(board, 15, 7, round_borders);
-
+  Board *board = init_board(num_squares);
+  char *game_board =
+      build_board(*board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, BORDERS);
   print_board(game_board);
 
-  free(game_board);
+  close_game(board, game_board, username);
   return 0;
 }
