@@ -9,6 +9,11 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Document macros, move them to corresponding modules
+- Change main to use prev defined functions
+- Rm `menu_option` module and merge it into the `menu` module
+- Move `board` module to `types` folder
+- Remove `file.c` module
 - Minor pseudocode fixes
 - Change tab width
 - Fix game_loop() syntax
@@ -100,6 +105,18 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Change functions definitions for `handle_game`
+- Change functions definitions for `handle_game`
+- Document leaderboard related functions
+- Start moving functions to the defined module
+- Document private functions for `entries.h`
+- Define the player type with all its access functions
+- Add module to handle leaderboard entries
+- Add temp menu files, will write on them later
+- Prototype reading menu from file
+- Remove file utils
+- Add exercise files
+- Use wrapper functions in pre-push hook, change indent level
 - Move functions, add new files
 - Add more modules, minor fixes
 - Add game modules
