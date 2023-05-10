@@ -9,6 +9,13 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Remove unused folder
+- Fix main
+- Minor fixes to types
+- Fix records, add new features to game modules
+- Make module name plural (player -> players)
+- Remove unused files
+- Minor changes
 - Document macros, move them to corresponding modules
 - Change main to use prev defined functions
 - Rm `menu_option` module and merge it into the `menu` module
@@ -105,6 +112,10 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Adjust interface to match implementation of game modules (WiP)
+- WiP translate modules in C
+- Add new note
+- Move exercises to own folders
 - Change functions definitions for `handle_game`
 - Change functions definitions for `handle_game`
 - Document leaderboard related functions
