@@ -1,4 +1,5 @@
 #include <limits.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -52,6 +53,18 @@ void destroy_matrix(Matrix *matrix) {
   }
   free(matrix->data);
   free(matrix);
+}
+
+void destroy_matrices(Matrix *matrix, ...) {
+  void *mtrx = matrix;
+
+  va_list args;
+  va_start(args, matrix);
+  while (mtrx) {
+    destroy_matrix(mtrx);
+    mtrx = va_arg(args, void *);
+  }
+  va_end(args);
 }
 
 // Function to get the value at the given row and column in the matrix
@@ -189,11 +202,6 @@ int main() {
   print_matrix_col(sum, min_col);
 
   // Free memory
-  destroy_matrix(matrix1);
-  destroy_matrix(matrix2);
-  destroy_matrix(read_matrix1);
-  destroy_matrix(read_matrix2);
-  destroy_matrix(sum);
-
+  destroy_matrices(matrix1, matrix2, read_matrix1, read_matrix2, sum);
   return 0;
 }
