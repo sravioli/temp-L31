@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix changelog naming
 - Remove unused folder
 - Fix main
 - Minor fixes to types
