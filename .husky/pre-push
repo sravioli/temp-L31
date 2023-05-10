@@ -42,7 +42,7 @@ function gen_changelog() {
 function main() {
   check ".vscode/*"
   gen_changelog
-  check "./CHANGELOG.md"
+  check "CHANGELOG.md"
 
   newln
   success "All done!"
