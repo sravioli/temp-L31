@@ -1,3 +1,5 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
 /**
  * @file player.h
  * @brief Defines a struct for a player in a game.
@@ -23,8 +25,8 @@
  * @copyright GNU GPLv3
  */
 
-#ifndef Player_TYPE_H
-#define Player_TYPE_H
+#ifndef PLAYER_TYPE_H
+#define PLAYER_TYPE_H
 
 #include <stdio.h>
 
@@ -53,6 +55,12 @@
 #define INITIAL_SCORE 0
 
 /**
+ * @def INITIAL_TURN
+ * @brief The initial turn of a game.
+ */
+#define INITIAL_TURN 0
+
+/**
  * @def MAX_NAME_LENGTH
  * @brief The maximum length of a player's name.
  */
@@ -64,8 +72,8 @@
  */
 #define MAX_USERNAME_LENGTH 3
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 /**
  * @brief Defines a struct for a player in the game.
@@ -198,4 +206,118 @@ void set_turns_blocked(Player *p, int turns_blocked);
  */
 int get_turns_blocked(const Player *p);
 
-#endif  // !Player_TYPE_H
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @brief Defines a struct for managing a list of players in the game.
+ *
+ * This struct contains an array of @c Player structs representing the players
+ * in the game, as well as additional information such as the number of players
+ * and the turn order.
+ *
+ * @var Players::players
+ * An array of @c Player structs representing the players in the game.
+ *
+ * @var Players::players_num
+ * The number of players in the game.
+ *
+ * @var Players::turn
+ * The index of the current player in the turn order.
+ *
+ * @var Players::turn_order
+ * An array of integers representing the turn order of the players. The value
+ * at each index corresponds to the index of the player in the @c players array.
+ */
+typedef struct Players {
+  Player players[MAX_NUM_PLAYERS];  ///< An array of @c Player structs
+                                    ///< representing the players in the game.
+  int players_num;                  ///< The number of players in the game.
+  int turn;  ///< The index of the current player in the turn order.
+  int turn_order[MAX_NUM_PLAYERS];  ///< An array of integers representing the
+                                    ///< turn order of the players.
+} Players;
+
+/**
+ * @brief Returns the player at the specified position in the players array.
+ *
+ * This function returns a copy of the player struct stored at the specified
+ * position in the players array of the Players struct.
+ *
+ * @param[in] ps       A pointer to the Players struct containing the players
+ *                     array.
+ * @param[in] position The index of the player to be returned.
+ *
+ * @return A pointer to the player struct stored at the specified position in
+ *         the players array.
+ */
+const Player *get_player(const Players *ps, const int position);
+
+/**
+ * @brief Sets the player at the specified position in the players array.
+ *
+ * This function sets the player struct stored at the specified position in
+ * the players array of the Players struct to the provided player struct.
+ *
+ * @param[in,out] ps       A pointer to the Players struct containing the
+ *                         players array.
+ * @param[in]     p        A pointer to the player struct to be set.
+ * @param[in]     position The index of the player to be set.
+ *
+ * @return void.
+ */
+void set_player(Players *ps, const Player *p, const int position);
+
+/**
+ * @brief Returns the number of players in the players array of the Players
+ * struct.
+ *
+ * This function returns the value of the players_num field of the Players
+ * struct, which contains the number of players in the players array.
+ *
+ * @param[in] ps A pointer to the Players struct.
+ *
+ * @return The number of players in the players array of the Players struct.
+ */
+int get_players_num(const Players *ps);
+
+/**
+ * @brief Sets the number of players in the players array of the Players struct.
+ *
+ * This function sets the value of the players_num field of the Players struct
+ * to the provided value, which represents the number of players in the
+ * players array.
+ *
+ * @param[in,out] ps          A pointer to the Players struct.
+ * @param[in]     players_num The new number of players in the players array.
+ *
+ * @return void.
+ */
+void set_players_num(Players *ps, const int players_num);
+
+/**
+ * @brief Returns the current turn number of the game.
+ *
+ * This function returns the value of the turn field of the Players struct,
+ * which contains the current turn number of the game.
+ *
+ * @param[in] ps A pointer to the Players struct.
+ *
+ * @return The current turn number of the game.
+ */
+int get_turn(const Players *ps);
+
+/**
+ * @brief Sets the current turn number of the game.
+ *
+ * This function sets the value of the turn field of the Players struct to
+ * the provided value, which represents the current turn number of the game.
+ *
+ * @param[in,out] ps   A pointer to the Players struct.
+ * @param[in]     turn The new turn number of the game.
+ *
+ * @return void.
+ */
+void set_turn(Players *ps, const int turn);
+
+#endif  // !PLAYER_TYPE_H
