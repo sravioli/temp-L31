@@ -102,7 +102,7 @@ void print_menu(Menu menu) {
   }
 }
 
-int launch_option(struct Menu menu) {
+int launch_option(Menu menu) {
   int menu_loop = 1;
   while (menu_loop) {
     char key = _getch();
@@ -110,7 +110,7 @@ int launch_option(struct Menu menu) {
     int is_key_invalid = 1;
     while (i < get_num_options(menu)) {
       if (get_menu_key(menu, i) == key) {
-        printf("\r\x1b[2K");
+        printf("\r\x1b[2K");  // clear line
         menu_loop = 0;
         is_key_invalid = 0;
         call_action(menu, i);

@@ -60,6 +60,31 @@ void remove_duplicates(Entry entries[], int num_entries);
 
 void print_leaderboard(Entry entries[], int num_entries);
 
+typedef struct Entries {
+  Entry entries[MAX_ENTRIES];
+  int num_entries;
+} Entries;
+
+int main(void) {
+  Entries entries = {{
+                         {"SAR", 990},
+                         {"SRV", 990},
+                         {"STE", 800},
+                         {"ALF", 700},
+                         {"DAN", 600},
+                         {"SIL", 500},
+                         {"ROS", 400},
+                         {"ERC", 300},
+                         {"TTT", 260},
+                         {"QQQ", 240},
+                     },
+                     10};
+  FILE *fp = fopen("leaderboard.bin", "wb");
+  fwrite(&entries, sizeof(Entries), 1, fp);
+  fclose(fp);
+  return EXIT_SUCCESS;
+}
+
 /**
  * @brief Gets a valid username from the user, truncates it necessary, and
  *        converts it to uppercase.
@@ -358,6 +383,7 @@ void parse_entry(const char *str, Entry *entry) {
 
   // Parse the score as an integer
   entry->score = atoi(space + 1);
+  // diventa fread(&entries, nomefile)
 }
 
 /**

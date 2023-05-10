@@ -107,7 +107,7 @@ int main() {
       printf("DEBUG: key %c: [n]ew game", key);
     } else if (key == 's') {
       clear_line();
-      printf("DEBUG: key %c: [s]aved games", key);
+      printf("DEBUG: key %c: [s]ave games", key);
     } else if (key == 'l') {
       leaderboard();
     } else if (key == 'h') {
