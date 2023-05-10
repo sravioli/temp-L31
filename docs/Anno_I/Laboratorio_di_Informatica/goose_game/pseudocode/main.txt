@@ -1,0 +1,15 @@
+FILE PRINCIPALE DI GIOCO
+========================
+
+INPUT:
+- nullo, non ha input.
+
+OUTPUT:
+- nullo, non ha output.
+
+ALGORITMO:
+print_main_menu()
+if...
+  game_loop()
+  altrimenti
+    esci

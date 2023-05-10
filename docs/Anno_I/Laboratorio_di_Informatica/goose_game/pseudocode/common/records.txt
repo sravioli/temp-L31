@@ -265,7 +265,6 @@ RECORD Players:
 - players_num, quanti players partecipano alla partita, intero maggiore o uguale
   di MIN_NUM_PLAYERS AND minore o uguale di MAX_NUM_PLAYERS;
 - turn, turno corrente della partita, intero maggiore di zero;
-- turn_order, l'ordine di gioco nel turno, array di interi.
 
 
 funzioni di accesso
@@ -275,11 +274,9 @@ Le funzioni di accesso al tipo di dato Players sono le seguenti:
 - get_players();
 - get_players_num();
 - get_turn();
-- get_turn_order();
 - set_players();
 - set_players_num();
 - set_turn();
-- set_turn_order().
 
 
 FUNZIONE get_players()
@@ -363,37 +360,6 @@ OUTPUT:
 ALGORITMO
 valore del campo turn di players := turn
 
-
-FUNZIONE get_turn_order()
--------------------------
-
-INPUT:
-- players, vettore di player, Players;
-- turn_order, vettore che rappresenta i turni, array di interi;
-- pos, posizione in cui leggere il turno, intero maggiore di zero.
-
-OUTPUT:
-- turn, valore del turno di turn_order nella posizione data, intero maggiore di
-  zero.
-
-ALGORITMO
-turn := valore del campo turn_order in posizione pos di players
-
-
-FUNZIONE set_turn_order()
--------------------------
-
-INPUT:
-- players, vettore di player, Players;
-- turn_order, vettore che rappresenta i turni, array di interi;
-- pos, posizione in cui scrivere il turno, intero maggiore di zero;
-- turn, turno del giocatore , intero maggiore di zero.
-
-OUTPUT:
-- players, vettore di player con l'ordine del turno scritto, Players.
-
-ALGORITMO
-valore del campo turn_order in posizione pos di players := turn
 
 
 --------------------------------------------------------------------------------
@@ -547,3 +513,22 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo num_entries di entries := num_entries
+
+
+-----
+
+
+GAME
+====
+
+struct Game {
+  char game_name;
+  Players
+  Board
+}
+
+struct Games {
+  Game games[MAX_GAMES];
+  int num_games;
+}
+

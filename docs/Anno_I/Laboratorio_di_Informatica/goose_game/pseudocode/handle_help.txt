@@ -15,3 +15,63 @@ Questa funzione legge il contenuto di un file riga per riga e lo stampa.
 INPUT:
 - filename, nome del file di cui leggere il contenuto, stringa.
 
+
+FUNZIONE display_help()
+=======================
+
+INPUT:
+- nullo, non ha input.
+
+
+ALGORITMO:
+print_from_file("help_menu.txt")
+// doppio loop come in C:
+/*
+int main_menu_loop = 1;
+while (main_menu_loop) {
+  char key = _getch();
+
+  if (key == 'n') {
+    clear_line();
+    printf("DEBUG: key %c: [n]ew game", key);
+  } else if (key == 's') {
+    clear_line();
+    printf("DEBUG: key %c: [s]ave games", key);
+  } else if (key == 'l') {
+    leaderboard();
+  } else if (key == 'h') {
+    clear_line();
+    printf("DEBUG: key %c: [h]elp", key);
+  } else if (key == 'q' || key == 27) {
+    clear_line();
+    printf("DEBUG: (%c) exiting...", key);
+    main_menu_loop = 0;
+  } else {
+    clear_line();
+    printf("Pressed key %c, it does nothing.", key);
+  }
+}
+*/
+
+
+per fn che mostrano qualcosa, tipo print_manual()
+print_from_file("manual.txt")
+
+void leaderboard() {
+  Entry entries[MAX_ENTRIES];
+  int num_entries = read_entries(entries, "leaderboard.txt");
+
+  clear_screen();
+  print_leaderboard(entries, num_entries);
+  printf("\nExit with q/ESC/ENTER\n");
+  int display_leaderboard = 1;
+  while (display_leaderboard) {
+    char leaderch = _getch();
+    // codice ascii di esc e enter
+    if (leaderch == 27 || leaderch == 'q' || leaderch == 13) {
+      display_leaderboard = 0;
+    }
+  }
+  main_menu();
+  // display_help()
+}

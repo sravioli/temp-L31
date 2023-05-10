@@ -486,10 +486,17 @@ MENTRE (i < num_players)
   player := set_position(player, INITIAL_POSITION)
   player := set_score(player, INITIAL_SCORE)
   players := set_players(players, player, i)
-  players := set_turn_order(get_players(players, i), i)
+  // players := set_turn_order(get_players(players, i), i)
   i := i + 1
   FINE
 FINE
+decide_turn_order()
+
+
+FUNZIONE decide_turn_order()
+============================
+
+Decidi l'ordine di gioco in base al lancio di dadi di ogni player.
 
 
 ------------------------------------------------------------
@@ -650,8 +657,10 @@ MENTRE (is_player_winner() <> 1) OR (NOT(break) = TRUE)
     SE (player_action = 1)
       ALLORA
         throw := random(MIN_DICE_THROW, MAX_DICE_THROW)
-        set_players(players, current_player) :=
-          move_player(players, get_players(players, current_player), throw, board)
+        player := get_players(players, current_player)
+        player := set_score(player, get_score(player) + 1)
+        players := set_players(players, current_player) :=
+          move_player(players, player, throw, board)
       ALTRIMENTI SE (player_action = 0)
         ALLORA break := TRUE
         ALTRIMENTI SE (player_action = 2)
