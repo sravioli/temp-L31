@@ -7,6 +7,7 @@
 //    Lecini Fabio
 
 #include "../inc/handle_game.h"
+#include <stdlib.h>
 
 #define FILLER_CHAR "*"
 
@@ -42,13 +43,12 @@ int is_username_valid(const char username[]) {
   return TRUE;
 }
 
-char *ask_username() {
-  // clear_line();
-  char *username = malloc(sizeof(char));
+char *ask_username(int player_num) {
+  char *username = (char *)malloc(sizeof(char));  // NOLINT
   memset(username, STR_END, strlen(username));
   int valid = FALSE;
   while (!valid) {
-    printf("Enter your username: ");
+    printf("Player %i, enter your username: ", player_num);
     scanf_s("%20s", username, MAX_NAME_LENGTH);
 
     if (is_username_valid(username)) {
@@ -60,6 +60,91 @@ char *ask_username() {
 
   conform_username(username);
   return username;
+}
+
+Player *init_player(int player_num) {
+  Player *p = (Player *)malloc(sizeof(Player));  // NOLINT
+  char *username = ask_username(player_num);
+  set_username(p, username);
+  set_position(p, INITIAL_POSITION);
+  set_score(p, INITIAL_SCORE);
+  return p;
+}
+
+Players *init_players(const int num_players) {
+  Players *ps = (Players *)malloc(sizeof(Players));  // NOLINT
+  set_players_num(ps, num_players);
+  set_turn(ps, INITIAL_TURN);
+
+  int i = 0;
+  while (i < num_players) {
+    Player *p = init_player(i);
+    set_player(ps, p, i);
+    i = i + 1;
+  }
+  return ps;
+}
+
+void print_players(const Players *ps) {
+  printf("USERNAMES:\n");
+  for (int i = 0; i < get_players_num(ps); i++) {
+    printf("ps->players[%i].username = %s\n", i + 1, ps->players[i].username);
+  }
+  printf("\n");
+
+  printf("SCORES:\n");
+  for (int i = 0; i < get_players_num(ps); i++) {
+    printf("ps->players[%i].score = %d\n", i + 1, ps->players[i].score);
+  }
+  printf("\n");
+
+  printf("POSITIONS:\n");
+  for (int i = 0; i < get_players_num(ps); i++) {
+    printf("ps->players[%i].position = %d\n", i + 1, ps->players[i].position);
+  }
+  printf("\n");
+}
+
+void print_positions(const Players *ps) {
+  printf("%s %s\n", "NAME", "POS");
+  int i = 0;
+  while (i < get_players_num(ps)) {
+    printf("%s %3d\n", get_username(get_player(ps, i)),
+           get_position(get_player(ps, i)) + 1);
+    i = i + 1;
+  }
+}
+
+void sort_players_by_dice(Players *players) {
+  int i, j, max_idx;
+  int *dice_values = (int *)malloc(players->players_num);
+
+  // Roll dice for each player and assign to their dice_values array
+  for (i = 0; i < players->players_num; i++) {
+    dice_values[i] = roll_die();
+  }
+
+  // Sort players array based on dice roll using selection sort
+  for (i = 0; i < players->players_num - 1; i++) {
+    max_idx = i;
+    for (j = i + 1; j < players->players_num; j++) {
+      if (dice_values[j] > dice_values[max_idx]) {
+        max_idx = j;
+      }
+    }
+    if (max_idx != i) {
+      // Swap dice values
+      int temp_dice = dice_values[i];
+      dice_values[i] = dice_values[max_idx];
+      dice_values[max_idx] = temp_dice;
+
+      // Swap player structs
+      Player temp_player = players->players[i];
+      players->players[i] = players->players[max_idx];
+      players->players[max_idx] = temp_player;
+    }
+  }
+  free(dice_values);
 }
 
 int ask_player_action(void) {
@@ -117,14 +202,14 @@ Board *init_board(const int dim) {
   return board;
 }
 
-void close_game(void *fst_ptr, ...) {
-  void *ptr = fst_ptr;
+void close_game(void *ptr, ...) {
+  void *p = ptr;
 
   va_list args;
-  va_start(args, fst_ptr);
-  while (ptr) {
-    free(ptr);
-    ptr = va_arg(args, void *);
+  va_start(args, ptr);
+  while (p) {
+    free(p);
+    p = va_arg(args, void *);
   }
   va_end(args);
 }
