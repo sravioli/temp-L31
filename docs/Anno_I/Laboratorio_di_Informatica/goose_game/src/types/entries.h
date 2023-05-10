@@ -1,8 +1,10 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
 #ifndef ENTRIES_TYPE_H
 #define ENTRIES_TYPE_H
 
 #include "../inc/globals.h"
-#include "../types/player.h"
+#include "../types/players.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +16,8 @@
  */
 #define MAX_ENTRIES 10
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 /**
  * @brief Defines a struct for a score entry.
@@ -69,7 +71,7 @@ void set_name(Entry *e, const char *name);
  *
  * @return The score of the specified @c Entry.
  */
-int get_final_score(const Entry *e);
+const int get_final_score(const Entry *e);
 
 /**
  * @brief Sets the score of an Entry.
@@ -81,10 +83,10 @@ int get_final_score(const Entry *e);
  *
  * @return void.
  */
-void set_final_score(Entry *e, int final_score);
+void set_final_score(Entry *e, const int final_score);
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 /**
  * @brief A struct representing a collection of entries.
@@ -139,7 +141,7 @@ void set_num_entries(Entries *es, const int num_entries);
  *
  * @return A pointer to the entries array.
  */
-Entry *get_entries(Entries *entries);
+Entry *get_entries(const Entries *entries);
 
 /**
  * @brief Gets a pointer to a specific entry in the Entries struct.
@@ -152,7 +154,7 @@ Entry *get_entries(Entries *entries);
  *
  * @return A pointer to the desired @c Entry.
  */
-Entry *get_entry(const Entries *es, const int position);
+const Entry *get_entry(const Entries *es, const int position);
 
 /**
  * @brief Sets an entry in the Entries struct.
@@ -168,7 +170,7 @@ Entry *get_entry(const Entries *es, const int position);
  */
 void set_entry(Entries *es, Entry *e, const int position);
 
-//---------------------------------------
+// ---------------------------------------
 
 /**
  * @brief Appends entries to an existing array.
@@ -182,6 +184,6 @@ void set_entry(Entries *es, Entry *e, const int position);
  *
  * @return void.
  */
-void append_entries(Entries *existing_entries, Entries *new_entries);
+void append_entries(Entries *existing_entries, const Entries *new_entries);
 
 #endif  // !ENTRIES_TYPE_H
