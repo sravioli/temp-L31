@@ -1,7 +1,7 @@
 FUNZIONI PER LA MANIPOLAZIONE DELLE STRINGHE
 ============================================
 
-vedere "./globals.txt"
+vedere "../globals.txt"
 
 Questo file contiene implementazioni di diverse funzioni per la manipolazione
 delle stringhe.

@@ -1,7 +1,7 @@
 STRUTTURE DATI E RELATIVE FUNZIONI DI ACCCESSO
 ==============================================
 
-vedere "./globals.txt"
+vedere "../globals.txt"
 
 
 BOARD
@@ -515,20 +515,188 @@ ALGORITMO:
 valore del campo num_entries di entries := num_entries
 
 
------
+
+--------------------------------------------------------------------------------
+
 
 
 GAME
 ====
 
-struct Game {
-  char game_name;
-  Players
-  Board
-}
+Il tipo di dato Game deve essere rappresentato come un record composto da:
+- una stringa contente il nome della partita;
+- una struttura contenente i giocatori della partita;
+- una struttura contenente il tabellone di gioco.
 
-struct Games {
-  Game games[MAX_GAMES];
-  int num_games;
-}
 
+RECORD Game:
+- game_name, nome della partita, stringa;
+- players, i giocatori del gioco dell'oca, Players;
+- board, tabellone di gioco, Board.
+
+
+funzioni di accesso
+===================
+
+Le funzioni di accesso al tipo di dato Game sono le seguenti:
+- get_game_name();
+- set_game_name();
+- get_game_players();
+- set_game_players();
+- get_game_board();
+- set_game_board().
+
+
+FUNZIONE get_game_name()
+========================
+
+INPUT:
+- game, struttura che rappresenta una partita, Game.
+
+OUTPUT:
+- game_name, nome della partita, stringa.
+
+ALGORITMO:
+game_name := valore del campo game_name di game
+
+FUNZIONE set_game_name()
+========================
+
+INPUT:
+- game, partita di cui aggiornare il campo set_game_name, Game;
+- game_name, nome della partita da impostare, stringa;
+
+OUTPUT:
+- game, partita col campo game_name aggiornato, Game.
+
+ALGORITMO:
+valore del campo set_game_name di game := game_name
+
+FUNZIONE get_game_players()
+===========================
+
+INPUT:
+- game, struttura che rappresenta una partita, Game.
+
+OUTPUT:
+- players, struttura che contiene tutte le informazioni sui giocatori, Players.
+
+ALGORITMO:
+players := valore del campo players di game
+
+FUNZIONE set_game_players()
+===========================
+
+INPUT:
+- game, partita di cui aggiornare il campo players, Game;
+- players, informazioni sui giocatori da impostare, Players;
+
+OUTPUT:
+- game, partita col campo players aggiornato, Game.
+
+ALGORITMO:
+valore del campo players di game := players
+
+FUNZIONE get_game_board()
+=========================
+
+INPUT:
+- game, struttura che rappresenta una partita, Game.
+
+OUTPUT:
+- board, tabellone di gioco su cui si svolgerà la partita, Board.
+
+ALGORITMO:
+board := valore del campo board di game
+
+FUNZIONE set_game_board()
+=========================
+
+INPUT:
+- game, partita di cui aggiornare il campo board, Game;
+- board, tabellone di gioco da impostare, Board;
+
+OUTPUT:
+- game, partita col campo board aggiornato, Game.
+
+ALGORITMO:
+valore del campo board di game := board
+
+
+
+--------------------------------------------------------------------------------
+
+
+
+GAMES
+=====
+
+Il tipo di dato Games deve essere rappresentato come un record composto da:
+- un vettore di strutture Game a una dimesione;
+- un intero che rappresenti il numero di strutture presenti nel vettore;
+
+RECORD Games:
+- games, lista delle partite, array a una dimensione di strututre Game;
+- num_games, numero di partite, intero maggiore di zero.
+
+
+funzioni di accesso
+===================
+
+Le funzioni di accesso al tipo di dato Games sono le seguenti:
+- get_game();
+- set_game();
+- get_num_games();
+- set_num_games().
+
+FUNZIONE get_game()
+===================
+
+INPUT:
+- games, lista di partite, Games;
+- index, indice della partita desiderata, intero maggiore di zero.
+
+OUTPUT:
+- game, la singola partita all'indice indicato, Game.
+
+ALGORITMO:
+game := valore alla posizione index del campo game di games
+
+FUNZIONE set_game()
+===================
+
+INPUT:
+- games, lista di partite di cui aggiornare il campo game, Games;
+- game, partita da impostare, Game;
+- index, indice in cui scrivere la partita game, intero maggiore di zero.
+
+OUTPUT:
+- games, lista di partite col campo game aggiornato, Games.
+
+ALGORITMO:
+valore del campo game alla posizione index di games := game
+
+FUNZIONE get_num_games()
+========================
+
+INPUT:
+- games, lista di partite, Games.
+
+OUTPUT:
+- num_games, numero di partite presenti, intero maggiore di zero.
+
+ALGORITMO:
+num_games := valore del campo num_games di games
+
+FUNZIONE set_num_games()
+========================
+
+INPUT:
+- games, lista di partite di cui aggiornare il campo num_games, Games;
+- num_games, numero di partite da impostare, intero maggiore di zero;
+
+OUTPUT:
+- games, lista di partite col campo num_games aggiornato, Games.
+
+ALGORITMO:
+valore del campo num_games di games := num_games
