@@ -8,7 +8,7 @@ void set_name(Entry *e, const char *name) {
   snprintf(e->name, MAX_USERNAME_LENGTH + 1, "%s", name);
 }
 
-int get_final_score(const Entry *e) { return e->final_score; }
+const int get_final_score(const Entry *e) { return e->final_score; }
 void set_final_score(Entry *e, int final_score) {
   e->final_score = final_score;
 }
@@ -23,7 +23,7 @@ void set_num_entries(Entries *es, const int num_entries) {
 
 Entry *get_entries(Entries *entries) { return entries->entries; }
 
-const Entry *get_entry(const Entries *es, const int position) {
+Entry *get_entry(Entries *es, const int position) {
   return &es->entries[position];
 }
 void set_entry(Entries *es, Entry *e, const int position) {

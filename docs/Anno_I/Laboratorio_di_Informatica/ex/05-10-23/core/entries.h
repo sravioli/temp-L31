@@ -70,7 +70,7 @@ void set_name(Entry *e, const char *name);
  *
  * @return The score of the specified @c Entry.
  */
-int get_final_score(const Entry *e);
+const int get_final_score(const Entry *e);
 
 /**
  * @brief Sets the score of an Entry.
@@ -140,7 +140,7 @@ void set_num_entries(Entries *es, const int num_entries);
  *
  * @return A pointer to the entries array.
  */
-Entry *get_entries(Entries *entries);
+Entry get_entries(Entries *entries);
 
 /**
  * @brief Gets a pointer to a specific entry in the Entries struct.
@@ -153,7 +153,7 @@ Entry *get_entries(Entries *entries);
  *
  * @return A pointer to the desired @c Entry.
  */
-const Entry *get_entry(const Entries *es, const int position);
+Entry *get_entry(Entries *es, const int position);
 
 /**
  * @brief Sets an entry in the Entries struct.
