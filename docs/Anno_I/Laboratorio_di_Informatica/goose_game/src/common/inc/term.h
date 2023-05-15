@@ -5,6 +5,10 @@
 #include <string.h>
 #include <wchar.h>
 
+#define RED "\033[31m"
+#define YELLOW "\033[33m"
+#define END_COLOR "\033[0m"
+
 /**
  * @brief Retrieve the terminal size (width and height).
  *
