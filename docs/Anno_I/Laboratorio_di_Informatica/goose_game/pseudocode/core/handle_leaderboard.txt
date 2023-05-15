@@ -1,15 +1,52 @@
 MODULO DI GESTIONE DELLA CLASSIFICA
 ===================================
 
-vedere "./common/math.txt"
-vedere "./common/string.txt"
-vedere "./common/globals.txt"
-vedere "./common/records.txt"
+vedere "../library/math.txt"
+vedere "../library/string.txt"
+vedere "../library/globals.txt"
+vedere "../library/records.txt"
 
 Questo modulo contiene le funzioni per lavorare con la classifica di gioco.
 
+-------------------------------------------------------------------------------
+
+Costanti definite in questo modulo:
+- LEADERBOARD_FILE := "../data/leaderboard.bin"
 
 -------------------------------------------------------------------------------
+
+
+FUNZIONE display_leaderboard()
+==============================
+
+Stampa le regole del gioco.
+
+INPUT:
+- nullo, non ha input.
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- display, indica se continuare a chiedere input all'utente, booleano che assume
+  valore TRUE se continuare e FALSE altrimenti.
+
+ALGORITMO:
+clear_screen()
+entries := read_entries(LEADERBOARD_FILE)
+print_leaderboard(entries)
+
+StampareAVideo("Exit with q or ESC or ENTER")
+display := TRUE
+MENTRE (display = TRUE)
+  key = LeggereDaTastiera()
+
+  SE (key = ESC_KEY OR key = 'q' OR key = ENTER_KEY)
+    ALLORA
+      display := FALSE
+      main_menu()
+  FINE
+FINE
 
 
 FUNZIONE read_entries()
@@ -19,13 +56,13 @@ Legge da un file di testo una struttura ti tipo Entries e la salva all'interno
 e la restituisce.
 
 INPUT:
-- filnename, nome del file da cui leggere la classifica, stringa.
+- filnename, file da cui leggere la classifica, stringa.
 
 OUTPUT:
 - entries, classifica contenuta nella struttura, Entries.
 
 ALGORITMO:
-entries := LeggereDaFile(filename)
+entries := LeggereDaFile(file)
 
 
 -----------------------------------------
@@ -181,7 +218,7 @@ Entries finale su file binario.
 
 INPUT:
 - entries, classifica di gioco, Entries;
-- filename, nome del file da cui leggere la classifica, stringa.
+- file, file da cui leggere la classifica, file.
 
 OUTPUT:
 - nullo, non ha output.
@@ -193,7 +230,7 @@ ALGORITMO:
 file_entries := read_entries(filnename)
 append_entries(file_entries, entries)
 sort_entries(file_entries)
-ScrivereSuFile(file_entries, filename)
+ScrivereSuFile(file_entries, file)
 
 
 -----------------------------------------

@@ -1,15 +1,45 @@
 MODULO DI GESTIONE DELLA PARTITA
 ================================
 
-vedere "./common/math.txt"
-vedere "./common/string.txt"
-vedere "./common/globals.txt"
-vedere "./common/records.txt"
+vedere "../library/math.txt"
+vedere "../library/string.txt"
+vedere "../library/globals.txt"
+vedere "../library/records.txt"
 
-Questo modulo contiene le funzioni per la gestione della partita stessa.
+-------------------------------------------------------------------------------
 
+Costanti definite in questo modulo:
+- MIN_NUM_SQUARES := 50, numero minimo consentito di caselle;
+- MAX_NUM_SQUARES := 90, numero massimo consentito di caselle;
+- MIN_NUM_PLAYERS := 2, numero minimo consentito di giocatori;
+- MAX_NUM_PLAYERS := 4, numero massimo consentito di giocatori;
 
-------------------------------------------------------------
+- GOOSE_SPACING := 9, distanza prefissata tra una casella oca e un'altra;
+- GOOSE_VALUE := 0, valore che la casella assume quando essa è una casella "oca";
+
+- BRIDGE_SQUARE := 6, posizione base all'interno del tabellone della casella "ponte";
+- INN_SQUARE := 19, posizione base all'interno del tabellone della casella "locanda";
+- WELL_SQUARE := 31, posizione base all'interno del tabellone della casella "pozzo";
+- LABYRINTH_SQUARE := 42, posizione base all'interno del tabellone della casella "labirinto";
+- PRISON_SQUARE := 52, posizione base all'interno del tabellone della casella "prigione";
+- SKELETON_SQUARE := 58, posizione base all'interno del tabellone della casella "scheletro";
+
+- BRIDGE_VALUE := -1, valore assunto dalla casella "ponte";
+- INN_VALUE := -2, valore assunto dalla casella "locanda";
+- WELL_VALUE := -3, valore assunto dalla casella "pozzo";
+- LABYRINTH_VALUE := -4, valore assunto dalla casella "labirinto";
+- PRISON_VALUE := -5, valore assunto dalla casella "prigione";
+- SKELETON_VALUE := -6, valore assunto dalla casella "scheletro";
+
+- DEFAULT_COLS := 15, numero di colonne di default;
+- DEFAULT_SQUARE_LEN := 7, lunghezza di default della singola casella;
+- DEFAULT_BORDERS := {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"}, array di caratteri
+                     che compongono il bordo del tabellone.
+
+- MIN_DICE_THROW := 1, numero più basso di un lancio di dadi;
+- MAX_DICE_THROW := 6, numero più alto di un lancio di dadi;
+
+-------------------------------------------------------------------------------
 
 
 FUNZIONE ask_num_squares()
@@ -590,9 +620,11 @@ FUNZIONE launch_new_game()
 
 Avvia una nuova partita.
 
-INPUT:
+LAVORO:
 - players, lista di players, Players;
 - board, il tabellone di gioco, Board;
+- num_players, numero di giocatori nella partita, intero;
+- num_squares, numero di caselle del tabellone di gioco, intero.
 
 OUTPUT:
 - nullo, non ha output.
@@ -654,17 +686,17 @@ MENTRE (is_player_winner() <> 1) OR (NOT(break) = TRUE)
   current_player := 0
   MENTRE (current_player < players_num)
     player_action = ask_player_action()
-    SE (player_action = 1)
+    SE (player_action = 1)  // gioca
       ALLORA
         throw := random(MIN_DICE_THROW, MAX_DICE_THROW)
         player := get_players(players, current_player)
         player := set_score(player, get_score(player) + 1)
         players := set_players(players, current_player) :=
           move_player(players, player, throw, board)
-      ALTRIMENTI SE (player_action = 0)
+      ALTRIMENTI SE (player_action = 0)  // abbandona
         ALLORA break := TRUE
         ALTRIMENTI SE (player_action = 2)
-          ALLORA save_game()  // salva la partita
+          ALLORA save_game(players, board)  // salva la partita
         FINE
       FINE
     FINE
