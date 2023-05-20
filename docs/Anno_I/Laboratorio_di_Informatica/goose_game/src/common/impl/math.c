@@ -13,7 +13,13 @@ int proportion(const int numerator, const int known_value,
   return (numerator * known_value) / denominator;
 }
 
-int roll_die() {
+int roll_dice() {
   return (rand() % MAX_DICE_THROW + MIN_DICE_THROW) +  // NOLINT
          (rand() % MAX_DICE_THROW + MIN_DICE_THROW);   // NOLINT
+}
+
+void swap_int(int *a, int *b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
 }
