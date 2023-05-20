@@ -1,3 +1,5 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
 /**
  * @file string.h
  * @brief Header file for string related functions
@@ -12,13 +14,15 @@
  *    Fidanza Simone
  *    Lecini Fabio
  *
- * @date 2023-05-01 12:38
- * @version 2.0
+ * @date 2023-05-17 11:31
+ * @version 2.1
  * @copyright GNU GPLv3
  */
 
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
+
+#include "../../inc/globals.h"
 
 #include <ctype.h>
 #include <stdarg.h>
@@ -26,7 +30,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../inc/globals.h"
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @def MAX_BUFFER_LEN
+ * @brief The maximum allowed length for a string buffer.
+ */
+#define MAX_BUFFER_LEN 256
+
+/**
+ * @def FILLER_CHAR
+ * @brief The default char to use as a filler if the username is too short.
+ */
+#define FILLER_CHAR "?"
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 /**
  * @brief Concatenates a string to a buffer of any type (narrow or wide
@@ -143,10 +163,27 @@ void fconcat(char *buffer, const int source_size, const char *format, ...);
  * @note If the memory allocation fails, an error message is printed and the
  *       program exits with a failure status code.
  *
- * @see `malloc()` for memory allocation.
- * @see `free()` for deallocating memory.
+ * @see @c malloc() for memory allocation.
+ * @see @c free() for deallocating memory.
  */
 char *alloc_char(const char *c, const int size);
+
+/**
+ * @brief Allocates memory for a string of the specified size.
+ *
+ * This function allocates memory for a string of the given size. The allocated
+ * memory includes space for the string characters and a null terminator.
+ *
+ * @param[in] size The size of the string to allocate, excluding the null
+ *                 terminator.
+ *
+ * @return A pointer to the allocated memory block for the string.
+ *         It is the responsibility of the caller to free the memory when it
+ *         is no longer needed.
+ *
+ * @throws Error If the memory allocation fails.
+ */
+char *str_allocate(const int size);
 
 /**
  * @brief Copies the contents of the source string to the destination buffer.

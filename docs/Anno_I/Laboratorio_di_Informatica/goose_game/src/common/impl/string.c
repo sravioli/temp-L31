@@ -8,6 +8,8 @@
 
 #include "../inc/string.h"
 
+#include "../inc/term.h"
+
 void concat(char *buffer, const char *source) {
   snprintf(buffer + strlen(buffer), strlen(source) + 1, "%s", source);
 }
@@ -33,12 +35,23 @@ void fconcat(char *buffer, const int source_size, const char *format, ...) {
 char *alloc_char(const char *s, const int size) {
   char *buffer = (char *)malloc(1 + size * strlen(s) * sizeof(s));  // NOLINT
   if (buffer == NULL) {
-    printf("error: failed to allocate memory for string of size %i\n", size);
-    exit(EXIT_FAILURE);
+    throw_err(__func__, "memory allocation failed for string of size '%i'",
+              size);
   }
   // ensure null termination of the string
   memset(buffer, STR_END, strlen(buffer));
 
+  return buffer;
+}
+
+char *str_allocate(const int size) {
+  char *buffer = (char *)malloc(1 + size * sizeof(char));  // NOLINT
+  if (!buffer) {
+    throw_err(__func__, "memory allocation failed for string of size '%i'",
+              size);
+  }
+  // ensure null termination of the string
+  memset(buffer, STR_END, strlen(buffer));
   return buffer;
 }
 
