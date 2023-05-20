@@ -9,6 +9,12 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix typo, add fn to swap ints
+- Create private includes, fix previous includes
+- Minor pseudocode fixes
+- Minor changes to exercise
+- Move module to core folder, remove unused files
+- Rename common to library and move globals.txt
 - Fix changelog naming
 - Remove unused folder
 - Fix main
@@ -113,6 +119,13 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add code comments, fix functions, WiP
+- Write simple logger
+- Prototype help and leaderboard modules
+- Add function to allocate memory to a string, adjust include
+- Create folder to contain all menu files
+- Record game demo with asciinema
+- Add files for data and for menus
 - Adjust interface to match implementation of game modules (WiP)
 - WiP translate modules in C
 - Add new note
@@ -237,6 +250,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Testing
 
+- Prototype a logger
 - Test deploy with gh actions
 
 ### Fix
