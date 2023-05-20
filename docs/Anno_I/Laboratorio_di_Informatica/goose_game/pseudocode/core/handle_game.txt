@@ -807,7 +807,7 @@ SE (turns_blocked = 0)
               ALTRIMENTI SE (is_player_in_square(players, player, new_sq) = TRUE)
                 ALLORA
                   new_player := get_player_in_square(players, player, new_sq)
-                  new_player := set_turns_blocked(player, 0)
+                  new_player := set_turns_blocked(new_player, 0)
                   player := set_turns_blocked(player, turns_blocked - 1)
                 ALTRIMENTI
                   player := set_turns_blocked(player, turns_blocked - 1)

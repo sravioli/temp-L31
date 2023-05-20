@@ -23,8 +23,6 @@ Costanti definite in questo modulo:
 -------------------------------------------------------------------------------
 
 
-
-
 FUNZIONE menu_help()
 ====================
 
@@ -49,9 +47,9 @@ menu_loop := TRUE
 MENTRE (menu_loop = TRUE)
   key := LeggereDaTastiera()
   SE (key = 'r')
-    ALLORA print_from_file(RULES_FILE)
+    ALLORA display_rules()
     ALTRIMENTI SE (key = 'm')
-      ALLORA print_from_file(MANUAL_FILE)
+      ALLORA display_manual()
       ALTRIMENTI SE (key = 'q')
         ALLORA menu_loop := FALSE
       FINE
