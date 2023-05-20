@@ -1,26 +1,277 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
+/**
+ * @file term.h
+ * @brief Header file containing utility functions for terminal manipulation.
+ *
+ * This file defines various utility functions for terminal manipulation,
+ * such as clearing the screen, retrieving the terminal size, printing menus,
+ * and checking key inputs.
+ *
+ * @authors
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
+ *
+ * @date 2023-05-17 09:30
+ * @version 2.0
+ * @copyright GNU GPLv3
+ */
+
 #ifndef TERMINAL_UTILS_H
 #define TERMINAL_UTILS_H
 
-#include <stdio.h>
-#include <string.h>
-#include <wchar.h>
+#include "../inc/string.h"
 
-#define RED "\033[31m"
-#define YELLOW "\033[33m"
-#define END_COLOR "\033[0m"
+#include <Windows.h>
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @defgroup KeyboardKeys Keyboard Keys
+ * @{
+ */
+
+/**
+ * @def ESC
+ * @brief The ASCII value that represents the ESC key.
+ */
+#define ESC 27
+
+/**
+ * @def ENTER
+ * @brief The ASCII value that represents the ENTER key.
+ */
+#define ENTER 13
+
+/**
+ * @def SPACEBAR
+ * @brief The ASCII value that represents the SPACEBAR key.
+ */
+#define SPACEBAR 32
+/** @} */  // End of KeyboardKeys group
+
+// ------------------------------------------------------------
+
+/**
+ * @def THROW_FORMAT
+ * @brief The string format to use when throwing an error.
+ */
+#define THROW_FORMAT "%s[%s()] %serror: %s.%s\n"
+
+/**
+ * @def TITLE_BAR
+ * @brief The title to display in each screen.
+ */
+#define TITLE_BAR "%sIL GIOCO DELL'OCA%s%s"
+
+/**
+ * @def MAX_MENU_LINES
+ * @brief The maximum number of lines a menu can have.
+ */
+#define MAX_MENU_LINES 10
+
+/**
+ * @def MAX_FILE_LINES
+ * @brief The maximum number of lines a file that will be printed can have
+ */
+#define MAX_FILE_LINES 23
+
+// ------------------------------------------------------------
+
+/**
+ * @defgroup TextColors Text Colors
+ * @{
+ */
+
+/**
+ * @def BLACK
+ * @brief Black text color.
+ */
+#define BLACK "\x1B[30m"
+
+/**
+ * @def RED
+ * @brief Red text color.
+ */
+#define RED "\x1B[31m"
+
+/**
+ * @def GREEN
+ * @brief Green text color.
+ */
+#define GREEN "\x1B[32m"
+
+/**
+ * @def YELLOW
+ * @brief Yellow text color.
+ */
+#define YELLOW "\x1B[33m"
+
+/**
+ * @def BLUE
+ * @brief Blue text color.
+ */
+#define BLUE "\x1B[34m"
+
+/**
+ * @def MAGENTA
+ * @brief Magenta text color.
+ */
+#define MAGENTA "\x1B[35m"
+
+/**
+ * @def CYAN
+ * @brief Cyan text color.
+ */
+#define CYAN "\x1B[36m"
+
+/**
+ * @def WHITE
+ * @brief White text color.
+ */
+#define WHITE "\x1B[37m"
+
+/**
+ * @def RESET
+ * @brief Reset text color to default.
+ */
+#define RESET "\x1B[0m"
+/** @} */  // End of TextColors group
+
+// ------------------------------------------------------------
+
+/**
+ * @defgroup BackgroundColors Background Colors
+ * @{
+ */
+
+/**
+ * @def BG_BLACK
+ * @brief Black background color.
+ */
+#define BG_BLACK "\x1B[40m"
+
+/**
+ * @def BG_RED
+ * @brief Red background color.
+ */
+#define BG_RED "\x1B[41m"
+
+/**
+ * @def BG_GREEN
+ * @brief Green background color.
+ */
+#define BG_GREEN "\x1B[42m"
+
+/**
+ * @def BG_YELLOW
+ * @brief Yellow background color.
+ */
+#define BG_YELLOW "\x1B[43m"
+
+/**
+ * @def BG_BLUE
+ * @brief Blue background color.
+ */
+#define BG_BLUE "\x1B[44m"
+
+/**
+ * @def BG_MAGENTA
+ * @brief Magenta background color.
+ */
+#define BG_MAGENTA "\x1B[45m"
+
+/**
+ * @def BG_CYAN
+ * @brief Cyan background color.
+ */
+#define BG_CYAN "\x1B[46m"
+
+/**
+ * @def BG_WHITE
+ * @brief White background color.
+ */
+#define BG_WHITE "\x1B[47m"
+/** @} */  // End of BackgroundColors group
+
+// ------------------------------------------------------------
+
+/**
+ * @defgroup TextStyles Text Styles
+ * @{
+ */
+
+/**
+ * @def BOLD
+ * @brief Bold text style.
+ */
+#define BOLD "\x1B[1m"
+
+/**
+ * @def UNDERLINE
+ * @brief Underline text style.
+ */
+#define UNDERLINE "\x1B[4m"
+
+/**
+ * @def INVERSE
+ * @brief Inverse text style.
+ */
+#define INVERSE "\x1B[7m"
+/** @} */  // End of TextStyles group
+
+// ------------------------------------------------------------
+
+/**
+ * @def RESET
+ * @brief Reset text formatting to default.
+ */
+#define RESET "\x1B[0m"
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @brief Throws an error and terminates the program.
+ *
+ * This function formats an error message using the given format string and any
+ * additional arguments, and then prints the error message to the standard error
+ * stream. After printing the error message, it terminates the program with a
+ * failure exit code.
+ *
+ * @param[in] caller The name or identifier of the caller function.
+ * @param[in] format The format string for the error message.
+ * @param[in] ...    Additional arguments to be formatted into the error
+ *                   message.
+ *
+ * @remarks The maximum length of the error message that can be accommodated is
+ *          determined by the @c MAX_BUFFER_LEN constant.
+ *
+ * @warning This function terminates the program after printing the error
+ *          message and does not return.
+ *
+ * @see @c exit()
+ */
+void throw_err(const char caller[], const char format[], ...);
 
 /**
  * @brief Retrieve the terminal size (width and height).
  *
- * This function retrieves the terminal size (width and height) using
- * platform-specific functions, and stores the retrieved values in the
- * provided pointers.
+ * This function retrieves the terminal size (width and height)  and stores
+ * the retrieved values in the provided pointers.
  *
- * @param[out] width Pointer to an integer to store the terminal width.
- * @param[out] height Pointer to an integer to store the terminal height.
- *
- * @note This function is platform-specific and may not work in all terminal
- *       environments or configurations.
+ * @param[in,out] width  Pointer to an integer that will hold the width of the
+ *                        terminal window.
+ * @param[in,out] height Pointer to an integer that will hold the height of the
+ *                       terminal window.
  *
  * @return void.
  */
@@ -29,25 +280,101 @@ void get_term_size(int *width, int *height);
 /**
  * @brief Clears the terminal screen.
  *
- * This function clears the terminal screen. The behavior of this function
- * depends on the platform. On @e Windows, it uses the @c cls command to clear
- * the screen. On @e Linux and @e macOS, it uses the escape sequence @c \033c
- * to clear the screen.
+ * This function clears the terminal screen using the Windows API.
  *
- * @note This function may not work as expected on all terminal emulators
- *       or platforms.
- *
- * @return void.
+ *  @return void.
  */
 void clear_screen();
 
+/**
+ * @brief Clears the current line in the console output.
+ *
+ * This function clears the content of the current line in the console output.
+ * It moves the cursor to the beginning of the line and fills the line with
+ * empty spaces.
+ *
+ * @note This function uses Windows API for console manipulation.
+ *
+ * @return void.
+ */
 void clear_line();
 
-void center_text(const char *text, int term_width, int term_height);
+/**
+ * @brief Creates a new screen for displaying content.
+ *
+ * This function clears the screen, prints a title bar at the top center of the
+ * screen, and draws a horizontal line below the title bar. The title bar is
+ * centered based on the terminal width.
+ *
+ * @note This function relies on the following helper functions:
+ *       - @c clear_screen(): Clears the entire console screen.
+ *       - @c get_term_size(int* width, int* height): Retrieves the size of the
+ *         terminal.
+ *
+ * @return void.
+ */
+void new_screen();
 
-void print_justified(const char *justification, const char *text,
-                     int term_width);
+/**
+ * @brief Prints a menu from a file on the console screen.
+ *
+ * This function reads a menu file and prints its contents on the console
+ * screen. It calculates the necessary padding to center the menu horizontally
+ * and vertically based on the terminal size. The menu entries are printed with
+ * left padding to center them horizontally.
+ *
+ * @param[in] filename The path to the menu file to be printed.
+ *
+ * @note This function relies on the following helper functions:
+ *       - @c get_term_size(int* width, int* height): Retrieves the size of the
+ *         terminal.
+ * @note The file path @b must be relative to the ./src/ folder (or
+ *       absolute)
+ *
+ * @return void.
+ */
+void print_menu(const char filename[]);
 
-void justify_text(char *text, int term_width, const char *justification);
+/**
+ * @brief Prints the contents of a file on the console screen.
+ *
+ * This function reads a file and prints its contents on the console screen.
+ * It reads the file line by line and prints each line until the end of the file
+ * or until the maximum number of lines is reached.
+ *
+ * @param[in] filename The path to the file to be printed.
+ *
+ * @note The file path @b must be relative to the ./src/ folder (or
+ *       absolute)
+ *
+ * @return void
+ */
+void print_file(const char filename[]);
+
+/**
+ * @brief Checks if a key is a "back" key.
+ *
+ * This function determines whether a given key character represents a "back"
+ * action, typically used to navigate back or exit from a menu or view.
+ *
+ * @param[in] key The key character to be checked.
+ *
+ * @return @c TRUE if the key is a "back" key, @c FALSE otherwise.
+ */
+int is_back_key(const char key);
+
+/**
+ * @brief Checks if a key is a "quit" key.
+ *
+ * This function determines whether a given key character represents a "quit"
+ * action, typically used to exit or quit a program or application.
+ *
+ * @param[in] key The key character to be checked.
+ *
+ * @return @c TRUE if the key is a "quit" key, @c FALSE otherwise.
+ */
+int is_quit_key(const char key);
+
+void wait_keypress(const char format[], ...);
 
 #endif  // !TERMINAL_UTILS_H

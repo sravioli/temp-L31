@@ -8,8 +8,22 @@
 
 #include "../inc/term.h"
 
-#ifdef _WIN32
-#include <Windows.h>
+void throw_err(const char caller[], const char format[], ...) {
+  char buffer[MAX_BUFFER_LEN];  // will recieve the error message
+
+  // format the errror message into the buffer
+  va_list args;
+  va_start(args, format);
+  vsnprintf(buffer, sizeof(buffer), format, args);
+  va_end(args);
+
+  // print to stderr the error
+  fprintf(stderr, THROW_FORMAT, YELLOW, caller, RED, buffer, RESET);
+  exit(EXIT_FAILURE);  // terminate the program
+}
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 void get_term_size(int *width, int *height) {
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -19,7 +33,39 @@ void get_term_size(int *width, int *height) {
   *height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
 
-void clear_screen() { system("cls"); }
+void clear_screen() {
+  HANDLE hStdOut;
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  DWORD count;
+  DWORD cellCount;
+  COORD homeCoords = {0, 0};
+
+  hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  if (hStdOut == INVALID_HANDLE_VALUE) {
+    return;
+  }
+
+  // Get the number of cells in the current buffer
+  if (!GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
+    return;
+  }
+  cellCount = csbi.dwSize.X * csbi.dwSize.Y;
+
+  // Fill the entire buffer with spaces
+  if (!FillConsoleOutputCharacter(hStdOut, (TCHAR)' ', cellCount, homeCoords,
+                                  &count)) {
+    return;
+  }
+
+  // Fill the entire buffer with the current colors and attributes
+  if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount,
+                                  homeCoords, &count)) {
+    return;
+  }
+
+  // Move the cursor home
+  SetConsoleCursorPosition(hStdOut, homeCoords);
+}
 
 void clear_line() {
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -33,71 +79,130 @@ void clear_line() {
   SetConsoleCursorPosition(hConsole, coord);
 }
 
-#elif __linux__ || __APPLE__
-#include <sys/ioctl.h>
-#include <unistd.h>
-void get_term_size(int *width, int *height) {
-  struct winsize ws;
-  ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
-  *width = ws.ws_col;
-  *height = ws.ws_row;
+void new_screen() {
+  clear_screen();
+
+  int term_width, term_heigth;
+  get_term_size(&term_width, &term_heigth);
+
+  int left_space = 1 + (term_width - strlen(TITLE_BAR)) / 2;
+
+  int i = 0;
+  while (i < left_space) {
+    printf("%c", SPACE_CHAR);
+    i = i + 1;
+  }
+  printf(TITLE_BAR, BOLD, RESET, LINE_END);
+
+  i = 0;
+  while (i < term_width) {
+    printf("-");
+    i = i + 1;
+  }
+
+  printf("%s", LINE_END);
 }
 
-void clear_screen() { printf("\033c"); }
-
-void clear_line() { printf("\033[2K\r"); }
-#else
-#error Unsupported platform
-#endif
-
-void center_text(const char *text, int term_width, int term_height) {
-  // Calculate center alignment
-  int text_length = strlen(text);
-  int horizontal_padding = (term_width - text_length) / 2;
-  int vertical_padding = term_height / 2;
-
-  // Print centered text
-  for (int i = 0; i < vertical_padding; i++) {
-    printf("\n");
+void print_menu(const char filename[]) {
+  FILE *fp;
+  if (fopen_s(&fp, filename, "r")) {
+    throw_err(__func__, "failed to open file '%s' for reading", filename);
   }
-  for (int i = 0; i < horizontal_padding; i++) {
-    printf(" ");
+
+  int width, height;
+  get_term_size(&width, &height);
+
+  // initialize 2D list to store menu entries
+  char menu[MAX_MENU_LINES][MAX_BUFFER_LEN];
+  char buffer[MAX_BUFFER_LEN];
+
+  int num_lines = 0;  // count number of menu lines
+  int max_len = 0;
+  // read until EOF or when running out of space
+  while (fgets(buffer, MAX_BUFFER_LEN, fp) && num_lines < MAX_MENU_LINES) {
+    max_len = max(strlen(buffer), max_len);  // save the longest line
+
+    // copy line to menu list
+    snprintf(menu[num_lines], sizeof(buffer), "%s", buffer);
+    num_lines = num_lines + 1;
   }
-  printf("%s\n", text);
-}
+  fclose(fp);
 
-void print_justified(const char *justification, const char *text,
-                     int term_width) {
-  int text_length = strlen(text);
-  int remaining_space = term_width - text_length;
+  // print vertical padding
+  int i = 0;
+  int vert_padding = (height - num_lines - 2) * 0.45;
+  while (i < vert_padding) {
+    printf("%s", LINE_END);
+    i = i + 1;
+  }
 
-  if (remaining_space <= 0) {
-    // If the term width is smaller than the text length, print text as is
-    printf("%s", text);
-  } else {
-    if (strcmp(justification, "left") == 0) {
-      // Left justification
-      printf("%s", text);
-    } else if (strcmp(justification, "right") == 0) {
-      // Right justification
-      for (int i = 0; i < remaining_space; i++) {
-        putchar(' ');
-      }
-      printf("%s", text);
-    } else if (strcmp(justification, "center") == 0) {
-      // Center justification
-      int left_space = remaining_space / 2;
-      int right_space = remaining_space - left_space;
-      for (int i = 0; i < left_space; i++) {
-        putchar(' ');
-      }
-      printf("%s", text);
-      for (int i = 0; i < right_space; i++) {
-        putchar(' ');
-      }
-    } else {
-      printf(
-          "Invalid justification direction! Use 'left', 'right', or 'center'.");
+  // print all menu entries with left padding (center them)
+  i = 0;
+  int left_padding = (width - max_len) / 2;
+  while (i < num_lines) {
+    int j = 0;
+    while (j < left_padding) {
+      printf("%c", SPACE_CHAR);
+      j = j + 1;
     }
+    printf("%s", menu[i]);
+    i = i + 1;
   }
+
+  printf("%s", LINE_END);
+}
+
+void print_file(const char filename[]) {
+  FILE *fp;
+  if (fopen_s(&fp, filename, "r")) {
+    throw_err(__func__, "failed to open file '%s' for reading", filename);
+  }
+
+  int width, height;
+  get_term_size(&width, &height);
+
+  // read until EOF or when running out of space
+  char buffer[MAX_BUFFER_LEN];
+  int num_lines = 0;
+  while (fgets(buffer, MAX_BUFFER_LEN, fp) && num_lines < MAX_FILE_LINES) {
+    printf("%s", buffer);
+    num_lines = num_lines + 1;
+  }
+  fclose(fp);
+}
+
+int is_back_key(const char key) {
+  if (key == ESC || key == ENTER || key == SPACEBAR || key == 'b') {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+int is_quit_key(const char key) {
+  if (key == ESC || key == 'q') {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+void wait_keypress(const char format[], ...) {
+  va_list args;
+  va_start(args, format);
+  vprintf(format, args);
+  va_end(args);
+
+  const char spinner[4] = {'|', '/', '-', '\\'};
+  printf("%c%c", SPACE_CHAR, SPACE_CHAR);
+
+  // display the spinner by printing the char and then deleting it
+  int i = 0;
+  while (!_kbhit()) {
+    printf("\b");
+    printf("%c", spinner[i % sizeof(spinner)]);
+    i = i + 1;
+    Sleep(100);
+  }
+  // consume the pressed key before continuing otherwise it will interfere when
+  // getting user input.
+  _getch();
 }
