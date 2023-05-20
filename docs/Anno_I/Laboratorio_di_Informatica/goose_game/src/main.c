@@ -6,33 +6,45 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "./inc/handle_game.h"
+#include "./inc/handle_help.h"
 
-const char *BORDERS[8] = DEFAULT_BORDERS;
+#define MAIN_MENU "./menus/main.txt"
+
+void main_menu() {
+  new_screen();
+  print_menu(MAIN_MENU);
+}
 
 int main(void) {
-  int num_squares =
-      ask_num_in_range(MIN_NUM_SQUARES, MAX_NUM_SQUARES, "squares");
-  int num_players =
-      ask_num_in_range(MIN_NUM_PLAYERS, MAX_NUM_PLAYERS, "players");
-  Players *players = init_players(num_players);
+  main_menu();
 
-  Board *board = init_board(num_squares);
-  char *game_board =
-      build_board(*board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, BORDERS);
-  print_board(game_board);
+  int menu_loop = TRUE;
+  while (menu_loop) {
+    char key = _getch();
 
-  print_positions(players);
+    if (key == 'n') {
+      new_game();
+      main_menu();
+    } else if (key == 's') {
+      clear_line();
+      printf("DEBUG: key %c: [s]ave games", key);
+    } else if (key == 'l') {
+      // leaderboard();
+      clear_line();
+      printf("DEBUG: key %c: [l]eaderboard", key);
+    } else if (key == 'h') {
+      help_menu();
+      main_menu();
+    } else if (key == 'q' || key == ESC) {
+      clear_line();
+      printf("DEBUG: (%c) exiting...", key);
+      menu_loop = FALSE;
+    } else {
+      clear_line();
+      printf("Pressed key %c, it does nothing.", key);
+    }
+  }
 
-  // time_t current_time = time(NULL);
-  // srand((unsigned int)current_time);
-  // int random_number = rand();
-  //
-  // printf("%lld-%d\n", current_time, random_number);
-
-  close_game(board, game_board, players);
   return 0;
 }
