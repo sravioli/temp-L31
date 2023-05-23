@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Move `.bin` files to `data` folder
 - Add logging, fix imports, add seed for rand
 - Adjust leaderboard module to handle the `entries` type
 - Fix imports, modularize constants, use macros instead of strings
