@@ -19,17 +19,8 @@
  * @version 2.0
  * @copyright GNU GPLv3
  */
-
 #ifndef TERMINAL_UTILS_H
 #define TERMINAL_UTILS_H
-
-#include "../inc/string.h"
-
-#include <Windows.h>
-#include <conio.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
@@ -40,19 +31,16 @@
  */
 
 /**
- * @def ESC
  * @brief The ASCII value that represents the ESC key.
  */
 #define ESC 27
 
 /**
- * @def ENTER
  * @brief The ASCII value that represents the ENTER key.
  */
 #define ENTER 13
 
 /**
- * @def SPACEBAR
  * @brief The ASCII value that represents the SPACEBAR key.
  */
 #define SPACEBAR 32
@@ -61,25 +49,16 @@
 // ------------------------------------------------------------
 
 /**
- * @def THROW_FORMAT
- * @brief The string format to use when throwing an error.
- */
-#define THROW_FORMAT "%s[%s()] %serror: %s.%s\n"
-
-/**
- * @def TITLE_BAR
  * @brief The title to display in each screen.
  */
-#define TITLE_BAR "%sIL GIOCO DELL'OCA%s%s"
+#define TITLE_BAR "%sIL GIOCO DELL'OCA%s\n"
 
 /**
- * @def MAX_MENU_LINES
  * @brief The maximum number of lines a menu can have.
  */
 #define MAX_MENU_LINES 10
 
 /**
- * @def MAX_FILE_LINES
  * @brief The maximum number of lines a file that will be printed can have
  */
 #define MAX_FILE_LINES 23
@@ -92,55 +71,46 @@
  */
 
 /**
- * @def BLACK
  * @brief Black text color.
  */
 #define BLACK "\x1B[30m"
 
 /**
- * @def RED
  * @brief Red text color.
  */
 #define RED "\x1B[31m"
 
 /**
- * @def GREEN
  * @brief Green text color.
  */
 #define GREEN "\x1B[32m"
 
 /**
- * @def YELLOW
  * @brief Yellow text color.
  */
 #define YELLOW "\x1B[33m"
 
 /**
- * @def BLUE
  * @brief Blue text color.
  */
 #define BLUE "\x1B[34m"
 
 /**
- * @def MAGENTA
  * @brief Magenta text color.
  */
 #define MAGENTA "\x1B[35m"
 
 /**
- * @def CYAN
  * @brief Cyan text color.
  */
 #define CYAN "\x1B[36m"
 
 /**
- * @def WHITE
  * @brief White text color.
  */
 #define WHITE "\x1B[37m"
 
 /**
- * @def RESET
  * @brief Reset text color to default.
  */
 #define RESET "\x1B[0m"
@@ -154,49 +124,41 @@
  */
 
 /**
- * @def BG_BLACK
  * @brief Black background color.
  */
 #define BG_BLACK "\x1B[40m"
 
 /**
- * @def BG_RED
  * @brief Red background color.
  */
 #define BG_RED "\x1B[41m"
 
 /**
- * @def BG_GREEN
  * @brief Green background color.
  */
 #define BG_GREEN "\x1B[42m"
 
 /**
- * @def BG_YELLOW
  * @brief Yellow background color.
  */
 #define BG_YELLOW "\x1B[43m"
 
 /**
- * @def BG_BLUE
  * @brief Blue background color.
  */
 #define BG_BLUE "\x1B[44m"
 
 /**
- * @def BG_MAGENTA
  * @brief Magenta background color.
  */
 #define BG_MAGENTA "\x1B[45m"
 
 /**
- * @def BG_CYAN
  * @brief Cyan background color.
  */
 #define BG_CYAN "\x1B[46m"
 
 /**
- * @def BG_WHITE
  * @brief White background color.
  */
 #define BG_WHITE "\x1B[47m"
@@ -210,19 +172,16 @@
  */
 
 /**
- * @def BOLD
  * @brief Bold text style.
  */
 #define BOLD "\x1B[1m"
 
 /**
- * @def UNDERLINE
  * @brief Underline text style.
  */
 #define UNDERLINE "\x1B[4m"
 
 /**
- * @def INVERSE
  * @brief Inverse text style.
  */
 #define INVERSE "\x1B[7m"
@@ -231,36 +190,12 @@
 // ------------------------------------------------------------
 
 /**
- * @def RESET
  * @brief Reset text formatting to default.
  */
 #define RESET "\x1B[0m"
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
-
-/**
- * @brief Throws an error and terminates the program.
- *
- * This function formats an error message using the given format string and any
- * additional arguments, and then prints the error message to the standard error
- * stream. After printing the error message, it terminates the program with a
- * failure exit code.
- *
- * @param[in] caller The name or identifier of the caller function.
- * @param[in] format The format string for the error message.
- * @param[in] ...    Additional arguments to be formatted into the error
- *                   message.
- *
- * @remarks The maximum length of the error message that can be accommodated is
- *          determined by the @c MAX_BUFFER_LEN constant.
- *
- * @warning This function terminates the program after printing the error
- *          message and does not return.
- *
- * @see @c exit()
- */
-void throw_err(const char caller[], const char format[], ...);
 
 /**
  * @brief Retrieve the terminal size (width and height).
@@ -328,8 +263,7 @@ void new_screen();
  * @note This function relies on the following helper functions:
  *       - @c get_term_size(int* width, int* height): Retrieves the size of the
  *         terminal.
- * @note The file path @b must be relative to the ./src/ folder (or
- *       absolute)
+ * @note The file path @b must be relative to the ./src/ folder (or absolute).
  *
  * @return void.
  */
@@ -344,8 +278,7 @@ void print_menu(const char filename[]);
  *
  * @param[in] filename The path to the file to be printed.
  *
- * @note The file path @b must be relative to the ./src/ folder (or
- *       absolute)
+ * @note The file path @b must be relative to the ./src/ folder (or absolute).
  *
  * @return void
  */

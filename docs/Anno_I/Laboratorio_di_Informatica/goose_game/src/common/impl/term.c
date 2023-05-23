@@ -6,34 +6,38 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
+#include <Windows.h>
+#include <conio.h>
+#include <stdio.h>
+
+#include "../../inc/errors.h"
+
+#include "../inc/logger.h"
+#include "../inc/string.h"
+
 #include "../inc/term.h"
-
-void throw_err(const char caller[], const char format[], ...) {
-  char buffer[MAX_BUFFER_LEN];  // will recieve the error message
-
-  // format the errror message into the buffer
-  va_list args;
-  va_start(args, format);
-  vsnprintf(buffer, sizeof(buffer), format, args);
-  va_end(args);
-
-  // print to stderr the error
-  fprintf(stderr, THROW_FORMAT, YELLOW, caller, RED, buffer, RESET);
-  exit(EXIT_FAILURE);  // terminate the program
-}
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
 void get_term_size(int *width, int *height) {
+  logger.enter_fn(__func__);
+
+  logger.log("creating std handle");
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_SCREEN_BUFFER_INFO csbi;
   GetConsoleScreenBufferInfo(hConsole, &csbi);
+
   *width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
   *height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+  logger.log("returning width (%i) and height (%i)", *width, *height);
+
+  logger.exit_fn();
 }
 
 void clear_screen() {
+  logger.enter_fn(__func__);
+
   HANDLE hStdOut;
   CONSOLE_SCREEN_BUFFER_INFO csbi;
   DWORD count;
@@ -42,49 +46,70 @@ void clear_screen() {
 
   hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   if (hStdOut == INVALID_HANDLE_VALUE) {
+    logger.log("invalid std handle. returning");
+    logger.exit_fn();
     return;
   }
+  logger.log("got valid std handle");
 
-  // Get the number of cells in the current buffer
+  // get the number of cells in the current buffer
   if (!GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
+    logger.log("cannot get number of cells of current buffer, returning");
+    logger.exit_fn();
     return;
   }
   cellCount = csbi.dwSize.X * csbi.dwSize.Y;
 
-  // Fill the entire buffer with spaces
+  // fill the entire buffer with spaces
   if (!FillConsoleOutputCharacter(hStdOut, (TCHAR)' ', cellCount, homeCoords,
                                   &count)) {
+    logger.log("cannot fill buffer with spaces, returning");
+    logger.exit_fn();
     return;
   }
+  logger.log("cleared screen");
 
-  // Fill the entire buffer with the current colors and attributes
+  // fill the entire buffer with the current colors and attributes
   if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount,
                                   homeCoords, &count)) {
+    logger.log("can't fill buffer w/ current colors and attributes, returning");
+    logger.exit_fn();
     return;
   }
 
-  // Move the cursor home
+  // move the cursor home
   SetConsoleCursorPosition(hStdOut, homeCoords);
+
+  logger.log("restored screen attributes, colors and cursor");
+  logger.exit_fn();
 }
 
 void clear_line() {
+  logger.enter_fn(__func__);
+
+  logger.log("getting std handle");
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_SCREEN_BUFFER_INFO csbi;
   COORD coord;
   DWORD written;
+
   GetConsoleScreenBufferInfo(hConsole, &csbi);
+
   coord.X = 0;
   coord.Y = csbi.dwCursorPosition.Y;
   FillConsoleOutputCharacter(hConsole, ' ', csbi.dwSize.X, coord, &written);
   SetConsoleCursorPosition(hConsole, coord);
+
+  logger.log("cleared current line");
+  logger.exit_fn();
 }
 
 void new_screen() {
+  logger.enter_fn(__func__);
   clear_screen();
 
   int term_width, term_heigth;
   get_term_size(&term_width, &term_heigth);
-
   int left_space = 1 + (term_width - strlen(TITLE_BAR)) / 2;
 
   int i = 0;
@@ -92,21 +117,29 @@ void new_screen() {
     printf("%c", SPACE_CHAR);
     i = i + 1;
   }
-  printf(TITLE_BAR, BOLD, RESET, LINE_END);
+  printf(TITLE_BAR, BOLD, RESET);
+  logger.log("printed centered title bar");
 
+  logger.log("printing horizontal separator of width %i", term_width);
   i = 0;
   while (i < term_width) {
     printf("-");
     i = i + 1;
   }
 
-  printf("%s", LINE_END);
+  printf("\n");
+  logger.exit_fn();
 }
 
 void print_menu(const char filename[]) {
+  logger.enter_fn(__func__);
+
+  logger.log("safe opening file '%s'", filename);
   FILE *fp;
   if (fopen_s(&fp, filename, "r")) {
-    throw_err(__func__, "failed to open file '%s' for reading", filename);
+    logger.log(FILE_NOT_READABLE_ERROR, filename);
+    logger.exit_fn();
+    throw_err(__func__, FILE_NOT_READABLE_ERROR, filename);
   }
 
   int width, height;
@@ -119,6 +152,7 @@ void print_menu(const char filename[]) {
   int num_lines = 0;  // count number of menu lines
   int max_len = 0;
   // read until EOF or when running out of space
+  logger.log("reading from '%s'", filename);
   while (fgets(buffer, MAX_BUFFER_LEN, fp) && num_lines < MAX_MENU_LINES) {
     max_len = max(strlen(buffer), max_len);  // save the longest line
 
@@ -127,6 +161,8 @@ void print_menu(const char filename[]) {
     num_lines = num_lines + 1;
   }
   fclose(fp);
+
+  logger.log("read %i file lines from '%s'", num_lines, filename);
 
   // print vertical padding
   int i = 0;
@@ -148,14 +184,19 @@ void print_menu(const char filename[]) {
     printf("%s", menu[i]);
     i = i + 1;
   }
-
   printf("%s", LINE_END);
+
+  logger.log("printed menu from '%s'", filename);
+  logger.exit_fn();
 }
 
 void print_file(const char filename[]) {
+  logger.enter_fn(__func__);
+
+  logger.log("safe opening file '%s'", filename);
   FILE *fp;
   if (fopen_s(&fp, filename, "r")) {
-    throw_err(__func__, "failed to open file '%s' for reading", filename);
+    throw_err(__func__, FILE_NOT_READABLE_ERROR, filename);
   }
 
   int width, height;
@@ -164,11 +205,15 @@ void print_file(const char filename[]) {
   // read until EOF or when running out of space
   char buffer[MAX_BUFFER_LEN];
   int num_lines = 0;
+  logger.log("reading from '%s'", filename);
   while (fgets(buffer, MAX_BUFFER_LEN, fp) && num_lines < MAX_FILE_LINES) {
     printf("%s", buffer);
     num_lines = num_lines + 1;
   }
   fclose(fp);
+
+  logger.log("read %i file lines from '%s'", num_lines, filename);
+  logger.exit_fn();
 }
 
 int is_back_key(const char key) {
@@ -186,15 +231,22 @@ int is_quit_key(const char key) {
 }
 
 void wait_keypress(const char format[], ...) {
+  logger.enter_fn(__func__);
+
+  logger.log("saving args to string buffer");
+  char buffer[MAX_BUFFER_LEN] = "";
+  concat(buffer, format);
+
   va_list args;
   va_start(args, format);
-  vprintf(format, args);
+  vprintf(buffer, args);
   va_end(args);
 
   const char spinner[4] = {'|', '/', '-', '\\'};
-  printf("%c%c", SPACE_CHAR, SPACE_CHAR);
+  printf("  ");
 
   // display the spinner by printing the char and then deleting it
+  logger.log("waiting for a keypress");
   int i = 0;
   while (!_kbhit()) {
     printf("\b");
@@ -205,4 +257,6 @@ void wait_keypress(const char format[], ...) {
   // consume the pressed key before continuing otherwise it will interfere when
   // getting user input.
   _getch();
+  logger.log("consumed keypress");
+  logger.exit_fn();
 }
