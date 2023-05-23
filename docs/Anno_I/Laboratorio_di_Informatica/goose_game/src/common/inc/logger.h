@@ -1,108 +1,362 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
+/**
+ * @file logger.h
+ * @brief Header file for managing logging operations.
+ *
+ * The @c logger.h file provides definitions and function prototypes for
+ * managing logging operations. It defines macros for log formatting, error
+ * messages, and stack trace separator. It also declares the @c Logger struct,
+ * which encapsulates various logging operations through function pointers.
+ * Additionally, it declares functions for starting, stopping, and logging
+ * events using the logger, as well as functions for entering and exiting
+ * functions and enabling/disabling the logger.
+ *
+ * Usage Example:
+ * @code
+ * int main (void) {
+ *   logger.enter_fn(__func__);
+ *
+ *   logger.log("this is an event message: %s", "some data");
+ *
+ *   logger.stop()
+ *   return 0;
+ * }
+ * @endcode
+ *
+ * @note The @c __func__ keyword is advised to be used as the function name.
+ *
+ * @authors
+ *    Amorese Emanuele
+ *    Blanco Lorenzo
+ *    Cannito Antonio
+ *    Fidanza Simone
+ *    Lecini Fabio
+ *
+ * @date 2023-05-23 10:31
+ * @version 2.5
+ * @copyright GNU GPLv3
+ */
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "../inc/term.h"
-
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <vadefs.h>
-
 // -------------------------------------------------------------------------- //
+// PRE-PROCESSOR MACROS                                                       //
 // -------------------------------------------------------------------------- //
 
 /**
- * @brief Checks if a filename is valid.
+ * @brief The format string for the timestamp in log messages.
  *
- * This function checks whether a given filename is valid according to the
- * following criteria:
- * - The filename is not empty.
- * - Each character in the filename is alphanumeric, underscore (_), dash (-),
- *   or dot (.), and no other characters are allowed.
- * - The filename does not end with a dot or a space.
- *
- * @param[in] filename The filename to be checked.
- *
- * @return @c TRUE if the filename is valid, @c FALSE otherwise.
+ * The @c TIMESTAMP_FORMAT macro defines the format string used to represent the
+ * timestamp in log messages. It follows the format of "day/month/year
+ * hour:minute:second" and is used to format the timestamp for each log entry.
  */
-int is_filename_valid(const char filename[]);
+#define TIMESTAMP_FORMAT "%d/%m/%y %H:%M:%S"
 
 /**
- * @brief Starts the logger with the specified filename.
+ * @brief The banner used in the log file.
  *
- * This function starts the logger by opening the log file with the given
- * filename. It performs the following steps:
- * - Checks if logging is active. If logging is disabled, the function returns
- *   without performing any further actions.
- * - Checks the validity of the given filename using the @c is_filename_valid
- *   function. If the filename is invalid, an error is thrown using the
- *   @c throw_err function.
- * - Copies the given filename to the static variable @c log_filename using
- *   @c snprintf.
- * - Opens the log file in write mode and writes the start log message.
- * - Sets the @c is_initialized flag to @c TRUE to indicate that the log file
- *   has been created and can be written to.
- * - Closes the log file.
+ * The @c LOG_BANNER macro represents the banner that is used as a separator or
+ * heading in the log file. It consists of a row of equal signs and is used to
+ * visually separate different sections of the log file.
+ */
+#define LOG_BANNER "=================================="
+
+/**
+ * @brief The message indicating the start of the log.
  *
- * @param[in] filename The filename for the log file.
+ * The @c LOG_START_MSG macro represents the message that is written to the log
+ * file at the beginning of logging. It serves as an indicator that the log has
+ * started.
+ */
+#define LOG_START_MSG "START LOG"
+
+/**
+ * @brief The message indicating the stop of the log.
  *
- * @note The function assumes that @c is_active and @c log_filename are global
- *       variables accessible within the scope of the function.
+ * The @c LOG_STOP_MSG macro represents the message that is written to the log
+ * file at the end of logging. It serves as an indicator that the log has
+ * stopped.
+ */
+#define LOG_STOP_MSG "STOP  LOG"
+
+/**
+ * @brief The format string for the log banner.
  *
- * @see @c is_filename_valid()
- * @see @c throw_err()
+ * The @c LOG_BANNER_FMT macro defines the format string used to format the log
+ * banner. It includes placeholders for the log banner itself, which is
+ * represented by %s, and additional formatting characters for proper spacing.
+ */
+#define LOG_BANNER_FMT "%s %s %s\n"
+
+/**
+ * @brief The format string for log messages.
+ *
+ * The @c LOG_MSG_FORMAT macro defines the format string that should be used to
+ * format log messages. It includes placeholders for the timestamp, function
+ * stack trace, and log message itself. The placeholders are represented as
+ * follows:
+ *   - %s represents the timestamp
+ *   - %s represents the function stack trace
+ *   - %s represents the log message
+ */
+#define LOG_MSG_FORMAT "[%s] %s - %s\n"
+
+/**
+ * @brief The maximum depth of the call stack.
+ *
+ * The @c MAX_CALLSTACK_DEPTH macro defines the maximum depth of the call stack,
+ * which represents the number of function calls that can be logged. It is used
+ * to allocate memory for the call stack array.
+ */
+#define MAX_CALLSTACK_DEPTH 20
+
+/**
+ * @brief The separator for the stack trace in log messages.
+ *
+ * The @c STACK_TRACE_SEPARATOR macro represents the separator used between
+ * function names in the stack trace of log messages. It is used to visually
+ * separate the function names and make the stack trace more readable.
+ */
+#define STACK_TRACE_SEPARATOR " > "
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @struct Logger
+ * @brief Logger structure for managing logging operations.
+ *
+ * The @c Logger struct defines a set of function pointers that encapsulate
+ * various logging operations. This struct provides a convenient way to organize
+ * and access logging functionality through function pointers.
+ *
+ * Usage Example:
+ * @code
+ * int main (void) {
+ *   logger.enter_fn(__func__);
+ *
+ *   logger.log("this is an event message: %s", "some data");
+ *
+ *   logger.stop()
+ *   return 0;
+ * }
+ * @endcode
+ *
+ * @note It is advided to use the @c __func__ keyword as the function name.
+ */
+struct Logger {
+  /**
+   * @brief Starts the logger and initializes logging operations.
+   *
+   * This function pointer is used to start the logger and initialize logging
+   * operations. It takes a filename as an argument and sets up the logger to
+   * write log events to the specified file.
+   *
+   * @param[in] filename The name of the log file to be created or opened.
+   *
+   * @return void.
+   */
+  void (*start)(const char filename[]);
+
+  /**
+   * @brief Logs a formatted message.
+   *
+   * This function pointer is used to log a formatted message. It takes a format
+   * string and variable arguments, similar to the @c printf() function, and
+   * logs the formatted message using the underlying logging mechanism.
+   *
+   * @param[in] format  The format string for the log message.
+   * @param[in] va_list Variable arguments to be formatted and logged.
+   *
+   * @return void.
+   */
+  void (*log)(const char format[], ...);
+
+  /**
+   * @brief Stops the logger and finalizes logging operations.
+   *
+   * This function pointer is used to stop the logger and finalize logging
+   * operations. It performs any necessary cleanup and ensures that all log
+   * events are written before the logger is stopped.
+   *
+   * @return void.
+   */
+  void (*stop)();
+
+  /**
+   * @brief Disables the logger.
+   *
+   * This function pointer is used to disable the logger. It deactivates the
+   * logging functionality, preventing any further log events from being
+   * recorded or written to the log file.
+   *
+   * @return void.
+   */
+  void (*disable)();
+
+  /**
+   * @brief Enables the logger.
+   *
+   * This function pointer is used to enable the logger. It activates the
+   * logging functionality, allowing log events to be recorded and written to
+   * the log file.
+   *
+   * @return void.
+   */
+  void (*enable)();
+
+  /**
+   * @brief Enters a function and logs the entry event.
+   *
+   * This function pointer is used to enter a function and log the entry event.
+   * It takes the name of the calling function as an argument and logs the
+   * function entry event, typically including the name of the calling function.
+   *
+   * @param[in] caller The name of the calling function.
+   *
+   * @return void.
+   */
+  void (*enter_fn)(const char caller[]);
+
+  /**
+   * @brief Exits a function and logs the exit event.
+   *
+   * This function pointer is used to exit a function and log the exit event. It
+   * logs the function exit event, typically including the name of the function
+   * being exited.
+   *
+   * @return void.
+   */
+  void (*exit_fn)();
+};
+
+/**
+ * @brief External declaration of the logger instance.
+ *
+ * The @c logger variable is an external declaration of the @c Logger struct
+ * It allows other source files to access the same instance of the logger,
+ * providing a shared logger across multiple modules.
+ *
+ * Usage Example:
+ * @code
+ * int main (void) {
+ *   logger.enter_fn(__func__);
+ *
+ *   logger.log("this is an event message: %s", "some data");
+ *
+ *   logger.stop()
+ *   return 0;
+ * }
+ * @endcode
+ */
+extern struct Logger logger;
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+/**
+ * @brief Starts the logger and creates a new log file with the specified
+ *        filename.
+ *
+ * This function starts the logger by creating a new log file with the given
+ * filename. It first checks if logging is active; if logging is disabled, the
+ * function returns without performing any actions. It then validates the
+ * provided filename to ensure it is a valid string. If the filename is
+ * determined to be invalid, an error is thrown.
+ *
+ * The function copies the given filename to a static variable for future
+ * reference. It then attempts to open the log file in write mode. If the file
+ * cannot be opened for writing, an error is thrown. If the file is opened
+ * successfully, a log start message is written to the file indicating the start
+ * of logging.
+ *
+ * After successful initialization, the logger is marked as started, and the
+ * file is closed.
+ *
+ * @param[in] filename The name of the log file to be created.
+ *
+ * @return void.
  */
 void start_logger(const char *filename);
 
 /**
- * @brief Stops the logger.
+ * @brief Stops the logger and appends a log stop message to the log file.
  *
- * This function stops the logger by writing the end log message and closing
- * the log file. It performs the following steps:
- * - Checks if logging is active and if the logger has been initialized. If
- *   either condition is false, the function returns without performing any
- *   further actions.
- * - Opens the log file in append mode and writes the end log message.
- * - Closes the log file.
+ * This function stops the logger by appending a log stop message to the
+ * currently active log file. If the logger is not active or has not been
+ * started, the function returns without performing any actions.
  *
- * @note The function assumes that @c is_active, @c is_initialized, and
- *       @c log_filename are global variables accessible within the scope of the
- *       function.
+ * This function calls the @c exit_fn() function before closing the logger,
+ * sparing the inconvenience of calling the latter function. The function
+ * attempts to open the log file in append mode. If the file cannot be opened
+ * for writing, an error is thrown. If the file is opened successfully, a log
+ * stop message is appended to the file to indicate the termination of logging.
+ *
+ * After writing the log stop message, the file is closed.
+ *
+ * @return void.
  */
 void stop_logger();
 
 /**
- * @brief Logs an event to the log file.
+ * @brief Logs an event with a formatted message to a log file.
  *
- * This function logs an event to the log file by appending the timestamp,
- * caller information, and the formatted message. It performs the following
- * steps:
- * - Checks if logging is active and if the logger has been initialized. If
- *   either condition is false, the function returns without performing any
- *   further actions.
- * - Retrieves the current time and formats it as a timestamp.
- * - Opens the log file in append mode and writes the timestamp, caller name,
- *   and the formatted message using variable arguments.
- * - Appends a new line to the log file and closes it.
+ * This function logs an event by formatting the message using a variadic
+ * argument list and writing it to a log file. The logging is conditional based
+ * on the state of the logger, and if the logger is not active or not started,
+ * the function returns without performing any logging. The event message is
+ * constructed based on the given format string and additional arguments.
  *
- * @param[in] caller The name of the function or caller logging the event.
- * @param[in] format The format string for the event message.
- * @param[in] ...    Additional arguments to be formatted into the event
- *                   message.
+ * The function also includes the current timestamp, stack trace, and other
+ * information in the log message. The timestamp is generated using the current
+ * local time. The stack trace is created by concatenating the function call
+ * stack, separated by a predefined separator.
+ *
+ * If the log file cannot be opened for writing, an error is thrown.
+ *
+ * @param[in] format  The format string for the event message.
+ * @param[in] va_list Additional arguments to be formatted into the event
+ *                    message.
  *
  * @return void.
  */
-void log_event(const char *caller, const char *format, ...);
+void log_event(const char format[], ...);
+
+/**
+ * @brief Enters a function and logs the entry event.
+ *
+ * This inline function is used to enter a function and log the entry event. It
+ * takes the name of the calling function as an argument and pushes it onto the
+ * call stack. The function then calls the @c log_event function with a
+ * formatted message indicating the function entry. The message includes the
+ * name of the calling function.
+ *
+ * @param[in] caller The name of the calling function.
+ *
+ * @return void.
+ */
+void enter_fn(const char caller[]);
+
+/**
+ * @brief Exits a function and logs the exit event.
+ *
+ * This inline function is used to exit a function and log the exit event. It
+ * calls the @c log_event function with a formatted message indicating the
+ * function exit. The message includes the name of the function at the top of
+ * the call stack, which is popped from the stack after logging the message.
+ *
+ * @return void.
+ */
+void exit_fn();
 
 /**
  * @brief Disables the logger.
  *
- * This function disables the logger by setting the @c is_active flag to @c
- * FALSE. When logging is disabled, the logger functions (start_logger,
- * stop_logger, log_event) will return without performing any actions.
+ * This inline function is used to disable the logger. It sets the
+ * @c is_logger_active flag to @c FALSE, indicating that logging should be
+ * disabled. When the logger is disabled, log events will not be recorded or
+ * written to the log file.
  *
  * @return void.
  */
@@ -111,99 +365,13 @@ void disable_logger();
 /**
  * @brief Enables the logger.
  *
- * This function enables the logger by setting the @c is_active flag to @c TRUE.
- * When logging is enabled, the logger functions (start_logger, stop_logger,
- * log_event) will perform their respective actions.
+ * This inline function is used to enable the logger. It sets the
+ * @c is_logger_active flag to @c TRUE, indicating that logging should be
+ * enabled. When the logger is enabled, log events will be recorded and written
+ * to the log file.
  *
  * @return void.
  */
 void enable_logger();
-
-// -------------------------------------------------------------------------- //
-// -------------------------------------------------------------------------- //
-
-/**
- * @struct Logger
- * @brief Represents a logger object with various logging functions.
- *
- * The Logger struct defines a set of function pointers that can be used to
- * perform logging operations. The struct includes functions for starting the
- * logger, logging events, stopping the logger, disabling the logger, and
- * enabling the logger.
- *
- * Example Usage:
- *
- * @code{.c}
- * struct Logger logger;
- *
- * // Start the logger
- * logger.start("logfile.txt");
- *
- * // Log an event
- * logger.log(__func__, "This is an event message: %s", "some data");
- *
- * // Stop the logger
- * logger.stop();
- * @endcode
- */
-struct Logger {
-  /**
-   * @brief Starts the logger with the specified filename.
-   *
-   * This function starts the logger by opening the log file with the given
-   * filename.
-   *
-   * @param[in] filename The filename for the log file.
-   */
-  void (*start)(const char filename[]);
-
-  /**
-   * @brief Logs an event with the specified caller and message.
-   *
-   * This function logs an event to the log file with the given caller name and
-   * formatted message.
-   *
-   * @param[in] caller  The name of the function or caller logging the event.
-   * @param[in] format  The format string for the event message.
-   * @param[in] ...     Additional arguments to be formatted into the event
-   *                    message.
-   */
-  void (*log)(const char caller[], const char format[], ...);
-
-  /**
-   * @brief Stops the logger and closes the log file.
-   *
-   * This function stops the logger by closing the log file.
-   */
-  void (*stop)();
-
-  /**
-   * @brief Disables the logger.
-   *
-   * This function disables the logger, preventing any further logging
-   * operations.
-   */
-  void (*disable)();
-
-  /**
-   * @brief Enables the logger.
-   *
-   * This function enables the logger, allowing logging operations to be
-   * performed.
-   */
-  void (*enable)();
-};
-
-/**
- * @brief The global logger instance.
- *
- * This is the global instance of the Logger struct that can be used to access
- * the logger functions.
- * The @c logger variable represents a global instance of the Logger struct,
- * which can be used to access the logging functions.
- *
- * @see @c Logger
- */
-extern struct Logger logger;
 
 #endif  // !LOGGER_H
