@@ -9,6 +9,14 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Add logging, fix imports, add seed for rand
+- Adjust leaderboard module to handle the `entries` type
+- Fix imports, modularize constants, use macros instead of strings
+- Document code, add logging to functions, move error functions
+- Move constants, document code, fix imports
+- Modularize constants, document math code
+- Rm `menus`, add `res` folder with menus and `.bin` files
+- Remove gamesave, add gamestate and gamestates
 - Fix typo, add fn to swap ints
 - Create private includes, fix previous includes
 - Minor pseudocode fixes
@@ -119,6 +127,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Create files to store error messages and input messages
+- Logger now supports stack tracing, fully document functions
 - Add code comments, fix functions, WiP
 - Write simple logger
 - Prototype help and leaderboard modules
