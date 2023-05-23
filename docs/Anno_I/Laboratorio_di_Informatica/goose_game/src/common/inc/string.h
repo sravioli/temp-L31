@@ -18,74 +18,77 @@
  * @version 2.1
  * @copyright GNU GPLv3
  */
-
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
-
-#include "../../inc/globals.h"
-
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
 /**
- * @def MAX_BUFFER_LEN
  * @brief The maximum allowed length for a string buffer.
  */
 #define MAX_BUFFER_LEN 256
 
 /**
- * @def FILLER_CHAR
  * @brief The default char to use as a filler if the username is too short.
  */
 #define FILLER_CHAR "?"
 
+/**
+ *  @brief The character that defines a line termination.
+ */
+#define LINE_END "\n"
+
+/**
+ *  @brief The character that defines the end of a string.
+ */
+#define STR_END '\0'
+
+/**
+ *  @brief The character that defines an empty string.
+ */
+#define STR_EMPTY ""
+
+/**
+ *  @brief The default value that a space assumes.
+ */
+#define SPACE_CHAR ' '
+
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
 /**
- * @brief Concatenates a string to a buffer of any type (narrow or wide
- *        character).
+ * @brief Concatenates a source string to the end of a buffer string.
  *
- * This function concatenates a string to a buffer of any type (narrow or wide
- * character) based on the type of the buffer pointer. It determines the type of
- * strings to concatenate based on the size of the buffer pointer, and calls the
- * appropriate helper function.
+ * This function appends the source string to the end of the buffer string. It
+ * uses @c snprintf() to safely concatenate the strings, ensuring that the
+ * resulting string remains null-terminated.
  *
- * @param[in,out] buffer A pointer to the buffer to concatenate to.
- * @param[in]     source A pointer to the string to concatenate.
+ * @param[in,out] buffer The buffer string to which the source string is
+ *                       appended.
+ * @param[in]     source The source string that is concatenated to the buffer
+ *                       string.
  *
  * @return void.
  *
- * @warning This function does not perform any type checking on the buffer and
- *          source pointers! It is the caller's responsibility to ensure proper
- *          usage of this function.
- *
  * @note The @e buffer and @e source strings must be null-terminated. It must
  *       have enough space to accommodate the concatenated string, including the
- *       null-terminator. The @e buffer pointer @b must be of either @c char* or
- *       @c wchar_t* type.
- * @note If the @e buffer pointer is not of @c char* or @c wchar_t* type, an
- *       error message will be printed to indicate unsupported values.
+ *       null-terminator.
  */
-void concat(char *buffer, const char *source);
+void concat(char *buffer, const char source[]);
 
 /**
- * @brief Concatenate a source string to the given buffer "n" times.
+ * @brief Concatenates a source string to the buffer string multiple times.
  *
- * This function appends the contents of the @e source string to the end of the
- * given @e buffer multiple times, as specified by the @c n_times parameter. The
- * @e buffer is updated in-place.
+ * This function appends the source string to the buffer string a specified
+ * number of times. The source string is concatenated to the buffer string
+ * n_times times using snprintf. The resulting string remains null-terminated.
  *
- * @param[in,out] buffer  Pointer to the buffer to concatenate to.
- * @param[in]     source  Pointer to the source string to append.
- * @param[in]     n_times Number of times to concatenate the source string to
- *                        the buffer.
+ * @param[in,out] buffer  The buffer string to which the source string is
+ *                        appended.
+ * @param[in]     source  The source string that is concatenated to the buffer
+ *                        string.
+ * @param[in]     n_times The number of times the source string is concatenated.
  *
  * @return void.
  *
@@ -101,33 +104,37 @@ void concat(char *buffer, const char *source);
  *
  * @see @c snprintf() for string formatting.
  */
-void nconcat(char *buffer, const char *source, const int n_times);
+void nconcat(char *buffer, const char source[], const int n_times);
 
 /**
- * @brief Concatenate a formatted string to the given buffer.
+ * @brief Formats a string using a variable argument list and appends it to the
+ *        buffer.
  *
- * This function append the given formatted string to the end of the @e buffer,
- * using the provide format specifier and a <em>variable argument list</em>. The
- * @e buffer is updated in-place.
+ * This function formats a string using a variable argument list and appends it
+ * to the end of the buffer string. The format and additional arguments are
+ * provided in a similar way as in the @c printf() family of functions. The
+ * resulting string remains null-terminated.
  *
- * @param[in,out] buffer      Pointer to the buffer to concatenate to.
- * @param[in]     source_size Maximum size of the source string to be formatted
- *                            and concatenated.
- * @param[in]     format      Format specifier string.
- * @param[in]     va_list     Variable argument list to be formatted.
+ * @param[in,out] buffer      The buffer string to which the formatted string is
+ *                            appended.
+ * @param[in]     source_size The size of the buffer string.
+ * @param[in]     format      The format string used to format the string.
+ * @param[in]     va_list     Additional arguments to be formatted into the
+ *                            string.
  *
  * @return void.
  *
  * @warning This function does not perform any size checking or memory
  *          allocation! It is the responsibility of the caller to ensure that
  *          the @e buffer has enough space for the formatted string.
+ *
  * @note The @e buffer parameter is expected to be a valid pointer to a
  *       null-terminated string and to have enough space to accommodate the
  *       formatted string and its null-terminator.
  * @note The @e source_size parameter specifies the maximum size of the source
  *       string that can be formatted and concatenated to the @e buffer.
  * @note The @e format parameter is expected to be a valid format specifier
- *       string according to the rules of the C @c printf() function.
+ *       string according to the rules of the @c printf() function.
  * @note The <em>variable argument list</em> should correspond to the format
  *       specifier string and provide the values to be formatted.
  *
@@ -137,31 +144,31 @@ void nconcat(char *buffer, const char *source, const int n_times);
 void fconcat(char *buffer, const int source_size, const char *format, ...);
 
 /**
- * @brief Allocates memory for a character buffer with null-termination.
+ * @brief Allocates a character buffer of a specified size and copies a string
+ *        into it.
  *
- * This function dynamically allocates memory for a character buffer with
- * null-termination. The size of the buffer is determined by the given size
- * parameter and the length of the input character s. The resulting buffer will
- * be null-terminated.
+ * This function allocates a character buffer of size (1 + size * strlen(s)) and
+ * copies the given string into the buffer. If memory allocation fails, an error
+ * is thrown using the throw_err function. The resulting string is
+ * null-terminated.
  *
- * @param[in] s    Pointer to the input string to be copied.
- * @param[in] size Size of the allocated memory for the copied string.
+ * @param[in] s    The string to be copied into the allocated buffer.
+ * @param[in] size The size of the buffer.
  *
- * @return Pointer to the dynamically allocated memory containing the copied
- *         string.
+ * @return A pointer to the allocated buffer.
  *
  * @attention The size of the allocated buffer is determined by the size
  *            parameter multiplied by the length of the input character s. It
  *            is important to ensure that the resulting buffer is not too
  *            large to prevent memory overflow.
- * @note The input string s should be a valid null-terminated string.
- * @note The size parameter specifies the size of the allocated memory for the
- *       copied string, including space for the null terminator.
+ *
+ * @note The input string @e s should be a valid null-terminated string.
+ * @note The @e size parameter specifies the size of the allocated memory for
+ *       the copied string, including space for the null terminator.
  * @note The returned pointer points to the dynamically allocated memory and
  *       should be freed by the caller when no longer needed to avoid memory
  *       leaks.
- * @note If the memory allocation fails, an error message is printed and the
- *       program exits with a failure status code.
+ * @throws STR_ALLOCATION_FAILED_ERROR If the memory allocation fails.
  *
  * @see @c malloc() for memory allocation.
  * @see @c free() for deallocating memory.
@@ -181,52 +188,48 @@ char *alloc_char(const char *c, const int size);
  *         It is the responsibility of the caller to free the memory when it
  *         is no longer needed.
  *
- * @throws Error If the memory allocation fails.
+ * @throws STR_ALLOCATION_FAILED_ERROR If the memory allocation fails.
  */
 char *str_allocate(const int size);
 
 /**
- * @brief Copies the contents of the source string to the destination buffer.
+ * @brief Copies a source string to a buffer string.
  *
- * This function copies the contents of the source string to the destination
- * buffer, ensuring that the buffer is null-terminated.
+ * This function copies the source string to the buffer string. It uses snprintf
+ * to safely copy the string, ensuring that the resulting string remains
+ * null-terminated.
  *
- * @param[in,out] buffer A pointer to the destination buffer.
- * @param[in]     source A pointer to the source string.
+ * @param[out] buffer The buffer string to which the source string is copied.
+ * @param[in]  source The source string that is copied to the buffer string.
  *
  * @return void.
- *
- * @note The destination buffer must be large enough to hold the entire source
- *       string, including the null terminator.
  */
-void str_copy(char *buffer, const char *source);
+void str_copy(char *buffer, const char source[]);
 
 /**
- * @brief Truncates the buffer at the specified length.
+ * @brief Truncates a buffer string to a specified length.
  *
- * This function truncates the contents of the buffer to the specified length,
- * ensuring that the buffer is null-terminated.
+ * This function truncates the buffer string to the specified length. The
+ * strncpy_s function is used to perform the truncation, ensuring that the
+ * resulting string is null-terminated.
  *
- * @param[in,out] buffer A pointer to the buffer to truncate.
- * @param[in]     len    The length at which to truncate the buffer.
+ * @param[in,out] buffer The buffer string to be truncated.
+ * @param[in]     len    The length to which the buffer string is truncated.
  *
  * @return void.
- *
- * @note The buffer must be large enough to hold the entire truncated string,
- *       including the null terminator.
  */
 void str_truncate(char *buffer, const int len);
 
 /**
- * @brief Converts a string to uppercase.
+ * @brief Converts a buffer string to uppercase.
  *
- * This function modifies the contents of the buffer by converting all
- * alphabetic characters to uppercase.
+ * This function converts each character in the buffer string to uppercase using
+ * the toupper function. The resulting string is modified in place.
  *
- * @param[in,out] buffer A pointer to the string to convert to uppercase.
+ * @param[in,out] buffer The buffer string to be converted to uppercase.
  *
  * @return void.
  */
-void str_to_uppercase(char *source);
+void str_to_uppercase(char *buffer);
 
 #endif  // !STRING_UTILS_H
