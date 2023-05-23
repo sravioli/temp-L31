@@ -13,7 +13,7 @@
 #include "../common/inc/string.h"
 #include "../common/inc/term.h"
 
-#include "../types/entries.h"
+#include "../common/inc/types/entries.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,12 +45,13 @@ void rm_duplicate_entries(Entries *es) {
   int num_entries = get_num_entries(es);
   int i = 0;
   while (i < num_entries - 1) {
-    Entry *current = get_entry(es, i);
-    Entry *next = get_entry(es, i + 1);
-    if (strcmp(get_name(current), get_name(next)) == 0) {
+    Entry current = get_entry(es, i);
+    Entry next = get_entry(es, i + 1);
+    if (strcmp(get_name(&current), get_name(&next)) == 0) {
       int j = i + 1;
       while (j < num_entries - 1) {
-        set_entry(es, get_entry(es, j + 1), j);
+        Entry e = get_entry(es, j + 1);
+        set_entry(es, &e, j);
         j = j + 1;
       }
       num_entries = num_entries - 1;
@@ -69,16 +70,16 @@ void sort_entries(Entries *es) {
   while (i < num_entries) {
     int j = i + 1;
     while (j < num_entries) {
-      Entry *ei = get_entry(es, i);
-      Entry *ej = get_entry(es, j);
-      int is_score_greater = get_final_score(ej) > get_final_score(ei);
-      int is_score_equal = get_final_score(ej) == get_final_score(ei);
-      int is_name_previous = strcmp(get_name(ej), get_name(ei)) < 0;
+      Entry ei = get_entry(es, i);
+      Entry ej = get_entry(es, j);
+      int is_score_greater = get_final_score(&ej) > get_final_score(&ei);
+      int is_score_equal = get_final_score(&ej) == get_final_score(&ei);
+      int is_name_previous = strcmp(get_name(&ej), get_name(&ei)) < 0;
       int should_swap_entries =
           is_score_greater || (is_score_equal && is_name_previous);
 
       if (should_swap_entries) {
-        swap_entries(ei, ej);
+        swap_entries(&ei, &ej);
       }
       j = j + 1;
     }
