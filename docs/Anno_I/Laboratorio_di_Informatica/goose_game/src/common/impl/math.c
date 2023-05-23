@@ -6,7 +6,12 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
+#include <stdlib.h>
+
 #include "../inc/math.h"
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 int proportion(const int numerator, const int known_value,
                const int denominator) {
@@ -18,8 +23,8 @@ int roll_dice() {
          (rand() % MAX_DICE_THROW + MIN_DICE_THROW);   // NOLINT
 }
 
-void swap_int(int *a, int *b) {
-  int temp = *a;
-  *a = *b;
-  *b = temp;
+void swap_int(int *n, int *m) {
+  int temp = *n;
+  *n = *m;
+  *m = temp;
 }
