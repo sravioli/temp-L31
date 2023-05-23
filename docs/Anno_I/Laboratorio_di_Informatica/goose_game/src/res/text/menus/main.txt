@@ -1,4 +1,4 @@
-MAIN MENU:
+MAIN MENU
 [n]ew game
 [s]aved games
 [l]eaderboard
