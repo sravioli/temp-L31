@@ -23,30 +23,6 @@
 #ifndef HELP_MODULE_H
 #define HELP_MODULE_H
 
-#include "../common/inc/term.h"
-#include <conio.h>
-
-// -------------------------------------------------------------------------- //
-// -------------------------------------------------------------------------- //
-
-/**
- * @def HELP_MENU_FILE
- * @brief The path relative to the @c ./src/ folder to the help menu file.
- */
-#define HELP_MENU_FILE "./menus/help/help.txt"
-
-/**
- * @def RULES_FILE
- * @brief The path relative to the @c ./src/ folder to the rules file.
- */
-#define RULES_FILE "./menus/help/rules.txt"
-
-/**
- * @def MANUAL_FILE
- * @brief The path relative to the @c ./src/ folder to the manual file.
- */
-#define MANUAL_FILE "./menus/help/manual.txt"
-
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 

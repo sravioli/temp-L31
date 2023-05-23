@@ -25,54 +25,31 @@
 
 // GLOBAL CONSTANTS LIST
 
-/**
- *  @def MIN_DICE_THROW
- *  @brief The minimum allowed number that a dice throw can assume.
- */
-#define MIN_DICE_THROW 1
-
-/**
- *  @def MAX_DICE_THROW
- *  @brief The maximum allowed number that a dice throw can assume.
- */
-#define MAX_DICE_THROW 6
-
-/**
- *  @def LINE_END
- *  @brief The character that defines a line termination.
- */
-#define LINE_END "\n"
-
-/**
- *  @def STR_END
- *  @brief The character that defines the end of a string.
- */
-#define STR_END '\0'
-
-/**
- *  @def STR_EMPTY
- *  @brief The character that defines an empty string.
- */
-#define STR_EMPTY ""
-
-/**
- *  @def SPACE_CHAR
- *  @brief The default value that a space assumes.
- */
-#define SPACE_CHAR ' '
-
 // boolean replacement (for visual clarity)
+// Instead of having 1/0 used as booleans, make them macros. This makes the code
+// more clear.
 
 /**
- * @def FALSE
  * @brief The default value for a boolean false. (used for visual clarity)
  */
 #define FALSE 0
 
 /**
- * @def TRUE
  * @brief The default value for a boolean true. (used for visual clarity)
  */
 #define TRUE (!FALSE)
+
+#define INDEX_NOT_FOUND -1
+
+#define MAIN_MENU "./res/text/menus/main.txt"
+#define PAUSE_MENU "./res/text/menus/pause.txt"
+#define HELP_MENU "./res/text/menus/help.txt"
+#define SAVED_MENU "./res/text/menus/saved.txt"
+
+#define RULES_FILE "./res/text/rules.txt"
+#define MANUAL_FILE "./res/text/manual.txt"
+
+#define SAVED_GAMES_FILE "./res/saves.bin"
+#define LEADERBOARD_FILE "./res/leaderboard.bin"
 
 #endif  // GLOBALS_H

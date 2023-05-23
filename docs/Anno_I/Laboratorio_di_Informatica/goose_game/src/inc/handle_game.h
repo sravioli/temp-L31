@@ -74,7 +74,7 @@ void print_board(const char game_board[]);
 void print_positions(Players *pls);
 
 void new_game();
-void game_loop(Players *pls, Board *board, const char game_board[]);
+void dev_game_loop(Players *pls, Board *board, const char game_board[]);
 void leave_game(void *ptr, ...);
 
 #endif  // !GAME_MODULE_H

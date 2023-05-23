@@ -6,11 +6,18 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
+#include <conio.h>
+#include <stdio.h>
+
+#include "../common/inc/string.h"
+#include "../common/inc/term.h"
+#include "../inc/globals.h"
+
 #include "../inc/handle_help.h"
 
 void print_help_menu() {
   new_screen();
-  print_menu(HELP_MENU_FILE);
+  print_menu(HELP_MENU);
 }
 
 void display_file(const char filename[]) {
