@@ -9,6 +9,12 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Fix bug that would cause infinite loop when entering a string instead of a number
+- Minor fixes
+- Fix logger code in doxygen documentation
+- Rewrite `handle_game` module, fix imports, add globals
+- Move all resource files to `res` folder
+- Conform pseudocode to code, change folder names, separate records
 - Move `.bin` files to `data` folder
 - Add logging, fix imports, add seed for rand
 - Adjust leaderboard module to handle the `entries` type
@@ -128,6 +134,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new globals and errors
+- Start to add test cases for `handle_game`
+- Add new exercise
 - Create files to store error messages and input messages
 - Logger now supports stack tracing, fully document functions
 - Add code comments, fix functions, WiP
