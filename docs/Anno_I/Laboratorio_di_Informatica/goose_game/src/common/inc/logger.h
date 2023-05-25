@@ -239,13 +239,13 @@ struct Logger {
  * providing a shared logger across multiple modules.
  *
  * Usage Example:
- * @code
+ * @code{.C}
  * int main (void) {
  *   logger.enter_fn(__func__);
  *
  *   logger.log("this is an event message: %s", "some data");
  *
- *   logger.stop()
+ *   logger.stop();
  *   return 0;
  * }
  * @endcode
