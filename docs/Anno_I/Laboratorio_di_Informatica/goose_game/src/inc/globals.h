@@ -41,6 +41,8 @@
 
 #define INDEX_NOT_FOUND -1
 
+#define DECIMAL_BASE 10
+
 #define MAIN_MENU "./res/text/menus/main.txt"
 #define PAUSE_MENU "./res/text/menus/pause.txt"
 #define HELP_MENU "./res/text/menus/help.txt"

@@ -9,7 +9,7 @@
 #define THROW_ERROR_FORMAT "%s[%s()]%s error: %s.%s\n"
 
 #define STR_ALLOCATION_FAILED_ERROR                                            \
-  "failed to allocate memry for string of size '%i'"
+  "failed to allocate memory for string of size '%i'"
 
 #define INVALID_FILENAME_ERROR "given file name (%s) is invalid\n"
 #define FILE_NOT_WRITABLE_ERROR "failed to write to file '%s'"
@@ -17,8 +17,13 @@
 
 #define VALUE_OUT_OF_BOUNDS_ERROR                                              \
   "value of %s is out of bounds, please retry.\n"
+#define INVALID_INPUT_ERROR "invalid input, please enter a valid input\n"
+
 #define DUPLICATE_USERNAME_ERROR "this is %s username! please change yours.\n"
 #define INVALID_USERNAME_ERROR "this (%s) username is invalid, please retry.\n"
+
+#define ALLOCATION_FAILED_ERROR                                                \
+  "failed to allocate memory for pointer with size '%i'\n"
 
 #define INVALID_KEY_ERROR "key '%c' does nothing."
 
@@ -31,8 +36,7 @@
  * attempted to be pushed and the maximum allowed index.
  */
 #define CALL_STACK_OVERFLOW_ERROR                                              \
-  "call stack overflow! trying to push call at index %i, while maximum "       \
-  "allowed is %i"
+  "call stack overflow! trying to push call at index %i, while max is %i\n"
 
 /**
  * @brief The error message for call stack underflow.
@@ -42,7 +46,7 @@
  * that the call stack is empty and no calls can be popped.
  */
 #define CALL_STACK_UNDERFLOW_ERROR                                             \
-  "call stack underflow! trying to pop call but the call stack is empty."
+  "call stack underflow! trying to pop call but the call stack is empty.\n"
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
