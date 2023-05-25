@@ -40,15 +40,30 @@ int ask_num_in_range(const int min, const int max, const char name[]) {
 
   logger.log("asking val of %s in range [%i, %i]", name, min, max);
   int result;
+  char buffer[MAX_BUFFER_LEN];
+  int is_input_valid = FALSE;
   do {
     printf(ASK_BOUND_VALUE_FMT, name, min, max);
-    scanf_s("%d", &result, sizeof(result));
+    fgets(buffer, sizeof(buffer), stdin);
 
-    if ((result < min) || (result > max)) {
+    // remove the trailing newline character
+    buffer[strcspn(buffer, "\n")] = '\0';
+
+    // convert buffer to integer
+    char *endptr;
+    result = strtol(buffer, &endptr, DECIMAL_BASE);
+
+    // check for conversion errors
+    if (endptr == buffer || *endptr != STR_END) {
+      logger.log("value %i is not a string, continuing", result);
+      print_err(INVALID_INPUT_ERROR);
+    } else if (result < min || result > max) {
       logger.log("value %i is out of bounds, continuing", result);
-      printf(VALUE_OUT_OF_BOUNDS_ERROR, name);
+      print_err(VALUE_OUT_OF_BOUNDS_ERROR, name);
+    } else {
+      is_input_valid = TRUE;
     }
-  } while ((result < min) || (result > max));
+  } while (!is_input_valid);
 
   logger.log("value %i is inside bounds. returning", result);
   logger.exit_fn();
@@ -158,11 +173,17 @@ Players *create_players(const int num_players) {
   // this function creates a Players struct. It allocates memory for it, calls
   // ask_username() to get the username for each user, sets all the default
   // values necessary to start a new game.
+  logger.enter_fn(__func__);
+  logger.log("asking players usernames");
 
   printf("%s", USERNAME_SCREEN_TITLE);
 
   // create the struct
   Players *pls = (Players *)malloc(sizeof(Players));  // NOLINT
+  if (!pls) {
+    logger.exit_fn();
+    throw_err(__func__, ALLOCATION_FAILED_ERROR, sizeof(Players));
+  }
 
   set_players_num(pls, num_players);
   set_turn(pls, INITIAL_TURN);
@@ -170,15 +191,24 @@ Players *create_players(const int num_players) {
   int i = 0;
   while (i < num_players) {
     Player *pl = (Player *)malloc(sizeof(Player));  // NOLINT
+    if (!pl) {
+      logger.exit_fn();
+      throw_err(__func__, ALLOCATION_FAILED_ERROR, "Player", sizeof(Player));
+    }
 
     char *username = ask_username(pls, i + 1);
     set_username(pl, username);
     free(username);
 
     set_id(pl);
-
     set_position(pl, INITIAL_POSITION);
     set_score(pl, INITIAL_SCORE);
+    set_turns_blocked(pl, NO_TURNS_BLOCKED);
+
+    logger.log("created player. username: %s, id: %i, pos: %i, score: %i, "
+               "turns blocked: %i",
+               get_username(pl), get_id(pl), get_position(pl), get_score(pl),
+               get_turns_blocked(pl));
 
     set_player(pls, pl, i);
     free(pl);
@@ -186,6 +216,10 @@ Players *create_players(const int num_players) {
     i = i + 1;
   }
 
+  logger.log("created %i players", i);
+  wait_keypress("press any key to continue");
+
+  logger.exit_fn();
   return pls;
 }
 
@@ -375,29 +409,6 @@ Board *create_board(const int board_dim) {
   return board;
 }
 
-char *sq_to_str(const int square) {
-  char *buffer = str_allocate((int)sizeof(square));  // NOLINT
-  if (square == GOOSE_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "X2");
-  } else if (square == BRIDGE_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "BR");
-  } else if (square == INN_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "IN");
-  } else if (square == WELL_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "WE");
-  } else if (square == LABYRINTH_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "LA");
-  } else if (square == PRISON_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "PR");
-  } else if (square == SKELETON_VALUE) {
-    snprintf(buffer, sizeof(buffer), "%2s", "SK");
-  } else {
-    snprintf(buffer, sizeof(buffer), "%2d", square);
-  }
-
-  return buffer;
-}
-
 char *build_border(const char *borders[4], const int square_len, const int cols,
                    const int rows, const int row, const Board board) {
   /* segments contains the four segments needed to create a border:
@@ -449,6 +460,29 @@ char *build_border(const char *borders[4], const int square_len, const int cols,
   }
   // add line end char since nothing should be present on the same line
   concat(buffer, LINE_END);
+
+  return buffer;
+}
+
+char *sq_to_str(const int square) {
+  char *buffer = str_allocate((int)sizeof(square));  // NOLINT
+  if (square == GOOSE_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "X2");
+  } else if (square == BRIDGE_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "BR");
+  } else if (square == INN_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "IN");
+  } else if (square == WELL_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "WE");
+  } else if (square == LABYRINTH_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "LA");
+  } else if (square == PRISON_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "PR");
+  } else if (square == SKELETON_VALUE) {
+    snprintf(buffer, sizeof(buffer), "%2s", "SK");
+  } else {
+    snprintf(buffer, sizeof(buffer), "%2d", square);
+  }
 
   return buffer;
 }
@@ -656,15 +690,15 @@ void print_positions(Players *pls) {
 }
 
 void dev_print_positions(Board *board, Players *pls) {
-  printf("NAME\tPOS\tSQUARE\n");
+  printf("NAME\tPOS\n");
   int i = 0;
   while (i < get_players_num(pls)) {
     int sq = get_square(board, get_position(get_player(pls, i)));
     char *square = sq_to_str(sq);
 
     printf("%s\t", get_username(get_player(pls, i)));
-    printf("%d\t", 1 + get_position(get_player(pls, i)));
-    printf("%s\n", square);
+    printf("%d ", 1 + get_position(get_player(pls, i)));
+    printf("(%2s)\n", square);
 
     i = i + 1;
   }
