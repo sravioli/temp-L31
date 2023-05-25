@@ -210,7 +210,7 @@ void str_copy(char *buffer, const char source[]);
  * @brief Truncates a buffer string to a specified length.
  *
  * This function truncates the buffer string to the specified length. The
- * strncpy_s function is used to perform the truncation, ensuring that the
+ * @c snprintf() function is used to perform the truncation, ensuring that the
  * resulting string is null-terminated.
  *
  * @param[in,out] buffer The buffer string to be truncated.
@@ -224,7 +224,7 @@ void str_truncate(char *buffer, const int len);
  * @brief Converts a buffer string to uppercase.
  *
  * This function converts each character in the buffer string to uppercase using
- * the toupper function. The resulting string is modified in place.
+ * the @c toupper() function. The resulting string is modified in place.
  *
  * @param[in,out] buffer The buffer string to be converted to uppercase.
  *
