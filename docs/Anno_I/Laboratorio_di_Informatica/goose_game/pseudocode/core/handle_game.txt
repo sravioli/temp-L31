@@ -1,118 +1,419 @@
 MODULO DI GESTIONE DELLA PARTITA
 ================================
 
-vedere "../library/math.txt"
-vedere "../library/string.txt"
-vedere "../library/globals.txt"
-vedere "../library/records.txt"
+
+vedere "../common/records/board.txt"
+vedere "../common/records/player.txt"
+vedere "../common/records/players.txt"
+// vedere "../common/records/gamestate.txt"
+
+vedere "../common/math.txt"
+vedere "../common/term.txt"
+vedere "../common/string.txt"
+
+vedere "../globals.txt"
+// vedere "../messages.txt"
+// vedere "../errors.txt"
 
 -------------------------------------------------------------------------------
 
-Costanti definite in questo modulo:
-- MIN_NUM_SQUARES := 50, numero minimo consentito di caselle;
-- MAX_NUM_SQUARES := 90, numero massimo consentito di caselle;
-- MIN_NUM_PLAYERS := 2, numero minimo consentito di giocatori;
-- MAX_NUM_PLAYERS := 4, numero massimo consentito di giocatori;
+FUNZIONE ask_num_in_range()
+===========================
 
-- GOOSE_SPACING := 9, distanza prefissata tra una casella oca e un'altra;
-- GOOSE_VALUE := 0, valore che la casella assume quando essa è una casella "oca";
-
-- BRIDGE_SQUARE := 6, posizione base all'interno del tabellone della casella "ponte";
-- INN_SQUARE := 19, posizione base all'interno del tabellone della casella "locanda";
-- WELL_SQUARE := 31, posizione base all'interno del tabellone della casella "pozzo";
-- LABYRINTH_SQUARE := 42, posizione base all'interno del tabellone della casella "labirinto";
-- PRISON_SQUARE := 52, posizione base all'interno del tabellone della casella "prigione";
-- SKELETON_SQUARE := 58, posizione base all'interno del tabellone della casella "scheletro";
-
-- BRIDGE_VALUE := -1, valore assunto dalla casella "ponte";
-- INN_VALUE := -2, valore assunto dalla casella "locanda";
-- WELL_VALUE := -3, valore assunto dalla casella "pozzo";
-- LABYRINTH_VALUE := -4, valore assunto dalla casella "labirinto";
-- PRISON_VALUE := -5, valore assunto dalla casella "prigione";
-- SKELETON_VALUE := -6, valore assunto dalla casella "scheletro";
-
-- DEFAULT_COLS := 15, numero di colonne di default;
-- DEFAULT_SQUARE_LEN := 7, lunghezza di default della singola casella;
-- DEFAULT_BORDERS := {"╭", "╮", "╰", "╯", "┬", "┴", "─", "│"}, array di caratteri
-                     che compongono il bordo del tabellone.
-
-- MIN_DICE_THROW := 1, numero più basso di un lancio di dadi;
-- MAX_DICE_THROW := 6, numero più alto di un lancio di dadi;
-
--------------------------------------------------------------------------------
-
-
-FUNZIONE ask_num_squares()
-==========================
-
-Richiede all'utente di inserire il numero di caselle del tabellone di gioco e
-restituisce il valore inserito.
-
-OUTPUT:
-- num_squares, il numero di caselle scelto dal giocatore, intero compreso tra
-  MIN_NUM_SQUARES e MAX_NUM_SQUARES inclusi.
-
-ALGORITMO:
-StampareAVideo("Inserici il numero di caselle [50, 90]:")
-num_squares := LeggereDaTastiera()
-MENTRE ((num_squares < MIN_NUM_SQUARES) OR (num_squares > MAX_NUM_SQUARES))
-  StampareAVideo("Il numero inserito non è valido.")
-  StampareAVideo("Inserici il numero di caselle [50, 90]:")
-  num_squares := LeggereDaTastiera()
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE ask_num_players()
-==========================
-
-Chiede il numero di giocatori e lo salva nella lista Players.
-
-OUTPUT:
-- num_players, numero di giocatori scelti dal giocatore, intero maggiore o
-  uguale a MIN_NUM_PLAYERS e minore o uguale a MAX_NUM_PLAYERS.
-
-ALGORITMO:
-StampareAVideo("Inserici il numero di giocatori [2, 4]:")
-num_players := LeggereDaTastiera()
-MENTRE ((num_players < MIN_NUM_PLAYERS) OR (num_players > MAX_NUM_PLAYERS))
-  StampareAVideo("Il numero inserito non è valido.")
-  StampareAVideo("Inserici il numero di giocatori [2, 4]:")
-  num_players := LeggereDaTastiera()
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE init_board()
-=====================
-
-Crea un tabellone vuoto con la dimensione data, lo riempie di caselle e inserisce
-le caselle oca e caselle speciali.
+Chiede all'utente di inserire un numero all'intero dell'intervallo specificato.
+Continua a chiedere finché il numero non è valido.
 
 INPUT:
-- dimension, dimensione del tabellone di gioco che va creato, intero maggiore
-  di zero
+- min, estremo inferiore dell'intervallo, intero;
+- max, entremo superiore dell'intervallo, intero;
+- name, indica che valore chiedere all'utente, stringa.
 
 OUTPUT:
-- board, tabellone con tutte le caselle inserite, Board.
-
-LAVORO:
-- i, contatore delle caselle del tabellone di gioco, intero maggiore di zero.
+- result, risultato della richiesta, intero.
 
 ALGORITMO:
-board := set_dim(board, dimension)
-i := 0
-MENTRE (i < dimension)
-  board := set_square(board, i, i + 1);
-  i := i + 1;
+ESEGUI
+  StampareAVideo("Insert the desired number of ")
+  StampareAVideo(name)
+  StampareAVideo("[")
+  StampareAVideo(min)
+  StampareAVideo(", "
+  StampareAVideo(max))
+  StampareAVideo("]: ")
+  result := LeggereDaTastiera()
+  SE (result < min OR result > max)
+    ALLORA StampareAVideo("this value is out of bounds, retry.")
+  FINE
+FINCHÉ (result < min OR result > max)
 FINE
-board := insert_goose_squares(board)
-board := insert_special_squares(board)
 
+-------------------------------------------------------------------------------
+
+FUNZIONE conform_username()
+===========================
+
+Modifica il nome utente ricevuto troncandolo alla lunghezza prestabilita,
+rendendo ogni carattere maiuscolo e aggiungendo dei caratteri di riempimento se
+la lunghezza iniziale è inferiore di quella prestabilita
+
+INPUT:
+- username, nome utente da modificare, stringa.
+
+OUTPUT:
+- username, nome utente modificato, stringa.
+
+ALGORITMO:
+str_truncate(username, MAX_USERNAME_LENGTH)
+str_to_uppercase(username)
+str_nconcat(username, FILLER_CHAR, MAX_USERNAME_LENGTH - str_length(username))
+
+
+FUNZIONE is_username_valid()
+============================
+
+Controlla se il nome utente ricevuto è valido. Scansiona ogni carattere del nomeutente e ritorna FALSE se il nome non è valido, TRUE altrimenti
+
+INPUT:
+- username, nome utente da controllare, stringa.
+
+OUTPUT:
+- result, esito del controllo, booleano che assume valore TRUE se il nome utente  è valido e FALSE altrimenti.
+
+LAVORO:
+- i, contatore intero per iterare sulla lunghezza del nome utente, intero positivo.
+
+ALGORITMO:
+result := TRUE
+i := 0
+MENTRE (i < str_length(username))
+  // scanf_s stops at first whitespace so no spaces in username
+  SE ((is_punctuation(carattere in posizione i di username)) OR
+       is_digit(carattere in posizione i di username))
+    ALLORA result := FALSE
+  FINE
+  i := i + 1
+FINE
+
+FUNZIONE find_duplicate_username()
+==================================
+
+Cerca un qualsiasi nome utente diplicato. Scansiona tutti i nomi utenti
+precedenti e restituisce l'indice del duplicato, altrimenti restituisce
+INDEX_NOT_FOUND.
+
+INPUT:
+- players, lista di giocatori, Players;
+- username, nome utente da comparare con gli altri, stringa.
+
+OUTPUT:
+- idx, indice del duplicato (INDEX_NOT_FOUND se non presente), intero.
+
+LAVORO:
+- i, contatore intero per iterare sul numero di giocatori, intero positivo.
+
+ALGORITMO:
+idx := INDEX_NOT_FOUND
+i := 0
+MENTRE (i < get_players_num(players))
+  SE (str_compare(get_username(get_player(players, i)), username) := TRUE)
+    ALLORA idx := i
+  FINE
+  i := i + 1
+FINE
+
+FUNZIONE ask_username()
+=======================
+
+Chiede al giocatore di inserire il proprio nome utente. Controlla se sia valido
+e lo uniforma al formato richiesto.
+
+INPUT:
+- players, lista dei giocatori, Players;
+- player_idx, indice del giocatore corrente, intero positivo.
+
+OUTPUT:
+- username, nome utente uniformato, stringa.
+
+LAVORO:
+- valid, indica se il nome utente sia valido, booleano che assume valore FALSE
+  se non lo è e TRUE altrimenti;
+- duplicate_idx, indice del nome utente duplicato, intero.
+
+ALGORITMO:
+valid := FALSE;
+MENTRE (NOT valid) {
+  printf(ASK_USERNAME_FMT, player_idx);
+  username := LeggereDaTastiera()
+
+  username := conform_username(username);
+  SE (NOT is_username_valid(username)) {
+    ALLORA StampareAVideo("this username is invalid, retry.")
+    ALTRIMENTI
+      duplicate := find_duplicate_username(pls, username);
+      SE (duplicate <> INDEX_NOT_FOUND) {
+        ALLORA
+          StampareAVideo("this is ")
+          StampareAVideo(get_username(get_player(pls, duplicate)))
+          StampareAVideo("username! please change yours.")
+        ALTRIMENTI
+          StampareAVideo("your username will be: ")
+          StampareAVideo(username)
+          valid := TRUE;
+      FINE
+  FINE
+FINE
+printf(LINE_END);
+
+-------------------------------------------------------------------------------
+
+FUNZIONE create_players()
+=========================
+
+Crea la lista di giocatori. Chiama ask_username() per ottenere il nome utente
+di ognuno, imposta tutti i valori di default.
+
+INPUT:
+- num_players, numero di giocatori in partita, intero positivo.
+
+OUTPUT:
+- players, lista di giocatori, Players.
+
+LAVORO:
+- i, contatore per iterare sul numero di giocatori, intero positivo;
+- player, il giocatore da aggiungere alla lista, Player.
+
+ALGORITMO:
+set_num_players(players, num_players)
+
+i := 0
+MENTRE (i < num_players)
+  username := ask_username(players, i + 1)
+  set_username(player, username)
+  set_id(player)
+  set_position(player, INITIAL_POSITION)
+  set_score(player, INITIAL_SCORE)
+  set_turns_blocked(player, NO_TURNS_BLOCKED)
+
+  set_player(players, player, i)
+  i := i + 1
+FINE
+
+FUNZIONE selection_sort_players()
+=================================
+
+Questa funzione utilizza il selection sort per riordinare i giocatori secondo
+i loro lanci dei dadi.
+
+INPUT:
+- players, lista di giocatori, Players;
+- dice_rolls, lista dei lanci dei dadi dei giocatori, array unidimensionale di
+  interi positivi con lunghezza al più MAX_NUM_PLAYERS;
+
+OUTPUT:
+- players, lista ordinata di giocatori, Players;
+- dice_rolls, lista ordinata dei lanci dei dadi dei giocatori, array unidimensionale
+  di interi positivi con lunghezza al più MAX_NUM_PLAYERS;
+
+LAVORO:
+- i, contatore intero per iterare sul numero dei giocatori, intero positivo;
+- j, contatore intero per iterare sul numero dei giocatori, intero positivo;
+- max_idx, stabilisce se invertire le posizioni di due giocatori, intero positivo.
+
+ALGORITMO:
+i := 0
+MENTRE (i < get_num_players(players) - 1)
+  max_idx := i
+  j := i + 1
+  MENTRE (j get_num_players(players))
+    SE (elemento in posizione j di dice_rolls > elemento in posizione max_idx di dice_rolls)
+      ALLORA max_idx := j
+    FINE
+    j := j + 1
+  FINE
+  SE (max_idx <> i)
+    ALLORA
+      swap_int(elemento in posizione i di dice_rolls,
+               elemento in posizione max_idx di dice_rolls)
+      players := swap_players(players, i, max_idx)
+  FINE
+  i := i + 1
+FINE
+
+FUNZIONE interactive_roll()
+===========================
+
+Questa funzione fa tirare i dadi in maniera interattiva ad ogni giocatore,
+chiedendo allo stesso di premere qualsiasi tasto per farlo. Dopodiché riempie
+l'array ricevuto.
+
+INPUT:
+- players, lista di giocatori, Players;
+- dice_rolls, lista dei lanci di dadi dei giocatori, array unidimensionale di
+  interi positivi di lunghezza al più MAX_NUM_PLAYERS.
+
+OUTPUT:
+- dice_rolls, la lista con i lanci effettuati dai giocaotri, array unidimensionale
+  di interi positivi di lunghezza al più MAX_NUM_PLAYERS.
+
+LAVORO:
+- i, contatore intero per iterare sul numero di giocatori, intero positivo;
+- username, nome utente del giocatore corrente, stringa.
+
+ALGORITMO:
+i := 0
+MENTRE (i get_num_players(pls))
+  username := get_username(get_player(players, i))
+  wait_keypress(PRESS_TO_ROLL_MSG, username)
+
+  elemento in posizione i di dice_rolls := roll_dice()
+
+  clear_line()
+  StampareAVideo(username)
+  StampareAVideo(" rolled a ")
+  StampareAVideo(elemento in posizione i di dice_rolls)
+  i := i + 1
+FINE
+StampareAVideo(LINE_END)
+
+FUNZIONE interactive_reroll()
+=============================
+
+Questa funzione fa rilanciare i dadi ai giocatori che hanno ottenuto lo stesso
+numero durante il lancio dei dadi. Dopodiché riordina i giocatori.
+
+INPUT:
+- players, lista dei giocatori, Players;
+- dice_rolls, lista dei lanci di dadi dei giocatori, array unidimensionale di
+  interi positivi di lunghezza al più MAX_NUM_PLAYERS.
+
+OUTPUT:
+- players, lista ordinata di giocatori, Players;
+- dice_rolls, lista ordinata dei lanci dei dadi dei giocatori, array unidimensionale
+  di interi positivi di lunghezza al più MAX_NUM_PLAYERS;
+
+LAVORO:
+- i, contatore intero per iterare sul numero di giocatori, intero positivo;
+- reroll_start, indice dal quale partire per far ritirare i dadi, intero positivo;
+- j, contatore per iterare sui giocatori con stesso numero di dadi, intero positivo;
+- username, nome utente del giocatore corrente, stringa.
+
+ALGORITMO:
+i := 0
+MENTRE (i < get_num_players(players) - 1)
+  reroll_start := i
+  MENTRE ((i < get_num_players(players) - 1) AND
+          (elemento in posizione i di dice_rolls =
+           elemento in posizione i+1 di dice_rolls))
+    i := i + 1
+  FINE
+  SE (reroll_start <> i)
+    ALLORA
+      StampareAVideo("Tie detected! Rerolling...")
+
+      j := reroll_start
+      MENTRE (j <= i)
+        username := get_username(get_player(players, i))
+        StampareAVideo(username)
+        wait_keypress("press any key to reroll")
+
+        elemento in posizione j di dice_rolls = roll_dice()
+
+        clear_line()
+        StampareAVideo(username)
+        StampareAVideo("rerolled and got ")
+        StampareAVideo(elemento in posizione j di dice_rolls)
+        j := j + 1
+      FINE
+      selection_sort_players(players, dice_rolls)
+  FINE
+  i := i + 1
+FINE
+StampareAVideo(LINE_END)
+
+FUNZIONE print_players_list()
+=============================
+
+Stampa a video l'ordine dei giocatori ottenuto tirando i dadi.
+
+INPUT:
+- players, lista di giocatori, Players.
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- i, contatore intero per iterare sui giocatori, intero positivo.
+
+ALGORITMO:
+StampareAVideo("Based on the dice rolls, the turn order is:")
+StampareAVideo(LINE_END)
+i := 0
+MENTRE (i <get_num_players(players))
+  StampareAVideo(get_username(get_player(players, i)))
+  SE (i < get_num_players(players) - 1)
+    ALLORA StampareAVideo(", ")
+  FINE
+  i := i + 1
+FINE
+StampareAVideo(LINE_END)
+StampareAVideo(LINE_END)
+
+FUNZIONE sort_players_by_dice()
+===============================
+
+Riordina i giocatori nella struttura Players in base ai loro lanci di dadi.
+Lancia i dadi per ogni giocatore, assegna i valori dei dadi all'array dice_rolls
+ordina l'array dei giocatori utilizzando l'ordinamento di selezione basato sul
+lancio di dadi, rilancia i dadi per i giocatori in parità e stampa l'elenco
+ordinato di giocatori.
+
+INPUT:
+- players, lista dei giocatori, Players.
+
+OUTPUT:
+- players, lista dei giocatori ordinata, Players.
+
+LAVORO:
+- dice_rolls, array di interi contenente i lanci dei dadi dei giocatori, array
+  unidimensionale di interi.
+
+ALGORITMO:
+StampareAVideo("TURN ORDER\n\n");
+
+// roll dice for each player and assign to their dice_rolls array
+interactive_roll(pls, dice_rolls);
+
+// sort players array based on dice roll using selection sort
+selection_sort_players(pls, dice_rolls);
+
+// reroll dice for tied players until there are no more ties
+interactive_reroll(pls, dice_rolls);
+
+// print the sorted list of players and their final die values
+print_players_list(pls);
+wait_keypress("Press any key to continue");
+
+-------------------------------------------------------------------------------
+
+FUNZIONE check_square()
+=======================
+
+Verifica se la posizione della casella speciale nel tabellone di gioco crea un
+conflitto con una casella oca.
+
+INPUT:
+- square, casella del tabellone di gioco, intero positivo;
+- board, tabellone di gioco dove si svolgerà la partita, Board.
+
+OUTPUT:
+- allowed_pos, posizione della casella che non crea conflitto con le caselle
+  oca, intero maggiore di zero.
+
+ALGORITMO:
+allowed_pos := square
+SE (get_square(board, square) = GOOSE_VALUE)
+  ALLORA allowed_pos := allowed_pos + 1
+FINE
 
 FUNZIONE insert_goose_squares()
 ===============================
@@ -127,19 +428,15 @@ OUTPUT:
 - board, tabellone di gioco dove si svolgerà la partita con le caselle oca, Board.
 
 LAVORO:
-- num_squares, il numero di caselle scelto dal giocatore, intero compreso tra
-  MIN_NUM_SQUARES e MAX_NUM_SQUARES inclusi.
 - i, contatore delle caselle del tabellone di gioco, intero maggiore o uguale
   a GOOSE_SPACING.
 
 ALGORITMO:
-num_squares := get_dim(board)
-i := GOOSE_SPACING;
-MENTRE (i < num_squares)
-  board := set_square(board, i, GOOSE_VALUE)
-  i := i + GOOSE_SPACING;
+i := GOOSE_SPACING - 1
+MENTRE (i < get_dim(board) - 1)
+  set_square(board, i, GOOSE_VALUE)
+  i := i + 1
 FINE
-
 
 FUNZIONE insert_special_squares()
 =================================
@@ -152,88 +449,62 @@ INPUT:
 OUTPUT:
 - board, tabellone di gioco riempito con le caselle oca e speciali, Board.
 
-LAVORO:
-- board_dim, il valore della dimensione del tabellone di gioco, intero maggiore
-  o uguale a MIN_NUM_SQUARES AND minore o uguale a MAX_NUM_SQUARES.
-
 ALGORITMO:
-board_dim := get_dim(board)
-
-bridge_position := proportion(BRIDGE_SQUARE, board_dim, MAX_NUM_SQUARES)
+bridge_position := proportion(BRIDGE_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 bridge_position := check_special_square(bridge_position, board)
 board := set_square(board, bridge_position, BRIDGE_VALUE)
 
-inn_position := proportion(INN_SQUARE, board_dim, MAX_NUM_SQUARES)
+inn_position := proportion(INN_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 inn_position := check_special_square(inn_position, board)
 board := set_square(board, inn_position, INN_VALUE)
 
-well_position := proportion(WELL_SQUARE, board_dim, MAX_NUM_SQUARES)
+well_position := proportion(WELL_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 well_position := check_special_square(well_position, board)
 board := set_square(board, well_position, WELL_VALUE)
 
-labyrinth_position := proportion(LABYRINTH_SQUARE, board_dim, MAX_NUM_SQUARES)
+labyrinth_position := proportion(LABYRINTH_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 labyrinth_position := check_special_square(labyrinth_position, board)
 board := set_square(board, labyrinth_position, LABYRINTH_VALUE)
 
-prison_position := proportion(PRISON_SQUARE, board_dim, MAX_NUM_SQUARES)
+prison_position := proportion(PRISON_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 prison_position := check_special_square(prison_position, board)
 board := set_square(board, prison_position, PRISON_VALUE)
 
-skeleton_position := proportion(SKELETON_SQUARE, board_dim, MAX_NUM_SQUARES)
+skeleton_position := proportion(SKELETON_SQUARE, get_dim(board), MAX_NUM_SQUARES)
 skeleton_position := check_special_square(skeleton_position, board)
 board := set_square(board, skeleton_position, SKELETON_VALUE)
 
+FUNZIONE create_board()
+=======================
 
-FUNZIONE check_special_square()
--------------------------------
-
-Verifica se la posizione della casella speciale nel tabellone di gioco crea un
-conflitto con una casella oca.
-
-INPUT:
-- special_square, posizione della casella speciale all'interno del tabellone di
-  gioco, intero maggiore di zero;
-- board, il tabellone di gioco dove si svolgerà la partita, Board.
-
-OUTPUT:
-- allowed_special_pos, posizione della casella speciale che non crea conflitto
-  con le caselle oca, intero maggiore di zero.
-
-ALGORITMO:
-allowed_special_pos := special_square
-SE (get_square(board, special_square) = GOOSE_VALUE)
-  ALLORA allowed_special_pos := allowed_special_pos + 1
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE print_board()
-======================
+Crea un nuovo tabellone di gioco con le dimensioni specificate. Inizializza il
+tabellone con valori successivi, inserisce le caselle oca e quelle speciali.
 
 INPUT:
-- board, tabellone di gioco su cui si svolgerà la partita, Board.
-- cols, numero di colonne che il tabellone deve avere, intero maggiore di zero;
-- square_len, lunghezza desiderata della singola casella, intero maggiore di zero;
-- borders, definisce quali caratteri utilizzare per costruire il bordo, array di
-  massimo otto caratteri che segue il seguente ordine: nw_corner (es. "┌"),
-  ne_corner (es. "┐"), sw_corner (es. "└"), se_corner (es. "┘"),
-  join_down (es. "┬"), join_up (es. "┴"), dash (es. "─"), vert (es. "│"),
+- dim, lunghezza del tabellone di gioco, intero positivo.
 
 OUTPUT:
-- nullo, non restituisce niente, vuoto.
+- board, tabellone di gioco, Board.
 
 LAVORO:
-- game_board, tabellone di gioco generato, stringa.
+- i, contatore intero per iterare sul numero di caselle, intero positivo.
 
 ALGORITMO:
-game_board := build_board(board, cols, square_len, borders)
-StampareAVideo(game_board)
+set_dim(board, dim)
 
+i := 0
+MENTRE (i < dim)
+  set_square(board, i, i + 1)
+  i := i + 1
+FINE
+
+board := insert_goose_squares(board)
+board := insert_special_squares(board)
+
+-------------------------------------------------------------------------------
 
 FUNZIONE build_border()
------------------------
+=======================
 
 INPUT:
 - borders, lista di caratteri da utilizzare per il bordo, array di caratteri che
@@ -276,7 +547,7 @@ MENTRE (col < cols)
         ALLORA
           str_concat(buffer, west_char)
           str_concat(buffer, ndash)
-        ALTRIMENTI SE (is_last_of_row = TRUE)          // last sq of the row
+        ALTRIMENTI SE (is_last_of_row = TRUE)  // last sq of the row
           ALLORA
             str_concat(buffer, join_char)
             str_concat(buffer, ndash)
@@ -320,7 +591,7 @@ str_concat(buffer, LINE_END)
 
 
 FUNZIONE square_to_str()
-------------------------
+========================
 
 INPUT:
 - square, valore della casella del tabellone, intero maggiore di zero;
@@ -352,9 +623,8 @@ SE (square = GOOSE_VALUE)
   FINE
 FINE
 
-
 FUNZIONE build_squares()
-------------------------
+========================
 
 INPUT:
 - vert, separatore verticale da utilizzare, carattere;
@@ -446,9 +716,8 @@ MENTRE (col < cols)
 FINE
 str_concat(buffer, LINE_END)
 
-
 FUNZIONE build_board()
-----------------------
+======================
 
 INPUT:
 - board, tabellone di gioco su cui si svolgerà la partita, Board;
@@ -472,8 +741,8 @@ LAVORO:
 
 ALGORITMO:
 rows := (get_dim(board) + cols - 1) / cols  // calculate needed rows
-top_borders := {nw_corner, ne_corner, join_down, dash}
-bot_borders := {sw_corner, se_corner, join_up, dash}
+top_borders := [nw_corner, ne_corner, join_down, dash]
+bot_borders := [sw_corner, se_corner, join_up, dash]
 
 row := 0;
 MENTRE (row < rows)
@@ -490,275 +759,41 @@ MENTRE (row < rows)
 FINE
 
 
-------------------------------------------------------------
-
-
-FUNZIONE fill_players()
-=======================
-
-Riempie la lista di giocatori.
-
-INPUT:
-- players, lista dei giocatori che giocheranno ad una partita, Players.
-
-OUTPUT:
-- players, lista dei giocatori modificata che giocheranno ad una partita, Players.
-
-LAVORO:
-- player, indica un giocatore da aggiungere in gioco, Player.
-
-ALGORITMO:
-num_players := get_num_players(players)
-i := 0
-MENTRE (i < num_players)
-  username := ask_username(username)
-  player := set_username(player, username)
-  player := set_position(player, INITIAL_POSITION)
-  player := set_score(player, INITIAL_SCORE)
-  players := set_players(players, player, i)
-  // players := set_turn_order(get_players(players, i), i)
-  i := i + 1
-  FINE
-FINE
-decide_turn_order()
-
-
-FUNZIONE decide_turn_order()
-============================
-
-Decidi l'ordine di gioco in base al lancio di dadi di ogni player.
-
-
-------------------------------------------------------------
-
-
-FUNZIONE ask_username()
-=======================
-
-Questa funzione richiede all'utente di inserire un nome utente, controlla se il
-nome utente è valido utilizzando is_username_valid(). Se il nome utente non è valido,
-stampa un messaggio di errore e avvisa l'utente per riprovare. Se il nome utente
-è valido, lo tronca se necessario utilizzando truncate_username() e lo converte
-in maiuscolo usando str_to_uppercase().
-
-INPUT:
-- username, nome utente da far scegliere al giocatore, stringa.
-
-OUTPUT:
-- username, nome utente scelto modificato secondo i criteri stabiliti, stringa.
-
-LAVORO:
-- valid, indica se la stringa sia valida, booleano che assume valore FALSE se
-  non è valida, TRUE altrimenti.
-
-ALGORITMO:
-valid := FALSE
-MENTRE (NOT valid = TRUE)
-  StampareAVideo("Inserici il tuo username: ")
-  username := LeggereDaTastiera()
-  SE (is_username_valid(username) = TRUE)
-    ALLORA
-      username := truncate_username(username, MAX_USERNAME_LENGTH)
-      username := str_to_uppercase(username)
-      valid := TRUE
-    ALTRIMENTI
-      StampareAVideo("Username non valido, riprova.")
-  FINE
-FINE
-
-
-FUNZIONE is_username_valid()
-============================
-
-Questa funzione controlla se il nome utente è valido, se il nome utente non è
-valido, stampa un messaggio di errore e avvisa l'utente per riprovare.
-
-INPUT:
-- username, nome utente scelto da controllare, stringa.
-
-OUTPUT:
-- result, esito del controllo, booleano che assume valore FALSE se non è valido,
-  TRUE altrimenti.
-
-LAVORO:
-- i, contatore della stringa username, intero maggiore di zero.
-
-ALGORITMO:
-username_len := str_length(username)
-i := 0
-MENTRE (i < username_len)
-  SE ((is_punctuation(elemento in posizione i di username) = TRUE) OR
-      (is_digit(elemento in posizione i di username) = TRUE))
-    ALLORA result := FALSE
-  FINE
-  i := i + 1
-FINE
-result := TRUE
-
-
-FUNZIONE truncate_username()
-============================
-
-INPUT:
-- username, nome utente scelto, array a 1 dimensione di caratteri.
-- lenght, lunghezza massima consentita di username, intero, >0.
-
-OUTPUT:
-- username, nome utente scelto da troncare se necessario, array a 1 dimensione di caratteri.
-
-ALGORITMO:
-SE (str_length(username) > MAX_USERNAME_LENGTH)
-  ALLORA username := str_truncate(username, MAX_USERNAME_LENGTH)
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE launch_new_game()
-==========================
-
-Avvia una nuova partita.
-
-LAVORO:
-- players, lista di players, Players;
-- board, il tabellone di gioco, Board;
-- num_players, numero di giocatori nella partita, intero;
-- num_squares, numero di caselle del tabellone di gioco, intero.
-
-OUTPUT:
-- nullo, non ha output.
-
-ALGORITMO:
-num_players := ask_num_players()
-players := set_players_num(players, num_players)
-
-num_squares := ask_num_squares()
-board := create_board(num_squares)
-
-players := fill_players(players)
-
-game_loop(players, board)
-
-
-FUNZIONE game_loop()
-====================
-
-Il ciclo di gioco vero e proprio che stampa il tabellone e fa giocare i giocatori.
-
-INPUT:
-- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
-- board, tabellone di gioco su cui si svolgerà la partita, Board.
-
-OUTPUT:
-- nullo, non ha output.
-
-LAVORO:
-- players_num, il numero di giocatori che giocano al gioco dell'oca, intero
-  maggiore o uguale di MIN_NUM_PLAYERS e minore o uguale di MAX_NUM_PLAYERS;
-- game_board, il tabellone di gioco da stampare, stringa;
-- break, condizione utilizzata per abbandonare la partita, booleano che assume
-  valore TRUE se si vuole abbandonare la partita, FALSE altrimenti.
-- current_player, contatore per iterare sul numero di giocatori, intero maggiore
-  o uguale a zero;
-- player_action, scelta che il giocatore fa nel menù, intero;
-- throw, valore del lancio di due dadi, intero compreso tra MIN_DICE_THROW e
-  MAX_DICE_THROW inclusi.
-
-
-ALGORITMO:
-players_num := get_players_num(players)
-game_board := build_board(board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, DEFAULT_BORDERS)
-
-break := FALSE
-MENTRE (is_player_winner() <> 1) OR (NOT(break) = TRUE)
-  StampareAVideo(game_board)
-  current_player := 0
-  MENTRE (current_player < players_num)
-    StampareAVideo("Il giocatore ")
-    StampareAVideo(get_username(elemento in posizione current_player di player))
-    StampareAVideo("si trova in posizione: ")
-    StampareAVideo(get_position(elemento in posizione current_player di player))
-    StampareAVideo(LINE_END)
-    current_player := current_player + 1
-  FINE
-
-  current_player := 0
-  MENTRE (current_player < players_num)
-    player_action = ask_player_action()
-    SE (player_action = 1)  // gioca
-      ALLORA
-        throw := random(MIN_DICE_THROW, MAX_DICE_THROW)
-        player := get_players(players, current_player)
-        player := set_score(player, get_score(player) + 1)
-        players := set_players(players, current_player) :=
-          move_player(players, player, throw, board)
-      ALTRIMENTI SE (player_action = 0)  // abbandona
-        ALLORA break := TRUE
-        ALTRIMENTI SE (player_action = 2)
-          ALLORA save_game(players, board)  // salva la partita
-        FINE
-      FINE
-    FINE
-
-    current_player := current_player + 1
-  FINE
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE ask_player_action()
-============================
-
-Chiede al giocatore cosa fare ed elenca le possibili scelte.
-
-INPUT:
-- nullo, non riceve input.
-
-OUTPUT:
-- player_choice, scelta del giocatore, intero compreso tra MIN_NUM_PLAYERS e
-  MAX_NUM_PLAYERS inclusi.
-
-ALGORITMO:
-StampareAVideo("Che vuoi fare?:")
-StampareAVideo("Per abbandonare la partita premere 0")
-StampareAVideo("Per lanciare i dadi premere 1")
-StampareAVideo("Per salvare la partita premere 2")
-player_choice := LeggereDaTastiera()
-MENTRE ((player_choice < 0) AND (player_choice > 2))
-  StampareAVideo("Il numero inserito non è valido.")
-  StampareAVideo("Che vuoi fare?:")
-  StampareAVideo("Per abbandonare la partita premere 0")
-  StampareAVideo("Per lanciare i dadi premere 1")
-  StampareAVideo("Per salvare la partita premere 2")
-  player_choice := LeggereDaTastiera()
-FINE
-
-
-------------------------------------------------------------
-
-
-FUNZIONE move_player()
+FUNZIONE print_board()
 ======================
 
-Sposta il giocatore di un numero di caselle uguali al lancio.
-
 INPUT:
-- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
-- player, giocatore attuale, Player;
-- throw, valore del lancio dei dadi, intero compreso tra MIN_DICE_THROW e
-  MAX_DICE_THROW inclusi;
-- board, tabellone di gioco su cui si svolgerà la partita, Board.
+- game_board, il tabellone di gioco in forma grafica, stringa.
 
 OUTPUT:
-- player, player con nuova posizione, Player.
+- nullo, non restituisce niente, vuoto.
 
 ALGORITMO:
-position := check_player_pos(players, player, board, throw)
-player := set_position(player, position)
+StampareAVideo(game_board)
 
+-------------------------------------------------------------------------------
+
+FUNZIONE find_other_player_in_square()
+======================================
+
+INPUT:
+- players, lista di giocatori, Players.
+- curr_player, giocatore da confrontare agli altri, Player;
+- target_sq, casella dove controllare se è presente un altro giocatore, intero positivo.
+
+OUTPUT:
+- idx, indice dell'altro giocatore (INDEX_NOT_FOUND se non esiste), intero.
+
+ALGORITMO:
+idx := INDEX_NOT_FOUND
+i := 0
+MENTRE (i < get_num_players(players))
+  SE ((get_id(get_player(players, i)) <> get_id(curr_player)) AND
+      (get_position(get_player(players, i)) = target_sq))
+    ALLORA idx := i
+  FINE
+  i := i + 1
+FINE
 
 FUNZIONE check_player_pos()
 ===========================
@@ -770,7 +805,7 @@ INPUT:
 - players, lista di giocatori che giocheranno al gioco dell'oca, Players;
 - player, giocatore attuale da inserire nella lista di giocatori, Player;
 - board, tabellone di gioco su cui svolgerà la partita, Board;
-- throw, valore del lancio dei dadi, intero maggiore di zero.
+- roll, valore del lancio dei dadi, intero maggiore di zero.
 
 OUTPUT:
 - pos, posizione corretta dove arriverà il giocatore, intero compreso tra
@@ -788,22 +823,22 @@ LAVORO:
 ALGORITMO:
 pos := 1
 position := get_position(player)
-new_sq := get_square(throw + position)
+new_sq := get_square(roll + position)
 turns_blocked := get_turns_blocked(player)
 SE (turns_blocked = 0)
   ALLORA
     SE ((new_sq = GOOSE_VALUE) OR (new_sq = BRIDGE_VALUE))
       ALLORA
-        pos = (throw * 2) + position
+        pos := (roll * 2) + position
       ALTRIMENTI SE (new_sq = SKELETON_VALUE)
         ALLORA
-          pos = 1
+          pos := 1
         ALTRIMENTI SE ((new_sq = PRISON_VALUE) OR (new_sq = WELL_VALUE))
           ALLORA
-            SE ((throw = 5) OR (throw = 7))
+            SE ((roll = 5) OR (roll = 7))
               ALLORA
                 player := set_turns_blocked(player, 0)
-                check_player_pos(players, board, throw + position)
+                pos := check_player_pos(players, board, roll + position)
               ALTRIMENTI SE (is_player_in_square(players, player, new_sq) = TRUE)
                 ALLORA
                   new_player := get_player_in_square(players, player, new_sq)
@@ -826,89 +861,191 @@ SE (turns_blocked = 0)
   FINE
 FINE
 
+FUNZIONE move_player()
+======================
 
-FUNZIONE is_player_in_square()
-==============================
-
-Controlla se un altro giocatore, diverso dal giocatore attuale, è posizionato
-nella casella data.
+Sposta il giocatore di un numero di caselle uguali al lancio.
 
 INPUT:
 - players, lista di giocatori che giocheranno al gioco dell'oca, Players;
-- player, player che sta attualmente giocando, Players;
-- square, posizione da verificare se un altro giocatore è presente, intero
-  maggiore di zero.
-
-OUTPUT:
-- result, esito della ricerca di un altro giocatore nella posizione data, booleano
-  che assume valore TRUE se è gia presente un altro giocatore, FALSE se non è
-  presente.
-
-LAVORO:
-- i, indice per scorrere i giocatori, intero maggiore di zero.
-
-ALGORITMO:
-num_players := get_num_players(players)
-i := 1
-result := FALSE
-MENTRE (i < num_players)
-  SE ((get_players(players, i) <> player) AND
-      (get_position(get_players(players, i)) = square))
-    ALLORA result = TRUE
-  i := i + 1
-FINE
-
-FUNZIONE get_player_in_square()
-===============================
-
-Restituisce il giocatore, diverso dal giocatore attuale,  posizionato nella casella data
-
-INPUT:
-- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
-- player, player che sta attualmente giocando, Players;
-- square, posizione da verificare se un altro giocatore è presente, intero
-  maggiore di zero.
-
-OUTPUT:
-- new_player, giocatore posizionato nella casella data diverso dal giocatore attuale, Player.
-
-LAVORO:
-- i, indice per scorrere i giocatori, intero maggiore di zero.
-
-ALGORITMO:
-num_players := get_num_players(players)
-i := 1
-MENTRE (i < num_players)
-  SE ((get_players(players, i) <> player) AND
-      (get_position(get_players(players, i)) = square))
-    ALLORA new_player := get_players(players, i)
-  i := i + 1
-FINE
-
-
-FUNZIONE is_player_winner()
-===========================
-
-Controlla se c'è un vincitore tra i giocatori, ovvero se un giocatore è
-arrivato alla casella finale
-
-INPUT:
-- players, lista di giocatori che giocheranno al gioco dell'oca, Players;
+- player, giocatore attuale, Player;
+- roll, valore del lancio dei dadi, intero compreso tra MIN_DICE_THROW e
+  MAX_DICE_THROW inclusi;
 - board, tabellone di gioco su cui si svolgerà la partita, Board.
 
 OUTPUT:
-- result, esito della ricerca se c'è un vincitore, booleano che assume valore FALSE
-  se non c'è un vincitore, TRUE se un giocatore ha vinto.
-
-LAVORO:
-- i, indice per scorrere i giocatori, intero maggiore di zero.
+- player, player con nuova posizione, Player.
 
 ALGORITMO:
-num_players := get_num_players(players)
-i := 1
-result := FALSE
-MENTRE (i < num_players)
-  SE (get_position(get_players(players, i)) = get_dim(board))
-    ALLORA result = TRUE
+set_position(player, check_player_pos(players, player, board, roll))
+
+FUNZIONE find_winner()
+======================
+
+Trova un giocatore vincitore.
+
+INPUT:
+- players, lista di giocatori, Players;
+- board, tabellone di gioco, Board.
+
+OUTPUT:
+- idx, indice del giocatore vincitore, intero.
+
+LAVORO:
+- i, contatore intero per iterare sul numero di giocatori, intero positivo;
+- pos, posizione corrente del giocatore, intero positivo.
+
+ALGORITMO:
+idx := INDEX_NOT_FOUND
+i := 0
+MENTRE (i < get_num_players(players))
+  pos := get_position(get_player(players, i)) + 1
+  SE (pos = get_dim(board))
+    ALLORA idx := i
+  FINE
   i := i + 1
 FINE
+
+FUNZIONE print_positions()
+==========================
+
+Stampa a video le posizioni dei giocatori
+
+INPUT:
+- players, lista di giocatori, Players;
+- board, tabellone di gioco, Board.
+
+LAVORO:
+- i, contatore intero per iterare sul numero di giocatori, intero positivo;
+- sq, casella del tabellone, intero positivo;
+
+ALGORITMO:
+StampareAVideo("NAME   POS")
+StampareAVideo(LINE_END)
+i := 0
+MENTRE (i < get_num_players(players))
+  sq := get_square(board, get_position(get_player(pls, i)))
+
+  StampareAVideo(get_username(get_player(players, i)))
+  StampareAVideo(1 + get_position(get_player(players, i)))
+  StampareAVideo(square_to_str(sq))
+  StampareAVideo(LINE_END)
+  i := i + 1
+FINE
+
+FUNZIONE game_loop()
+====================
+
+Il ciclo di gioco vero e proprio.
+
+INPUT:
+- players, lista di giocatori, Players;
+- board, tabellone di gioco, Board;
+- game_board, tabellone di gioco da stampare a video, stringa.
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- quit_game, indica se uscire o meno dal gioco, booleano che assume valore TRUE
+  se sì, FALSE altrimenti;
+- i, contatore intero per iterare sul numero di giocatori, intero positivo;
+- get_keypress, indica se è necessario ottenere un input dall'utente, booleano che
+  assume valore TRUE se va fatto, FALSE altrimenti;
+- keypress, il tasto premuto dal giocatore, carattere;
+- roll, valore del lancio di dadi per il giocatore, intero positivo;
+- winner_idx, indice del giocatore vincitore, intero.
+
+ALGORITMO:
+quit_game := FALSE
+MENTRE (NOT quit_game)
+  i := 0
+  MENTRE (i < get_num_players(players))
+    new_screen()
+    print_board(game_board)
+    print_positions(players, board)
+    StampareAVideo("press 'r' to roll, 'p' to pause game")
+    StampareAVideo(LINE_END)
+
+    get_keypress := TRUE
+    MENTRE (get_keypress)
+      StampareAVideo("Che vuoi fare?:")
+      StampareAVideo("Per abbandonare la partita premere 'l'")
+      StampareAVideo("Per lanciare i dadi premere 'r'")
+      StampareAVideo("Per salvare la partita premere 's'")
+      keypress := LeggereDaTastiera()
+      get_keypress := FALSE
+
+      SE (keypress = 'l')
+        ALLORA quit_game := TRUE
+        ALTRIMENTI SE (keypress = 'r')
+          ALLORA
+            roll := roll_dice()
+            StampareAVideo(get_username(get_player(players, i)))
+            StampareAVideo(" rolled a ")
+            StampareAVideo(roll)
+            move_player(players, get_player(players, i), roll, board)
+          ALTRIMENTI SE (keypress = 's')
+            ALLORA
+              save_game(players, board, game_board)
+            ALTRIMENTI
+              clear_line()
+              StampareAVideo("key ')
+              StampareAVideo(keypress)
+              StampareAVideo("does nothing.")
+              get_keypress := TRUE
+          FINE
+        FINE
+      FINE
+    FINE
+    i := i + 1
+  FINE
+
+  winner_idx := find_winner(players, board)
+  SE (winner_idx <> INDEX_NOT_FOUND)
+    ALLORA
+      quit_game := TRUE
+      new_screen()
+      StampareAVideo("There is a winner!")
+      StampareAVideo("winner is: ")
+      StampareAVideo(get_username(get_player(pls, winner_idx)))
+      wait_keypress("exiting...")
+  FINE
+FINE
+
+FUNZIONE launch_new_game()
+==========================
+
+Avvia una nuova partita del gioco dell'oca.
+
+INPUT:
+- nullo, non ha input.
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- num_squares, il numero di caselle del tabellone, intero positivo;
+- num_players, il numero di giocatori del gioco dell'oca, intero positivo;
+- board, tabellone di gioco su cui si svolge la partita, Board;
+- players, lista di giocatori, Players;
+- game_board, tabellone di gioco da stampare a video, stringa.
+
+ALGORITMO:
+new_screen()
+
+// prepare for a new game
+num_squares := ask_num_in_range(MIN_NUM_SQUARES, MAX_NUM_SQUARES, "squares")
+num_players := ask_num_in_range(MIN_NUM_PLAYERS, MAX_NUM_PLAYERS, "players")
+
+board := create_board(num_squares)
+players := create_players(num_players)
+
+game_board :=
+      build_board(board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, DEFAULT_BORDERS)
+
+new_screen()
+sort_players_by_dice(players)
+
+new_screen()
+dev_game_loop(players, board, game_board)
