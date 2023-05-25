@@ -1,0 +1,48 @@
+CASI DI TEST DELLE FUNZIONI DEL MODULO DI GIOCO
+===============================================
+
+
+nome_funzione
+| INPUT  | OUTPUT ATTESO  |
+| ------ | -------------- |
+| dato   | dato           |
+| dato   | dato           |
+| dato   | dato           |
+| dato   | dato           |
+| dato   | dato           |
+
+per output che non si possono mettere in tabella.
+INPUT
+...
+OUTPUT:
+...
+
+
+---------------------------------
+
+ask_num_squares()
+| INPUT (da tastiera) | OUTPUT ATTESO                                                         |
+| ------------------- | --------------------------------------------------------------------- |
+| 20                  | non restituisce nulla e continua a chiedere finché il numero è valido |
+| 50                  | 50                                                                    |
+| 75                  | 75                                                                    |
+| 90                  | 90                                                                    |
+| 100                 | non restituisce nulla e continua a chiedere finché il numero è valido |
+// | a                   | errore, valore non supportato                                         |
+
+
+ask_num_squares(), ask_num_players();
+
+init_board();
+insert_goose_squares();
+insert_special_squares();
+check_special_square();
+
+square_to_str();
+fill_players(); {["username", score, position, etc.], [altro player], ...}
+sort_players_by_dice(); (e sottofunzioni)
+create_players(): (e sottofunzioni)
+
+move_player() + check_player_pos();
+is_player_in_square() + get_player_in_square();
+is_player_winner()
