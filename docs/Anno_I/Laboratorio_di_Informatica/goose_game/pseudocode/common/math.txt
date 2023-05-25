@@ -3,9 +3,17 @@ FUNZIONI MATEMATICHE GENERICHE
 
 Questo modulo contiene delle generiche funzioni matematiche.
 
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
+COSTANTI DEL MODULO
+-------------------
 
+MIN_DICE_THROW := 1 // Valore minimo di un lancio di dadi
+MAX_DICE_THROW := 6 // Valore massimo di un lancio di dadi
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 FUNZIONE mod()
 ==============
@@ -34,11 +42,11 @@ FUNZIONE pow()
 
 Eleva la base all'esponente.
 
-INPUT: 
+INPUT:
 - base, base della potenza, intero;
 - exponent, esponente della potenza, intero;
 
-OUTPUT: 
+OUTPUT:
 - result, risultato della potenza, intero;
 
 ALGORITMO:
@@ -60,7 +68,7 @@ MENTRE (exponent > 0)
     ALLORA result := result * base
   FINE
   base := base * base
-  exponentonent := exponent / 2
+  exponent := exponent / 2
 FINE
 
 
@@ -153,9 +161,48 @@ result := floor((numerator * known_value) / denominator)
 FUNZIONE random()
 =================
 
-Genera un numero casuale tra due estremi. 
+Genera un numero casuale tra due estremi.
 
-INPUT: 
+INPUT:
 - bot, estremo inferiore, intero;
 - top, estremo superiore, intero;
 
+OUTPUT:
+- result, risultato dell'operazione di generazione casuale, intero.
+
+
+FUNZIONE roll_dice()
+====================
+
+Tira due dadi.
+
+INPUT:
+- nullo, non ha input.
+
+OUTPUT:
+- roll, risutalto del lancio di dadi, intero positivo;
+
+ALGORITMO:
+roll := random(MIN_DICE_THROW, MAX_DICE_THROW) + random(MIN_DICE_THROW, MAX_DICE_THROW)
+
+
+FUNZIONE swap_int()
+===================
+
+Scambia i valori di due variabili intere.
+
+INPUT:
+- n, primo numero, intero;
+- m, secondo numero, intero.
+
+OUTPUT:
+- n, primo numero col valore del secondo, intero;
+- m, secondo numero col valore del primo, intero.
+
+ALGORITMO:
+SE (n <> m)
+  ALLORA
+    n := n + m
+    m := n - m
+    n := n - m
+FINE

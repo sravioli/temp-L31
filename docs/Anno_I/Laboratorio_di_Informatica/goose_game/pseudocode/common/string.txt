@@ -6,9 +6,21 @@ vedere "../globals.txt"
 Questo file contiene implementazioni di diverse funzioni per la manipolazione
 delle stringhe.
 
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
+COSTANTI DEL MODULO
+-------------------
 
+MAX_BUFFER_LEN := 256 // La lunghezza massima consentita per una stringa
+FILLER_CHAR := "?"    // Il carettere da utilizzare come filler se l'username è troppo corto
+LINE_END := "\n"      // Il carattere che definisce la fine di una riga
+STR_END := '\0'       // Il carattere che definisce la fine di una stringa
+STR_EMPTY := ""       // Il carattere vuoto
+SPACE_CHAR := ' '     // Il carattere spazio
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 FUNZIONE str_length()
 =====================
@@ -109,8 +121,8 @@ INPUT:
 - string2, seconda stringa da confrontare, stringa.
 
 OUTPUT:
-- result, esito del confronto, booleano che assume valore TRUE se le stringhe sono
-  uguali e FALSE altrimenti.
+- result, esito del confronto, booleano che assume valore TRUE se le stringhe
+  sono uguali e FALSE altrimenti.
 
 LAVORO:
 - str1_len, lunghezza calcolata della stringa string1, intero maggiore di zero;
@@ -151,7 +163,7 @@ OUTPUT:
 LAVORO:
 - i, contatore per iterare sulla lunghezza della stringa di origine, intero
   maggiore o uguale a zero;
-- source_len, lunghezza calcolata della sringa do origine, intero meggiore di
+- source_len, lunghezza calcolata della stringa di origine, intero meggiore di
   zero.
 
 ALGORITMO:
