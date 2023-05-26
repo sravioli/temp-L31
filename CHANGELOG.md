@@ -9,6 +9,8 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Typo, formatting of `math.txt`
+- Import in `entry.h` and docs in `entries.h`
 - Fix bug that would cause infinite loop when entering a string instead of a number
 - Minor fixes
 - Fix logger code in doxygen documentation
@@ -134,6 +136,9 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add new board constant in pseudocode
+- Minor fixes to `handle_game`
+- Add entry(ies) and gamestate(s) structs to pseudocode
 - Add new globals and errors
 - Start to add test cases for `handle_game`
 - Add new exercise
