@@ -10,8 +10,8 @@ record contenente:
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
-COSTANTI RELATIVE AL TIPO DI DATO BOARD:
-----------------------------------------
+COSTANTI RELATIVE AL TIPO DI DATO BOARD
+---------------------------------------
 
 MIN_NUM_SQUARES := 50 // Il numero minimo di caselle consentite nel tabellone.
 MAX_NUM_SQUARES := 90 // Il numero massimo di caselle consentite nel tabellone.
@@ -32,6 +32,8 @@ WELL_VALUE := -3      // Il valore della casella del pozzo sul tabellone.
 LABYRINTH_VALUE := -4 // Il valore della casella del labirinto sul tabellone.
 PRISON_VALUE := -5    // Il valore della casella della prigione sul tabellone.
 SKELETON_VALUE := -6  // Il valore della casella dello scheletro sul tabellone.
+
+NUM_SPECIAL_SQUARES := 6 // Il numero di caselle speciali presenti nel tabellone
 
 DEFAULT_COLS := 15      // Il numero di colonne predefinito nel tabellone.
 DEFAULT_SQUARE_LEN := 7 // La lunghezza predefinita di una casella nel tabellone.
