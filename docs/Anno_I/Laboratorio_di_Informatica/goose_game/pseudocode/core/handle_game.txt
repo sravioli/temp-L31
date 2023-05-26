@@ -149,11 +149,11 @@ MENTRE (NOT valid) {
   SE (NOT is_username_valid(username)) {
     ALLORA StampareAVideo("this username is invalid, retry.")
     ALTRIMENTI
-      duplicate := find_duplicate_username(pls, username);
+      duplicate := find_duplicate_username(players, username);
       SE (duplicate <> INDEX_NOT_FOUND) {
         ALLORA
           StampareAVideo("this is ")
-          StampareAVideo(get_username(get_player(pls, duplicate)))
+          StampareAVideo(get_username(get_player(players, duplicate)))
           StampareAVideo("username! please change yours.")
         ALTRIMENTI
           StampareAVideo("your username will be: ")
@@ -261,7 +261,7 @@ LAVORO:
 
 ALGORITMO:
 i := 0
-MENTRE (i get_num_players(pls))
+MENTRE (i get_num_players(players))
   username := get_username(get_player(players, i))
   wait_keypress(PRESS_TO_ROLL_MSG, username)
 
@@ -381,16 +381,16 @@ ALGORITMO:
 StampareAVideo("TURN ORDER\n\n");
 
 // roll dice for each player and assign to their dice_rolls array
-interactive_roll(pls, dice_rolls);
+dice_rolls := interactive_roll(players, dice_rolls);
 
 // sort players array based on dice roll using selection sort
-selection_sort_players(pls, dice_rolls);
+selection_sort_players(players, dice_rolls);
 
 // reroll dice for tied players until there are no more ties
-interactive_reroll(pls, dice_rolls);
+interactive_reroll(players, dice_rolls);
 
 // print the sorted list of players and their final die values
-print_players_list(pls);
+print_players_list(players);
 wait_keypress("Press any key to continue");
 
 -------------------------------------------------------------------------------
@@ -435,7 +435,7 @@ ALGORITMO:
 i := GOOSE_SPACING - 1
 MENTRE (i < get_dim(board) - 1)
   set_square(board, i, GOOSE_VALUE)
-  i := i + 1
+  i := i + GOOSE_SPACING
 FINE
 
 FUNZIONE insert_special_squares()
@@ -449,30 +449,28 @@ INPUT:
 OUTPUT:
 - board, tabellone di gioco riempito con le caselle oca e speciali, Board.
 
+LAVORO:
+- special_poss, lista delle posizioni speciali presenti sul tabellone, array unidimensionale
+  di interi;
+- special_vals, lista dei valori che le caselle speciali assumono, array unidimensionale
+  di interi;
+- i, contatore intero per iterare sul numero di caselle speciali, intero positivo;
+- special_pos, la posizione speciale corrente nell'iterazione, intero positivo.
+
 ALGORITMO:
-bridge_position := proportion(BRIDGE_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-bridge_position := check_special_square(bridge_position, board)
-board := set_square(board, bridge_position, BRIDGE_VALUE)
-
-inn_position := proportion(INN_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-inn_position := check_special_square(inn_position, board)
-board := set_square(board, inn_position, INN_VALUE)
-
-well_position := proportion(WELL_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-well_position := check_special_square(well_position, board)
-board := set_square(board, well_position, WELL_VALUE)
-
-labyrinth_position := proportion(LABYRINTH_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-labyrinth_position := check_special_square(labyrinth_position, board)
-board := set_square(board, labyrinth_position, LABYRINTH_VALUE)
-
-prison_position := proportion(PRISON_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-prison_position := check_special_square(prison_position, board)
-board := set_square(board, prison_position, PRISON_VALUE)
-
-skeleton_position := proportion(SKELETON_SQUARE, get_dim(board), MAX_NUM_SQUARES)
-skeleton_position := check_special_square(skeleton_position, board)
-board := set_square(board, skeleton_position, SKELETON_VALUE)
+special_poss := [BRIDGE_SQUARE, INN_SQUARE, WELL_SQUARE, LABYRINTH_SQUARE,
+                 PRISON_SQUARE, SKELETON_SQUARE]
+special_vals := [BRIDGE_VALUE, INN_VALUE, WELL_VALUE, LABYRINTH_VALUE,
+                 PRISON_VALUE, SKELETON_VALUE]
+i := 0
+MENTRE (i < NUM_SPECIAL_SQUARES)
+  special_pos :=
+      proportion(get_dim(board), elemento in posizione i di special_poss,
+                 MAX_NUM_SQUARES)
+  special_pos := check_square(board, special_pos)
+  set_square(board, special_pos, elemento in posizione i di special_vals)
+  i = i + 1;
+FINE
 
 FUNZIONE create_board()
 =======================
@@ -924,7 +922,7 @@ StampareAVideo("NAME   POS")
 StampareAVideo(LINE_END)
 i := 0
 MENTRE (i < get_num_players(players))
-  sq := get_square(board, get_position(get_player(pls, i)))
+  sq := get_square(board, get_position(get_player(players, i)))
 
   StampareAVideo(get_username(get_player(players, i)))
   StampareAVideo(1 + get_position(get_player(players, i)))
@@ -964,15 +962,12 @@ MENTRE (NOT quit_game)
     new_screen()
     print_board(game_board)
     print_positions(players, board)
-    StampareAVideo("press 'r' to roll, 'p' to pause game")
-    StampareAVideo(LINE_END)
 
     get_keypress := TRUE
     MENTRE (get_keypress)
-      StampareAVideo("Che vuoi fare?:")
-      StampareAVideo("Per abbandonare la partita premere 'l'")
-      StampareAVideo("Per lanciare i dadi premere 'r'")
-      StampareAVideo("Per salvare la partita premere 's'")
+      StampareAVideo("Press 'l' to leave game")
+      StampareAVideo("Press 'r' to roll dice")
+      StampareAVideo("Press 's' to save game")
       keypress := LeggereDaTastiera()
       get_keypress := FALSE
 
@@ -990,9 +985,9 @@ MENTRE (NOT quit_game)
               save_game(players, board, game_board)
             ALTRIMENTI
               clear_line()
-              StampareAVideo("key ')
+              StampareAVideo("key '")
               StampareAVideo(keypress)
-              StampareAVideo("does nothing.")
+              StampareAVideo("' does nothing.")
               get_keypress := TRUE
           FINE
         FINE
@@ -1008,7 +1003,7 @@ MENTRE (NOT quit_game)
       new_screen()
       StampareAVideo("There is a winner!")
       StampareAVideo("winner is: ")
-      StampareAVideo(get_username(get_player(pls, winner_idx)))
+      StampareAVideo(get_username(get_player(players, winner_idx)))
       wait_keypress("exiting...")
   FINE
 FINE
@@ -1048,4 +1043,4 @@ new_screen()
 sort_players_by_dice(players)
 
 new_screen()
-dev_game_loop(players, board, game_board)
+game_loop(players, board, game_board)
