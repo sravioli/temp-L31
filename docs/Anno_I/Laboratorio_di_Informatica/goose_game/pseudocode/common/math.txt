@@ -180,10 +180,11 @@ INPUT:
 - nullo, non ha input.
 
 OUTPUT:
-- roll, risutalto del lancio di dadi, intero positivo;
+- roll, risultato del lancio di dadi, intero positivo;
 
 ALGORITMO:
-roll := random(MIN_DICE_THROW, MAX_DICE_THROW) + random(MIN_DICE_THROW, MAX_DICE_THROW)
+roll := random(MIN_DICE_THROW, MAX_DICE_THROW) +
+        random(MIN_DICE_THROW, MAX_DICE_THROW)
 
 
 FUNZIONE swap_int()
