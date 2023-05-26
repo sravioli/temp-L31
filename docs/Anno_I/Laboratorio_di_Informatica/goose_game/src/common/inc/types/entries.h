@@ -65,7 +65,7 @@ void set_num_entries(Entries *es, const int num_entries);
  * This function returns a pointer to the entries array in the @c Entries
  * struct.
  *
- * @param[in,out] entries A pointer to the @c Entries struct.
+ * @param[in,out] es A pointer to the @c Entries struct.
  *
  * @return A pointer to the entries array.
  */
