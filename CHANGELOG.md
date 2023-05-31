@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Improve structure explanation, use `requirements.txt`
 - Typo, formatting of `math.txt`
 - Import in `entry.h` and docs in `entries.h`
 - Fix bug that would cause infinite loop when entering a string instead of a number
