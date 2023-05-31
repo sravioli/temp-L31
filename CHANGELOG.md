@@ -265,6 +265,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Miscellaneous Tasks
 
+- Update `CHANGELOG.md`
 - :fire: remove github action in favour of a pre-push hook
 
 ### Refactor
