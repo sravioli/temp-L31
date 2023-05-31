@@ -9,6 +9,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Change formatting of commit messages
 - Improve structure explanation, use `requirements.txt`
 - Typo, formatting of `math.txt`
 - Import in `entry.h` and docs in `entries.h`
@@ -265,6 +266,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Miscellaneous Tasks
 
+- Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - :fire: remove github action in favour of a pre-push hook
 
