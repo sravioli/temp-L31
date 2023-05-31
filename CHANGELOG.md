@@ -138,6 +138,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Create `maskfile.md` and update `README.md`
 - Add new board constant in pseudocode
 - Minor fixes to `handle_game`
 - Add entry(ies) and gamestate(s) structs to pseudocode
@@ -266,6 +267,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Miscellaneous Tasks
 
+- Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
