@@ -73,31 +73,39 @@ Contiene impostazioni, snippets e estensioni consigliate per l'editor
 
 ## Eseguire localmente
 
-Per eseguire localmente è necessario:
+Innanzitutto è necessario clonare la repository:
 
-1. clonare il progetto:
+```sh
+git clone https://github.com/sRavioli/L31.git
+cd L31
+```
 
-    ```sh
-    git clone https://github.com/sRavioli/L31.git
-    cd L31
-    ```
+Se si ha [mask](https://github.com/jacobdeichert/mask), dopo aver clonato la
+repository basterà scrivere:
 
-2. creare un ambiente virtuale python e attivarlo:
+```sh
+mask prepare   # crea l'ambiente virtuale (va chiamato una sola volta)
+mask serve     # attiva l'ambiente virtuale e avvia il server MkDocs
+```
+
+In alternativa, è necessario:
+
+1. creare un ambiente virtuale python e attivarlo:
 
     ```sh
     python -m venv venv
     venv/Scripts/activate
     ```
 
-3. installare [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
-   e le dipendenze:
+2. installare [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+   e i pacchetti necessari:
 
     ```sh
     python -m pip install --upgrade pip
     pip install -r requirements.txt
     ```
 
-4. e infine avviare il server:
+3. e infine avviare il server:
 
     ```sh
     mkdocs serve
