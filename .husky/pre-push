@@ -24,8 +24,7 @@ function check() {
      warn "Detected changes to $name since last commit"
      commit "Tracking and committing changes..."
      git add ./$1
-     git commit -m "chore(auto): :robot:  update \`./$1\`"
-
+     git commit -m "chore(auto): update \`$1\`"
   fi
   return
 }
