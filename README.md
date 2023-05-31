@@ -8,67 +8,107 @@
 Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31,
 A.A. 2021-22, dell'Università di Bari "Aldo Moro".
 
-## Eseguire Localmente
+## Struttura della repository
 
-Clonare il progetto
+La repository contiene sia il materiale che i professori rilasciano, che gli
+appunti. Per consultare le slides è necessario farlo da GitHub, per gli appunti
+bisogna consultare il [sito](https://sravioli.github.io/L31/).
 
-```bash
-git clone https://github.com/sRavioli/L31.git
+La struttura è semplice, tutti gli appunti sono contenuti all'interno della
+cartella `docs/`, suddivisi in base all'anno accademico con la seguente sintassi:
+
+```text
+Anno_<numero>
 ```
 
-Recarsi nella cartella del progetto
+dove con `<numero` si intende un numero romano che indichi l'anno del corso di
+laurea. Ogni cartella del tipo `Anno_<numero>` contiene a sua volta altre
+cartelle, ognuna delle quali rappresenta un corso differente. Ad esempio, gli
+appunti di programmazione presentano la seguente struttura:
 
-```bash
-cd L31
+```text
+L31/docs/Anno_I/
+└───Programmazione
+    ├───code
+    │   ├───nov
+    │   └───oct
+    ├───exercises
+    └───handouts
+        ├───articles
+        ├───examples
+        └───exercises
 ```
 
-e installare [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/),
-idealmente in un ambiente virtuale[^1].
-
-```bash
-pip install mkdocs-material
-```
-
-Avviare il server
-
-```bash
-mkdocs serve
-```
-
-MkDocs avvierà un server su [localhost:8000](http://localhost:8000/) dove
-saranno presenti gli appunti.
+La cartella `handouts/` contiene tutte le slides e il materiale che il professore
+ha rilasciato, la cartella `code/` contiene dei file C relativi a esercizi, la
+cartella `exercises/` contiene file relativi a esercizi effettuati in aula o
+assegnati e poi corretti.
 
 <!-- markdownlint-disable MD033 -->
-Per interrompere il server basta premere <kbd>Ctrl</kbd>+<kbd>C</kbd>.
-<!-- markdownlint-enable MD033 -->
+<details>
 
-## Struttura
+<summary>per i curiosi</summary>
 
-È possibile consultare gli appunti o le slides direttamente, senza dover far
-partire il server mkdocs. Segue la struttura degli appunti di Programmazione
-come esempio:
+### `.husky/`
 
-```txt
-./L31/DOCS/
-├───Anno_I
-│   └───Programmazione
-│       ├───code                      [C]   Codice degli esercizi
-│       ├───handouts                  [PDF] File di appunti
-│       │   ├───articles              [PDF] Articoli di approfondimento
-│       │   ├───examples              [PDF] Esempi fatti a lezione
-│       │   └───exercises             [PDF] Esercizi fatti a lezione
-│       └───notes                     [MD]  File di appunti
-│           └───exercises             [MD]  Esercizi fatti a lezione con soluzione
-└───javascripts
+Contiene un piccolo script che controlla se la cartella `.vscode/` oppure il
+file auto-generato `CHANGELOG.md` siano stati aggiornati e se sì, esegue
+automaticamente il commit di questi cambiamenti.
+
+Il pre-push hook utilizza [Husky](https://typicode.github.io/husky/#/?id=install),
+che richiede [Node.js](https://nodejs.org/it/).
+
+Per non far eseguire l'hook bisogna effettuare il push con la flag `--no-verify`:
+
+```sh
+git push --no-verify
 ```
 
-**Extra**:
+### `.vscode/`
 
-- `📂 .husky` – presenta uno script che effettua commit automaticamente se
-  `📂 .vscode/*` o `📄 CHANGELOG.md` vengono aggiornati[^2]. Inoltre genera
-  automaticamente un changelog con [git-cliff](https://www.github.com/orhun/git-cliff);
-- `📂 .vscode` – impostazioni, snippets e estensioni consigliate per
-  [VSCode](https://github.com/microsoft/vscode);
+Contiene impostazioni, snippets e estensioni consigliate per l'editor
+[VSCode](https://github.com/microsoft/vscode);
+
+</details>
+
+## Eseguire localmente
+
+Per eseguire localmente è necessario:
+
+1. clonare il progetto:
+
+    ```sh
+    git clone https://github.com/sRavioli/L31.git
+    cd L31
+    ```
+
+2. creare un ambiente virtuale python e attivarlo:
+
+    ```sh
+    python -m venv venv
+    venv/Scripts/activate
+    ```
+
+3. installare [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+   e le dipendenze:
+
+    ```sh
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    ```
+
+4. e infine avviare il server:
+
+    ```sh
+    mkdocs serve
+    ```
+
+MkDocs inizierà la build del sito, dopodiché quest'utltimo sarà accessibile
+tramite browser all'indirizzo [localhost:8000](http://localhost:8000/).
+
+Per interrompere il server MkDocs bisogna premere <kbd>Ctrl</kbd>+<kbd>C</kbd>
+nel terminale.
+<!-- markdownlint-enable MD033 -->
 
 ## Come contribuire
 
@@ -79,13 +119,4 @@ come esempio:
 
 ## Licenza
 
-Il progetto è sotto licenza [Creative Commons Attribution 4.0 International](LICENSE.txt).
-
-[^1]:
-    Si trovano più informazioni nella sezione [installazione](https://squidfunk.github.io/mkdocs-material/getting-started/#installation)
-    della documentazione di Material for MkdDocs.
-[^2]:
-    L'hook utilizza [Husky](https://typicode.github.io/husky/#/?id=install), che
-    richiede [Node.js](https://nodejs.org/it/). Per ignorare l'hook (se non si
-    vuole installare husky o per altri motivi) bisogna effettuare il push con
-    la flag `--no-verify`.
+Il progetto è sotto licenza [Creative Commons Attribution 4.0 International](./LICENSE.txt)
