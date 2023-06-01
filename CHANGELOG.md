@@ -9,6 +9,14 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Bug Fixes
 
+- Change path to res since it has been moved
+- Use library fns instead of new ones
+- Make `dice_array` be output instead of work
+- Move `res` folder to single one
+- Conform `term` to proj syntax
+- Update mask commands, add commands for bash
+- Change commands name, add verbosity, sort glossary
+- Fix bash script
 - Change formatting of commit messages
 - Improve structure explanation, use `requirements.txt`
 - Typo, formatting of `math.txt`
@@ -138,6 +146,10 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Features
 
+- Add fn to display file contents
+- Write tests for `handle_game` module
+- Add function to display file
+- Add common `res` folder
 - Create `maskfile.md` and update `README.md`
 - Add new board constant in pseudocode
 - Minor fixes to `handle_game`
@@ -267,6 +279,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 
 ### Miscellaneous Tasks
 
+- Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
