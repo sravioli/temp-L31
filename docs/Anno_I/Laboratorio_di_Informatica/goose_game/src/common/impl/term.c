@@ -133,6 +133,7 @@ void new_screen() {
 
 void print_menu(const char filename[]) {
   logger.enter_fn(__func__);
+  new_screen();
 
   logger.log("safe opening file '%s'", filename);
   FILE *fp;
@@ -192,6 +193,7 @@ void print_menu(const char filename[]) {
 
 void print_file(const char filename[]) {
   logger.enter_fn(__func__);
+  new_screen();
 
   logger.log("safe opening file '%s'", filename);
   FILE *fp;
@@ -213,6 +215,26 @@ void print_file(const char filename[]) {
   fclose(fp);
 
   logger.log("read %i file lines from '%s'", num_lines, filename);
+  logger.exit_fn();
+}
+
+void display_file(const char filename[]) {
+  logger.enter_fn(__func__);
+
+  print_file(filename);
+  printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
+         LINE_END);
+
+  logger.log("waiting for back key...");
+  int display = TRUE;
+  while (display) {
+    char key = _getch();
+    if (is_back_key(key)) {
+      display = FALSE;
+    }
+  }
+
+  logger.log("exiting this view");
   logger.exit_fn();
 }
 
