@@ -9,7 +9,7 @@
 Creates a virtual environment, activates it, upgrades pip to the latest version
 and then will install the required dependencies.
 
-~~~bash,zsh
+~~~bash
 python -m venv venv
 source venv/bin/activate
 python -m pip install --upgrade pip
