@@ -2,51 +2,93 @@
 
 > Useful tasks for the project
 
-## prepare
+## install
 
 > Will create a python virtual env and install the required dependencies.
 
 Creates a virtual environment, activates it, upgrades pip to the latest version
-and then will install the required dependencies.
+and installs the required dependencies.
 
-~~~bash
+```bash
+[[ "$verbose" == "true" ]] && echo "Creating python environment"
 python -m venv venv
+
+[[ "$verbose" == "true" ]] && echo "Activating python environment"
 source venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r ./requirements.txt
-~~~
 
-~~~powershell
-python -m venv venv
-./venv/Scripts/activate
+[[ "$verbose" == "true" ]] && echo "Upgrading pip"
 python -m pip install --upgrade pip
+
+[[ "$verbose" == "true" ]] && echo "Installing required dependencies"
 pip install -r ./requirements.txt
-~~~
+```
+
+```pwsh
+if ($env:verbose) { Write-Output "Creating python environment" }
+python -m venv venv
+
+if ($env:verbose) { Write-Output "Activating python environment" }
+./venv/Scripts/activate
+
+if ($env:verbose) { Write-Output "Upgrading pip" }
+python -m pip install --upgrade pip
+
+if ($env:verbose) { Write-Output "Installing required dependencies" }
+pip install -r ./requirements.txt
+```
 
 ## serve
 
 > Will activate the python virtual env, then serve the site.
 
-~~~bash
+**OPTIONS**
+
+* dirty
+  * flags: -d --dirty
+  * desc: Serve site in dirty reload mode
+
+```bash
+[[ "$verbose" == "true" ]] && echo "Activating python environment"
 source venv/bin/activate
-mkdocs serve
-~~~
+if "$dirty" == "true"; then
+  [[ "$verbose" == "true" ]] && echo "Running in dirtyreload mode..."
+  mkdocs serve --dirtyreload
+else
+  [[ "$verbose" == "true" ]] && echo "Running..."
+  mkdocs serve
+fi
+```
 
-~~~powershell
+```pwsh
+if ($env:verbose) { Write-Output "Activating python environment" }
 ./venv/Scripts/activate
-mkdocs serve
-~~~
+if ($env:dirty) {
+  if ($env:verbose) { Write-Output "Running in dirtyreload mode..." }
+  Invoke-Expression -Command "mkdocs serve --dirtyreload"
+} else {
+  if ($env:verbose) { Write-Output "Running..." }
+  Invoke-Expression -Command "mkdocs serve"
+}
+```
 
-### serve dev
+## sort-glossary
 
-> Will serve in dirty reload mode, useful to develop the site.
+> It will sort alphabetically the contents of `includes/glossary.md`.
 
-~~~bash
-source venv/bin/activate
-mkdocs serve --dirtyreload
-~~~
+```bash
+[[ "$verbose" == "true" ]] && echo "Sorting file contents"
+sort ./includes/glossary.md > ./includes/sorted.md
 
-~~~powershell
-./venv/Scripts/activate
-mkdocs serve --dirtyreload
-~~~
+[[ "$verbose" == "true" ]] && echo "Writing to file"
+mv --force ./includes/sorted.md ./includes/glossary.md
+```
+
+```pwsh
+if ($env:verbose) { Write-Output "Sorting file contents" }
+Get-Content -Path ./includes/glossary.md `
+    | Sort-Object `
+    | Out-File -FilePath ./includes/sorted.md -Encoding UTF-8
+
+if ($env:verbose) { Write-Output "Writing to file" }
+Move-Item -Path ./includes/sorted.md -Destination ./includes/glossary.md -Force
+```
