@@ -290,6 +290,7 @@ Commit messages should follow the [Conventional Commits Specification](https://w
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
 - Update `CHANGELOG.md`
+- Update `CHANGELOG.md`
 - :fire: remove github action in favour of a pre-push hook
 
 ### Refactor
