@@ -44,14 +44,14 @@
 #define DECIMAL_BASE 10
 
 #define MAIN_MENU "./res/text/menus/main.txt"
-#define PAUSE_MENU "./res/text/menus/pause.txt"
-#define HELP_MENU "./res/text/menus/help.txt"
-#define SAVED_MENU "./res/text/menus/saved.txt"
+#define PAUSE_MENU "../../res/text/menus/pause.txt"
+#define HELP_MENU "../../res/text/menus/help.txt"
+#define SAVED_MENU "../../res/text/menus/saved.txt"
 
-#define RULES_FILE "./res/text/rules.txt"
-#define MANUAL_FILE "./res/text/manual.txt"
+#define RULES_FILE "../../res/text/rules.txt"
+#define MANUAL_FILE "../../res/text/manual.txt"
 
-#define SAVED_GAMES_FILE "./res/saves.bin"
-#define LEADERBOARD_FILE "./res/leaderboard.bin"
+#define SAVED_GAMES_FILE "../../res/saves.bin"
+#define LEADERBOARD_FILE "../../res/leaderboard.bin"
 
 #endif  // GLOBALS_H
