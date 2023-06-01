@@ -1,4 +1,0 @@
-HELP MENU
-[r]ules
-[m]anual
-go [b]ack

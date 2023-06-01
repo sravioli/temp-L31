@@ -1,6 +1,0 @@
-MAIN MENU
-[n]ew game
-[s]aved games
-[l]eaderboard
-[h]elp
-[q]uit
