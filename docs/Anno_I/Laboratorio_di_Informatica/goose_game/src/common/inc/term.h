@@ -284,6 +284,8 @@ void print_menu(const char filename[]);
  */
 void print_file(const char filename[]);
 
+void display_file(const char filename[]);
+
 /**
  * @brief Checks if a key is a "back" key.
  *
