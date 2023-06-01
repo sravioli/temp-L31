@@ -84,17 +84,18 @@ Se si ha [mask](https://github.com/jacobdeichert/mask), dopo aver clonato la
 repository basterà scrivere:
 
 ```sh
-mask prepare   # crea l'ambiente virtuale (va chiamato una sola volta)
+mask install   # crea l'ambiente virtuale e installa i pacchetti
 mask serve     # attiva l'ambiente virtuale e avvia il server MkDocs
 ```
 
-In alternativa, è necessario:
+In alternativa è necessario:
 
 1. creare un ambiente virtuale python e attivarlo:
 
     ```sh
     python -m venv venv
     venv/Scripts/activate
+    # source venv/bin/activate # per bash
     ```
 
 2. installare [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
