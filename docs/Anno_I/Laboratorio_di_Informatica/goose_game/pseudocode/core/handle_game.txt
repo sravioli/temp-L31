@@ -248,8 +248,6 @@ l'array ricevuto.
 
 INPUT:
 - players, lista di giocatori, Players;
-- dice_rolls, lista dei lanci di dadi dei giocatori, array unidimensionale di
-  interi positivi di lunghezza al più MAX_NUM_PLAYERS.
 
 OUTPUT:
 - dice_rolls, la lista con i lanci effettuati dai giocaotri, array unidimensionale
@@ -303,7 +301,7 @@ MENTRE (i < get_num_players(players) - 1)
   reroll_start := i
   MENTRE ((i < get_num_players(players) - 1) AND
           (elemento in posizione i di dice_rolls =
-           elemento in posizione i+1 di dice_rolls))
+           elemento in posizione i + 1 di dice_rolls))
     i := i + 1
   FINE
   SE (reroll_start <> i)
@@ -381,7 +379,7 @@ ALGORITMO:
 StampareAVideo("TURN ORDER\n\n");
 
 // roll dice for each player and assign to their dice_rolls array
-dice_rolls := interactive_roll(players, dice_rolls);
+dice_rolls := interactive_roll(players);
 
 // sort players array based on dice roll using selection sort
 selection_sort_players(players, dice_rolls);
