@@ -158,6 +158,7 @@ char *ask_username(Players *pls, const int player_idx) {
         print_err(DUPLICATE_USERNAME_ERROR);
       } else {
         printf(PRINT_VALID_USERNAME_FMT, username);
+        logger.exit_fn();
         valid = TRUE;
       }
     }
@@ -181,7 +182,7 @@ Players *create_players(const int num_players) {
   // create the struct
   Players *pls = (Players *)malloc(sizeof(Players));  // NOLINT
   if (!pls) {
-    logger.exit_fn();
+    logger.stop();
     throw_err(ALLOCATION_ERROR);
   }
 
@@ -192,7 +193,7 @@ Players *create_players(const int num_players) {
   while (i < num_players) {
     Player *pl = (Player *)malloc(sizeof(Player));  // NOLINT
     if (!pl) {
-      logger.exit_fn();
+      logger.stop();
       throw_err(ALLOCATION_ERROR);
     }
 
@@ -223,19 +224,11 @@ Players *create_players(const int num_players) {
   return pls;
 }
 
-void destroy_players(Players *pls) {
-  int i = 0;
-  while (i < pls->players_num) {
-    free(pls->players[i].username);
-    i = i + 1;
-  }
-  free(pls->players);
-  free(pls);
-}
-
 void selection_sort_players(Players *players, int *dice_rolls) {
   // this function uses selection sort to sort the players according to their
   // dice rolls.
+  logger.enter_fn(__func__);
+  logger.log("sorting players based on dice roll");
 
   int i = 0;
   while (i < get_players_num(players) - 1) {
@@ -248,16 +241,21 @@ void selection_sort_players(Players *players, int *dice_rolls) {
       j = j + 1;
     }
     if (max_idx != i) {
+      logger.log("swapping %s with %s", get_username(get_player(players, i)),
+                 get_username(get_player(players, max_idx)));
       swap_int(&dice_rolls[i], &dice_rolls[max_idx]);
       swap_players(players, i, max_idx);
     }
     i = i + 1;
   }
+  logger.exit_fn();
 }
 
 void interactive_roll(Players *pls, int *dice_rolls) {
   // this function makes each player roll dice interactively by asking to press
   // any key. It will then fill the given dice_rolls array.
+  logger.enter_fn(__func__);
+  logger.log("rolling dice for players");
 
   int i = 0;
   while (i < get_players_num(pls)) {
@@ -267,16 +265,20 @@ void interactive_roll(Players *pls, int *dice_rolls) {
     dice_rolls[i] = roll_dice();
     clear_line();
     printf(ROLL_RESULT_FMT, username, dice_rolls[i]);
+    logger.log("%s rolled a %i", username, dice_rolls[i]);
 
     i = i + 1;
   }
   printf("\n");
+  logger.exit_fn();
 }
 
 void interactive_reroll(Players *pls, int *dice_rolls) {
   // this function makes players who have rolled the same number, re-roll dice
   // interactively by asking to press any key. It will then sort the players
   // accordingly.
+  logger.enter_fn(__func__);
+  logger.log("rerolling for players with duplicate rolls");
 
   int i = 0;
   while (i < get_players_num(pls) - 1) {
@@ -288,6 +290,7 @@ void interactive_reroll(Players *pls, int *dice_rolls) {
       printf("%s", DICE_TIE_MSG);
 
       // reroll
+      logger.log("rerolling...");
       int j = reroll_start;
       while (j <= i) {
         const char *username = get_username(get_player(pls, j));
@@ -296,19 +299,24 @@ void interactive_reroll(Players *pls, int *dice_rolls) {
         dice_rolls[j] = roll_dice();
         clear_line();
         printf(REROLL_RESULT_FMT, username, dice_rolls[j]);
+        logger.log(REROLL_RESULT_FMT, username, dice_rolls[j]);
 
         j = j + 1;
       }
       selection_sort_players(pls, dice_rolls);
+      logger.log("players have been sorted");
     }
     i = i + 1;
   }
   printf("\n");
+  logger.exit_fn();
 }
 
 void print_players_list(Players *pls) {
   // this function print the players in the order that has been decided by dice
   // rolls.
+  logger.enter_fn(__func__);
+  logger.log("printing player order");
 
   printf("%s", FINAL_ORDER_MSG);
   int i = 0;
@@ -320,6 +328,7 @@ void print_players_list(Players *pls) {
     i = i + 1;
   }
   printf("\n\n");
+  logger.exit_fn();
 }
 
 void sort_players_by_dice(Players *pls) {
@@ -328,7 +337,10 @@ void sort_players_by_dice(Players *pls) {
   // dice_rolls array, sorts the players array using selection sort based on the
   // dice rolls, rerolls the dice for tied players, and prints the sorted list
   // of players and their final die values.
+  logger.enter_fn(__func__);
+  logger.log("sorting players based on their dice roll");
 
+  logger.log("allocating memory for dice_rolls array");
   int *dice_rolls =
       (int *)malloc(get_players_num(pls) * sizeof(int));  // NOLINT
 
@@ -347,31 +359,44 @@ void sort_players_by_dice(Players *pls) {
   // print the sorted list of players and their final die values
   print_players_list(pls);
   wait_keypress("Press any key to continue");
+  logger.exit_fn();
 }
 
 int check_square(const Board *board, int position) {
   // this function checks the value of a square on the board and returns the
   // position to move to based on the square type.
+  logger.enter_fn(__func__);
+  logger.log("checking if square is of goose type");
 
   if (get_square(board, position) == GOOSE_VALUE) {
+    logger.log("square is goose");
+    logger.exit_fn();
     return position + 1;
   }
+
+  logger.exit_fn();
   return position;
 }
 
 void insert_goose_squares(Board *board) {
   // this function inserts goose squares on the board at regular intervals.
+  logger.enter_fn(__func__);
+  logger.log("inserting goose squares");
 
   int i = GOOSE_SPACING - 1;
   while (i < get_dim(board) - 1) {
+    logger.log("inserting square at pos %i", i);
     set_square(board, i, GOOSE_VALUE);
     i = i + GOOSE_SPACING;
   }
+  logger.exit_fn();
 }
 
 void insert_special_squares(Board *board) {
   // this function inserts special squares (e.g., bridge, inn, well) on the
   // board at specific positions.
+  logger.enter_fn(__func__);
+  logger.log("inserting special squares");
 
   int special_poss[] = {BRIDGE_SQUARE,    INN_SQUARE,    WELL_SQUARE,
                         LABYRINTH_SQUARE, PRISON_SQUARE, SKELETON_SQUARE};
@@ -385,18 +410,23 @@ void insert_special_squares(Board *board) {
         proportion(get_dim(board), special_poss[i], MAX_NUM_SQUARES);
     special_pos = check_square(board, special_pos);
     set_square(board, special_pos, special_vals[i]);
+    logger.log("inserted square at pos %i", special_pos);
     i = i + 1;
   }
+  logger.exit_fn();
 }
 
 Board *create_board(const int board_dim) {
   // creates a new game board with the specified dimensions. Initializes the
   // board with sequential values, inserts goose squares, and inserts special
   // squares.
+  logger.enter_fn(__func__);
+  logger.log("creating game board (array)");
 
   Board *board = (Board *)malloc(sizeof(Board));  // NOLINT
   set_dim(board, board_dim);
 
+  logger.log("populating game board array");
   int i = 0;
   while (i < board_dim) {
     set_square(board, i, i + 1);
@@ -406,6 +436,7 @@ Board *create_board(const int board_dim) {
   insert_goose_squares(board);
   insert_special_squares(board);
 
+  logger.exit_fn();
   return board;
 }
 
@@ -417,6 +448,9 @@ char *build_border(const char *borders[4], const int square_len, const int cols,
    * - join  2;
    * - dash  3.
    */
+  logger.enter_fn(__func__);
+  logger.log("attempting to build board border");
+
   char *buffer = alloc_char(borders[0], cols * square_len);
   char *ndash = alloc_char(borders[3], square_len - 1);
   nconcat(ndash, borders[3], square_len - 1);
@@ -461,10 +495,15 @@ char *build_border(const char *borders[4], const int square_len, const int cols,
   // add line end char since nothing should be present on the same line
   concat(buffer, LINE_END);
 
+  logger.log("built game border");
+  logger.exit_fn();
   return buffer;
 }
 
 char *sq_to_str(const int square) {
+  logger.enter_fn(__func__);
+  logger.log("converting square int to string");
+
   char *buffer = str_allocate((int)sizeof(square));  // NOLINT
   if (square == GOOSE_VALUE) {
     snprintf(buffer, sizeof(buffer), "%2s", "X2");
@@ -484,11 +523,16 @@ char *sq_to_str(const int square) {
     snprintf(buffer, sizeof(buffer), "%2d", square);
   }
 
+  logger.log("converted %i to '%s'", square, buffer);
+  logger.exit_fn();
   return buffer;
 }
 
 char *build_squares(const char *vert, const int square_len, const int cols,
                     const int rows, const int row, const Board board) {
+  logger.enter_fn(__func__);
+  logger.log("attempting to build board squares");
+
   char *buffer = alloc_char(vert, cols * square_len);
 
   const int square_size = 1 + square_len * strlen(vert);
@@ -539,6 +583,8 @@ char *build_squares(const char *vert, const int square_len, const int cols,
   // add line end char since nothing should be present on the same line
   concat(buffer, LINE_END);
 
+  logger.log("built game squares");
+  logger.exit_fn();
   return buffer;
 }
 
@@ -554,6 +600,9 @@ char *build_board(const Board board, const int cols, const int square_len,
    * - dash       6  (ex. "─");
    * - vert       7  (ex. "│").
    */
+  logger.enter_fn(__func__);
+  logger.log("building game board (visual)");
+
   int rows = (get_dim(&board) + cols - 1) / cols;  // calculate rows needed
 
   // char *game_board = alloc_char(borders[0], 3 * rows * cols * square_len);
@@ -570,15 +619,19 @@ char *build_board(const Board board, const int cols, const int square_len,
     char *bot = build_border(bot_borders, square_len, cols, rows, row, board);
 
     const int source_size = 1 + strlen(top) + strlen(squares) + strlen(bot);
+    logger.log("attempting to concatenate rows");
     fconcat(game_board, source_size, "%s%s%s", top, squares, bot);
+    logger.log("concatenated rows");
 
     free(top);
     free(squares);
     free(bot);
+    logger.log("memory freed");
 
     row = row + 1;
   }
 
+  logger.exit_fn();
   return game_board;
 }
 
@@ -586,25 +639,40 @@ void print_board(const char game_board[]) { printf("%s", game_board); }
 
 int find_other_player_in_square(Players *pls, Player *curr_pl,
                                 const int target_sq) {
+  logger.enter_fn(__func__);
+  logger.log("searching for another player in square %i", target_sq);
+
   int i = 0;
   while (i < get_players_num(pls)) {
     // check whether a player different than the given one is in the square
     Player *other_pl = get_player(pls, i);
     if (other_pl->id != curr_pl->id && get_position(other_pl) == target_sq) {
+      logger.log("found player %s in square %i", get_username(other_pl),
+                 target_sq);
+      logger.exit_fn();
       return i;
     }
 
     free(other_pl);
     i = i + 1;
   }
+
+  logger.log("no player has been found");
+  logger.exit_fn();
   return INDEX_NOT_FOUND;
 }
 
 void update_score(Player *pl, const int roll) {
-  set_score(pl, get_score(pl) + (roll * 10));
+  logger.enter_fn(__func__);
+  logger.log("updating %s score", get_username(pl));
+  set_score(pl, get_score(pl) + roll);
+  logger.exit_fn();
 }
 
 int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
+  logger.enter_fn(__func__);
+  logger.log("cheching player position");
+
   int current_sq = get_square(board, get_position(pl));
   int target_pos = roll + get_position(pl);
   int target_sq = get_square(board, target_pos);
@@ -616,11 +684,13 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
 
   // player is blocked
   if (turns_blocked > NO_TURNS_BLOCKED) {
+    logger.log("player is blocked");
     // decrement counter
     set_turns_blocked(pl, turns_blocked - 1);
 
     // player stays where he is
     if (current_sq == INN_VALUE) {
+      logger.exit_fn();
       return get_position(pl);
     }
 
@@ -628,68 +698,88 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     if ((current_sq == PRISON_VALUE || current_sq == WELL_VALUE) &&
         (roll == ESCAPE_ROLL1 || roll == ESCAPE_ROLL2)) {
       set_turns_blocked(pl, NO_TURNS_BLOCKED);
+      logger.exit_fn();
       return check_player_pos(pls, pl, board, roll + get_position(pl));
     }
   }
 
   // player is free to move, check for special squares
   if (turns_blocked == NO_TURNS_BLOCKED) {
+    logger.log("player is free to move");
     // check if player goes beyond the number of squares
+    logger.log("bounds checking player pos");
     if (target_sq > get_dim(board)) {
+      logger.log("player going out of bounds");
+      logger.exit_fn();
       return get_dim(board) + (get_dim(board) - (current_sq + roll));
     }
     // check if the return position should be different than target_pos
+    logger.log("checking for special cases");
     if (target_sq == GOOSE_VALUE || target_sq == BRIDGE_VALUE) {
+      logger.log("player on goose or bridge square, double roll");
+      logger.exit_fn();
       return (roll * 2) + get_position(pl);
     } else if (target_sq == SKELETON_VALUE) {
+      logger.log("player on skeleton square, back to start");
+      logger.exit_fn();
       return INITIAL_POSITION;
     }
 
+    logger.log("checking if player is in prison/well");
     if (target_sq == PRISON_VALUE || target_sq == WELL_VALUE) {
+      logger.log("player is in prison/well");
       int other_pl_pos = find_other_player_in_square(pls, pl, target_sq);
       if (other_pl_pos != INDEX_NOT_FOUND) {  // INDEX_NOT_FOUND
+        logger.log("found %s in prison, freeing them",
+                   get_username(get_player(pls, other_pl_pos)));
         Player other_pl = *get_player(pls, other_pl_pos);
         set_turns_blocked(&other_pl, NO_TURNS_BLOCKED);
         set_turns_blocked(pl, INDEF_BLOCK);
+        logger.log("blocking player indefinetly");
+        logger.exit_fn();
+        return target_pos;
       }
     }
   }
 
   // player isn't on special square, return the roll + it's current position
+  logger.log("no special case for player");
+  logger.exit_fn();
   return target_pos;
 }
 
 void move_player(Players *pls, Player *pl, const int roll, Board *board) {
+  logger.enter_fn(__func__);
+  logger.log("moving %s based on it's roll %i", get_username(pl), roll);
   set_position(pl, check_player_pos(pls, pl, board, roll));
+  logger.exit_fn();
 }
 
 int find_winner(Players *pls, Board *board) {
   // int find_winner(const GameState *gs) {
   // Players *pls = get_players(gs);
   // Board *board = get_board(gs);
+  logger.enter_fn(__func__);
+  logger.log("searching for a winner");
   int i = 0;
   while (i < get_players_num(pls)) {
     int pos = get_position(get_player(pls, i)) + 1;
     if (pos == get_dim(board) || pos > get_dim(board)) {
+      logger.log("found winner");
+      logger.exit_fn();
       return i;
     }
     i = i + 1;
   }
+  logger.log("no winner found");
+  logger.exit_fn();
   return INDEX_NOT_FOUND;
 }
 
-void print_positions(Players *pls) {
-  printf("NAME\tPOS\n");
-  int i = 0;
-  while (i < get_players_num(pls)) {
-    printf("%s\t", get_username(get_player(pls, i)));
-    // printf("%d\t", get_id(get_player(pls, i)));
-    printf("%d\n", 1 + get_position(get_player(pls, i)));
-    i = i + 1;
-  }
-}
+void print_positions(Board *board, Players *pls) {
+  logger.enter_fn(__func__);
+  logger.log("printing player positions");
 
-void dev_print_positions(Board *board, Players *pls) {
   printf("NAME\tPOS\n");
   int i = 0;
   while (i < get_players_num(pls)) {
@@ -702,15 +792,14 @@ void dev_print_positions(Board *board, Players *pls) {
 
     i = i + 1;
   }
+  logger.exit_fn();
 }
 
-void pause_menu(int *quit, Players *pls, Board *board,
-                const char game_board[]) {
+int pause_menu(Players *pls, Board *board, const char game_board[]) {
   logger.enter_fn(__func__);
 
-  new_screen();
   print_menu(PAUSE_MENU);
-
+  logger.log("waiting for a key");
   int display = TRUE;
   while (display) {
     char key = _getch();
@@ -718,61 +807,83 @@ void pause_menu(int *quit, Players *pls, Board *board,
     if (key == 's') {
       logger.log("saving game");
       save_game(pls, *board);
-      wait_keypress("game saved...");
-      new_screen();
-      dev_game_loop(pls, board, game_board);
+      wait_keypress("game saved, press any key to return to game...");
+      logger.exit_fn();
+      game_loop(pls, board, game_board);
     } else if (key == 'l') {
-      destroy_players(pls);
-      leave_game(board, game_board);
-      *quit = TRUE;
+      free(board);
+      free(pls);
+      logger.log("exiting game");
+      logger.exit_fn();
+      return TRUE;
     } else if (is_back_key(key)) {
-      new_screen();
-      dev_game_loop(pls, board, game_board);
+      logger.log("returning to game");
+      logger.exit_fn();
+      game_loop(pls, board, game_board);
     }
+    logger.log("invalid key pressed, looping");
     display = FALSE;
   }
   logger.exit_fn();
+  return FALSE;
 }
 
-void dev_game_loop(Players *pls, Board *board, const char game_board[]) {
+void game_loop(Players *pls, Board *board, const char game_board[]) {
+  logger.enter_fn(__func__);
+  logger.log("entering game loop");
+
   int quit_game = FALSE;
   while (!quit_game) {
     int i = 0;
     while (i < get_players_num(pls)) {
       new_screen();
       print_board(game_board);
-      dev_print_positions(board, pls);
+      print_positions(board, pls);
       printf("press 'r' to roll, 'p' to pause game\n");
+      logger.log("printed board (visual) and positions");
 
+      logger.log("asking %s for keypress", get_username(get_player(pls, i)));
       int get_keypress = TRUE;
       while (get_keypress) {
         char keypress = _getch();
         get_keypress = FALSE;
 
         if (keypress == 'p') {
-          pause_menu(&quit_game, pls, board, game_board);
+          logger.log("game paused");
+          quit_game = pause_menu(pls, board, game_board);
         } else if (keypress == 'r') {
+          logger.log("rolling dice");
           const int roll = roll_dice();
           printf("%s rolled a %i\n", get_username(get_player(pls, i)), roll);
+          logger.log("%s rolled a %i", get_username(get_player(pls, i)), roll);
           move_player(pls, get_player(pls, i), roll, board);
+          logger.log("moved player");
         } else {
           clear_line();
           printf("invalid key '%c'", keypress);
+          logger.log("invalid key, looping");
           get_keypress = TRUE;
         }
+      }
+      if (quit_game) {
+        logger.log("returning to main menu");
+        break;
       }
       i = i + 1;
     }
 
     int winner_idx = find_winner(pls, board);
     if (winner_idx != INDEX_NOT_FOUND) {
+      logger.log("winner is: %s", get_username(get_player(pls, winner_idx)));
       quit_game = TRUE;
       new_screen();
       printf("There is a winner!\n");
       printf("winner is: %s\n", get_username(get_player(pls, winner_idx)));
       wait_keypress("exiting...");
     }
+    logger.log("no winner found");
   }
+  logger.exit_fn();
 }
 
 void new_game() {
@@ -795,28 +906,6 @@ void new_game() {
   sort_players_by_dice(pls);
 
   new_screen();
-  dev_game_loop(pls, board, game_board);
+  game_loop(pls, board, game_board);
   logger.exit_fn();
 }
-
-void leave_game(void *ptr, ...) {
-  void *p = ptr;
-
-  va_list args;
-  va_start(args, ptr);
-  while (p) {
-    free(p);
-    p = va_arg(args, void *);
-  }
-  va_end(args);
-  _fcloseall();
-}
-
-// int main() {
-//   // Seed the random number generator
-//   srand(time(NULL));
-//
-//   new_game();
-//
-//   return 0;
-// }
