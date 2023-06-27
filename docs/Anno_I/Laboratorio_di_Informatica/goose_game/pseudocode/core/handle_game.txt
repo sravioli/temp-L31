@@ -37,7 +37,7 @@ ESEGUI
   StampareAVideo(name)
   StampareAVideo("[")
   StampareAVideo(min)
-  StampareAVideo(", "
+  StampareAVideo(", ")
   StampareAVideo(max))
   StampareAVideo("]: ")
   result := LeggereDaTastiera()
@@ -467,7 +467,7 @@ MENTRE (i < NUM_SPECIAL_SQUARES)
                  MAX_NUM_SQUARES)
   special_pos := check_square(board, special_pos)
   set_square(board, special_pos, elemento in posizione i di special_vals)
-  i = i + 1;
+  i := i + 1;
 FINE
 
 FUNZIONE create_board()
