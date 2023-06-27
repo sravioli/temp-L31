@@ -20,8 +20,6 @@
 #include "./inc/handle_game.h"
 #include "./inc/handle_help.h"
 
-#define peppe
-
 void main_menu() {
   logger.enter_fn(__func__);
 
@@ -56,7 +54,7 @@ int main(void) {
       printf("DEBUG: key %c: [l]eaderboard", key);
       logger.log("invoked leaderboard");
     } else if (key == 'h') {
-      logger.log(__func__, "calling help menu");
+      logger.log("calling help menu");
       help_menu();
       main_menu();
     } else if (key == 'q' || key == ESC) {
