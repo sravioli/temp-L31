@@ -3,6 +3,8 @@
 #ifndef GAMESTATE_TYPE_H
 #define GAMESTATE_TYPE_H
 
+#include "../string.h"
+
 #include "./board.h"
 #include "./players.h"
 
@@ -12,7 +14,7 @@
 typedef struct GameState {
   Players *pls;
   Board *board;
-  char game_board[];
+  char game_name[MAX_BUFFER_LEN];
 } GameState;
 
 // typedef struct GameStates {
@@ -65,5 +67,8 @@ void set_board(GameState *gs, const Board board);
  * @return The board of the game state.
  */
 Board *get_board(const GameState *gs);
+
+void set_game_name(GameState *gs, char game_name[]);
+char *get_game_name(GameState *gs);
 
 #endif  // !GAMESTATE_TYPE_H

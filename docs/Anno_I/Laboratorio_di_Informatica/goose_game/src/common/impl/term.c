@@ -10,7 +10,7 @@
 #include <conio.h>
 #include <stdio.h>
 
-#include "../../inc/errors.h"
+#include "../inc/error.h"
 
 #include "../inc/logger.h"
 #include "../inc/string.h"
@@ -138,9 +138,9 @@ void print_menu(const char filename[]) {
   logger.log("safe opening file '%s'", filename);
   FILE *fp;
   if (fopen_s(&fp, filename, "r")) {
-    logger.log(FILE_NOT_READABLE_ERROR, filename);
+    logger.log("file '%s' not readable", filename);
     logger.exit_fn();
-    throw_err(__func__, FILE_NOT_READABLE_ERROR, filename);
+    throw_err(FILE_NOT_READABLE_ERROR);
   }
 
   int width, height;
@@ -198,7 +198,7 @@ void print_file(const char filename[]) {
   logger.log("safe opening file '%s'", filename);
   FILE *fp;
   if (fopen_s(&fp, filename, "r")) {
-    throw_err(__func__, FILE_NOT_READABLE_ERROR, filename);
+    throw_err(FILE_NOT_READABLE_ERROR);
   }
 
   int width, height;

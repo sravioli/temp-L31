@@ -11,14 +11,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "./common/inc/error.h"
 #include "./common/inc/logger.h"
 #include "./common/inc/term.h"
 
-#include "./inc/errors.h"
 #include "./inc/globals.h"
 
 #include "./inc/handle_game.h"
 #include "./inc/handle_help.h"
+
+#define peppe
 
 void main_menu() {
   logger.enter_fn(__func__);
@@ -46,7 +48,7 @@ int main(void) {
       main_menu();
     } else if (key == 's') {
       clear_line();
-      printf("DEBUG: key %c: [s]ave games", key);
+      printf("DEBUG: key %c: [s]aved games", key);
       logger.log("invoked saved games");
     } else if (key == 'l') {
       // leaderboard();
@@ -65,7 +67,7 @@ int main(void) {
       menu_loop = FALSE;
     } else {
       clear_line();
-      print_err(INVALID_KEY_ERROR, key);
+      print_err(INVALID_KEY_ERROR);
       logger.log("invalid key pressed, continuing loop");
     }
   }

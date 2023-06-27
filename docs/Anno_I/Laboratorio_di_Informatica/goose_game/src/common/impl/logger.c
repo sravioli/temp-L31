@@ -12,8 +12,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "../../inc/errors.h"
 #include "../../inc/globals.h"
+#include "../inc/error.h"
 
 #include "../inc/string.h"
 #include "../inc/term.h"
@@ -99,8 +99,7 @@ static int current_call_stack_depth = 0;
 void push_call(const char caller[]) {
   // check if the stack is full
   if (current_call_stack_depth > MAX_CALLSTACK_DEPTH) {
-    throw_err(__func__, CALL_STACK_OVERFLOW_ERROR, current_call_stack_depth + 1,
-              MAX_CALLSTACK_DEPTH);
+    throw_err(CALL_STACK_OVERFLOW_ERROR);
   }
 
   // Push the calling function onto the call stack
@@ -119,7 +118,7 @@ void push_call(const char caller[]) {
 void pop_call() {
   // prevent underflow
   if (current_call_stack_depth <= 0) {
-    throw_err(__func__, CALL_STACK_UNDERFLOW_ERROR);
+    throw_err(CALL_STACK_UNDERFLOW_ERROR);
   }
 
   // Pop the topmost function call from the call stack
@@ -175,13 +174,13 @@ void start_logger(const char *filename) {
   }
 
   if (!is_filename_valid(filename)) {
-    throw_err(__func__, INVALID_FILENAME_ERROR, filename);
+    throw_err(INVALID_FILENAME_ERROR);
   }
   // copy given filename to static variable
   snprintf(log_filename, sizeof(log_filename), "%s", filename);
 
   if (fopen_s(&log_fp, log_filename, "w")) {
-    throw_err(__func__, FILE_NOT_WRITABLE_ERROR, log_filename);
+    throw_err(FILE_NOT_WRITABLE_ERROR);
   }
   fprintf(log_fp, LOG_BANNER_FMT, LOG_BANNER, LOG_START_MSG, LOG_BANNER);
 
@@ -200,7 +199,7 @@ void stop_logger() {
 
   // indicate log termination
   if (fopen_s(&log_fp, log_filename, "a")) {
-    throw_err(__func__, FILE_NOT_WRITABLE_ERROR, log_filename);
+    throw_err(FILE_NOT_WRITABLE_ERROR);
   }
   fprintf(log_fp, LOG_BANNER_FMT, LOG_BANNER, LOG_STOP_MSG, LOG_BANNER);
 
@@ -241,7 +240,7 @@ void log_event(const char format[], ...) {
 
   // safe open
   if (fopen_s(&log_fp, log_filename, "a")) {
-    throw_err(__func__, FILE_NOT_WRITABLE_ERROR, log_filename);
+    throw_err(FILE_NOT_WRITABLE_ERROR);
   }
 
   // write to file

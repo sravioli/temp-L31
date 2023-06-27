@@ -23,11 +23,12 @@
 #include "../common/inc/string.h"
 #include "../common/inc/term.h"
 
-#include "../inc/errors.h"
+#include "../common/inc/error.h"
 #include "../inc/globals.h"
 #include "../inc/inputs.h"
 
 #include "../inc/handle_game.h"
+#include "../inc/handle_saving.h"
 #include "../inc/private/handle_game.h"
 
 const char *BORDERS[8] = DEFAULT_BORDERS;
@@ -59,7 +60,7 @@ int ask_num_in_range(const int min, const int max, const char name[]) {
       print_err(INVALID_INPUT_ERROR);
     } else if (result < min || result > max) {
       logger.log("value %i is out of bounds, continuing", result);
-      print_err(VALUE_OUT_OF_BOUNDS_ERROR, name);
+      print_err(VALUE_OUT_OF_BOUND_ERROR);
     } else {
       is_input_valid = TRUE;
     }
@@ -150,12 +151,11 @@ char *ask_username(Players *pls, const int player_idx) {
 
     conform_username(username);
     if (!is_username_valid(username)) {
-      print_err(INVALID_USERNAME_ERROR, username);
+      print_err(INVALID_USERNAME_ERROR);
     } else {
       int duplicate = find_duplicate_username(pls, username);
       if (duplicate != INDEX_NOT_FOUND) {
-        print_err(DUPLICATE_USERNAME_ERROR,
-                  get_username(get_player(pls, duplicate)));
+        print_err(DUPLICATE_USERNAME_ERROR);
       } else {
         printf(PRINT_VALID_USERNAME_FMT, username);
         valid = TRUE;
@@ -182,7 +182,7 @@ Players *create_players(const int num_players) {
   Players *pls = (Players *)malloc(sizeof(Players));  // NOLINT
   if (!pls) {
     logger.exit_fn();
-    throw_err(__func__, ALLOCATION_FAILED_ERROR, sizeof(Players));
+    throw_err(ALLOCATION_ERROR);
   }
 
   set_players_num(pls, num_players);
@@ -193,7 +193,7 @@ Players *create_players(const int num_players) {
     Player *pl = (Player *)malloc(sizeof(Player));  // NOLINT
     if (!pl) {
       logger.exit_fn();
-      throw_err(__func__, ALLOCATION_FAILED_ERROR, "Player", sizeof(Player));
+      throw_err(ALLOCATION_ERROR);
     }
 
     char *username = ask_username(pls, i + 1);
@@ -706,6 +706,8 @@ void dev_print_positions(Board *board, Players *pls) {
 
 void pause_menu(int *quit, Players *pls, Board *board,
                 const char game_board[]) {
+  logger.enter_fn(__func__);
+
   new_screen();
   print_menu(PAUSE_MENU);
 
@@ -714,6 +716,8 @@ void pause_menu(int *quit, Players *pls, Board *board,
     char key = _getch();
 
     if (key == 's') {
+      logger.log("saving game");
+      save_game(pls, *board);
       wait_keypress("game saved...");
       new_screen();
       dev_game_loop(pls, board, game_board);
@@ -727,6 +731,7 @@ void pause_menu(int *quit, Players *pls, Board *board,
     }
     display = FALSE;
   }
+  logger.exit_fn();
 }
 
 void dev_game_loop(Players *pls, Board *board, const char game_board[]) {
@@ -752,7 +757,7 @@ void dev_game_loop(Players *pls, Board *board, const char game_board[]) {
           move_player(pls, get_player(pls, i), roll, board);
         } else {
           clear_line();
-          printf(INVALID_KEY_ERROR, keypress);
+          printf("invalid key '%c'", keypress);
           get_keypress = TRUE;
         }
       }
@@ -804,6 +809,7 @@ void leave_game(void *ptr, ...) {
     p = va_arg(args, void *);
   }
   va_end(args);
+  _fcloseall();
 }
 
 // int main() {

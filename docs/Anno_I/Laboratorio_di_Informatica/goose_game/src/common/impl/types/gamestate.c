@@ -8,6 +8,8 @@
 
 #include "../../inc/types/gamestate.h"
 
+#include <stdio.h>
+
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
@@ -16,3 +18,8 @@ Players *get_players(const GameState *gs) { return gs->pls; }
 
 void set_board(GameState *gs, Board board) { gs->board = &board; }
 Board *get_board(const GameState *gs) { return gs->board; }
+
+void set_game_name(GameState *gs, char game_name[]) {
+  snprintf(game_name, MAX_BUFFER_LEN, "%s", game_name);
+}
+char *get_game_name(GameState *gs) { return gs->game_name; }
