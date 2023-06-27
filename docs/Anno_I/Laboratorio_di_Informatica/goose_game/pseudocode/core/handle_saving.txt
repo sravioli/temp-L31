@@ -91,11 +91,11 @@ FUNZIONE save_game()
 Questa funzione scrive su file binario una partita in corso.
 
 INPUT:
-- players, struttura con i giocatori del gioco, Players;
-- board, tabellone di gioco, Board;
+- gamestate, lo stato corrente del gioco, GameState.
 
 OUTPUT:
-- nullo, non ha output.
+- players, struttura con i giocatori del gioco, Players;
+- board, tabellone di gioco, Board.
 
 LAVORO:
 - current_game, struttura di salvataggio del gioco, Game;
@@ -103,16 +103,19 @@ LAVORO:
 
 
 ALGORITMO:
+players := get_players(gamestate)
+board := get_board(gamestate)
+
 games := LeggereDaFile(SAVE_FILE)
 index := get_num_games(games) + 1
 
-SE (get_num_games(games) < MAX_GAMES) // 5
+SE (get_num_games(games) = MAX_GAMES) // 5
   ALLORA
     index := choose_saved_game(SAVE_FILE)
     games := delete_game(games, index)
 FINE
 
-current_game := set_num_games(current_game, get_num_games(current_game) + 1)
+games := set_num_games(games, get_num_games(games) + 1)
 current_game := set_game_players(current_game, players)
 current_game := set_game_board(current_game, board)
 
@@ -138,7 +141,7 @@ OUTPUT:
 
 ALGORITMO:
 num_games := get_num_games(games)
-set_num_games(new_games, num_games)
+set_num_games(new_games, num_games - 1)
 
 i := 0
 MENTRE (i < num_games)
