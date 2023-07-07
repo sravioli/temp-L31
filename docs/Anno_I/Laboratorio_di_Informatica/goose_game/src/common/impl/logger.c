@@ -26,7 +26,7 @@
 /**
  * @brief The filename of the log file.
  *
- * The @c log_filename variable stores the filename of the log file. It is a
+ * The `log_filename` variable stores the filename of the log file. It is a
  * static character array with a maximum length of @c MAX_BUFFER_LEN. This
  * variable is used by the logging functions to specify the log file.
  */
@@ -35,7 +35,7 @@ static char log_filename[MAX_BUFFER_LEN];
 /**
  * @brief The file pointer to the log file.
  *
- * The @c log_fp variable is a pointer to the log file. It is used to open and
+ * The `log_fp` variable is a pointer to the log file. It is used to open and
  * close the log file and write log messages into it.
  */
 static FILE *log_fp;
@@ -43,7 +43,7 @@ static FILE *log_fp;
 /**
  * @brief Indicates whether the logger is active.
  *
- * The @c is_logger_active variable is an integer flag that indicates whether
+ * The `is_logger_active` variable is an integer flag that indicates whether
  * the logger is active or not. A value of @c TRUE indicates that the logger is
  * active and can perform logging operations, while a value of @c FALSE
  * indicates that the logger is inactive and should not perform any logging.
@@ -53,7 +53,7 @@ static int is_logger_active = TRUE;
 /**
  * @brief Indicates whether the logger has been started.
  *
- * The @c is_logger_started variable is an integer flag that indicates whether
+ * The `is_logger_started` variable is an integer flag that indicates whether
  * the logger has been started. It is set to @c TRUE when the logger is started
  * and the log file is created and can be written to. This flag is used to avoid
  * undesired logging if the logger has not been started.
@@ -63,7 +63,7 @@ static int is_logger_started = FALSE;
 /**
  * @brief The call stack for logging function calls.
  *
- * The @c call_stack variable is an array of constant character pointers that
+ * The `call_stack` variable is an array of constant character pointers that
  * represents the call stack for logging function calls. It stores the names of
  * functions as strings in the order of their invocation during program
  * execution. The maximum depth of the call stack is defined by the
@@ -74,7 +74,7 @@ static const char *call_stack[MAX_CALLSTACK_DEPTH];
 /**
  * @brief The current depth of the call stack.
  *
- * The @c current_call_stack_depth variable is an integer that represents the
+ * The `current_call_stack_depth` variable is an integer that represents the
  * current depth of the call stack. It indicates the number of function calls
  * that have been logged so far. This value is used to keep track of the
  * position in the call stack and to determine the function to be logged when
@@ -88,7 +88,7 @@ static int current_call_stack_depth = 0;
 /**
  * @brief Pushes a function call onto the call stack.
  *
- * The @c push_call function is used to push the name of a function onto the
+ * The `push_call` function is used to push the name of a function onto the
  * call stack. It checks if the call stack is already full and throws an error
  * if the maximum depth has been reached. The function call is added to the top
  * of the call stack.
@@ -110,7 +110,7 @@ void push_call(const char caller[]) {
 /**
  * @brief Pops a function call from the call stack.
  *
- * The @c pop_call function is used to remove the topmost function call from the
+ * The `pop_call` function is used to remove the topmost function call from the
  * call stack. It checks if the call stack is empty and throws an error if an
  * attempt is made to pop a call when the call stack is already empty. The
  * current call stack depth is decremented after the call is removed.
