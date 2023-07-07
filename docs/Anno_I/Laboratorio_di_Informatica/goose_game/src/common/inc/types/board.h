@@ -140,7 +140,7 @@
  *
  * @warning This array should be assigned to another variable, eg:
  *          @code{.C}
- *          const char *BORDERS[8] = DEFAULT_BORDERS;
+ *          static const char *BORDERS[8] = DEFAULT_BORDERS;
  *          @endcode
  */
 #define DEFAULT_BORDERS                                                        \
