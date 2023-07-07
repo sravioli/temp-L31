@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../inc/logger.h"
 #include "../inc/string.h"
@@ -35,7 +36,8 @@ void print_err(const int index) {
       logger.log("reading desired error");
       fgets(buffer, sizeof(buffer), fp);
 
-      logger.log("printing error to stdout");
+      // buffer[strlen(buffer) - 1] = '\0';
+      logger.log("printing '%s' to stdout", buffer);
       printf("%s", buffer);
       break;
     }
@@ -64,10 +66,11 @@ void throw_err(const int index) {
   do {
     lines = lines + 1;
     if (lines == index) {
-      logger.log("reading desired error");
+      logger.log("reading error");
       fgets(buffer, sizeof(buffer), fp);
 
-      logger.log("printing error to stdout");
+      // buffer[strlen(buffer) - 1] = '\0';
+      logger.log("printing '%s' to stdout", buffer);
       printf("%s", buffer);
       break;
     }
