@@ -61,8 +61,6 @@ typedef struct Players {
   Player players[MAX_NUM_PLAYERS];  ///< An array of @c Player structs
                                     ///< representing the players in the game.
   int players_num;                  ///< The number of players in the game.
-  int turn;  ///< The index of the current player in the turn order.
-  //  ^^^^^ serve?
 } Players;
 
 /**
@@ -121,31 +119,6 @@ int get_players_num(const Players *pls);
  * @return void.
  */
 void set_players_num(Players *pls, const int players_num);
-
-/**
- * @brief Returns the current turn number of the game.
- *
- * This function returns the value of the turn field of the Players struct,
- * which contains the current turn number of the game.
- *
- * @param[in] pls A pointer to the Players struct.
- *
- * @return The current turn number of the game.
- */
-int get_turn(const Players *pls);
-
-/**
- * @brief Sets the current turn number of the game.
- *
- * This function sets the value of the turn field of the Players struct to
- * the provided value, which represents the current turn number of the game.
- *
- * @param[in,out] pls  A pointer to the Players struct.
- * @param[in]     turn The new turn number of the game.
- *
- * @return void.
- */
-void set_turn(Players *pls, const int turn);
 
 /**
  * @brief Swaps the positions of two players in the players list.
