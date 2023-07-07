@@ -62,7 +62,7 @@ char *str_allocate(const int size) {
   char *buffer = (char *)malloc(1 + size * sizeof(char));  // NOLINT
   if (!buffer) {
     logger.exit_fn();
-    throw_err(ALLOCATION_ERROR);
+    throw_err(STRING_ALLOCATION_ERROR);
   }
   logger.log("successfully allocated memory for string of size %i", size);
 
