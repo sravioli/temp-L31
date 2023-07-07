@@ -15,8 +15,8 @@
  *    Fidanza Simone
  *    Lecini Fabio
  *
- * @date 2023-05-16 17:33
- * @version 1.0
+ * @date 2023-07-08 01:42
+ * @version 1.5
  * @copyright GNU GPLv3
  */
 
@@ -39,11 +39,11 @@
  * - 'b': Exits the help menu and returns to the previous menu.
  *
  * @note This function relies on the following helper functions:
- *       - @c print_help_menu(): Displays the help menu options.
- *       - @c display_file(const char* filename): Displays the contents of a
+ *       - `print_help_menu()`: Displays the help menu options.
+ *       - `display_file(const char* filename)`: Displays the contents of a
  *         file on the screen.
  *
- * @note The function uses the @c _getch() function to read a single character
+ * @note The function uses the `_getch()` function to read a single character
  *       from the input stream.
  *
  * @return void
