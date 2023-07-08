@@ -1,3 +1,5 @@
+// Copyright (c) 2023 @authors. GNU GPLv3.
+
 /**
  * @file globals.h
  *
