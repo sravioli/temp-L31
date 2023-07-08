@@ -811,12 +811,12 @@ int pause_menu(Players *pls, Board *board, const char game_board[]) {
 
     if (key == 's') {
       logger.log("saving game");
-      save_game(pls, *board);
+      save_game(pls, board);
       wait_keypress("game saved, press any key to return to game...");
     } else if (key == 'l') {
       logger.log("exiting game");
-      free(board);
-      free(pls);
+      // free(board);
+      // free(pls);
       quit = TRUE;
     } else if (is_back_key(key)) {
       logger.log("returning to game");
