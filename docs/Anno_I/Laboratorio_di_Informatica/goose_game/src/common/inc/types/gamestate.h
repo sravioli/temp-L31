@@ -12,8 +12,8 @@
 // -------------------------------------------------------------------------- //
 
 typedef struct GameState {
-  Players *pls;
-  Board *board;
+  Players pls;
+  Board board;
   char game_name[MAX_BUFFER_LEN];
 } GameState;
 
@@ -32,7 +32,7 @@ typedef struct GameState {
  *
  * @return void.
  */
-void set_players(GameState *gs, const Players pls);
+void set_players(GameState *gs, Players *pls);
 
 /**
  * @brief Gets the players of the game state.
@@ -43,7 +43,7 @@ void set_players(GameState *gs, const Players pls);
  *
  * @return The players of the game state.
  */
-Players *get_players(const GameState *gs);
+Players get_players(const GameState *gs);
 
 /**
  * @brief Sets the board of the game state.
@@ -55,7 +55,7 @@ Players *get_players(const GameState *gs);
  *
  * @return void.
  */
-void set_board(GameState *gs, const Board board);
+void set_board(GameState *gs, Board *board);
 
 /**
  * @brief Gets the board of the game state.
@@ -66,7 +66,7 @@ void set_board(GameState *gs, const Board board);
  *
  * @return The board of the game state.
  */
-Board *get_board(const GameState *gs);
+Board get_board(const GameState *gs);
 
 void set_game_name(GameState *gs, char game_name[]);
 char *get_game_name(GameState *gs);

@@ -23,8 +23,8 @@ void set_players_num(Players *pls, const int players_num) {
   pls->players_num = players_num;
 }
 
-int get_turn(const Players *pls) { return pls->turn; }
-void set_turn(Players *pls, const int turn) { pls->turn = turn; }
+// int get_turn(const Players *pls) { return pls->turn; }
+// void set_turn(Players *pls, const int turn) { pls->turn = turn; }
 
 void swap_players(Players *pls, const int idx, const int other_idx) {
   Player player1 = *get_player(pls, idx);

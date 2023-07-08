@@ -15,7 +15,7 @@ typedef struct GameStates {
 } GameStates;
 
 GameState *get_gamestate(GameStates *gss, const int position);
-void set_gamestate(GameStates *gss, const GameState *gs, const int position);
+void set_gamestate(GameStates *gss, GameState gs, const int position);
 
 int get_num_games(const GameStates *gss);
 void set_num_games(GameStates *gss, const int num_games);
