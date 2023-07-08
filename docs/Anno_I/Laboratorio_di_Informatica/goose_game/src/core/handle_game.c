@@ -28,10 +28,11 @@
 #include "../inc/inputs.h"
 
 #include "../inc/handle_game.h"
-#include "../inc/handle_saving.h"
 #include "../inc/private/handle_game.h"
 
-const char *BORDERS[8] = DEFAULT_BORDERS;
+#include "../inc/handle_saving.h"
+
+static const char *BORDERS[8] = DEFAULT_BORDERS;
 
 int ask_num_in_range(const int min, const int max, const char name[]) {
   // this function asks the user to input a number within a given range. It
@@ -148,6 +149,7 @@ char *ask_username(Players *pls, const int player_idx) {
   while (!valid) {
     printf(ASK_USERNAME_FMT, player_idx);
     scanf_s("%s", username, MAX_BUFFER_LEN);
+    getchar();
 
     conform_username(username);
     if (!is_username_valid(username)) {
@@ -187,7 +189,7 @@ Players *create_players(const int num_players) {
   }
 
   set_players_num(pls, num_players);
-  set_turn(pls, INITIAL_TURN);
+  // set_turn(pls, INITIAL_TURN);
 
   int i = 0;
   while (i < num_players) {
@@ -665,7 +667,7 @@ int find_other_player_in_square(Players *pls, Player *curr_pl,
 void update_score(Player *pl, const int roll) {
   logger.enter_fn(__func__);
   logger.log("updating %s score", get_username(pl));
-  set_score(pl, get_score(pl) + roll);
+  set_score(pl, get_score(pl) + 1);
   logger.exit_fn();
 }
 
@@ -797,35 +799,35 @@ void print_positions(Board *board, Players *pls) {
 
 int pause_menu(Players *pls, Board *board, const char game_board[]) {
   logger.enter_fn(__func__);
-
   print_menu(PAUSE_MENU);
+
+  int quit = FALSE;
+
   logger.log("waiting for a key");
   int display = TRUE;
   while (display) {
     char key = _getch();
+    display = FALSE;
 
     if (key == 's') {
       logger.log("saving game");
       save_game(pls, *board);
       wait_keypress("game saved, press any key to return to game...");
-      logger.exit_fn();
-      game_loop(pls, board, game_board);
     } else if (key == 'l') {
+      logger.log("exiting game");
       free(board);
       free(pls);
-      logger.log("exiting game");
-      logger.exit_fn();
-      return TRUE;
+      quit = TRUE;
     } else if (is_back_key(key)) {
       logger.log("returning to game");
-      logger.exit_fn();
-      game_loop(pls, board, game_board);
+    } else {
+      logger.log("invalid key pressed, looping");
+      display = TRUE;
     }
-    logger.log("invalid key pressed, looping");
-    display = FALSE;
   }
+
   logger.exit_fn();
-  return FALSE;
+  return quit;
 }
 
 void game_loop(Players *pls, Board *board, const char game_board[]) {
@@ -867,7 +869,8 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       }
       if (quit_game) {
         logger.log("returning to main menu");
-        break;
+        logger.exit_fn();
+        return;
       }
       i = i + 1;
     }
@@ -881,9 +884,9 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       printf("winner is: %s\n", get_username(get_player(pls, winner_idx)));
       wait_keypress("exiting...");
     }
-    logger.log("no winner found");
   }
   logger.exit_fn();
+  return;
 }
 
 void new_game() {
@@ -907,5 +910,6 @@ void new_game() {
 
   new_screen();
   game_loop(pls, board, game_board);
+
   logger.exit_fn();
 }
