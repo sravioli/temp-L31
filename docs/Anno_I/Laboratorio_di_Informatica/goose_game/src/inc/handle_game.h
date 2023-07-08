@@ -45,6 +45,25 @@
 // -------------------------------------------------------------------------- //
 
 /**
+ * @brief Builds the visual representation of the game board.
+ *
+ * This function builds the visual representation of the game board using the
+ * provided board dimensions, square length, and border characters. It
+ * constructs the board by building the borders and squares row by row. The
+ * resulting visual representation of the game board is returned as a string.
+ *
+ * @param[in] board      The Board struct representing the game board.
+ * @param[in] cols       The number of columns in the game board.
+ * @param[in] square_len The length of each square.
+ * @param[in] borders    The array of border characters for different segments
+ * of the border.
+ *
+ * @return The visual representation of the game board as a string.
+ */
+char *build_board(const Board board, const int cols, const int square_len,
+                  const char *borders[8]);
+
+/**
  * @brief Runs the main game loop.
  *
  * This function runs the main game loop where players take turns rolling the
