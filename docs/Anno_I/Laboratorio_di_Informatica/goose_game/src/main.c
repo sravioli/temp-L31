@@ -19,6 +19,7 @@
 
 #include "./inc/handle_game.h"
 #include "./inc/handle_help.h"
+#include "./inc/handle_saving.h"
 
 void main_menu() {
   logger.enter_fn(__func__);
@@ -30,10 +31,13 @@ void main_menu() {
 }
 
 int main(void) {
+  // logger.disable();
   logger.start("goose.log");
   logger.enter_fn(__func__);
 
   srand(time(NULL));
+
+  wait_keypress("press to launch game");  // to read errors from compiler
   main_menu();
 
   int menu_loop = TRUE;
@@ -46,13 +50,14 @@ int main(void) {
       main_menu();
     } else if (key == 's') {
       clear_line();
-      printf("DEBUG: key %c: [s]aved games", key);
       logger.log("invoked saved games");
+      saved_games();
+      main_menu();
     } else if (key == 'l') {
+      logger.log("invoked leaderboard");
       // leaderboard();
       clear_line();
       printf("DEBUG: key %c: [l]eaderboard", key);
-      logger.log("invoked leaderboard");
     } else if (key == 'h') {
       logger.log("calling help menu");
       help_menu();
@@ -64,13 +69,12 @@ int main(void) {
       logger.log("exiting game");
       menu_loop = FALSE;
     } else {
+      logger.log("invalid key pressed, continuing loop");
       clear_line();
       print_err(INVALID_KEY_ERROR);
-      logger.log("invalid key pressed, continuing loop");
     }
   }
 
-  // logger.exit_fn();
   logger.stop();
-  return 0;
+  return EXIT_SUCCESS;
 }
