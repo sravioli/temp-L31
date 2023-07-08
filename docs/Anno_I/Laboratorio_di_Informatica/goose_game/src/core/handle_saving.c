@@ -17,8 +17,10 @@
 #include "../common/inc/term.h"
 
 #include "../inc/globals.h"
+
 #include "../inc/handle_game.h"
-#include "../inc/private/handle_game.h"
+#include "../inc/handle_saving.h"
+#include "../inc/private/handle_saving.h"
 
 #include <stdio.h>
 #include <stdlib.h>
