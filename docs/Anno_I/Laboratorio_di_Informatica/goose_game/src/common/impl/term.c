@@ -282,3 +282,20 @@ void wait_keypress(const char format[], ...) {
   logger.log("consumed keypress");
   logger.exit_fn();
 }
+
+int is_file_empty(FILE *fp) {
+  logger.enter_fn(__func__);
+  logger.log("checking if the file is empty");
+
+  int res = FALSE;
+  fseek(fp, 0L, SEEK_END);  // move to the end of the file
+  if (ftell(fp) == 0L) {
+    logger.log("file is empty");
+    res = TRUE;
+  }
+  fseek(fp, 0L, SEEK_SET);  // restore pointer position to top
+  logger.log("restored pointer position");
+
+  logger.exit_fn();
+  return res;
+}

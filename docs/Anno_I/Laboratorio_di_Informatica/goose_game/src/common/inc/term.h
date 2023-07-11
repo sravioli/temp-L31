@@ -22,6 +22,8 @@
 #ifndef TERMINAL_UTILS_H
 #define TERMINAL_UTILS_H
 
+#include <stdio.h>
+
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
@@ -311,5 +313,7 @@ int is_back_key(const char key);
 int is_quit_key(const char key);
 
 void wait_keypress(const char format[], ...);
+
+int is_file_empty(FILE *fp);
 
 #endif  // !TERMINAL_UTILS_H
