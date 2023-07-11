@@ -817,8 +817,6 @@ int pause_menu(Players *pls, Board *board, const char game_board[]) {
       wait_keypress("game saved, press any key to return to game...");
     } else if (key == 'l') {
       logger.log("exiting game");
-      // free(board);
-      // free(pls);
       quit = TRUE;
     } else if (is_back_key(key)) {
       logger.log("returning to game");
@@ -858,7 +856,7 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
         } else if (keypress == 'r') {
           logger.log("rolling dice");
           const int roll = roll_dice();
-          printf("%s rolled a %i\n", get_username(get_player(pls, i)), roll);
+          printf("%s rolled a %i", get_username(get_player(pls, i)), roll);
           logger.log("%s rolled a %i", get_username(get_player(pls, i)), roll);
           move_player(pls, get_player(pls, i), roll, board);
           logger.log("moved player");
@@ -890,11 +888,10 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       Entry winner;
       set_name(&winner, get_username(&pl));
       set_final_score(&winner, get_score(&pl));
-      printf("username = %s\n", get_name(&winner));
       write_leaderboard(winner);
 
       new_screen();
-      printf("Congratulations %s, you are the winner!", get_username(&pl));
+      printf("Congratulations %s, you are the winner!\n", get_username(&pl));
       wait_keypress("press any key to return to main menu");
     }
   }
