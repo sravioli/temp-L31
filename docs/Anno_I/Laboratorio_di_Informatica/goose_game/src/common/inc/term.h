@@ -53,7 +53,7 @@
 /**
  * @brief The title to display in each screen.
  */
-#define TITLE_BAR "%sIL GIOCO DELL'OCA%s\n"
+#define TITLE_BAR "IL GIOCO DELL'OCA\n"
 
 /**
  * @brief The maximum number of lines a menu can have.
@@ -286,6 +286,17 @@ void print_menu(const char filename[]);
  */
 void print_file(const char filename[]);
 
+/**
+ * @brief Displays the contents of a file on the console.
+ *
+ * This function reads and prints the contents of the file with the specified
+ * filename to the standard output (stdout). After displaying the file, it waits
+ * for a back key to be pressed (b/ESC/ENTER/SPACEBAR) to exit the view.
+ *
+ * @param[in] filename The name of the file to display.
+ *
+ * @return void.
+ */
 void display_file(const char filename[]);
 
 /**
@@ -312,8 +323,33 @@ int is_back_key(const char key);
  */
 int is_quit_key(const char key);
 
+/**
+ * @brief Waits for a keypress and displays a formatted message.
+ *
+ * This function waits for a keypress from the user and displays a formatted
+ * message on the console using the provided format string and optional
+ * arguments. The format string follows the same syntax as the printf function.
+ * After displaying the message, it waits for a keypress to continue.
+ *
+ * @param[in] format The format string for the message.
+ * @param[in] ...    Optional arguments for the format string.
+ *
+ * @return void.
+ */
 void wait_keypress(const char format[], ...);
 
+/**
+ * @brief Checks if the given file is empty.
+ *
+ * This function checks if the specified file is empty by moving the file
+ * pointer to the end of the file using fseek and checking the file position
+ * using ftell. If the file is empty, it returns TRUE; otherwise, it returns
+ * FALSE.
+ *
+ * @param[in] fp The file pointer of the file to check.
+ *
+ * @return TRUE if the file is empty, FALSE otherwise.
+ */
 int is_file_empty(FILE *fp);
 
 #endif  // !TERMINAL_UTILS_H

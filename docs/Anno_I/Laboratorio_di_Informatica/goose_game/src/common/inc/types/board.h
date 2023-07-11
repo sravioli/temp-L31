@@ -16,8 +16,8 @@
  *    Fidanza Simone
  *    Lecini Fabio
  *
- * @date 2023-05-20 16:28
- * @version 2.5
+ * @date 2023-07-11 19:39
+ * @version 3.0
  * @copyright GNU GPLv3
  */
 
@@ -111,6 +111,8 @@
  */
 #define LABYRINTH_VALUE -4
 
+#define LABYRINTH_DEFAULT_POS 33
+
 /**
  * @brief The value of the prison square on the board.
  */
@@ -120,6 +122,69 @@
  * @brief The value of the skeleton square on the board.
  */
 #define SKELETON_VALUE -6
+
+/**
+ * @brief Text describing the effect of landing on a Goose square.
+ *
+ * After landing on a Goose square, the player should move forward a number of
+ * squares equal to double the sum of the dice rolls.
+ */
+#define GOOSE_TEXT                                                             \
+  "move forward a number of squares equal to double of those obtained by "     \
+  "rolling the dice\n"
+
+/**
+ * @brief Text describing the effect of landing on an Inn square.
+ *
+ * After landing on an Inn square, the player is blocked from taking turns for 3
+ * rounds.
+ */
+#define INN_TEXT "3 turns blocked\n"
+
+/**
+ * @brief Text describing the effect of landing on a Well square.
+ *
+ * After landing on a Well square, the player remains blocked until another
+ * player arrives to take their place.
+ */
+#define WELL_TEXT                                                              \
+  "remain blocked until another player arrives to take your place\n"
+
+/**
+ * @brief Text describing the effect of landing on a Bridge square.
+ *
+ * After landing on a Bridge square, the player should move forward a number of
+ * squares equal to double the sum of the dice rolls.
+ */
+#define BRIDGE_TEXT                                                            \
+  "move forward a number of squares equal to double of those obtained by "     \
+  "rolling the dice\n"
+
+/**
+ * @brief Text describing the effect of landing on a Labyrinth square.
+ *
+ * After landing on a Labyrinth square, the player should go back to a specific
+ * square, which is indicated by the provided placeholder %d in the format
+ * string.
+ */
+#define LABYRINTH_TEXT "go back to square %d\n"  // 33 on the path from 90
+
+/**
+ * @brief Text describing the effect of landing on a Prison square.
+ *
+ * After landing on a Prison square, the player remains blocked until another
+ * player arrives to take their place.
+ */
+#define PRISON_TEXT                                                            \
+  "remain blocked until another player arrives to take your place\n"
+
+/**
+ * @brief Text describing the effect of landing on a Skeleton square.
+ *
+ * After landing on a Skeleton square, the player should go back to the start
+ * square.
+ */
+#define SKELETON_TEXT "go back to the start\n"
 
 /**
  * @brief The default number of columns in the board.
@@ -145,7 +210,6 @@
  */
 #define DEFAULT_BORDERS                                                        \
   { "+", "+", "+", "+", "+", "+", "-", "|" }
-// { "╭", "╮", "╰", "╯", "┬", "┴", "─", "│" }
 /** @} */  // End of BoardConstants
 
 // -------------------------------------------------------------------------- //

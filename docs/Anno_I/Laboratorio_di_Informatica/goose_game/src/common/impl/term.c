@@ -117,7 +117,7 @@ void new_screen() {
     printf("%c", SPACE_CHAR);
     i = i + 1;
   }
-  printf(TITLE_BAR, BOLD, RESET);
+  printf("%s", TITLE_BAR);
   logger.log("printed centered title bar");
 
   logger.log("printing horizontal separator of width %i", term_width);
@@ -222,8 +222,7 @@ void display_file(const char filename[]) {
   logger.enter_fn(__func__);
 
   print_file(filename);
-  printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
-         LINE_END);
+  printf("Exit this view by pressing b/ESC/ENTER/SPACEBAR");
 
   logger.log("waiting for back key...");
   int display = TRUE;
