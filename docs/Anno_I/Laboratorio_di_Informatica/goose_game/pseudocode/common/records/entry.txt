@@ -1,8 +1,6 @@
 TIPO DI DATO ENTRY
 ==================
 
-vedere "./player.txt"
-
 Il tipo di dato Entry deve essere rappresentato come un record composto da:
 - una stringa che rappresenti il nome utente di un giocatore;
 - un intero che rappresenti il punteggio del giocatore.

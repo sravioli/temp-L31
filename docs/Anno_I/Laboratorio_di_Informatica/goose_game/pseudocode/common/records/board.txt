@@ -33,6 +33,17 @@ LABYRINTH_VALUE := -4 // Il valore della casella del labirinto sul tabellone.
 PRISON_VALUE := -5    // Il valore della casella della prigione sul tabellone.
 SKELETON_VALUE := -6  // Il valore della casella dello scheletro sul tabellone.
 
+LABYRINTH_DEFAULT_POS := 33 //Il valore della casella dove dovrebbe finire se arriva sul labirinto nel tabellone è da 90
+
+GOOSE_TEXT := "move forward a number of squares equal to double of those obtained by rolling the dices"
+INN_TEXT := "3 turns blocked"
+WELL_TEXT := "remain blocked until another player arrives to take your place"
+BRIDGE_TEXT := "move forward a number of squares equal to double of those obtained by rolling the dices"
+LABYRINTH_TEXT := "go back to square %d"
+PRISON_TEXT := "remain blocked until another player arrives to take your place"
+SKELETON_TEXT := "go back to the start"
+
+
 NUM_SPECIAL_SQUARES := 6 // Il numero di caselle speciali presenti nel tabellone
 
 DEFAULT_COLS := 15      // Il numero di colonne predefinito nel tabellone.

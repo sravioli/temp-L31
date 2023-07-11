@@ -1,9 +1,6 @@
 STRUTTURE DATI E RELATIVE FUNZIONI DI ACCCESSO
 ==============================================
 
-vedere "../globals.txt"
-
-
 BOARD
 =====
 

@@ -1,10 +1,6 @@
 TIPO DI DATO GAMESTATE
 ======================
 
-vedere "../string.txt"
-vedere "./players.txt"
-vedere "./board.txt"
-
 Il tipo di dato GameState deve essere rappresentato come un record composto da:
 - una stringa che rappresenti il nome della partita;
 - un record che rappresenti i giocatori in partita;

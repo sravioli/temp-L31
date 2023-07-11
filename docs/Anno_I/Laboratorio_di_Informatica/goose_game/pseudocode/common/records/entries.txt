@@ -1,8 +1,6 @@
 TIPO DI DATO ENTRIES
 ====================
 
-vedere "./entry.txt"
-
 Il tipo di dato Entries deve essere rappresentato come un record composto da:
 - un vettore di Entry che rappresenti le voci della classifica;
 - un intero che rappresenti la lunghezza del vettore.

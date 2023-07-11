@@ -1,8 +1,6 @@
 TIPO DI DATO PLAYERS
 ====================
 
-vedere "./player.txt"
-
 Il tipo di dato Players rappresenta una lista di giocatori ed è definito come un
 record contenente:
 - un vettore che contiene tutti i giocatori presenti nella partita;
