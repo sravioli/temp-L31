@@ -13,24 +13,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../inc/globals.h"
+#include "../inc/inputs.h"
+
 #include "../common/inc/types/board.h"
+#include "../common/inc/types/entry.h"
 #include "../common/inc/types/gamestate.h"
 #include "../common/inc/types/player.h"
 #include "../common/inc/types/players.h"
 
+#include "../common/inc/error.h"
 #include "../common/inc/logger.h"
 #include "../common/inc/math.h"
 #include "../common/inc/string.h"
 #include "../common/inc/term.h"
 
-#include "../common/inc/error.h"
-#include "../inc/globals.h"
-#include "../inc/inputs.h"
+#include "../inc/handle_leaderboard.h"
+#include "../inc/handle_saving.h"
 
 #include "../inc/handle_game.h"
 #include "../inc/private/handle_game.h"
-
-#include "../inc/handle_saving.h"
 
 static const char *BORDERS[8] = DEFAULT_BORDERS;
 
@@ -875,14 +877,25 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       i = i + 1;
     }
 
+    // search for a winner
     int winner_idx = find_winner(pls, board);
     if (winner_idx != INDEX_NOT_FOUND) {
-      logger.log("winner is: %s", get_username(get_player(pls, winner_idx)));
       quit_game = TRUE;
+
+      // add winner to the leaderboard
+      Player pl = *get_player(pls, winner_idx);
+      logger.log("winner is: %s", get_username(&pl));
+
+      logger.log("creating entry for leaderboard");
+      Entry winner;
+      set_name(&winner, get_username(&pl));
+      set_final_score(&winner, get_score(&pl));
+      printf("username = %s\n", get_name(&winner));
+      write_leaderboard(winner);
+
       new_screen();
-      printf("There is a winner!\n");
-      printf("winner is: %s\n", get_username(get_player(pls, winner_idx)));
-      wait_keypress("exiting...");
+      printf("Congratulations %s, you are the winner!", get_username(&pl));
+      wait_keypress("press any key to return to main menu");
     }
   }
   logger.exit_fn();
@@ -910,6 +923,9 @@ void new_game() {
 
   new_screen();
   game_loop(pls, board, game_board);
+
+  free(pls);
+  free(board);
 
   logger.exit_fn();
 }
