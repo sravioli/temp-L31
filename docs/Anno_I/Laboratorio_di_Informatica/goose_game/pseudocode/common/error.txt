@@ -31,7 +31,9 @@ CALL_STACK_UNDERFLOW_ERROR := 12
 
 INVALID_GAME := 13
 LIMIT_SAVES := 14
-NO_SAVES := 15
+NO_SAVES_ERROR := 15
+
+EMPTY_LEADERBOARD_ERROR := 16
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -50,23 +52,22 @@ LAVORO:
 - buffer, stringa contenente una riga del file, stringa;
 - lines, numero di riga del file da iterare per trovare l'indice, intero;
 
-ALGORITMO:
+ALGORITMO
 SE (AprireFile(ERROR_FILE) = NULL) ALLORA
-  StampareAVideo("Failed to read from file")
+  StampareAVideo("Failed to read from file)
   Uscire()
-FINE SE
+FINE
 
 lines := 0
 ESEGUI
-lines := lines + 1
-  SE (lines := index) ALLORA
+  lines := lines + 1
+  SE(lines := index) ALLORA
     buffer := LeggereRigaDaFile(ERROR_FILE)
     StampareAVideo(buffer)
   FINE SE
-
 FINCHÉ (LeggereCarattere(ERROR_FILE) <> EOF)
-FINE FINCHÉ
 ChiudereFile(ERROR_FILE)
+FINE FINCHÉ
 
 
 FUNZIONE throw_err()
@@ -74,7 +75,7 @@ FUNZIONE throw_err()
 Stampa l'errore e termina il programma.
 
 INPUT:
-- index, indice del file da leggere l'errore, intero
+- index, indice del file da leggere l'errore, intero.
 
 OUTPUT:
 - nullo, non ha output.
@@ -86,19 +87,18 @@ LAVORO:
 
 ALGORITMO
 SE (AprireFile(ERROR_FILE) = NULL) ALLORA
-  StampareAVideo("Failed to read from file")
+  StampareAVideo("Failed to read from file)
   Uscire()
 FINE SE
 
 lines := 0
 ESEGUI
- lines := lines + 1
- SE (lines := index) ALLORA
-  buffer := LeggereRigaDaFile(ERROR_FILE)
-  StampareAVideo(buffer)
- FINE SE
-FINCHÉ (LeggereCarattere(ERROR_FILE) <> EOF)
+  lines := lines + 1
+  SE (lines := index) ALLORA
+    buffer := LeggereRigaDaFile(ERROR_FILE)
+    StampareAVideo(buffer)
+  FINE
+FINCHÉ (LeggereCarattere(ERROR_FILE) != EOF)
 FINE FINCHÉ
 ChiudereFile(ERROR_FILE)
 Uscire()
-

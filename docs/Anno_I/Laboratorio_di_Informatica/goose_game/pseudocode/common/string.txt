@@ -1,8 +1,6 @@
 FUNZIONI PER LA MANIPOLAZIONE DELLE STRINGHE
 ============================================
 
-vedere "../globals.txt"
-
 Questo file contiene implementazioni di diverse funzioni per la manipolazione
 delle stringhe.
 
@@ -16,8 +14,8 @@ MAX_BUFFER_LEN := 256 // La lunghezza massima consentita per una stringa
 FILLER_CHAR := "?"    // Il carettere da utilizzare come filler se l'username è troppo corto
 LINE_END := "\n"      // Il carattere che definisce la fine di una riga
 STR_END := '\0'       // Il carattere che definisce la fine di una stringa
-CH_EMPTY := ""        // Il carattere vuoto
-CH_SPACE := ' '       // Il carattere spazio
+STR_EMPTY := ""       // Il carattere vuoto
+SPACE_CHAR := ' '     // Il carattere spazio
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -35,7 +33,7 @@ ALGORITMO:
 length := 0
 MENTRE (elemento in posizione length di stringa <> STR_END)
   length := length + 1
-FINE MENTRE
+FINE
 
 
 ------------------------------------------------------------
@@ -65,7 +63,7 @@ MENTRE(elemento j-esimo di source <> STR_END)
   elemento in posizione i di buffer := elemento in posizione j di source
   i := i + 1
   j := j + 1
-FINE MENTRE
+FINE
 elemento i-esimo di buffer := STR_END // terminate the string
 
 
@@ -102,9 +100,9 @@ MENTRE (i < n_times)
     elemento in posizione j di buffer := elemento in posizione k di source
     j := j + 1
     k := k + 1
-  FINE MENTRE
+  FINE
   i := i + 1
-FINE MENTRE
+FINE
 elemento in posizione i di buffer := STR_END // terminate the string
 
 
@@ -132,19 +130,18 @@ LAVORO:
 ALGORITMO:
 str1_len := str_length(string1)
 str2_len := str_length(string2)
-SE (str1_len <> str2_len) ALLORA
-  result := FALSE
-FINE SE
+SE (str1_len <> str2_len)
+  ALLORA result := FALSE
+FINE
 str1_len := str_length(str1)
 i := 0
 MENTRE (i < str1_len)
-  SE (carattere in posizione i di string1 <> carattere in posizione i di string1) ALLORA
-    result := FALSE
-  ALTRIMENTI
-    result := TRUE
-  FINE SE
+  SE (carattere in posizione i di string1 <> carattere in posizione i di string1)
+    ALLORA result := FALSE
+    ALTRIMENTI result := TRUE
+  FINE
   i := i + 1
-FINE MENTRE
+FINE
 
 
 ------------------------------------------------------------
@@ -174,7 +171,7 @@ MENTRE (i < source_len)
   // copy chars one by one
   elemento in posizione i di copied_string := elemento in posizione i di source
   i := i + 1
-FINE MENTRE
+FINE
 elemento in posizione i di copied_string := STR_END // terminate the string
 
 
@@ -193,15 +190,15 @@ OUTPUT:
 - buffer, stringa troncata alla lunghezza desiderata, stringa;
 
 ALGORITMO:
-SE (idx < str_length(source)) ALLORA
-  buffer := source
-FINE SE
+SE (idx < str_length(source))
+  ALLORA buffer := source
+FINE
 
 i := 0
 MENTRE (i < idx)
   carattere in posizione i di source := carattere in posizione i di buffer
   i := i + 1
-FINE MENTRE
+FINE
 carattere in posizione i di buffer := STR_END
 
 
@@ -223,7 +220,7 @@ i := 1
 MENTRE (i < source_len)
   elemento in posizione i di destination := elemento in posizione i di source
   i := i + 1
-FINE MENTRE
+FINE
 elemento in posizione i di destination := STR_END
 
 
@@ -245,15 +242,20 @@ OUTPUT:
 - justified_str, stringa giustificata secondo il parametro justification, stringa.
 
 ALGORITMO:
-SE (str_compare(justification, "left") = TRUE) ALLORA
-  justified_str := str_justify_left(source)
-ALTRIMENTI SE (str_compare(justification, "center") = TRUE) ALLORA
-  justified_str := str_justify_center(source, width)
-ALTRIMENTI SE (str_compare(justification, "right") = TRUE) ALLORA
-  justified_str := str_justify_right(source, width)
-ALTRIMENTI
-  justified_str := source
-FINE SE
+SE (str_compare(justification, "left") = TRUE)
+  ALLORA
+    justified_str := str_justify_left(source)
+  ALTRIMENTI SE (str_compare(justification, "center") = TRUE)
+    ALLORA
+      justified_str := str_justify_center(source, width)
+    ALTRIMENTI SE (str_compare(justification, "right") = TRUE)
+      ALLORA
+        justified_str := str_justify_right(source, width)
+      ALTRIMENTI
+        justified_str := source
+    FINE
+  FINE
+FINE
 
 
 FUNZIONE str_justify_left()
@@ -271,10 +273,10 @@ LAVORO:
 
 ALGORITMO:
 i := 0
-MENTRE (elemento i-esimo di source = CH_SPACE)
+MENTRE (elemento i-esimo di source = SPACE_CHAR)
   // skip any spaces present at the start of the string
   i := i + 1
-FINE MENTRE
+FINE
 
 j := 0
 MENTRE (elemento i-esimo di source <> STR_END)
@@ -282,7 +284,7 @@ MENTRE (elemento i-esimo di source <> STR_END)
   elemento in posizione j di buffer := elemento in posizione i di source
   i := i + 1
   j := j + 1
-FINE MENTRE
+FINE
 elemento in posizione j di buffer := STR_END // terminate the string
 
 
@@ -302,7 +304,7 @@ LAVORO:
 
 ALGORITMO:
 left_padding := width - str_length(source)
-str_nconcat(buffer, CH_SPACE, left_padding) // add left padding
+str_nconcat(buffer, SPACE_CHAR, left_padding) // add left padding
 str_concat(buffer, source)                    // concatenate the strings
 
 
@@ -322,7 +324,7 @@ LAVORO:
 
 ALGORITMO:
 left_padding := (width - str_length(source)) / 2
-str_nconcat(buffer, CH_SPACE, left_padding) // add left padding
+str_nconcat(buffer, SPACE_CHAR, left_padding) // add left padding
 str_concat(buffer, source)                    // add the source string
 
 
@@ -353,17 +355,19 @@ i := 0
 length := str_length(copy)
 MENTRE (i < length)
   current_char := carattere in i-esimo di copy
-  SE (current_char <> char) ALLORA
-    elemento i-esimo di current_line := current_char
-  ALTRIMENTI
-    elemento i-esimo di strings := current_line
-    current_line := CH_EMPTY
-  FINE SE
+  SE (current_char <> char)
+    ALLORA
+      elemento i-esimo di current_line := current_char
+    ALTRIMENTI
+      elemento i-esimo di strings := current_line
+      current_line := STR_EMPTY
+  FINE
   i := i + 1
-FINE MENTRE
-SE (current_line <> CH_EMPTY) ALLORA
-  elemento i-esimo di strings := current_line
-FINE SE
+FINE
+SE (current_line <> STR_EMPTY)
+  ALLORA
+    elemento i-esimo di strings := current_line
+FINE
 
 
 ------------------------------------------------------------
@@ -383,23 +387,22 @@ LAVORO:
 - i, contatore per iterare sui caratteri della stringa, intero.
 
 ALGORITMO:
-SE ((primo carattere di str = '-') OR (primo carattere di str = '+')) ALLORA
-  SE (primo carattere di str = '-') ALLORA
-    sign := -1
-  ALTRIMENTI
-    sign := 1
-  FINE SE
-  str := rm_first_char(str)
-ALTRIMENTI
-  sign := 1
-FINE SE
+SE ((primo carattere di str = '-') OR (primo carattere di str = '+'))
+  ALLORA
+    SE (primo carattere di str = '-')
+      ALLORA sign := -1
+      ALTRIMENTI sign := 1
+    FINE
+    str := rm_first_char(str)
+  ALTRIMENTI sign := 1
+FINE
 
 i := 0
 MENTRE (i < str_length(str))
   digit := elemento in posizione i di str - '0'
   int := int * 10 + digit
   i := i + 1
-FINE MENTRE
+FINE
 int := int * sign // Applica il segno al numero convertito
 
 
@@ -422,17 +425,18 @@ LAVORO:
 
 
 ALGORITMO:
-str_num := CH_EMPTY  // Inizializza la stringa vuota
-SE (num < 0) ALLORA
-  str_concat(str, '-')
-  num := -num
-FINE SE
+str_num := STR_EMPTY  // Inizializza la stringa vuota
+SE (num < 0)
+  ALLORA
+    str_concat(str, '-')
+    num := -num
+FINE
 
 MENTRE (num > 0)
   num := num / 10
   c := mod(num, 10) + '0'
   str_concat(str, c)
-FINE MENTRE
+FINE
 
 
 FUNZIONE is_alphanumeric()
@@ -450,11 +454,10 @@ OUTPUT:
 ALGORITMO:
 SE ((c >= 'A' AND c <= 'Z') OR
     (c >= 'a' AND c <= 'z') OR
-    (c >= '0' AND c <= '9')) ALLORA
-  result := TRUE
-ALTRIMENTI
-  result := FALSE
-FINE SE
+    (c >= '0' AND c <= '9'))
+  ALLORA result := TRUE
+  ALTRIMENTI result := FALSE
+FINE
 
 
 FUNZIONE is_punctuation()
@@ -471,11 +474,10 @@ OUTPUT:
 
 ALGORITMO:
 SE ((c >= '!' AND c <= '/') OR (c >= ':' AND c <= '@') OR
-    (c >= '[' AND c <= '`') OR (c >= '{' AND c <= '~')) ALLORA
-  result := TRUE
-ALTRIMENTI
-  result := FALSE
-FINE SE
+    (c >= '[' AND c <= '`') OR (c >= '{' AND c <= '~'))
+  ALLORA result := TRUE
+  ALTRIMENTI result := FALSE
+FINE
 
 
 FUNZIONE is_digit()
@@ -491,11 +493,10 @@ OUTPUT:
   altrimenti.
 
 ALGORITMO:
-SE ((c >= '0') AND (c <= '9')) ALLORA
-  result := TRUE
-ALTRIMENTI
-  result := FALSE
-FINE SE
+SE ((c >= '0') AND (c <= '9'))
+  ALLORA result := TRUE
+  ALTRIMENTI result := FALSE
+FINE
 
 
 ------------------------------------------------------------
@@ -513,11 +514,10 @@ OUTPUT:
 - result, carattere convertito in maiuscolo, carattere.
 
 ALGORITMO:
-SE ((c >= 'a') AND (c <= 'z')) ALLORA
-  result := c - 'a' + 'A'
-ALTRIMENTI
-  result := c
-FINE SE
+SE ((c >= 'a') AND (c <= 'z'))
+  ALLORA result := c - 'a' + 'A'
+  ALTRIMENTI result := c
+FINE
 
 
 ------------------------------------------------------------
@@ -544,4 +544,4 @@ i := 0
 MENTRE (i < source_len)
   to_uppercase(carattere in posizione i di source)
   i := i + 1
-FINE MENTRE
+FINE
