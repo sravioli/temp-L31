@@ -695,12 +695,14 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     // player stays where he is
     if (current_sq == INN_VALUE) {
       logger.exit_fn();
+      printf("\nYou are on the INN: %s", INN_TEXT);
       return get_position(pl);
     }
 
     // player has escaped prison/well, get his new position
     if ((current_sq == PRISON_VALUE || current_sq == WELL_VALUE) &&
         (roll == ESCAPE_ROLL1 || roll == ESCAPE_ROLL2)) {
+      printf("\nYou are free now!");
       set_turns_blocked(pl, NO_TURNS_BLOCKED);
       logger.exit_fn();
       return check_player_pos(pls, pl, board, roll + get_position(pl));
@@ -722,16 +724,36 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     if (target_sq == GOOSE_VALUE || target_sq == BRIDGE_VALUE) {
       logger.log("player on goose or bridge square, double roll");
       logger.exit_fn();
+
+      if (target_sq == GOOSE_VALUE) {
+        printf("Landed on a GOOSE SQUARE: %s", GOOSE_TEXT);
+      } else {
+        printf("Landed on the BRIDGE SQUARE: %s", BRIDGE_TEXT);
+      }
+
       return (roll * 2) + get_position(pl);
     } else if (target_sq == SKELETON_VALUE) {
       logger.log("player on skeleton square, back to start");
       logger.exit_fn();
+      printf("Landed on the SKELETON SQUARE: %s", BRIDGE_TEXT);
       return INITIAL_POSITION;
+    } else if (target_sq == LABYRINTH_VALUE) {
+      logger.log("player on labyrinth square");
+      logger.exit_fn();
+      printf("Landed on the LABYRINTH :");
+      printf(LABYRINTH_TEXT, proportion(get_dim(board), LABYRINTH_DEFAULT_POS,
+                                        MAX_NUM_SQUARES));
+      return proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES);
     }
 
     logger.log("checking if player is in prison/well");
     if (target_sq == PRISON_VALUE || target_sq == WELL_VALUE) {
       logger.log("player is in prison/well");
+      if (target_sq == PRISON_VALUE) {
+        printf("Landed on the PRISON: %s", PRISON_TEXT);
+      } else {
+        printf("Landed on the WELL: %s", WELL_TEXT);
+      }
       int other_pl_pos = find_other_player_in_square(pls, pl, target_sq);
       if (other_pl_pos != INDEX_NOT_FOUND) {  // INDEX_NOT_FOUND
         logger.log("found %s in prison, freeing them",
@@ -822,6 +844,7 @@ int pause_menu(Players *pls, Board *board, const char game_board[]) {
       logger.log("returning to game");
     } else {
       logger.log("invalid key pressed, looping");
+      print_err(INVALID_KEY_ERROR);
       display = TRUE;
     }
   }
@@ -841,7 +864,8 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       new_screen();
       print_board(game_board);
       print_positions(board, pls);
-      printf("press 'r' to roll, 'p' to pause game\n");
+      printf("\nTURN: %s", get_username(get_player(pls, i)));
+      printf("\npress 'r' to roll, 'p' to pause game\n");
       logger.log("printed board (visual) and positions");
 
       logger.log("asking %s for keypress", get_username(get_player(pls, i)));
@@ -856,13 +880,14 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
         } else if (keypress == 'r') {
           logger.log("rolling dice");
           const int roll = roll_dice();
-          printf("%s rolled a %i", get_username(get_player(pls, i)), roll);
+          printf("\n%s rolled a %d\n", get_username(get_player(pls, i)), roll);
           logger.log("%s rolled a %i", get_username(get_player(pls, i)), roll);
           move_player(pls, get_player(pls, i), roll, board);
+          wait_keypress("press to move the player...");
           logger.log("moved player");
         } else {
           clear_line();
-          printf("invalid key '%c'", keypress);
+          print_err(INVALID_KEY_ERROR);
           logger.log("invalid key, looping");
           get_keypress = TRUE;
         }

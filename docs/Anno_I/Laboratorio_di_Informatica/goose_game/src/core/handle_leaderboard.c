@@ -212,7 +212,7 @@ void print_leaderboard(Entries es) {
 
   if (get_num_entries(&es) == NO_ENTRIES) {
     logger.log("leaderboard is empty");
-    printf("The leaderboard is empty! Play some games to fill it.\n");
+    print_err(EMPTY_LEADERBOARD);
     logger.exit_fn();
     return;
   }
@@ -247,8 +247,7 @@ void display_leaderboard(Entries es) {
 
   print_leaderboard(es);
   printf("\n\n");
-  printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
-         LINE_END);
+  printf("Exit this view by pressing b/ESC/ENTER/SPACEBAR");
 
   logger.log("waiting for back key...");
   int display = TRUE;

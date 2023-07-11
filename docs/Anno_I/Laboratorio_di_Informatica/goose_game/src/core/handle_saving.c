@@ -14,6 +14,7 @@
 
 #include "../common/inc/error.h"
 #include "../common/inc/logger.h"
+#include "../common/inc/string.h"
 #include "../common/inc/term.h"
 
 #include "../inc/globals.h"
@@ -22,6 +23,7 @@
 #include "../inc/handle_saving.h"
 #include "../inc/private/handle_saving.h"
 
+#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,7 +92,7 @@ int choose_save(GameStates gss) {
     int j = 0;
     while (j < get_players_num(&pls)) {
       Player pl = *get_player(&pls, j);
-      printf("%s (pos. %i)", get_username(&pl), get_position(&pl));
+      printf("%s (pos. %i)", get_username(&pl), get_position(&pl) + 1);
       if (j < get_players_num(&pls) - 1) {
         printf(", ");
       }
@@ -100,24 +102,41 @@ int choose_save(GameStates gss) {
     printf("    * board with %i squares\n", get_dim(&board));
     i = i + 1;
   }
+  printf("\nSelect a game or [q]uit and go back to the menu");
+  printf("\n> ");
 
-  printf("> ");
-  int idx;
-  char input[MAX_BUFFER_LEN];
+  int input;
+  char buffer[4];
+  int invalid_input = FALSE;
+
   do {
-    fgets(input, MAX_BUFFER_LEN - 1, stdin);
-    input[strlen(input) - 1] = '\0';
-    idx = atoi(input);
+    fgets(buffer, sizeof(buffer), stdin);
 
-    if (idx < NO_SAVED_GAMES || idx > num_saves - 1) {
-      clear_line();
-      printf("That is not a valid game, retry.\n");
-      printf("> ");
+    if (buffer[0] == 'q') {
+      input = QUIT_GAME;
+      break;
     }
-  } while (idx < NO_SAVED_GAMES || idx > num_saves - 1);
+
+    if (buffer[0] < '0' || buffer[0] > '4') {
+      invalid_input = TRUE;
+      print_err(INVALID_INPUT_ERROR);
+      printf("\n> ");
+      continue;
+    }
+
+    input = atoi(buffer);
+
+    if (input < NO_SAVED_GAMES || input > get_num_games(&gss) - 1) {
+      invalid_input = TRUE;
+      print_err(INVALID_GAME);
+      printf("\n> ");
+    } else {
+      invalid_input = FALSE;
+    }
+  } while (invalid_input);
 
   logger.exit_fn();
-  return idx;
+  return input;
 }
 
 void read_saves(GameStates *gss) {
@@ -156,12 +175,13 @@ void write_save(GameState gs) {
 
   if (num_saves >= NO_SAVED_GAMES && num_saves < MAX_SAVED_GAMES) {
     logger.log("num_saves is inside bounds, appending to struct");
-    set_gamestate(&file_gss, gs, num_saves);
-    set_num_games(&file_gss, num_saves + 1);
+    set_gamestate(&file_gss, gs, get_num_games(&file_gss));
+    set_num_games(&file_gss, get_num_games(&file_gss) + 1);
   } else if (num_saves == MAX_SAVED_GAMES) {
     logger.log("max number of saves reached, asking game to overwrite");
     new_screen();
-    printf("Max number of saves reached, you need to choose a game to delete");
+    print_err(LIMIT_SAVES);
+    printf("\n");
 
     int index = choose_save(file_gss);
     set_gamestate(&file_gss, gs, index);  // overwrite at index
@@ -203,24 +223,83 @@ void saved_games() {
   read_saves(&gss);
 
   if (get_num_games(&gss) == 0) {
-    printf("No saved games found!");
+    print_err(NO_SAVES);
+    printf("\n");
+
+    printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
+           LINE_END);
+
+    logger.log("waiting for back key...");
+    int display = TRUE;
+    while (display) {
+      char key = _getch();
+      if (is_back_key(key)) {
+        display = FALSE;
+      }
+    }
+
   } else if (get_num_games(&gss) == 1) {
     printf("Found only the following game: ");
-    // only one game, launch that one (print message)
-    printf("launch this game? (y/n) ");
+
+    GameState gs = *get_gamestate(&gss, 0);
+    Players pls = get_players(&gs);
+    Board board = get_board(&gs);
+
+    printf("\n%s : \n", get_game_name(&gs));
+    printf("    * players: [", get_players_num(&pls));
+    int j = 0;
+    while (j < get_players_num(&pls)) {
+      Player pl = *get_player(&pls, j);
+      printf("%s (pos. %i)", get_username(&pl), get_position(&pl) + 1);
+      if (j < get_players_num(&pls) - 1) {
+        printf(", ");
+      }
+      j = j + 1;
+    }
+    printf("]\n");
+    printf("    * board with %i squares\n", get_dim(&board));
+
+    printf("launch this game? (y/n) : ");
+    printf("\n> ");
+    char key;
+    do {
+      key = _getch();
+      if (key != 'y' && key != 'n') {
+        print_err(INVALID_INPUT_ERROR);
+        printf("\n> ");
+      }
+    } while (key != 'y' && key != 'n');
+
+    if (key == 'y') {
+      const char *game_board = build_board(get_board(&gs), DEFAULT_COLS,
+                                           DEFAULT_SQUARE_LEN, BORDERS);
+
+      wait_keypress("press to launch the game");
+      game_loop(&pls, &board, game_board);
+
+    } else {
+      wait_keypress("press to go back to the menu");
+    }
+
   } else {
     new_screen();
     printf("Many games found. ");
     int index = choose_save(gss);
 
-    GameState gs = *get_gamestate(&gss, index);
-    Players pls = get_players(&gs);
-    Board board = get_board(&gs);
+    if (index == QUIT_GAME) {
+      wait_keypress("press to go back to the menu");
+    } else {
 
-    const char *game_board =
-        build_board(get_board(&gs), DEFAULT_COLS, DEFAULT_SQUARE_LEN, BORDERS);
+      GameState gs = *get_gamestate(&gss, index);
+      Players pls = get_players(&gs);
+      Board board = get_board(&gs);
 
-    game_loop(&pls, &board, game_board);
+      const char *game_board = build_board(get_board(&gs), DEFAULT_COLS,
+                                           DEFAULT_SQUARE_LEN, BORDERS);
+
+      wait_keypress("press to launch the game");
+      game_loop(&pls, &board, game_board);
+    }
   }
 
   logger.exit_fn();
