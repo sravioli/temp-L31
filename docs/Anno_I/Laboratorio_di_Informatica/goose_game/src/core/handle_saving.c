@@ -73,23 +73,6 @@ void print_gamestates(GameStates gss) {
   wait_keypress("press to continue");
 }
 
-int is_file_empty(FILE *fp) {
-  logger.enter_fn(__func__);
-  logger.log("checking if the file is empty");
-
-  int res = FALSE;
-  fseek(fp, 0L, SEEK_END);  // move to the end of the file
-  if (ftell(fp) == 0L) {
-    logger.log("file is empty");
-    res = TRUE;
-  }
-  fseek(fp, 0L, SEEK_SET);  // restore pointer position to top
-  logger.log("restored pointer position");
-
-  logger.exit_fn();
-  return res;
-}
-
 int choose_save(GameStates gss) {
   logger.enter_fn(__func__);
   logger.log("attempting to ask user to choose a save");
@@ -174,8 +157,8 @@ void write_save(GameState gs) {
 
   if (num_saves >= NO_SAVED_GAMES && num_saves < MAX_SAVED_GAMES) {
     logger.log("num_saves is inside bounds, appending to struct");
-    set_gamestate(&file_gss, gs, get_num_games(&file_gss));
-    set_num_games(&file_gss, get_num_games(&file_gss) + 1);
+    set_gamestate(&file_gss, gs, num_saves);
+    set_num_games(&file_gss, num_saves + 1);
   } else if (num_saves == MAX_SAVED_GAMES) {
     logger.log("max number of saves reached, asking game to overwrite");
     new_screen();
