@@ -3,30 +3,12 @@
 #ifndef LEADERBOARD_MODULE_H
 #define LEADERBOARD_MODULE_H
 
-#include "../common/inc/logger.h"
-#include "../common/inc/string.h"
-#include "../common/inc/term.h"
+#include "../common/inc/types/entries.h"
 
-#include "../types/entries.h"
+#define NO_ENTRIES 0
 
-#include <stdio.h>
-#include <stdlib.h>
+void leaderboard(void);
 
-#include <string.h>
-#include <time.h>
-
-/**
- * @brief Appends entries to an existing array.
- *
- * This function appends new entries to an existing @c Entries array.
- *
- * @param[in,out] existing_entries A pointer to the existing @c Entries struct
- *                                 to append to.
- * @param[in]     new_entries      A pointer to the @c Entries struct containing
- *                                 the new entries to append.
- *
- * @return void.
- */
-void append_entries(Entries *existing_entries, Entries *new_entries);
+void write_leaderboard(Entry e);
 
 #endif  // !LEADERBOARD_MODULE_H

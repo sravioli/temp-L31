@@ -6,38 +6,82 @@
 //    Fidanza Simone
 //    Lecini Fabio
 
-// #include "../inc/handle_leaderboard.h"
-// #include "../inc/private/handle_leaderboard.h"
+#include "../inc/globals.h"
+#include "../inc/inputs.h"
 
+#include "../common/inc/error.h"
 #include "../common/inc/logger.h"
 #include "../common/inc/string.h"
 #include "../common/inc/term.h"
 
 #include "../common/inc/types/entries.h"
 
+#include "../inc/handle_leaderboard.h"
+#include "../inc/private/handle_leaderboard.h"
+
+#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <string.h>
 #include <time.h>
 
-// ---------------------
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
-void append_entries(Entries *existing_entries, Entries *new_entries) {
-  // Copy the new entries to the end of the existing array
-  memcpy(get_entries(existing_entries) + get_num_entries(existing_entries),
-         get_entries(new_entries),
-         get_num_entries(new_entries) * sizeof(Entry));
+void read_leaderboard(Entries *es) {
+  logger.enter_fn(__func__);
+  logger.log("attempting to read leaderboard");
 
-  // Update the number of entries
-  set_num_entries(existing_entries, get_num_entries(existing_entries) +
-                                        get_num_entries(new_entries));
+  FILE *fp;
+  if (fopen_s(&fp, LEADERBOARD_FILE, "rb")) {
+    throw_err(FILE_NOT_READABLE_ERROR);
+  }
+
+  if (is_file_empty(fp)) {
+    logger.log("the leaderboard is empty");
+    set_num_entries(es, NO_ENTRIES);
+    // set_num_games(gss, NO_SAVED_GAMES);
+  } else {
+    logger.log("reading leaderboard from file");
+    // fread(gss, sizeof(*gss), 1, fp);
+    fread(es, sizeof(*es), 1, fp);
+  }
+  fclose(fp);
+
+  logger.exit_fn();
+}
+
+int find_duplicate_entry(Entries es, Entry e) {
+  logger.enter_fn(__func__);
+  logger.log("searching for another entry with username '%s'", get_name(&e));
+
+  int index = INDEX_NOT_FOUND;
+
+  int i = 0;
+  const char *target = get_name(&e);
+  while (i < get_num_entries(&es)) {
+    const Entry ei = get_entry(&es, i);
+    const char *compare = get_name(&ei);
+    if (strcmp(target, compare) == 0) {
+      index = i;
+    }
+    i = i + 1;
+  }
+
+  logger.exit_fn();
+  return index;
 }
 
 void swap_entries(Entry *first, Entry *second) {
+  logger.enter_fn(__func__);
+  logger.log("swapping %s with %s", get_name(first), get_name(second));
+
   Entry temp = *first;
   *first = *second;
   *second = temp;
+
+  logger.exit_fn();
   return;
 }
 
@@ -90,13 +134,124 @@ void sort_entries(Entries *es) {
   return;
 }
 
-// ----------------------------------------------------------------------------
+void write_leaderboard(Entry e) {
+  logger.enter_fn(__func__);
+  logger.log("attempting to save current entry");
 
-// int main(void) {
-//   logger.start("test.log");
-//   logger.log(__func__, "starting program");
-//
-//   logger.log(__func__, "stopping program");
-//   logger.stop();
-//   return 0;
-// }
+  Entries leaderboard;
+  read_leaderboard(&leaderboard);
+
+  int num_entries = get_num_entries(&leaderboard);
+  logger.log("there are %i entries in leaderboard", num_entries);
+
+  if (num_entries >= NO_ENTRIES && num_entries < MAX_ENTRIES) {
+    logger.log("num_entries is inside bounds, appending to struct");
+    set_entry(&leaderboard, &e, num_entries);
+    set_num_entries(&leaderboard, num_entries + 1);
+  } else if (num_entries == MAX_ENTRIES) {
+    logger.log("maximum number of entries reached, overwriting lowest value");
+    num_entries = num_entries - 1;
+
+    Entry last = get_entry(&leaderboard, num_entries);
+    if (get_final_score(&e) < get_final_score(&last)) {
+      logger.log("Player score was lower than last leaderboard entry.");
+      logger.exit_fn();
+      return;
+    }
+
+    // search entry with same username
+    // if (found) -> overwrite that one
+    // else -> overwrite lowest (last), then sort
+    logger.log("searching for a duplicate entry.");
+    int duplicate_entry = find_duplicate_entry(leaderboard, e);
+    if (duplicate_entry != INDEX_NOT_FOUND) {
+      logger.log("duplicate found at pos. %i", duplicate_entry);
+      num_entries = duplicate_entry;
+    }
+    logger.log("setting entry at pos. %i", num_entries);
+    set_entry(&leaderboard, &e, num_entries);
+    sort_entries(&leaderboard);
+    logger.log("sorted leaderboard");
+  }
+
+  FILE *fp;
+  if (fopen_s(&fp, LEADERBOARD_FILE, "wb")) {
+    throw_err(FILE_NOT_WRITABLE_ERROR);
+  }
+  fwrite(&leaderboard, sizeof(leaderboard), 1, fp);
+  fclose(fp);
+
+  logger.log("wrote leaderboard to file");
+  logger.exit_fn();
+}
+
+void print_leaderboard(Entries es) {
+  logger.enter_fn(__func__);
+  logger.log("printing leaderboard");
+  new_screen();
+  printf("\n\n");
+
+  if (get_num_entries(&es) == NO_ENTRIES) {
+    logger.log("leaderboard is empty");
+    printf("The leaderboard is empty! Play some games to fill it.\n");
+    logger.exit_fn();
+    return;
+  }
+
+  int width, heigth;
+  get_term_size(&width, &heigth);
+  int padding = (width - strlen(LEADERBOARD_BANNER) - 1) / 2;
+
+  logger.log("leaderboard is NOT empty.");
+  printf("%*c%s", padding, SPACE_CHAR, LEADERBOARD_BANNER);
+  int i = 0;
+  int rank = 1;
+  int prev_score = -1;
+  while (i < get_num_entries(&es)) {
+    Entry e = get_entry(&es, i);
+    if (get_final_score(&e) != prev_score) {
+      prev_score = get_final_score(&e);
+      rank = i + 1;
+    }
+    printf("%*c%3d  %5s  %5d\n", padding, SPACE_CHAR, rank, get_name(&e),
+           get_final_score(&e));
+    i = i + 1;
+  }
+
+  logger.log("printed %i entries", i);
+  logger.exit_fn();
+}
+
+void display_leaderboard(Entries es) {
+  logger.enter_fn(__func__);
+
+  print_leaderboard(es);
+  printf("\n\n");
+  printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
+         LINE_END);
+
+  logger.log("waiting for back key...");
+  int display = TRUE;
+  while (display) {
+    char key = _getch();
+    if (is_back_key(key)) {
+      display = FALSE;
+    }
+  }
+
+  logger.log("exiting this view");
+  logger.exit_fn();
+}
+
+void leaderboard(void) {
+  logger.enter_fn(__func__);
+  logger.log("attempting to display leaderboard");
+
+  Entries leaderboard;
+  read_leaderboard(&leaderboard);
+
+  display_leaderboard(leaderboard);
+
+  logger.log("exited leaderboard view");
+  logger.exit_fn();
+}
