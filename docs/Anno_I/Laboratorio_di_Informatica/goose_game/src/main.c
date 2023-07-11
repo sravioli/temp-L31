@@ -19,9 +19,10 @@
 
 #include "./inc/handle_game.h"
 #include "./inc/handle_help.h"
+#include "./inc/handle_leaderboard.h"
 #include "./inc/handle_saving.h"
 
-void main_menu() {
+void main_menu(void) {
   logger.enter_fn(__func__);
 
   new_screen();
@@ -37,7 +38,8 @@ int main(void) {
 
   srand(time(NULL));
 
-  wait_keypress("press to launch game");  // to read errors from compiler
+  // to read non-blocking warnings from compiler
+  wait_keypress("press any key to launch game");
   main_menu();
 
   int menu_loop = TRUE;
@@ -50,26 +52,24 @@ int main(void) {
       main_menu();
     } else if (key == 's') {
       clear_line();
-      logger.log("invoked saved games");
+      logger.log("opening saved games");
       saved_games();
       main_menu();
     } else if (key == 'l') {
-      logger.log("invoked leaderboard");
-      // leaderboard();
-      clear_line();
-      printf("DEBUG: key %c: [l]eaderboard", key);
+      logger.log("displaying leaderboard");
+      leaderboard();
+      main_menu();
     } else if (key == 'h') {
-      logger.log("calling help menu");
+      logger.log("displaying help menu");
       help_menu();
       main_menu();
     } else if (key == 'q' || key == ESC) {
-      clear_line();
-      printf("DEBUG: (%c) exiting...", key);
-      _fcloseall();
       logger.log("exiting game");
+      clear_line();
+      printf("exiting game...");
       menu_loop = FALSE;
     } else {
-      logger.log("invalid key pressed, continuing loop");
+      logger.log("keypress was invalid.");
       clear_line();
       print_err(INVALID_KEY_ERROR);
     }
