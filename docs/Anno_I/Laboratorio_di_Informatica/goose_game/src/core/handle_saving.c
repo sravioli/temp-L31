@@ -115,7 +115,6 @@ int choose_save(GameStates gss) {
       printf("> ");
     }
   } while (idx < NO_SAVED_GAMES || idx > num_saves - 1);
-  wait_keypress("%i", idx);
 
   logger.exit_fn();
   return idx;
