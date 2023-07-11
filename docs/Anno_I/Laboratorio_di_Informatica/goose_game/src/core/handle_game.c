@@ -735,7 +735,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     } else if (target_sq == SKELETON_VALUE) {
       logger.log("player on skeleton square, back to start");
       logger.exit_fn();
-      printf("Landed on the SKELETON SQUARE: %s", BRIDGE_TEXT);
+      printf("Landed on the SKELETON SQUARE: %s", SKELETON_TEXT);
       return INITIAL_POSITION;
     } else if (target_sq == LABYRINTH_VALUE) {
       logger.log("player on labyrinth square");
