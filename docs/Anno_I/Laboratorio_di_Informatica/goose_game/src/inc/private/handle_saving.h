@@ -29,8 +29,8 @@
  *    Fidanza Simone
  *    Lecini Fabio
  *
- * @date 2023-07-08 13:00
- * @version 1.0
+ * @date 2023-07-11 19:45
+ * @version 1.1
  * @copyright GNU GPLv3
  */
 #ifndef SAVING_MODULE_PRIVATE_H
@@ -48,23 +48,13 @@
  */
 #define NO_SAVED_GAMES 0
 
-// -------------------------------------------------------------------------- //
-// -------------------------------------------------------------------------- //
-
 /**
- * @brief Checks if a file is empty.
- *
- * This function checks if the given file is empty by moving the file pointer to
- * the end and checking its position. If the position is `0`, indicating an
- * empty file, it returns `TRUE`; otherwise, it returns `FALSE`. The file
- * pointer is then restored to the top.
- *
- * @param[in] fp The file pointer of the file to check.
- *
- * @return A boolean value indicating whether the file is empty (`TRUE`) or not
- *         (`FALSE`).
+ * @brief Indicates to quit the game.
  */
-int is_file_empty(FILE *fp);
+#define QUIT_GAME -1
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 
 /**
  * @brief Asks the user to choose a save and returns the selected index.
