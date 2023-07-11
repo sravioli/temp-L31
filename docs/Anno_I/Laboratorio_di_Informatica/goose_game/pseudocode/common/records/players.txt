@@ -123,4 +123,3 @@ player2 = get_player(pls, other_idx)
 set_player(pls, player2, idx)
 set_player(pls, player1, other_idx)
 
-

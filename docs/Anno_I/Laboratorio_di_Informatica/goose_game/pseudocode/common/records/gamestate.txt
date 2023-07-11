@@ -110,3 +110,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo game_board di game_state := game_board
+

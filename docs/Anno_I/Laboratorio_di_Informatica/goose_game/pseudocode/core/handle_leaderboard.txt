@@ -9,11 +9,58 @@ vedere "../library/records.txt"
 Questo modulo contiene le funzioni per lavorare con la classifica di gioco.
 
 -------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-Costanti definite in questo modulo:
-- LEADERBOARD_FILE := "../data/leaderboard.bin"
+COSTANTI DEL MODULO
+-------------------
+
+LEADERBOARD_FILE := "../data/leaderboard.bin"
 
 -------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+FUNZIONE read_leaderboard()
+===========================
+
+INPUT:
+- leaderboard, classifica da riempire con quella del file, Entries.
+
+OUTPUT:
+- leaderboard, classifica letta da file, Entries.
+
+ALGORITMO:
+file := AprireFile(LEADERBOARD_FILE)
+SE (file non esiste) ALLORA
+  Uscire()
+FINE SE
+SE (is_file_empty(file)) ALLORA 
+  set_num_entries(leaderboard, NO_ENTRIES)
+ALTRIMENTI 
+  leaderboard := LeggereDaFile(LEADERBOARD_FILE)
+FINE SE
+ChiudereFile(file)
+
+
+FUNZIONE find_duplicate_entry()
+===============================
+
+INPUT:
+- es, classifica su cui cercare il duplicato, Entries;
+
+
+
+ALGORITMO:
+index := INDEX_NOT_FOUND;
+i := 0
+target := get_name(&e)
+MENTRE (i < get_num_entries(es))
+  ei := get_entry(es, i)
+  compare := get_name(ei)
+  SE (str_compare(target, compare) = TRUE) ALLORA
+    index := i
+  FINE SE
+  i := i + 1
+FINE MENTRE
 
 
 FUNZIONE display_leaderboard()
@@ -263,9 +310,9 @@ MENTRE (i < get_num_entries(entries))
       rank := i + 1
   FINE
   StampareAVideo(rank)
-  StampareAVideo(SPACE_CHAR)
+  StampareAVideo(CH_SPACE)
   StampareAVideo(get_name(entry))
-  StampareAVideo(SPACE_CHAR)
+  StampareAVideo(CH_SPACE)
   StampareAVideo(get_final_score(entry))
   i := i + 1
 FINE

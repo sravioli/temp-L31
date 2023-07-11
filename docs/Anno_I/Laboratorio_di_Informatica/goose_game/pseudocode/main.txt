@@ -41,27 +41,23 @@ print_main_menu()
 menu_loop := TRUE
 MENTRE (menu_loop = TRUE)
   key := LeggereDaTastiera()
-  SE (key = 'n')
-    ALLORA launch_new_game()
-    ALTRIMENTI SE (key = 's')
-      ALLORA menu_saved_games()
-      ALTRIMENTI SE (key = 'l')
-        ALLORA display_leaderboard()
-        ALTRIMENTI SE (key = "h")
-          ALLORA menu_help()
-          ALTRIMENTI SE (key = 'q')
-            ALLORA menu_loop := FALSE
-          FINE
-        FINE
-      FINE
-    FINE
+  SE (key = 'n') ALLORA
+    launch_new_game()
+  ALTRIMENTI SE (key = 's') ALLORA
+    menu_saved_games()
+  ALTRIMENTI SE (key = 'l') ALLORA
+    display_leaderboard()
+  ALTRIMENTI SE (key = "h") ALLORA
+    menu_help()
+  ALTRIMENTI SE (key = 'q') ALLORA
+    menu_loop := FALSE
   FINE
 FINE
 
 ------------------------------------------------------------
 
-FUNZIONE print_main_menu()
-==========================
+FUNZIONE main_menu()
+====================
 
 INPUT:
 - nullo, non ha input.
@@ -71,4 +67,4 @@ OUTPUT:
 
 ALGORITMO:
 clear_screen()
-print_from_file(MAIN_MENU_FILE)
+print_menu(MAIN_MENU_FILE)

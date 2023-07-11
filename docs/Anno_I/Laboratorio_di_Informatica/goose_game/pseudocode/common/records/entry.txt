@@ -77,3 +77,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo final_score di entry := final_score
+

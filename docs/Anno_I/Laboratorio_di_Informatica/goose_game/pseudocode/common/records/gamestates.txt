@@ -87,3 +87,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo num_games di game_states := num_games
+

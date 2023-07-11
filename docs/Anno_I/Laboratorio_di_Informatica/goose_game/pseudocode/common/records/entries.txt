@@ -86,3 +86,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo entry alla posizione index di entries := entry
+

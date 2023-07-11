@@ -5,15 +5,13 @@ MODULO DI GESTIONE DELLA PARTITA
 vedere "../common/records/board.txt"
 vedere "../common/records/player.txt"
 vedere "../common/records/players.txt"
-// vedere "../common/records/gamestate.txt"
+vedere "../common/records/gamestate.txt"
 
 vedere "../common/math.txt"
 vedere "../common/term.txt"
 vedere "../common/string.txt"
 
 vedere "../globals.txt"
-// vedere "../messages.txt"
-// vedere "../errors.txt"
 
 -------------------------------------------------------------------------------
 
@@ -41,11 +39,11 @@ ESEGUI
   StampareAVideo(max))
   StampareAVideo("]: ")
   result := LeggereDaTastiera()
-  SE (result < min OR result > max)
-    ALLORA StampareAVideo("this value is out of bounds, retry.")
-  FINE
+  SE (result < min OR result > max) ALLORA
+    StampareAVideo("this value is out of bounds, retry.")
+  FINE SE
 FINCHÉ (result < min OR result > max)
-FINE
+FINE FINCHÉ
 
 -------------------------------------------------------------------------------
 
@@ -88,11 +86,11 @@ i := 0
 MENTRE (i < str_length(username))
   // scanf_s stops at first whitespace so no spaces in username
   SE ((is_punctuation(carattere in posizione i di username)) OR
-       is_digit(carattere in posizione i di username))
-    ALLORA result := FALSE
-  FINE
+       is_digit(carattere in posizione i di username)) ALLORA
+    result := FALSE
+  FINE SE
   i := i + 1
-FINE
+FINE MENTRE
 
 FUNZIONE find_duplicate_username()
 ==================================
@@ -115,11 +113,11 @@ ALGORITMO:
 idx := INDEX_NOT_FOUND
 i := 0
 MENTRE (i < get_players_num(players))
-  SE (str_compare(get_username(get_player(players, i)), username) := TRUE)
-    ALLORA idx := i
-  FINE
+  SE (str_compare(get_username(get_player(players, i)), username) := TRUE) ALLORA
+    idx := i
+  FINE SE
   i := i + 1
-FINE
+FINE MENTRE
 
 FUNZIONE ask_username()
 =======================
@@ -141,27 +139,26 @@ LAVORO:
 
 ALGORITMO:
 valid := FALSE;
-MENTRE (NOT valid) {
+MENTRE (NOT valid = TRUE) {
   printf(ASK_USERNAME_FMT, player_idx);
   username := LeggereDaTastiera()
 
   username := conform_username(username);
-  SE (NOT is_username_valid(username)) {
-    ALLORA StampareAVideo("this username is invalid, retry.")
+  SE (NOT is_username_valid(username)) ALLORA
+    StampareAVideo("this username is invalid, retry.")
+  ALTRIMENTI
+    duplicate := find_duplicate_username(players, username);
+    SE (duplicate <> INDEX_NOT_FOUND) ALLORA
+      StampareAVideo("this is ")
+      StampareAVideo(get_username(get_player(players, duplicate)))
+      StampareAVideo("username! please change yours.")
     ALTRIMENTI
-      duplicate := find_duplicate_username(players, username);
-      SE (duplicate <> INDEX_NOT_FOUND) {
-        ALLORA
-          StampareAVideo("this is ")
-          StampareAVideo(get_username(get_player(players, duplicate)))
-          StampareAVideo("username! please change yours.")
-        ALTRIMENTI
-          StampareAVideo("your username will be: ")
-          StampareAVideo(username)
-          valid := TRUE;
-      FINE
-  FINE
-FINE
+      StampareAVideo("your username will be: ")
+      StampareAVideo(username)
+      valid := TRUE;
+    FINE SE
+  FINE SE
+FINE MENTRE
 printf(LINE_END);
 
 -------------------------------------------------------------------------------
@@ -196,7 +193,7 @@ MENTRE (i < num_players)
 
   set_player(players, player, i)
   i := i + 1
-FINE
+FINE MENTRE
 
 FUNZIONE selection_sort_players()
 =================================
@@ -229,7 +226,7 @@ MENTRE (i < get_num_players(players) - 1)
       ALLORA max_idx := j
     FINE
     j := j + 1
-  FINE
+  FINE MENTRE
   SE (max_idx <> i)
     ALLORA
       swap_int(elemento in posizione i di dice_rolls,
@@ -237,7 +234,7 @@ MENTRE (i < get_num_players(players) - 1)
       players := swap_players(players, i, max_idx)
   FINE
   i := i + 1
-FINE
+FINE MENTRE
 
 FUNZIONE interactive_roll()
 ===========================
@@ -270,7 +267,7 @@ MENTRE (i get_num_players(players))
   StampareAVideo(" rolled a ")
   StampareAVideo(elemento in posizione i di dice_rolls)
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(LINE_END)
 
 FUNZIONE interactive_reroll()
@@ -303,7 +300,7 @@ MENTRE (i < get_num_players(players) - 1)
           (elemento in posizione i di dice_rolls =
            elemento in posizione i + 1 di dice_rolls))
     i := i + 1
-  FINE
+  FINE MENTRE
   SE (reroll_start <> i)
     ALLORA
       StampareAVideo("Tie detected! Rerolling...")
@@ -321,11 +318,11 @@ MENTRE (i < get_num_players(players) - 1)
         StampareAVideo("rerolled and got ")
         StampareAVideo(elemento in posizione j di dice_rolls)
         j := j + 1
-      FINE
+      FINE MENTRE
       selection_sort_players(players, dice_rolls)
   FINE
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(LINE_END)
 
 FUNZIONE print_players_list()
@@ -352,7 +349,7 @@ MENTRE (i <get_num_players(players))
     ALLORA StampareAVideo(", ")
   FINE
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(LINE_END)
 StampareAVideo(LINE_END)
 
@@ -434,7 +431,7 @@ i := GOOSE_SPACING - 1
 MENTRE (i < get_dim(board) - 1)
   set_square(board, i, GOOSE_VALUE)
   i := i + GOOSE_SPACING
-FINE
+FINE MENTRE
 
 FUNZIONE insert_special_squares()
 =================================
@@ -468,7 +465,7 @@ MENTRE (i < NUM_SPECIAL_SQUARES)
   special_pos := check_square(board, special_pos)
   set_square(board, special_pos, elemento in posizione i di special_vals)
   i := i + 1;
-FINE
+FINE MENTRE
 
 FUNZIONE create_board()
 =======================
@@ -492,7 +489,7 @@ i := 0
 MENTRE (i < dim)
   set_square(board, i, i + 1)
   i := i + 1
-FINE
+FINE MENTRE
 
 board := insert_goose_squares(board)
 board := insert_special_squares(board)
@@ -553,7 +550,7 @@ MENTRE (col < cols)
               str_concat(buffer, join_char)
               str_concat(buffer, ndash)
             ALTRIMENTI                          // when traveling RtL
-              str_nconcat(buffer, SPACE_CHAR, square_len)
+              str_nconcat(buffer, CH_SPACE, square_len)
             FINE
           FINE
         FINE
@@ -576,7 +573,7 @@ MENTRE (col < cols)
             str_concat(buffer, east_char)
             str_concat(buffer, ndash)
           ALTRIMENTI                           // when traveling LtR
-            str_nconcat(buffer, SPACE_CHAR, square_len)
+            str_nconcat(buffer, CH_SPACE, square_len)
         FINE
       FINE
     FINE
@@ -671,18 +668,18 @@ MENTRE (col < cols)
       SE ((is_fist = TRUE) OR (is_last = TRUE))
         ALLORA
           str_concat(buffer, vert)
-          str_nconcat(buffer, SPACE_CHAR, lspacing)
+          str_nconcat(buffer, CH_SPACE, lspacing)
           str_concat(buffer, sq)
-          str_nconcat(buffer, SPACE_CHAR, rspacing)
+          str_nconcat(buffer, CH_SPACE, rspacing)
           str_concat(buffer, vert)
         ALTRIMENTI SE (pos < board_dim)
           ALLORA
             str_concat(buffer, vert)
-            str_nconcat(buffer, SPACE_CHAR, lspacing)
+            str_nconcat(buffer, CH_SPACE, lspacing)
             str_concat(buffer, sq)
-            str_nconcat(buffer, SPACE_CHAR, rspacing)
+            str_nconcat(buffer, CH_SPACE, rspacing)
           ALTRIMENTI
-            str_nconcat(buffer, SPACE_CHAR, square_len)
+            str_nconcat(buffer, CH_SPACE, square_len)
         FINE
       FINE
     ALTRIMENTI
@@ -693,18 +690,18 @@ MENTRE (col < cols)
       SE (col = cols - 1)
         ALLORA
           str_concat(buffer, vert)
-          str_nconcat(buffer, SPACE_CHAR, lspacing)
+          str_nconcat(buffer, CH_SPACE, lspacing)
           str_concat(buffer, sq)
-          str_nconcat(buffer, SPACE_CHAR, rspacing)
+          str_nconcat(buffer, CH_SPACE, rspacing)
           str_concat(buffer, vert)
         ALTRIMENTI SE (pos < board_dim)
           ALLORA
             str_concat(buffer, vert)
-            str_nconcat(buffer, SPACE_CHAR, lspacing)
+            str_nconcat(buffer, CH_SPACE, lspacing)
             str_concat(buffer, sq)
-            str_nconcat(buffer, SPACE_CHAR, rspacing)
+            str_nconcat(buffer, CH_SPACE, rspacing)
           ALTRIMENTI
-            str_nconcat(buffer, SPACE_CHAR, square_len)
+            str_nconcat(buffer, CH_SPACE, square_len)
         FINE
       FINE
   FINE
@@ -940,14 +937,14 @@ INPUT:
 - game_board, tabellone di gioco da stampare a video, stringa.
 
 OUTPUT:
-- nullo, non ha output.
+- nullo, non ha output, vuoto.
 
 LAVORO:
 - quit_game, indica se uscire o meno dal gioco, booleano che assume valore TRUE
-  se sì, FALSE altrimenti;
+  se sì e FALSE altrimenti;
 - i, contatore intero per iterare sul numero di giocatori, intero positivo;
 - get_keypress, indica se è necessario ottenere un input dall'utente, booleano che
-  assume valore TRUE se va fatto, FALSE altrimenti;
+  assume valore TRUE se va fatto e FALSE altrimenti;
 - keypress, il tasto premuto dal giocatore, carattere;
 - roll, valore del lancio di dadi per il giocatore, intero positivo;
 - winner_idx, indice del giocatore vincitore, intero.
@@ -969,42 +966,43 @@ MENTRE (NOT quit_game)
       keypress := LeggereDaTastiera()
       get_keypress := FALSE
 
-      SE (keypress = 'l')
-        ALLORA quit_game := TRUE
-        ALTRIMENTI SE (keypress = 'r')
-          ALLORA
-            roll := roll_dice()
-            StampareAVideo(get_username(get_player(players, i)))
-            StampareAVideo(" rolled a ")
-            StampareAVideo(roll)
-            move_player(players, get_player(players, i), roll, board)
-          ALTRIMENTI SE (keypress = 's')
-            ALLORA
-              save_game(players, board, game_board)
-            ALTRIMENTI
-              clear_line()
-              StampareAVideo("key '")
-              StampareAVideo(keypress)
-              StampareAVideo("' does nothing.")
-              get_keypress := TRUE
-          FINE
-        FINE
-      FINE
-    FINE
+      SE (keypress = 'l') ALLORA
+        quit_game := TRUE
+      ALTRIMENTI SE (keypress = 'r') ALLORA
+        roll := roll_dice()
+        StampareAVideo(get_username(get_player(players, i)))
+        StampareAVideo(" rolled a ")
+        StampareAVideo(roll)
+        move_player(players, get_player(players, i), roll, board)
+      ALTRIMENTI SE (keypress = 's') ALLORA
+        save_game(players, board, game_board)
+      ALTRIMENTI
+        clear_line()
+        StampareAVideo("key '")
+        StampareAVideo(keypress)
+        StampareAVideo("' does nothing.")
+        get_keypress := TRUE
+      FINE SE
+    FINE MENTRE
     i := i + 1
-  FINE
+  FINE MENTRE
 
   winner_idx := find_winner(players, board)
-  SE (winner_idx <> INDEX_NOT_FOUND)
-    ALLORA
-      quit_game := TRUE
-      new_screen()
-      StampareAVideo("There is a winner!")
-      StampareAVideo("winner is: ")
-      StampareAVideo(get_username(get_player(players, winner_idx)))
-      wait_keypress("exiting...")
+  SE (winner_idx <> INDEX_NOT_FOUND) ALLORA
+    quit_game := TRUE
+
+    // add winner
+    set_name(winner, get_username(get_player(players, winner_idx)))
+    set_final_score(winner, get_userfinal_score(get_player(players, winner_idx)))
+    write_leaderboard(winner)
+
+    new_screen()
+    StampareAVideo("Congratulations ")
+    StampareAVideo(get_username(get_player(players, winner_idx)))
+    StampareAVideo(", you are the winner!")
+    wait_keypress("press any key to return to main menu")
   FINE
-FINE
+FINE MENTRE
 
 FUNZIONE launch_new_game()
 ==========================

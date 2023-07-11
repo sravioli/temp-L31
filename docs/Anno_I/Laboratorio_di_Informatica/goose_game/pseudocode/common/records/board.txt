@@ -122,3 +122,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo dim di board := dim
+

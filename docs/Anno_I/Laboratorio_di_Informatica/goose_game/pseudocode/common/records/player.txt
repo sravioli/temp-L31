@@ -113,7 +113,7 @@ id := 0
 MENTRE (i < MAX_USERNAME_LENGTH)
   id := id * ID_OFFSET + carattere in posizione i di username
   i := i + 1
-FINE
+FINE MENTRE
 valore del campo id di player := id
 
 
@@ -205,3 +205,4 @@ OUTPUT:
 
 ALGORITMO:
 valore del campo turns_blocked di player := turns_blocked
+

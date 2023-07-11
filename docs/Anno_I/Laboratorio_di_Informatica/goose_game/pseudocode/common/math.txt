@@ -51,25 +51,23 @@ OUTPUT:
 
 ALGORITMO:
 // Check for special cases
-SE (exponent = 0)
-  ALLORA result := 1
-  ALTRIMENTI SE (exponent = 1)
-    ALLORA result := base
-    ALTRIMENTI SE (exponent < 0)
-      ALLORA result := 1 / pow(base, -exponent)
-    FINE
-  FINE
-FINE
+SE (exponent = 0) ALLORA
+  result := 1
+ALTRIMENTI SE (exponent = 1) ALLORA
+  result := base
+ALTRIMENTI SE (exponent < 0) ALLORA
+  result := 1 / pow(base, -exponent)
+FINE SE
 
 // General case: use repeated squaring
 result := 1
 MENTRE (exponent > 0)
-  SE (mod(exponent, 1) = 1)
-    ALLORA result := result * base
-  FINE
+  SE (mod(exponent, 1) = 1) ALLORA
+    result := result * base
+  FINE SE
   base := base * base
   exponent := exponent / 2
-FINE
+FINE MENTRE
 
 
 ------------------------------------------------------------
@@ -90,7 +88,7 @@ ALGORITMO:
 result := 0
 MENTRE (result < number)
   result := result + 1
-FINE
+FINE MENTRE
 result := result - 1
 
 
@@ -109,10 +107,11 @@ OUTPUT:
 - result, numero intero arrotondato verso l'alto, intero maggiore di zero.
 
 ALGORITMO:
-SE (number = floor(num))
-  ALLORA result := floor(number)
-  ALTRIMENTI result := floor(number) + 1
-FINE
+SE (number = floor(num)) ALLORA
+  result := floor(number)
+ALTRIMENTI
+  result := floor(number) + 1
+FINE SE
 
 
 ------------------------------------------------------------
@@ -201,9 +200,8 @@ OUTPUT:
 - m, secondo numero col valore del primo, intero.
 
 ALGORITMO:
-SE (n <> m)
-  ALLORA
-    n := n + m
-    m := n - m
-    n := n - m
-FINE
+SE (n <> m) ALLORA
+  n := n + m
+  m := n - m
+  n := n - m
+FINE SE

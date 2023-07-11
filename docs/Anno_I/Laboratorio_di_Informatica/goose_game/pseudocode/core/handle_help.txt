@@ -39,15 +39,13 @@ menu_loop := TRUE
 MENTRE (menu_loop = TRUE)
   key := LeggereDaTastiera()
 
-  SE (key = 'r')
-    ALLORA
-      display_file(RULES_FILE)
-      print_menu(HELP_MENU_FILE)
-  ALTRIMENTI SE (key = 'm')
-    ALLORA
-      display_file(MANUAL_FILE)
-      print_menu(HELP_MENU_FILE)
-  ALTRIMENTI SE (key = 'b')
-    ALLORA menu_loop := FALSE
-  FINE
-FINE
+  SE (key = 'r') ALLORA
+    display_file(RULES_FILE)
+    print_menu(HELP_MENU_FILE)
+  ALTRIMENTI SE (key = 'm') ALLORA
+    display_file(MANUAL_FILE)
+    print_menu(HELP_MENU_FILE)
+  ALTRIMENTI SE (key = 'b') ALLORA
+    menu_loop := FALSE
+  FINE SE
+FINE MENTRE

@@ -34,10 +34,8 @@ Restituisce le dimensioni del terminale utilizzando direttive specifiche per il
 sistema operativo.
 
 INPUT:
-- width, variabile che riceverà il valore della larghezza del terminale, intero
-  maggiore di zero;
-- height, variabile che riceverà il valore dell'altezza del terminale, intero
-  maggiore di zero.
+- width, variabile che riceverà il valore della larghezza del terminale, intero maggiore di zero;
+- height, variabile che riceverà il valore dell'altezza del terminale, intero maggiore di zero.
 
 OUTPUT:
 - width, il valore della larghezza del terminale, intero maggiore di zero;
@@ -94,9 +92,9 @@ get_term_size(term_width, term_heigth);
 left_space := 1 + (term_width - str_length(TITLE_BAR)) / 2
 i := 0
 MENTRE (i < left_space)
-  StampareAVideo(SPACE_CHAR)
+  StampareAVideo(CH_SPACE)
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(TITLE_BAR)
 StampareAVideo(LINE_END)
 
@@ -104,7 +102,7 @@ i := 0
 MENTRE (i < term_width)
   StampareAVideo("-")
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(LINE_END)
 
 
@@ -132,10 +130,10 @@ StampareAVideo(message)
 
 wait := TRUE
 MENTRE (wait)
-  SE (LeggereDaTastiera() non è nullo)
-    ALLORA wait := FALSE
-  FINE
-FINE
+  SE (LeggereDaTastiera() non è nullo) ALLORA
+    wait := FALSE
+  FINE SE
+FINE MENTRE
 
 FUNZIONE is_back_key()
 ======================
@@ -150,9 +148,9 @@ OUTPUT:
 
 ALGORITMO:
 result := FALSE
-SE ((key = ESC) OR (key = ENTER) OR (key = SPACEBAR) OR (key = 'b'))
-  ALLORA result := TRUE
-FINE
+SE ((key = ESC) OR (key = ENTER) OR (key = SPACEBAR) OR (key = 'b')) ALLORA
+  result := TRUE
+FINE SE
 
 FUNZIONE is_quit_key()
 ======================
@@ -167,9 +165,9 @@ OUTPUT:
 
 ALGORITMO:
 result := FALSE
-SE ((key = ESC) OR (key = 'q'))
-  ALLORA result := TRUE
-FINE
+SE ((key = ESC) OR (key = 'q')) ALLORA
+  result := TRUE
+FINE SE
 
 
 ------------------------------------------------------------
@@ -201,9 +199,9 @@ ALGORITMO:
 new_screen()
 
 file = AprireFile(filename)
-SE (file non esiste)
-  ALLORA esci
-FINE
+SE (file non esiste) ALLORA
+  esci
+FINE SE
 get_term_size(width, height)
 
 num_lines := 0
@@ -219,9 +217,9 @@ MENTRE (num_lines < MAX_MENU_LINES)
     carattere in posizione i della stringa in posizione num_lines di menu :=
       carattere in posizione i di buffer
     i := i + 1
-  FINE
+  FINE MENTRE
   num_lines := num_lines + 1
-FINE
+FINE MENTRE
 ChiudereFile(file)
 
 // print vertical padding to center menu
@@ -230,7 +228,7 @@ vert_padding := (height - num_lines - 2) * 0.45
 MENTRE (i < vert_padding)
   StampareAVideo(STR_END)
   i := i + 1
-FINE
+FINE MENTRE
 
 // print horizontal padding
 i := 0
@@ -238,12 +236,12 @@ left_padding := (width - max_len) * 0.5
 MENTRE (i < num_lines)
   j := 0
   MENTRE (j < left_padding)
-    StampareAVideo(SPACE_CHAR)
+    StampareAVideo(CH_SPACE)
     j := j + 1
-  FINE
+  FINE MENTRE
   StampareAVideo(elemento in posizione i di menu)
   i := i + 1
-FINE
+FINE MENTRE
 StampareAVideo(LINE_END)
 
 
@@ -269,9 +267,9 @@ ALGORITMO:
 new_screen()
 
 file = AprireFile(filename)
-SE (file non esiste)
-  ALLORA esci
-FINE
+SE (file non esiste) ALLORA
+  Uscire()
+FINE SE
 get_term_size(width, height)
 
 num_lines := 0
@@ -279,7 +277,7 @@ MENTRE (num_lines < MAX_FILE_LINES)
   buffer := LeggereDaFile(file)
   StampareAVideo(buffer)
   num_lines := num_lines + 1
-FINE
+FINE MENTRE
 ChiudereFile(file)
 
 
@@ -302,9 +300,7 @@ StampareAVideo("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
 display := TRUE
 MENTRE (display)
   key := LeggereDaTastiera()
-  SE (is_back_key(key))
-    ALLORA display := FALSE
-  FINE
-FINE
-
-
+  SE (is_back_key(key)) ALLORA
+    display := FALSE
+  FINE SE
+FINE MENTRE
