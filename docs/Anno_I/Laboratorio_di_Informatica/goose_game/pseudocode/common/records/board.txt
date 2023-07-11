@@ -54,7 +54,7 @@ DEFAULT_SQUARE_LEN := 7 // La lunghezza predefinita di una casella nel tabellone
 // per il bordo in alto a sinistra, in alto a destra, in basso a sinistra, in
 // basso a destra, il bordo superiore, il bordo inferiore, il bordo orizzontale
 // e il bordo verticale di ogni casella, rispettivamente.
-DEFAULT_BORDERS := ["╭", "╮", "╰", "╯", "┬", "┴", "─", "│"]
+DEFAULT_BORDERS := [ "+", "+", "+", "+", "+", "+", "-", "|" ]
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

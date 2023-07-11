@@ -17,8 +17,8 @@ COSTANTI RELATIVE AL TIPO DI DATO PLAYER
 
 INITIAL_POSITION := 0    // La posizione iniziale di un giocatore.
 INITIAL_SCORE := 0       // Il punteggio iniziale di un giocatore.
-NO_TURNS_BLOCKED := 0    // Valore che rappresenta che un giocatore può muoversi
-                         // liberamente.
+NO_TURNS_BLOCKED := 0    // Valore che rappresenta che un giocatore può muoversi liberamente
+
 INN_BLOCK := 3           // Il numero di turni in cui un giocatore viene
                          // bloccato se si ferma sulla casella dell'osteria.
 INDEF_BLOCK := 999999    // Valore che rappresenta un blocco indefinito.

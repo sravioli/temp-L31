@@ -21,16 +21,16 @@ OUTPUT:
 
 ALGORITMO:
 ESEGUI
-  StampareAVideo("Insert the desired number of ")
-  StampareAVideo(name)
-  StampareAVideo("[")
-  StampareAVideo(min)
-  StampareAVideo(", ")
-  StampareAVideo(max))
-  StampareAVideo("]: ")
-  result := LeggereDaTastiera()
+  stampare_a_video("Insert the desired number of ")
+  stampare_a_video(name)
+  stampare_a_video("[")
+  stampare_a_video(min)
+  stampare_a_video(", ")
+  stampare_a_video(max))
+  stampare_a_video("]: ")
+  result := leggere_da_tastiera()
   SE (result < min OR result > max)
-    ALLORA StampareAVideo("this value is out of bounds, retry.")
+    ALLORA stampare_a_video("this value is out of bounds, retry.")
   FINE
 FINCHÉ (result < min OR result > max)
 FINE
@@ -131,21 +131,21 @@ ALGORITMO:
 valid := FALSE;
 MENTRE (NOT valid) {
   printf(ASK_USERNAME_FMT, player_idx);
-  username := LeggereDaTastiera()
+  username := leggere_da_tastiera()
 
   username := conform_username(username);
   SE (NOT is_username_valid(username)) {
-    ALLORA StampareAVideo("this username is invalid, retry.")
+    ALLORA stampare_a_video("this username is invalid, retry.")
     ALTRIMENTI
       duplicate := find_duplicate_username(players, username);
       SE (duplicate <> INDEX_NOT_FOUND) {
         ALLORA
-          StampareAVideo("this is ")
-          StampareAVideo(get_username(get_player(players, duplicate)))
-          StampareAVideo("username! please change yours.")
+          stampare_a_video("this is ")
+          stampare_a_video(get_username(get_player(players, duplicate)))
+          stampare_a_video("username! please change yours.")
         ALTRIMENTI
-          StampareAVideo("your username will be: ")
-          StampareAVideo(username)
+          stampare_a_video("your username will be: ")
+          stampare_a_video(username)
           valid := TRUE;
       FINE
   FINE
@@ -254,12 +254,12 @@ MENTRE (i get_num_players(players))
   elemento in posizione i di dice_rolls := roll_dice()
 
   clear_line()
-  StampareAVideo(username)
-  StampareAVideo(" rolled a ")
-  StampareAVideo(elemento in posizione i di dice_rolls)
+  stampare_a_video(username)
+  stampare_a_video(" rolled a ")
+  stampare_a_video(elemento in posizione i di dice_rolls)
   i := i + 1
 FINE
-StampareAVideo(LINE_END)
+stampare_a_video(LINE_END)
 
 FUNZIONE interactive_reroll()
 =============================
@@ -294,27 +294,27 @@ MENTRE (i < get_num_players(players) - 1)
   FINE
   SE (reroll_start <> i)
     ALLORA
-      StampareAVideo("Tie detected! Rerolling...")
+      stampare_a_video("Tie detected! Rerolling...")
 
       j := reroll_start
       MENTRE (j <= i)
         username := get_username(get_player(players, i))
-        StampareAVideo(username)
+        stampare_a_video(username)
         wait_keypress("press any key to reroll")
 
         elemento in posizione j di dice_rolls = roll_dice()
 
         clear_line()
-        StampareAVideo(username)
-        StampareAVideo("rerolled and got ")
-        StampareAVideo(elemento in posizione j di dice_rolls)
+        stampare_a_video(username)
+        stampare_a_video("rerolled and got ")
+        stampare_a_video(elemento in posizione j di dice_rolls)
         j := j + 1
       FINE
       selection_sort_players(players, dice_rolls)
   FINE
   i := i + 1
 FINE
-StampareAVideo(LINE_END)
+stampare_a_video(LINE_END)
 
 FUNZIONE print_players_list()
 =============================
@@ -331,18 +331,18 @@ LAVORO:
 - i, contatore intero per iterare sui giocatori, intero positivo.
 
 ALGORITMO:
-StampareAVideo("Based on the dice rolls, the turn order is:")
-StampareAVideo(LINE_END)
+stampare_a_video("Based on the dice rolls, the turn order is:")
+stampare_a_video(LINE_END)
 i := 0
 MENTRE (i <get_num_players(players))
-  StampareAVideo(get_username(get_player(players, i)))
+  stampare_a_video(get_username(get_player(players, i)))
   SE (i < get_num_players(players) - 1)
-    ALLORA StampareAVideo(", ")
+    ALLORA stampare_a_video(", ")
   FINE
   i := i + 1
 FINE
-StampareAVideo(LINE_END)
-StampareAVideo(LINE_END)
+stampare_a_video(LINE_END)
+stampare_a_video(LINE_END)
 
 FUNZIONE sort_players_by_dice()
 ===============================
@@ -364,7 +364,7 @@ LAVORO:
   unidimensionale di interi.
 
 ALGORITMO:
-StampareAVideo("TURN ORDER\n\n");
+stampare_a_video("TURN ORDER\n\n");
 
 // roll dice for each player and assign to their dice_rolls array
 dice_rolls := interactive_roll(players);
@@ -753,7 +753,7 @@ OUTPUT:
 - nullo, non restituisce niente, vuoto.
 
 ALGORITMO:
-StampareAVideo(game_board)
+stampare_a_video(game_board)
 
 -------------------------------------------------------------------------------
 
@@ -830,13 +830,13 @@ update_score(pl)
 SE(turns_blocked > NO_TURNS_BLOCKED)
   ALLORA pl = set_turns_blocked(pl,turns_blocked-1)
          SE(current_sq=INN_VALUE)
-            ALLORA StampareAVideo("You are on the INN :")
-                   StampareAVideo(INN_TEXT)
+            ALLORA stampare_a_video("You are on the INN :")
+                   stampare_a_video(INN_TEXT)
                    pos := get_position(pl)
          FINE
          SE((current_sq = PRISON_VALUE OR current_sq = WELL_VALUE) AND
             (roll = ESCAPE_ROLL1 OR roll = ESCAPE_ROLL2))
-                ALLORA StampareAVideo("You are free now !")
+                ALLORA stampare_a_video("You are free now !")
                        pos=check_player_pos(pls, pl, board, roll + get_position(pl))
          FINE
 FINE
@@ -846,40 +846,40 @@ SE(turns_blocked == NO_TURNS_BLOCKED)
           FINE
           SE(target_sq = GOOSE_VALUE OR target_sq = BRIDGE_VALUE)
             SE(target_sq = GOOSE_VALUE)
-              ALLORA StampareAVideo("Landed on a GOOSE SQUARE")
-                     StampareAVideo(GOOSE_TEXT)
-              ALTRIMENTI  StampareAVideo("Landed on the BRIDGE SQUARE")
-                          StampareAVideo(BRIDGE_TEXT)
+              ALLORA stampare_a_video("Landed on a GOOSE SQUARE")
+                     stampare_a_video(GOOSE_TEXT)
+              ALTRIMENTI  stampare_a_video("Landed on the BRIDGE SQUARE")
+                          stampare_a_video(BRIDGE_TEXT)
             FINE
             pos := (roll * 2) + get_position(pl)
           FINE
           ALTRIMENTI SE(target_sq = SKELETON_VALUE)
-               ALLORA StampareAVideo("Landed on the SKELETON SQUARE")
-                      StampareAVideo(SKELETON_TEXT)
+               ALLORA stampare_a_video("Landed on the SKELETON SQUARE")
+                      stampare_a_video(SKELETON_TEXT)
                       pos := INITIAL_POSITION
           ALTRIMENTI SE(target_sq = LABYRINTH_VALUE)
-               ALLORA  StampareAVideo("Landed on the SKELETON")
-                       StampareAVideo(SKELETON_TEXT)
-                       StampareAVideo(proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES))
+               ALLORA  stampare_a_video("Landed on the SKELETON")
+                       stampare_a_video(SKELETON_TEXT)
+                       stampare_a_video(proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES))
                        pos := proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES)
           FINE
 
           SE(target_sq = PRISON_VALUE OR target_sq = WELL_VALUE)
             ALLORA SE(target_sq = GOOSE_PRISON)
-                      ALLORA StampareAVideo("Landed on the PRISON SQUARE")
-                      StampareAVideo(PRISON_TEXT)
-                   ALTRIMENTI  StampareAVideo("Landed on the WELL SQUARE")
-                          StampareAVideo(WELL_TEXT)
+                      ALLORA stampare_a_video("Landed on the PRISON SQUARE")
+                      stampare_a_video(PRISON_TEXT)
+                   ALTRIMENTI  stampare_a_video("Landed on the WELL SQUARE")
+                          stampare_a_video(WELL_TEXT)
                    FINE
                    other_pl_pos := find_other_player_in_square(pls, pl, target_sq)
-                   SE(other_pl_pos != INDEX_NOT_FOUND)
+                   SE(other_pl_pos <> INDEX_NOT_FOUND)
                      other_pl := get_player(pls,other_pl_pos)
                      other_pl := set_turns_blocked(other_pl, NO_TURNS_BLOCKED);
                      pl := set_turns_blocked(pl, INDEF_BLOCK);
-                     StampareAVideo(get_username(other_pl))
-                     StampareAVideo("got out of the prison and")
-                     StampareAVideo(get_username(pl))
-                     StampareAVideo("got in")
+                     stampare_a_video(get_username(other_pl))
+                     stampare_a_video("got out of the prison and")
+                     stampare_a_video(get_username(pl))
+                     stampare_a_video("got in")
                      pos= tagerget_pos
                    FINE
           FINE
@@ -945,16 +945,16 @@ LAVORO:
 - sq, casella del tabellone, intero positivo;
 
 ALGORITMO:
-StampareAVideo("NAME   POS")
-StampareAVideo(LINE_END)
+stampare_a_video("NAME   POS")
+stampare_a_video(LINE_END)
 i := 0
 MENTRE (i < get_num_players(players))
   sq := get_square(board, get_position(get_player(players, i)))
 
-  StampareAVideo(get_username(get_player(players, i)))
-  StampareAVideo(1 + get_position(get_player(players, i)))
-  StampareAVideo(square_to_str(sq))
-  StampareAVideo(LINE_END)
+  stampare_a_video(get_username(get_player(players, i)))
+  stampare_a_video(1 + get_position(get_player(players, i)))
+  stampare_a_video(square_to_str(sq))
+  stampare_a_video(LINE_END)
   i := i + 1
 FINE
 
@@ -990,21 +990,21 @@ MENTRE (NOT quit_game)
     new_screen()
     print_board(game_board)
     print_positions(players, board)
-    StampareAVideo("TURN : ")
-    StampareAVideo(get_username(get_player(pls,i)))
+    stampare_a_video("TURN : ")
+    stampare_a_video(get_username(get_player(pls,i)))
     get_keypress := TRUE
     MENTRE (get_keypress)
 
-    keypress := LeggereCarattere()
+    keypress := leggere_carattere()
     get_keypress := FALSE
 
-    SE (keypress = 'p') ALLORA 
+    SE (keypress = 'p') ALLORA
       quit_game := pause_menu(pls,board,game_board)
-    ALTRIMENTI SE (keypress = 'r') ALLORA 
+    ALTRIMENTI SE (keypress = 'r') ALLORA
       roll := roll_dice()
-      StampareAVideo(get_username(get_player(pls,i)))
-      StampareAVideo(" rolled a ")
-      StampareAVideo(roll)
+      stampare_a_video(get_username(get_player(pls,i)))
+      stampare_a_video(" rolled a ")
+      stampare_a_video(roll)
       move_player(pls,get_player(pls,i),roll,board)
       wait_keypress("press to move the player...")
     ALTRIMENTI
@@ -1030,9 +1030,9 @@ MENTRE (NOT quit_game)
       write_leaderboard(winner)
 
       new_screen()
-      StampareAVideo("Congratulations")
-      StampareAVideo(get_username(pl))
-      StampareAVideo("you are the winner!")
+      stampare_a_video("Congratulations")
+      stampare_a_video(get_username(pl))
+      stampare_a_video("you are the winner!")
   FINE
 FINE
 
@@ -1058,16 +1058,16 @@ print_menu(PAUSE_MENU)
 quit = FALSE
 display = TRUE
 MENTRE (display = TRUE)
-  key := LeggereCarattere()
+  key := leggere_carattere()
   display := FALSE
-  SE (key = 's') ALLORA 
+  SE (key = 's') ALLORA
     save_game(pls,board)
     wait_keypress("game saved, press any key to return to game...")
-  ALTRIMENTI SE (key = 'l') ALLORA 
+  ALTRIMENTI SE (key = 'l') ALLORA
     quit := TRUE
-  ALTRIMENTI SE (is_back_key(key)) ALLORA 
+  ALTRIMENTI SE (is_back_key(key)) ALLORA
     Continua
-  ALTRIMENTI  
+  ALTRIMENTI
     print_err(INVALID_KEY)
     display := TRUE
   FINE

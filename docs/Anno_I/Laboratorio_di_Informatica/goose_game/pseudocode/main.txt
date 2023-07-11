@@ -27,23 +27,23 @@ print_main_menu()
 
 menu_loop := TRUE
 MENTRE (menu_loop = TRUE)
-  key := LeggereDaTastiera()
-  SE (key = 'n') ALLORA 
+  key := leggere_da_tastiera()
+  SE (key = 'n') ALLORA
     new_game()
     main_menu()
-  ALTRIMENTI SE (key = 's') ALLORA 
+  ALTRIMENTI SE (key = 's') ALLORA
     saved_games()
     main_menu()
-  ALTRIMENTI SE (key = 'l') ALLORA 
+  ALTRIMENTI SE (key = 'l') ALLORA
     leaderboard()
     main_menu()
-  ALTRIMENTI SE (key = "h") ALLORA 
+  ALTRIMENTI SE (key = "h") ALLORA
     menu_help()
     main_menu()
-  ALTRIMENTI SE (key = 'q') ALLORA 
+  ALTRIMENTI SE (key = 'q') ALLORA
     clear_line()
     menu_loop := FALSE
-  ALTRIMENTI 
+  ALTRIMENTI
     print_err(INVALID_KEY_ERROR)
   FINE
 FINE

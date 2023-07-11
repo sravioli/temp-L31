@@ -92,32 +92,4 @@ OUTPUT:
 ALGORITMO:
 valore del campo num_players di players := num_players
 
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
-
-FUNZIONI UTILI AL TIPO PLAYERS
-==============================
-
-FUNZIONE swap_players()
-=======================
-
-Scambia la posizione di due giocatori nella lista di giocatori.
-
-INPUT:
-- player, lista dei giocatori, Players;
-- idx, indice del primo giocatore da scambiare, intero positivo;
-- other_idx, indice del secondo giocatore da scambiare, intero positivo.
-
-OUTPUT:
-- players, lista di giocatori coi giocatori scambiati, Players.
-
-LAVORO:
-- player1, giocatore alla posizione idx, Player;
-- player2, giocatore alla posizione other_idx, Player;
-
-ALGORITMO:
-player1 = get_player(pls, idx)
-player2 = get_player(pls, other_idx)
-set_player(pls, player2, idx)
-set_player(pls, player1, other_idx)
 

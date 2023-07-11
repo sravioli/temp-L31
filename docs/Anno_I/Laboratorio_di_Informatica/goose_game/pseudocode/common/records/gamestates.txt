@@ -24,8 +24,7 @@ RECORD GameStates:
 FUNZIONI DI ACCESSO
 ===================
 
-Le seguenti funzioni permettono l'accesso alle informazioni del tipo di dato
-GameStates:
+Le seguenti funzioni permettono l'accesso alle informazioni del tipo di dato GameStates:
 
 FUNZIONE get_game()
 ===================

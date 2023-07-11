@@ -53,20 +53,20 @@ LAVORO:
 - lines, numero di riga del file da iterare per trovare l'indice, intero;
 
 ALGORITMO
-SE (AprireFile(ERROR_FILE) = NULL) ALLORA
-  StampareAVideo("Failed to read from file)
-  Uscire()
+SE (aprire_file(ERROR_FILE) = NULL) ALLORA
+  stampare_a_video("Failed to read from file")
+  uscire()
 FINE
 
 lines := 0
 ESEGUI
   lines := lines + 1
   SE(lines := index) ALLORA
-    buffer := LeggereRigaDaFile(ERROR_FILE)
-    StampareAVideo(buffer)
+    buffer := leggere_riga_da_file(ERROR_FILE)
+    stampare_a_video(buffer)
   FINE SE
-FINCHÉ (LeggereCarattere(ERROR_FILE) <> EOF)
-ChiudereFile(ERROR_FILE)
+FINCHÉ (leggere_carattere(ERROR_FILE) <> EOF)
+chiudere_file(ERROR_FILE)
 FINE FINCHÉ
 
 
@@ -86,19 +86,19 @@ LAVORO:
 
 
 ALGORITMO
-SE (AprireFile(ERROR_FILE) = NULL) ALLORA
-  StampareAVideo("Failed to read from file)
-  Uscire()
+SE (aprire_file(ERROR_FILE) = NULL) ALLORA
+  stampare_a_video("Failed to read from file")
+  uscire()
 FINE SE
 
 lines := 0
 ESEGUI
   lines := lines + 1
   SE (lines := index) ALLORA
-    buffer := LeggereRigaDaFile(ERROR_FILE)
-    StampareAVideo(buffer)
+    buffer := leggere_riga_da_file(ERROR_FILE)
+    stampare_a_video(buffer)
   FINE
-FINCHÉ (LeggereCarattere(ERROR_FILE) != EOF)
+FINCHÉ (leggere_carattere(ERROR_FILE) <> EOF)
 FINE FINCHÉ
-ChiudereFile(ERROR_FILE)
-Uscire()
+chiudere_file(ERROR_FILE)
+uscire()

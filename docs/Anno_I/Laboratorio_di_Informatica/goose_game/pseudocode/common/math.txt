@@ -56,7 +56,7 @@ SE (exponent = 0)
   ALTRIMENTI SE (exponent = 1)
     ALLORA result := base
     ALTRIMENTI SE (exponent < 0)
-      ALLORA result := 1 / pow(base, -exponent)
+      ALLORA result := (1 / pow(base, -exponent))
     FINE
   FINE
 FINE

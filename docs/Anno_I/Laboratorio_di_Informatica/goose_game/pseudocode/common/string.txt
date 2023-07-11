@@ -58,7 +58,7 @@ LAVORO:
 
 ALGORITMO:
 i := string_length(buffer)
-j := 0
+j := 1
 MENTRE(elemento j-esimo di source <> STR_END)
   elemento in posizione i di buffer := elemento in posizione j di source
   i := i + 1
@@ -91,10 +91,10 @@ LAVORO:
   zero.
 
 ALGORITMO:
-i := 0
+i := 1
 MENTRE (i < n_times)
   j := str_length(buffer) // initialize to length of buffer
-  k := 0
+  k := 1
   MENTRE (elemento in posizione k di source <> STR_END)
     // concatenate the strings
     elemento in posizione j di buffer := elemento in posizione k di source
@@ -134,7 +134,7 @@ SE (str1_len <> str2_len)
   ALLORA result := FALSE
 FINE
 str1_len := str_length(str1)
-i := 0
+i := 1
 MENTRE (i < str1_len)
   SE (carattere in posizione i di string1 <> carattere in posizione i di string1)
     ALLORA result := FALSE
@@ -166,9 +166,9 @@ LAVORO:
 
 ALGORITMO:
 source_len := str_length(source)
-i := 0
+i := 1
 MENTRE (i < source_len)
-  // copy chars one by one
+
   elemento in posizione i di copied_string := elemento in posizione i di source
   i := i + 1
 FINE
@@ -194,7 +194,7 @@ SE (idx < str_length(source))
   ALLORA buffer := source
 FINE
 
-i := 0
+i := 1
 MENTRE (i < idx)
   carattere in posizione i di source := carattere in posizione i di buffer
   i := i + 1
@@ -272,13 +272,13 @@ LAVORO:
 - j, contatore per iterare sulla stringa buffer, intero maggiore o uguale a zero;
 
 ALGORITMO:
-i := 0
+i := 1
 MENTRE (elemento i-esimo di source = SPACE_CHAR)
   // skip any spaces present at the start of the string
   i := i + 1
 FINE
 
-j := 0
+j := 1
 MENTRE (elemento i-esimo di source <> STR_END)
   // copy strings
   elemento in posizione j di buffer := elemento in posizione i di source
@@ -351,7 +351,7 @@ LAVORO:
 
 ALGORITMO:
 copy := str_copy(string)
-i := 0
+i := 1
 length := str_length(copy)
 MENTRE (i < length)
   current_char := carattere in i-esimo di copy
@@ -397,7 +397,7 @@ SE ((primo carattere di str = '-') OR (primo carattere di str = '+'))
   ALTRIMENTI sign := 1
 FINE
 
-i := 0
+i := 1
 MENTRE (i < str_length(str))
   digit := elemento in posizione i di str - '0'
   int := int * 10 + digit

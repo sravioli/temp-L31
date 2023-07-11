@@ -87,20 +87,20 @@ clear_screen()
 get_term_size(term_width, term_heigth);
 
 left_space := 1 + (term_width - str_length(TITLE_BAR)) / 2
-i := 0
+i := 1
 MENTRE (i < left_space)
-  StampareAVideo(SPACE_CHAR)
+  stampare_a_video(SPACE_CHAR)
   i := i + 1
 FINE
-StampareAVideo(TITLE_BAR)
-StampareAVideo(LINE_END)
+stampare_a_video(TITLE_BAR)
+stampare_a_video(LINE_END)
 
-i := 0
+i := 1
 MENTRE (i < term_width)
-  StampareAVideo("-")
+  stampare_a_video("-")
   i := i + 1
 FINE
-StampareAVideo(LINE_END)
+stampare_a_video(LINE_END)
 
 
 -------------------------------------------------------------------------------
@@ -123,11 +123,11 @@ LAVORO:
   se è necessario attendere l'input, FALSE altrimenti.
 
 ALGORITMO:
-StampareAVideo(message)
+stampare_a_video(message)
 
 wait := TRUE
 MENTRE (wait)
-  SE (LeggereDaTastiera() non è nullo)
+  SE (leggere_da_tastiera() non è nullo)
     ALLORA wait := FALSE
   FINE
 FINE
@@ -195,8 +195,8 @@ LAVORO:
 ALGORITMO:
 new_screen()
 
-file = AprireFile(filename)
-SE (file non esiste)
+file := aprire_file(filename)
+SE (file = NULL)
   ALLORA esci
 FINE
 get_term_size(width, height)
@@ -205,11 +205,11 @@ num_lines := 0
 max_len := 0
 
 MENTRE (num_lines < MAX_MENU_LINES)
-  buffer := LeggereDaFile(file)
+  buffer := leggere_da_file(file)
   max_len := max(str_length(buffer), max_len)
 
   // copy string char by char
-  i := 0
+  i := 1
   MENTRE (i < str_length(buffer))
     carattere in posizione i della stringa in posizione num_lines di menu :=
       carattere in posizione i di buffer
@@ -217,29 +217,29 @@ MENTRE (num_lines < MAX_MENU_LINES)
   FINE
   num_lines := num_lines + 1
 FINE
-ChiudereFile(file)
+chiudere_file(file)
 
 // print vertical padding to center menu
-i := 0
+i := 1
 vert_padding := (height - num_lines - 2) * 0.45
 MENTRE (i < vert_padding)
-  StampareAVideo(STR_END)
+  stampare_a_video(STR_END)
   i := i + 1
 FINE
 
 // print horizontal padding
-i := 0
+i := 1
 left_padding := (width - max_len) * 0.5
 MENTRE (i < num_lines)
   j := 0
   MENTRE (j < left_padding)
-    StampareAVideo(SPACE_CHAR)
+    stampare_a_video(SPACE_CHAR)
     j := j + 1
   FINE
-  StampareAVideo(elemento in posizione i di menu)
+  stampare_a_video(elemento in posizione i di menu)
   i := i + 1
 FINE
-StampareAVideo(LINE_END)
+stampare_a_video(LINE_END)
 
 
 FUNZIONE print_file()
@@ -263,19 +263,19 @@ LAVORO:
 ALGORITMO:
 new_screen()
 
-file = AprireFile(filename)
-SE (file non esiste)
+file := aprire_file(filename)
+SE (file = NULL)
   ALLORA esci
 FINE
 get_term_size(width, height)
 
 num_lines := 0
 MENTRE (num_lines < MAX_FILE_LINES)
-  buffer := LeggereDaFile(file)
-  StampareAVideo(buffer)
+  buffer := leggere_da_file(file)
+  stampare_a_video(buffer)
   num_lines := num_lines + 1
 FINE
-ChiudereFile(file)
+chiudere_file(file)
 
 
 FUNZIONE display_file()
@@ -292,11 +292,11 @@ OUTPUT:
 
 ALGORITMO:
 print_file(filename)
-StampareAVideo("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
+stampare_a_video("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
 
 display := TRUE
 MENTRE (display)
-  key := LeggereDaTastiera()
+  key := leggere_da_tastiera()
   SE (is_back_key(key))
     ALLORA display := FALSE
   FINE
@@ -316,11 +316,11 @@ OUTPUT:
 ALGORITMO:
 
 res := FALSE
-SpostarePuntatoreFile(fp, 0L, SEEK_END)
+spostare_puntatore_file(fp, 0L, SEEK_END)
 
-SE (PosizionePuntatoreFile(fp) := 0L)
+SE (posizione_puntatore_file(fp) := 0L)
   ALLORA res := TRUE
 FINE
-SpostarePuntatoreFile(fp, 0L, SEEK_SET)
+spostare_puntatore_file(fp, 0L, SEEK_SET)
 FINE
 

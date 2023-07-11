@@ -32,7 +32,7 @@ print_menu(HELP_MENU_FILE)
 
 menu_loop := TRUE
 MENTRE (menu_loop = TRUE)
-  key := LeggereDaTastiera()
+  key := leggere_da_tastiera()
 
   SE (key = 'r')
     ALLORA

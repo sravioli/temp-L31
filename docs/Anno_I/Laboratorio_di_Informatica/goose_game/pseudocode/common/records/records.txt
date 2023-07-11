@@ -517,8 +517,8 @@ valore del campo num_entries di entries := num_entries
 
 
 
-GAME
-====
+GAMESTATE
+=========
 
 Il tipo di dato Game deve essere rappresentato come un record composto da:
 - una stringa contente il nome della partita;
@@ -526,7 +526,7 @@ Il tipo di dato Game deve essere rappresentato come un record composto da:
 - una struttura contenente il tabellone di gioco.
 
 
-RECORD Game:
+RECORD GameState:
 - game_name, nome della partita, stringa;
 - players, i giocatori del gioco dell'oca, Players;
 - board, tabellone di gioco, Board.
@@ -548,7 +548,7 @@ FUNZIONE get_game_name()
 ========================
 
 INPUT:
-- game, struttura che rappresenta una partita, Game.
+- game, struttura che rappresenta una partita, GameState.
 
 OUTPUT:
 - game_name, nome della partita, stringa.
@@ -560,11 +560,11 @@ FUNZIONE set_game_name()
 ========================
 
 INPUT:
-- game, partita di cui aggiornare il campo set_game_name, Game;
+- game, partita di cui aggiornare il campo set_game_name, GameState;
 - game_name, nome della partita da impostare, stringa;
 
 OUTPUT:
-- game, partita col campo game_name aggiornato, Game.
+- game, partita col campo game_name aggiornato, GameState.
 
 ALGORITMO:
 valore del campo set_game_name di game := game_name
@@ -573,7 +573,7 @@ FUNZIONE get_game_players()
 ===========================
 
 INPUT:
-- game, struttura che rappresenta una partita, Game.
+- game, struttura che rappresenta una partita, GameState.
 
 OUTPUT:
 - players, struttura che contiene tutte le informazioni sui giocatori, Players.
@@ -585,11 +585,11 @@ FUNZIONE set_game_players()
 ===========================
 
 INPUT:
-- game, partita di cui aggiornare il campo players, Game;
+- game, partita di cui aggiornare il campo players, GameState;
 - players, informazioni sui giocatori da impostare, Players;
 
 OUTPUT:
-- game, partita col campo players aggiornato, Game.
+- game, partita col campo players aggiornato, GameState.
 
 ALGORITMO:
 valore del campo players di game := players
@@ -598,7 +598,7 @@ FUNZIONE get_game_board()
 =========================
 
 INPUT:
-- game, struttura che rappresenta una partita, Game.
+- game, struttura che rappresenta una partita, GameState.
 
 OUTPUT:
 - board, tabellone di gioco su cui si svolgerà la partita, Board.
@@ -610,7 +610,7 @@ FUNZIONE set_game_board()
 =========================
 
 INPUT:
-- game, partita di cui aggiornare il campo board, Game;
+- game, partita di cui aggiornare il campo board, GameState;
 - board, tabellone di gioco da impostare, Board;
 
 OUTPUT:
@@ -625,22 +625,22 @@ valore del campo board di game := board
 
 
 
-GAMES
-=====
+GAMESTATES
+==========
 
-Il tipo di dato Games deve essere rappresentato come un record composto da:
+Il tipo di dato Gamestates deve essere rappresentato come un record composto da:
 - un vettore di strutture Game a una dimesione;
 - un intero che rappresenti il numero di strutture presenti nel vettore;
 
-RECORD Games:
-- games, lista delle partite, array a una dimensione di strututre Game;
+RECORD Gamestate:
+- games, lista delle partite, array a una dimensione di strututre Gamestate;
 - num_games, numero di partite, intero maggiore di zero.
 
 
 funzioni di accesso
 ===================
 
-Le funzioni di accesso al tipo di dato Games sono le seguenti:
+Le funzioni di accesso al tipo di dato GameStates sono le seguenti:
 - get_game();
 - set_game();
 - get_num_games();
@@ -650,11 +650,11 @@ FUNZIONE get_game()
 ===================
 
 INPUT:
-- games, lista di partite, Games;
+- games, lista di partite, GameStates;
 - index, indice della partita desiderata, intero maggiore di zero.
 
 OUTPUT:
-- game, la singola partita all'indice indicato, Game.
+- game, la singola partita all'indice indicato, GameState.
 
 ALGORITMO:
 game := valore alla posizione index del campo game di games
@@ -663,12 +663,12 @@ FUNZIONE set_game()
 ===================
 
 INPUT:
-- games, lista di partite di cui aggiornare il campo game, Games;
-- game, partita da impostare, Game;
+- games, lista di partite di cui aggiornare il campo game, GameStates;
+- game, partita da impostare, GameState;
 - index, indice in cui scrivere la partita game, intero maggiore di zero.
 
 OUTPUT:
-- games, lista di partite col campo game aggiornato, Games.
+- games, lista di partite col campo game aggiornato, GameStates.
 
 ALGORITMO:
 valore del campo game alla posizione index di games := game
@@ -677,7 +677,7 @@ FUNZIONE get_num_games()
 ========================
 
 INPUT:
-- games, lista di partite, Games.
+- games, lista di partite, GameStates.
 
 OUTPUT:
 - num_games, numero di partite presenti, intero maggiore di zero.
@@ -689,11 +689,11 @@ FUNZIONE set_num_games()
 ========================
 
 INPUT:
-- games, lista di partite di cui aggiornare il campo num_games, Games;
+- games, lista di partite di cui aggiornare il campo num_games, GameSates;
 - num_games, numero di partite da impostare, intero maggiore di zero;
 
 OUTPUT:
-- games, lista di partite col campo num_games aggiornato, Games.
+- games, lista di partite col campo num_games aggiornato, GameStates.
 
 ALGORITMO:
 valore del campo num_games di games := num_games

@@ -26,15 +26,15 @@ LAVORO:
 
 ALGORITMO:
 
-file_gss = read_saves(gss)
-num_saves = get_num_games(gss)
+file_gss := read_saves(file_gss)
+num_saves := get_num_games(gss)
 
 SE (num_saves >= NO_SAVED_GAMES AND num_saves < MAX_SAVED_GAMES) ALLORA
   file_gss := set_gamestate(file_gss,gs,get_num_games(file_gss))
   file_gss := set_num_games(file_gss,num_saves + 1)
 ALTRIMENTI SE (num_saves = MAX_SAVED_GAMES) ALLORA
   new_screen()
-  StampareAVideo("Max number of saves reached, you need to choose a game to delete")
+  stampare_a_video("Max number of saves reached, you need to choose a game to delete")
   index := choose_save(file_gss)
   file_gss := set_gamestate(file_gss,gs,index)
 FINE
@@ -42,8 +42,8 @@ FINE
 SE (ApriFile(SAVED_GAMES_FILE) = NULL) ALLORA
   throw_err(FILE_NOT_WRITABLE_ERROR);
 ALTRIMENTI
-  ScrivereSuFile(file_gss)
-  ChiudereFile(SAVED_GAMES_FILE)
+  scrivere_su_file(file_gss)
+  chiudere_file(SAVED_GAMES_FILE)
 FINE
 
 FUNZIONE saved_games()
@@ -72,49 +72,49 @@ ALGORITMO:
 gss := read_saves(gss)
 SE (get_num_games(gss) = 0) ALLORA
   print_err(NO_SAVES)
-  StampareAVideo("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
+  stampare_a_video("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
   display := TRUE
   MENTRE (display = TRUE)
-    key := LeggereCarattere()
-    SE (is_back_key(key)) ALLORA
-      display := FALSE
+    key := leggere_carattere()
+    SE (is_back_key(key))
+      ALLORA display := FALSE
     FINE
   FINE
 
 ALTRIMENTI SE (get_num_games(gss) = 1) ALLORA
-  StampareAVideo("Found only the following game: ")
+  stampare_a_video("Found only the following game: ")
   gs := get_gamestate(gss, 1)
   pls := get_players(gs)
   board := get_board(gs)
 
-  StampareAVideo(get_game_name(gs))
-  StampareAVideo("players : [")
+  stampare_a_video(get_game_name(gs))
+  stampare_a_video("players : [")
   j := 1
   MENTRE (j < get_players_num(pls))
     pl := get_player(pls,j)
-    StampareAVideo(get_username(pl))
-    StampareAVideo("pos. ")
-    StampareAVideo(get_position(pl)+1)
+    stampare_a_video(get_username(pl))
+    stampare_a_video("pos. ")
+    stampare_a_video(get_position(pl)+1)
     SE (j < get_players_num(pls) - 1) ALLORA
-      StampareAVideo(", ")
+      stampare_a_video(", ")
     FINE
     j := j + 1
   FINE
-  StampareAVideo("]")
-  StampareAVideo("board with ")
-  StampareAVideo(get_dim(board))
-  StampareAVideo(" squares")
+  stampare_a_video("]")
+  stampare_a_video("board with ")
+  stampare_a_video(get_dim(board))
+  stampare_a_video(" squares")
 
-  StampareAVideo("launch this game? (y/n) ")
-  StampareAVideo("> ")
+  stampare_a_video("launch this game? (y/n) ")
+  stampare_a_video("> ")
 
   ESEGUI
-    key := LeggereCarattere()
-    SE (key != 'y' AND key != 'n')
+    key := leggere_carattere()
+    SE (key <> 'y' AND key <> 'n')
         ALLORA print_err(INVALID_INPUT_ERROR)
-        StampareAVideo("> ")
+        stampare_a_video("> ")
     FINE
-  FINCHE (key != 'y' AND key != 'n')
+  FINCHE (key <> 'y' AND key <> 'n')
 
   SE (key = 'y') ALLORA
     game_board := build_board(board, DEFAULT_COLS, DEFAULT_SQUARE_LEN, BORDERS)
@@ -126,7 +126,7 @@ ALTRIMENTI SE (get_num_games(gss) = 1) ALLORA
 
 ALTRIMENTI
   new_screen()
-  StampareAVideo("Many games found")
+  stampare_a_video("Many games found")
   index := choose_save(gss);
   gs := get_gamestate(gss,index)
   pls := get_players(gs)
@@ -148,16 +148,16 @@ OUTPUT:
 - nullo, non ha output;
 
 ALGORITMO:
-SE (AprireFile(SAVED_GAMES_FILE) = NULL) ALLORA
+SE (aprire_file(SAVED_GAMES_FILE) = NULL) ALLORA
   throw_err(FILE_NOT_READABLE_ERROR);
 FINE
 
 SE (is_file_empty(SAVED_GAMES_FILE)) ALLORA
   gss := set_num_games(gss,NO_SAVED_GAMES)
 ALTRIMENTI
-  gss  = LeggereDaFile(SAVED_GAMES_FILE)
+  gss  := leggere_da_file(SAVED_GAMES_FILE)
 FINE
-ChiudereFile(SAVED_GAMES_FILE)
+chiudere_file(SAVED_GAMES_FILE)
 FINE
 
 
@@ -178,12 +178,12 @@ LAVORO:
 
 ALGORITMO:
 
-StampareAVideo("Insert the name of the save: ")
-game_name = LeggereDaTastiera()
+stampare_a_video("Insert the name of the save: ")
+game_name := leggere_da_tastiera()
 
-gs = set_players(gs,pls)
-gs = set_board(gs,board)
-gs = set_game_name(gs,game_name)
+gs := set_players(gs,pls)
+gs := set_board(gs,board)
+gs := set_game_name(gs,game_name)
 
 write_save(gs)
 FINE
@@ -210,62 +210,62 @@ LAVORO:
 
 ALGORITMO:
 
-StampareAVideo("Please select a save from the following ones:")
-num_saves = get_num_games(gss)
-i = 1
+stampare_a_video("Please select a save from the following ones:")
+num_saves := get_num_games(gss)
+i := 1
 MENTRE (i < num_saves)
   gs := get_gamestate(gss,i)
   pls := get_players(gs)
   board := get_board(gs)
 
-  StampareAVideo(i)
-  StampareAVideo(":")
-  StampareAVideo(get_game_name(gs))
-  StampareAVideo("Players : ")
-  StampareAVideo(i)
-  StampareAVideo(get_players_num(pls))
-  StampareAVideo("[")
+  stampare_a_video(i)
+  stampare_a_video(":")
+  stampare_a_video(get_game_name(gs))
+  stampare_a_video("Players : ")
+  stampare_a_video(i)
+  stampare_a_video(get_players_num(pls))
+  stampare_a_video("[")
 
   j := 1
 
   MENTRE (j < get_players_num(pls))
     pl := get_player(pls,j)
-    StampareAVideo(get_username(pl))
-    StampareAVideo("pos ")
-    StampareAVideo(get_position(pl))
+    stampare_a_video(get_username(pl))
+    stampare_a_video("pos ")
+    stampare_a_video(get_position(pl))
     SE (j < get_players_num(pls)-1)
-      ALLORA  StampareAVideo(", ")
+      ALLORA  stampare_a_video(", ")
     FINE
-    j = j + 1
+    j := j + 1
   FINE
 
-  StampareAVideo("]")
-  StampareAVideo("board with ")
-  StampareAVideo(get_dim(board))
-  StampareAVideo(" squares")
+  stampare_a_video("]")
+  stampare_a_video("board with ")
+  stampare_a_video(get_dim(board))
+  stampare_a_video(" squares")
   i := i + 1
 FINE
-StampareAVideo("Select a game or [q]uit and go back to the menu")
-StampareAVideo(">")
-invalidInput = FALSE
+stampare_a_video("Select a game or [q]uit and go back to the menu")
+stampare_a_video(">")
+invalidInput := FALSE
 ESEGUI
-  buffer := LeggereDaTastiera()
+  buffer := leggere_da_tastiera()
   SE (elemento di buffer in posizione 1 = 'q')
      ALLORA input = QUIT_GAME
             Interrompi
   FINE
-  SE (elemento di buffer in posizione 1 < '0' OR elemento di buffer in posizione 1 > '9') ALLORA 
-    invalidInput = TRUE
+  SE (elemento di buffer in posizione 1 < '0' OR elemento di buffer in posizione 1 > '9') ALLORA
+    invalidInput := TRUE
     print_err(INVALID_INPUT_ERROR)
-    StampareAVideo("> ")
+    stampare_a_video("> ")
     Continua
   FINE
   input := atoi(buffer)
   SE (input < NO_SAVED_GAMES OR input > get_num_games(gss) - 1)
-     ALLORA invalidInput = TRUE
+     ALLORA invalidInput := TRUE
             print_err(INVALID_GAME)
-            StampareAVideo("> ")
-     ALTRIMENTI invalidInput = FALSE
+            stampare_a_video("> ")
+     ALTRIMENTI invalidInput := FALSE
   FINE
 FINCHE (invalidInput = TRUE)
 FINE

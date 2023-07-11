@@ -23,15 +23,15 @@ OUTPUT:
 
 ALGORITMO:
 
-SE (AprireFile(LEADERBOARD_FILE)=NULL)
+SE (aprire_file(LEADERBOARD_FILE)=NULL)
   ALLORA throw_err(FILE_NOT_READABLE_ERROR)
 FINE
 
 SE (is_file_empty(LEADERBOARD_FILE))
    ALLORA es := set_num_entries(es,NO_ENTRIES)
-   ALTRIMENTI LeggereDaFile(es)
+   ALTRIMENTI leggere_da_file(es)
 FINE
-ChiudereFile(LEADERBOARD_FILE)
+chiudere_file(LEADERBOARD_FILE)
 
 
 FUNZIONE find_duplicate_entry()
@@ -202,25 +202,25 @@ leaderboard := read_leaderboard()
 num_entries := get_num_entries(leaderboard)
 write_idx := num_entries
 count := num_entries
-SE (num_entries != NO_ENTRIES) ALLORA 
+SE (num_entries <> NO_ENTRIES) ALLORA
   write_idx := write_idx-1
 FINE
 
 duplicate_idx := find_duplicate_entry(leaderboard,e)
-SE (duplicate_idx != INDEX_NOT_FOUND) ALLORA 
+SE (duplicate_idx <> INDEX_NOT_FOUND) ALLORA
   duplicate := get_entry(leaderboard, duplicate_idx)
-  SE (get_final_score(duplicate) > get_final_score(e)) ALLORA 
+  SE (get_final_score(duplicate) > get_final_score(e)) ALLORA
     Termina
   FINE
   write_idx := duplicate_idx
 FINE
 
-SE (num_entries == MAX_ENTRIES) ALLORA 
+SE (num_entries == MAX_ENTRIES) ALLORA
   last := get_entry(leaderboard,MAX_ENTRIES-1)
-  SE (get_final_score(last) > get_final_score(e)) ALLORA 
+  SE (get_final_score(last) > get_final_score(e)) ALLORA
     Termina
   FINE
-ALTRIMENTI 
+ALTRIMENTI
   count := count +1
 FINE
 
@@ -228,7 +228,7 @@ leaderboard := set_entry(leaderboard,e,write_idx)
 leaderboard := set_num_entries(leaderboard,count)
 leaderboard := sort_entries(leaderboard)
 
-SE (AprireFile(LEADERBOARD_FILE)=NULL) ALLORA 
+SE (aprire_file(LEADERBOARD_FILE)=NULL) ALLORA
   throw_err(FILE_NOT_READABLE_ERROR)
 FINE
 ScrivereSuFile(leaderboard)
@@ -256,27 +256,27 @@ LAVORO:
 ALGORITMO
 
 new_screen()
-SE (get_num_entries(es) = NO_ENTRIES) ALLORA 
+SE (get_num_entries(es) = NO_ENTRIES) ALLORA
   print_err(EMPTY_LEADERBOARD)
   Termina
 FINE
 
 get_term_size(width,height)
 padding := (width - strlen(LEADERBOARD_BANNER)-1)/2
-StampareAVideo(padding)
-StampareAVideo(LEADERBOARD_BANNER)
+stampare_a_video(padding)
+stampare_a_video(LEADERBOARD_BANNER)
 i := 1
 rank := 1
 prev_score := -1
 MENTRE (i <get_num_entries(es) - 1)
   e := get_entry(es, i)
-  SE (get_final_score(e) <> prev_score) ALLORA 
+  SE (get_final_score(e) <> prev_score) ALLORA
     prev_score := get_final_score(e)
     rank := i +1
   FINE
-  StampareAVideo(rank)
-  StampareAVideo(get_name(e))
-  StampareAVideo(get_final_score(e))
+  stampare_a_video(rank)
+  stampare_a_video(get_name(e))
+  stampare_a_video(get_final_score(e))
   i := i + 1
 FINE
 
@@ -299,11 +299,11 @@ LAVORO:
 ALGORITMO
 
 print_leadearboard(es)
-StampareAVideo("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
+stampare_a_video("Exit this view by pressing b/ESC/ENTER/SPACEBAR")
 
 display := TRUE
 MENTRE (display = TRUE)
-   key := LeggereCarattere()
+   key := leggere_carattere()
    SE (is_back_key(key))
       ALLORA display := FALSE
    FINE
