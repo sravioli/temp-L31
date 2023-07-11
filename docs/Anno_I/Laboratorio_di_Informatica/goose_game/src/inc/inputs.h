@@ -96,4 +96,6 @@
  */
 #define FINAL_ORDER_MSG "Based on the dice rolls, the turn order is:\n"
 
+#define LEADERBOARD_BANNER "RANK USERNAME SCORE\n"
+
 #endif  // !INPUT_FORMATS_H
