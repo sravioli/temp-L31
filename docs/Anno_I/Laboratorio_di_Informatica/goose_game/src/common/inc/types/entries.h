@@ -30,8 +30,8 @@
  * The number of entries in the array.
  */
 typedef struct Entries {
-  Entry *entries;   ///< An array of @c Entry structs.
-  int num_entries;  ///< The number of entries in the array.
+  Entry entries[MAX_ENTRIES];  ///< An array of @c Entry structs.
+  int num_entries;             ///< The number of entries in the array.
 } Entries;
 
 /**
