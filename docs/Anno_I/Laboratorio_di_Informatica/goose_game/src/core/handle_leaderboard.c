@@ -41,10 +41,8 @@ void read_leaderboard(Entries *es) {
   if (is_file_empty(fp)) {
     logger.log("the leaderboard is empty");
     set_num_entries(es, NO_ENTRIES);
-    // set_num_games(gss, NO_SAVED_GAMES);
   } else {
     logger.log("reading leaderboard from file");
-    // fread(gss, sizeof(*gss), 1, fp);
     fread(es, sizeof(*es), 1, fp);
   }
   fclose(fp);
@@ -59,11 +57,9 @@ int find_duplicate_entry(Entries es, Entry e) {
   int index = INDEX_NOT_FOUND;
 
   int i = 0;
-  const char *target = get_name(&e);
   while (i < get_num_entries(&es)) {
     const Entry ei = get_entry(&es, i);
-    const char *compare = get_name(&ei);
-    if (strcmp(target, compare) == 0) {
+    if (strcmp(get_name(&e), get_name(&ei)) == 0) {
       index = i;
     }
     i = i + 1;
@@ -86,6 +82,9 @@ void swap_entries(Entry *first, Entry *second) {
 }
 
 void rm_duplicate_entries(Entries *es) {
+  logger.enter_fn(__func__);
+  logger.log("removing duplicate entries");
+
   int num_entries = get_num_entries(es);
   int i = 0;
   while (i < num_entries - 1) {
@@ -105,11 +104,16 @@ void rm_duplicate_entries(Entries *es) {
     }
     i = i + 1;
   }
+
+  logger.exit_fn();
   return;
 }
 
 void sort_entries(Entries *es) {
-  int num_entries = get_num_entries(es);
+  logger.enter_fn(__func__);
+  logger.log("sorting entries");
+
+  int num_entries = get_num_entries(es) - 1;
   int i = 0;
   while (i < num_entries) {
     int j = i + 1;
@@ -131,6 +135,7 @@ void sort_entries(Entries *es) {
   }
   rm_duplicate_entries(es);
 
+  logger.exit_fn();
   return;
 }
 
@@ -140,39 +145,53 @@ void write_leaderboard(Entry e) {
 
   Entries leaderboard;
   read_leaderboard(&leaderboard);
-
   int num_entries = get_num_entries(&leaderboard);
-  logger.log("there are %i entries in leaderboard", num_entries);
+  logger.log("read %i entries in leaderboard", num_entries);
 
-  if (num_entries >= NO_ENTRIES && num_entries < MAX_ENTRIES) {
-    logger.log("num_entries is inside bounds, appending to struct");
-    set_entry(&leaderboard, &e, num_entries);
-    set_num_entries(&leaderboard, num_entries + 1);
-  } else if (num_entries == MAX_ENTRIES) {
-    logger.log("maximum number of entries reached, overwriting lowest value");
-    num_entries = num_entries - 1;
+  int write_idx = num_entries;
+  int count = num_entries;
+  if (num_entries != NO_ENTRIES) {
+    write_idx = write_idx - 1;
+  }
 
-    Entry last = get_entry(&leaderboard, num_entries);
-    if (get_final_score(&e) < get_final_score(&last)) {
-      logger.log("Player score was lower than last leaderboard entry.");
+  logger.log("searching for a duplicate entry");
+  int duplicate_idx = find_duplicate_entry(leaderboard, e);
+  if (duplicate_idx != INDEX_NOT_FOUND) {
+    logger.log("duplicate found at pos. %i", duplicate_idx);
+    Entry duplicate = get_entry(&leaderboard, duplicate_idx);
+    // score in leaderboard is greater, do not write
+    if (get_final_score(&duplicate) > get_final_score(&e)) {
+      logger.log("score in file is greater than given score, not writing");
       logger.exit_fn();
       return;
     }
+    logger.log("score in file is lesser, writing");
 
-    // search entry with same username
-    // if (found) -> overwrite that one
-    // else -> overwrite lowest (last), then sort
-    logger.log("searching for a duplicate entry.");
-    int duplicate_entry = find_duplicate_entry(leaderboard, e);
-    if (duplicate_entry != INDEX_NOT_FOUND) {
-      logger.log("duplicate found at pos. %i", duplicate_entry);
-      num_entries = duplicate_entry;
-    }
-    logger.log("setting entry at pos. %i", num_entries);
-    set_entry(&leaderboard, &e, num_entries);
-    sort_entries(&leaderboard);
-    logger.log("sorted leaderboard");
+    write_idx = duplicate_idx;
+    logger.log("set writing index as %i", duplicate_idx);
   }
+  logger.log("no duplicate found");
+
+  if (num_entries == MAX_ENTRIES) {
+    logger.log("reached max number of entries in leaderboard");
+
+    logger.log("checking if the last entry has lower score than given one");
+    Entry last = get_entry(&leaderboard, MAX_ENTRIES - 1);
+    if (get_final_score(&last) > get_final_score(&e)) {
+      logger.log("last entry has greater score, not writing");
+      logger.exit_fn();
+      return;
+    }
+    logger.log("entry has greater score, overwriting");
+  } else {
+    logger.log("appending");
+    count = count + 1;
+  }
+
+  logger.log("setting entry in leaderboard");
+  set_entry(&leaderboard, &e, write_idx);
+  set_num_entries(&leaderboard, count);
+  sort_entries(&leaderboard);
 
   FILE *fp;
   if (fopen_s(&fp, LEADERBOARD_FILE, "wb")) {
@@ -207,7 +226,7 @@ void print_leaderboard(Entries es) {
   int i = 0;
   int rank = 1;
   int prev_score = -1;
-  while (i < get_num_entries(&es)) {
+  while (i < get_num_entries(&es) - 1) {
     Entry e = get_entry(&es, i);
     if (get_final_score(&e) != prev_score) {
       prev_score = get_final_score(&e);
@@ -224,6 +243,7 @@ void print_leaderboard(Entries es) {
 
 void display_leaderboard(Entries es) {
   logger.enter_fn(__func__);
+  logger.log("displayin leaderboard");
 
   print_leaderboard(es);
   printf("\n\n");
