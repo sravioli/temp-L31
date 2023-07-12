@@ -716,14 +716,6 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     // check if player goes beyond the number of squares
     logger.log("bounds checking player pos");
 
-    if (target_sq > get_dim(board)) {
-      logger.log("player going out of bounds");
-      logger.exit_fn();
-      return get_dim(board) + (get_dim(board) - (current_sq + roll));
-      // return check_player_pos(pls, pl, board, roll + get_dim(board) +
-      // (get_dim(board) - (current_sq + roll)));
-    }
-
     // check if the return position should be different than target_pos
     logger.log("checking for special cases");
 
@@ -736,8 +728,14 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
       } else {
         printf("Landed on the BRIDGE SQUARE: %s", BRIDGE_TEXT);
       }
-
-      return (roll * 2) + get_position(pl);
+      if (((roll * 2) + get_position(pl)) < get_dim(board)) {
+        logger.exit_fn();
+        return ((roll * 2) + get_position(pl));
+      } else {
+        logger.exit_fn();
+        return (get_dim(board) -
+                (get_position(pl) + (roll * 2) - get_dim(board)));
+      }
 
     } else if (target_sq == SKELETON_VALUE) {
       logger.log("player on skeleton square, back to start");
@@ -788,13 +786,21 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
         logger.exit_fn();
         return target_pos;
       }
+    } else {
+      // player isn't on special square, return the roll + it's current position
+      logger.log("no special case for player");
+      logger.exit_fn();
+      if (target_pos > get_dim(board)) {
+        logger.log("player going out of bounds");
+        logger.exit_fn();
+
+        return ((get_dim(board)) - (target_pos - (get_dim(board))));
+      } else {
+        logger.exit_fn();
+        return target_pos;
+      }
     }
   }
-
-  // player isn't on special square, return the roll + it's current position
-  logger.log("no special case for player");
-  logger.exit_fn();
-  return target_pos;
 }
 
 void move_player(Players *pls, Player *pl, const int roll, Board *board) {
@@ -805,9 +811,6 @@ void move_player(Players *pls, Player *pl, const int roll, Board *board) {
 }
 
 int find_winner(Players *pls, Board *board) {
-  // int find_winner(const GameState *gs) {
-  // Players *pls = get_players(gs);
-  // Board *board = get_board(gs);
   logger.enter_fn(__func__);
   logger.log("searching for a winner");
   int i = 0;

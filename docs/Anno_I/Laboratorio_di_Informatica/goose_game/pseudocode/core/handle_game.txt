@@ -825,7 +825,6 @@ target_sq = get_square(board, target_pos)
 turns_blocked = get_turns_blocked(pl)
 
 
-
 SE(turns_blocked > NO_TURNS_BLOCKED)
   ALLORA SE(current_sq=INN_VALUE)
             ALLORA stampare_a_video("Turns still blocked for the INN square :")
@@ -841,10 +840,7 @@ SE(turns_blocked > NO_TURNS_BLOCKED)
                            pos = get_position(pl)
          FINE
 ALTRIMENTI SE(turns_blocked = NO_TURNS_BLOCKED)
-   ALLORA  pl = update_score(pl,)
-           SE(target_sq>get_dim(board))
-            ALLORA pos = get_dim(board) + (get_dim(board) - (current_sq + roll))
-           FINE
+          ALLORA  pl = update_score(pl,)
            SE(target_sq = GOOSE_VALUE OR target_sq = BRIDGE_VALUE)
             SE(target_sq = GOOSE_VALUE)
               ALLORA stampare_a_video("Landed on a GOOSE SQUARE")
@@ -852,7 +848,10 @@ ALTRIMENTI SE(turns_blocked = NO_TURNS_BLOCKED)
               ALTRIMENTI  stampare_a_video("Landed on the BRIDGE SQUARE")
                           stampare_a_video(BRIDGE_TEXT)
             FINE
-            pos := (roll * 2) + get_position(pl)
+            SE(((roll*2)+get_position(pl)<get_dim(board)))
+              ALLORA pos = (roll*2)+get_position(pl)
+              ALTRIMENTI pos = (get_dim(board)-(get_position(pl)+(roll*2)-get_dim(board)))
+            FINE
           FINE
           ALTRIMENTI SE(target_sq = SKELETON_VALUE)
                ALLORA stampare_a_video("Landed on the SKELETON SQUARE")
@@ -888,6 +887,10 @@ ALTRIMENTI SE(turns_blocked = NO_TURNS_BLOCKED)
                      ALTRIMENTI
                              pos = target_pos
                    FINE
+          ALTRIMENTI
+                  SE(tagerget_pos>get_dim(board))
+                    ALLORA pos = ((get_dim(board))-(target_pos-(get_dim(board))))
+                    ALTRIMENTI pos = target_pos
           FINE
 FINE
 
