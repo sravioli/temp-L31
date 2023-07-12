@@ -10,3 +10,7 @@ failed to write to file.
 failed to read from file.
 call stack overflow!
 call stack underflow! trying to pop call but the call stack is empty.
+that is not a valid game, retry.
+max number of saves reached, you need to choose a game to delete
+no saved games found!
+The leaderboard is empty! Play some games to fill it.

@@ -150,7 +150,8 @@
  * player arrives to take their place.
  */
 #define WELL_TEXT                                                              \
-  "remain blocked until another player arrives to take your place\n"
+  "remain blocked until another player arrives to take your place,or try to "  \
+  "roll 5 or 7 in the next rounds\n"
 
 /**
  * @brief Text describing the effect of landing on a Bridge square.
@@ -178,7 +179,8 @@
  * player arrives to take their place.
  */
 #define PRISON_TEXT                                                            \
-  "remain blocked until another player arrives to take your place\n"
+  "remain blocked until another player arrives to take your place,or try to "  \
+  "roll 5 or 7 in the next rounds\n"
 
 /**
  * @brief Text describing the effect of landing on a Skeleton square.
