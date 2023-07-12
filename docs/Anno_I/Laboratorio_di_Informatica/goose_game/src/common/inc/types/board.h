@@ -101,6 +101,8 @@
  */
 #define INN_VALUE -2
 
+#define TURNS_BLOCKED_BY_INN 3
+
 /**
  * @brief The value of the well square on the board.
  */
@@ -167,7 +169,7 @@
  * square, which is indicated by the provided placeholder %d in the format
  * string.
  */
-#define LABYRINTH_TEXT "go back to square %d\n"  // 33 on the path from 90
+#define LABYRINTH_TEXT "go to square %d\n"  // 33 on the path from 90
 
 /**
  * @brief Text describing the effect of landing on a Prison square.
