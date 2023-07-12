@@ -226,6 +226,7 @@ void print_leaderboard(Entries es) {
   int i = 0;
   int rank = 1;
   int prev_score = -1;
+
   while (i < get_num_entries(&es)) {
     Entry e = get_entry(&es, i);
     if (get_final_score(&e) != prev_score) {

@@ -666,7 +666,7 @@ int find_other_player_in_square(Players *pls, Player *curr_pl,
   return INDEX_NOT_FOUND;
 }
 
-void update_score(Player *pl, const int roll) {
+void update_score(Player *pl) {
   logger.enter_fn(__func__);
   logger.log("updating %s score", get_username(pl));
   set_score(pl, get_score(pl) + 1);
@@ -690,7 +690,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     if (current_sq == INN_VALUE) {
       logger.exit_fn();
       set_turns_blocked(pl, get_turns_blocked(pl) - 1);
-      printf("turns still blocked for the INN square: %d\n",
+      printf("turns still blocked for the INN square : %d\n",
              get_turns_blocked(pl) + 1);
       return get_position(pl);
     }
@@ -710,7 +710,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     // player is free to move, check for special squares
   } else if (turns_blocked == NO_TURNS_BLOCKED) {
     // score has to be updated for each roll
-    update_score(pl, roll);
+    update_score(pl);
 
     logger.log("player is free to move");
     // check if player goes beyond the number of squares
@@ -748,7 +748,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     } else if (target_sq == LABYRINTH_VALUE) {
       logger.log("player on labyrinth square");
       logger.exit_fn();
-      printf("Landed on the LABYRINTH: ");
+      printf("Landed on the LABYRINTH : ");
       printf(LABYRINTH_TEXT, (proportion(get_dim(board), LABYRINTH_DEFAULT_POS,
                                          MAX_NUM_SQUARES)) +
                                  1);
@@ -757,7 +757,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
     } else if (target_sq == INN_VALUE) {
       logger.log("player on inn square");
       logger.exit_fn();
-      printf("Landed on the INN: ");
+      printf("Landed on the INN : ");
       printf("%s", INN_TEXT);
       set_turns_blocked(pl, TURNS_BLOCKED_BY_INN);
       return target_pos;
@@ -767,9 +767,9 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
       logger.log("player is in prison/well");
 
       if (target_sq == PRISON_VALUE) {
-        printf("Landed on the PRISON: %s", PRISON_TEXT);
+        printf("Landed on the PRISON : %s", PRISON_TEXT);
       } else {
-        printf("Landed on the WELL: %s", WELL_TEXT);
+        printf("Landed on the WELL : %s", WELL_TEXT);
       }
 
       set_turns_blocked(pl, INDEF_BLOCK);
@@ -781,7 +781,7 @@ int check_player_pos(Players *pls, Player *pl, Board *board, const int roll) {
         set_turns_blocked(get_player(pls, other_pl_pos), NO_TURNS_BLOCKED);
         logger.log("blocking player indefinetly");
         logger.exit_fn();
-        printf("\n%s got out of prison thanks to %s that got in",
+        printf("\n%s got out of prison thanks to %s that got in\n",
                get_username(get_player(pls, other_pl_pos)), get_username(pl));
         return target_pos;
       } else {
@@ -939,8 +939,6 @@ void game_loop(Players *pls, Board *board, const char game_board[]) {
       set_name(&winner, get_username(&pl));
       set_final_score(&winner, get_score(&pl));
       write_leaderboard(winner);
-
-      wait_keypress("score: %i", pl.score);
 
       new_screen();
       printf("Congratulations %s, you are the winner!\n", get_username(&pl));

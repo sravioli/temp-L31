@@ -351,16 +351,15 @@ int find_other_player_in_square(Players *pls, Player *curr_pl,
                                 const int target_sq);
 
 /**
- * @brief Updates the score of a player based on the roll.
+ * @brief Updates the score of a player.
  *
  * This function updates the score of a player by incrementing it by 1.
  *
  * @param[in] pl   The player whose score needs to be updated.
- * @param[in] roll The roll value.
  *
  * @return void.
  */
-void update_score(Player *pl, const int roll);
+void update_score(Player *pl);
 
 /**
  * @brief Checks the position of a player after a roll.

@@ -268,7 +268,7 @@ stampare_a_video(LEADERBOARD_BANNER)
 i := 1
 rank := 1
 prev_score := -1
-MENTRE (i <get_num_entries(es) - 1)
+MENTRE (i <get_num_entries(es))
   e := get_entry(es, i)
   SE (get_final_score(e) <> prev_score) ALLORA
     prev_score := get_final_score(e)

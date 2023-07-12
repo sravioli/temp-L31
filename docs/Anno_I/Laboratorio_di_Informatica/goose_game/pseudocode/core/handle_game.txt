@@ -815,8 +815,7 @@ LAVORO:
 - tagerget_pos, posizione dove il giocatore arrivera sommando il lancio dei dadi,intero>0;
 - target_sq, valore della posizione dove il giocatore arrivera,intero;
 - turns_blocked, numero di turni bloccati del giocatore corrente,intero;
-- other_pl, giocatore usato per controllare se un altro giocatore è nella stessa posizione del giocatore corrente,Player;
-- other_pl_pos, posizione del giocatore diverso dal giocatore corrente,intero>o;
+- other_pl_pos, posizione del giocatore diverso dal giocatore corrente ma nella stessa posizione,intero>o;
 
 ALGORITMO
 
@@ -825,26 +824,28 @@ target_pos = roll + get_position(pl)
 target_sq = get_square(board, target_pos)
 turns_blocked = get_turns_blocked(pl)
 
-update_score(pl)
+
 
 SE(turns_blocked > NO_TURNS_BLOCKED)
-  ALLORA pl = set_turns_blocked(pl,turns_blocked-1)
-         SE(current_sq=INN_VALUE)
-            ALLORA stampare_a_video("You are on the INN :")
-                   stampare_a_video(INN_TEXT)
+  ALLORA SE(current_sq=INN_VALUE)
+            ALLORA stampare_a_video("Turns still blocked for the INN square :")
+                   stampare_a_video(get_turns_blocked(pl))
                    pos := get_position(pl)
          FINE
          SE((current_sq = PRISON_VALUE OR current_sq = WELL_VALUE) AND
             (roll = ESCAPE_ROLL1 OR roll = ESCAPE_ROLL2))
-                ALLORA stampare_a_video("You are free now !")
-                       pos=check_player_pos(pls, pl, board, roll + get_position(pl))
+                ALLORA stampare_a_video("Thanks to your roll you are free now!")
+                       pl = set_turns_blocked(pl,NO_TURNS_BLOCKED)
+                       pos = get_position(pl)
+                ALTRIMENTI stampare_a_video("You are blocked indefinitely)
+                           pos = get_position(pl)
          FINE
-FINE
-SE(turns_blocked == NO_TURNS_BLOCKED)
-   ALLORA SE(target_sq>get_dim(board))
+ALTRIMENTI SE(turns_blocked = NO_TURNS_BLOCKED)
+   ALLORA  pl = update_score(pl,)
+           SE(target_sq>get_dim(board))
             ALLORA pos = get_dim(board) + (get_dim(board) - (current_sq + roll))
-          FINE
-          SE(target_sq = GOOSE_VALUE OR target_sq = BRIDGE_VALUE)
+           FINE
+           SE(target_sq = GOOSE_VALUE OR target_sq = BRIDGE_VALUE)
             SE(target_sq = GOOSE_VALUE)
               ALLORA stampare_a_video("Landed on a GOOSE SQUARE")
                      stampare_a_video(GOOSE_TEXT)
@@ -862,25 +863,30 @@ SE(turns_blocked == NO_TURNS_BLOCKED)
                        stampare_a_video(SKELETON_TEXT)
                        stampare_a_video(proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES))
                        pos := proportion(get_dim(board), LABYRINTH_DEFAULT_POS, MAX_NUM_SQUARES)
-          FINE
-
-          SE(target_sq = PRISON_VALUE OR target_sq = WELL_VALUE)
+          ALTRIMENTI SE(target_sq = INN_VALUE)
+               ALLORA stampare_a_video("Landed on the INN")
+                      stampare_a_video(INN_TEXT)
+                      pl = set_turns_blocked(pl,TURNS_BLOCKED_BY_INN)
+                      pos = target_pos
+          ALTRIMENTI SE(target_sq = PRISON_VALUE OR target_sq = WELL_VALUE)
             ALLORA SE(target_sq = GOOSE_PRISON)
                       ALLORA stampare_a_video("Landed on the PRISON SQUARE")
                       stampare_a_video(PRISON_TEXT)
                    ALTRIMENTI  stampare_a_video("Landed on the WELL SQUARE")
                           stampare_a_video(WELL_TEXT)
                    FINE
-                   other_pl_pos := find_other_player_in_square(pls, pl, target_sq)
+
+                   pl = set_turns_blocked(pl,INDEF_BLOCK)
+                   other_pl_pos := find_other_player_in_square(pls, pl, target_pos)
                    SE(other_pl_pos <> INDEX_NOT_FOUND)
-                     other_pl := get_player(pls,other_pl_pos)
-                     other_pl := set_turns_blocked(other_pl, NO_TURNS_BLOCKED);
-                     pl := set_turns_blocked(pl, INDEF_BLOCK);
-                     stampare_a_video(get_username(other_pl))
-                     stampare_a_video("got out of the prison and")
-                     stampare_a_video(get_username(pl))
-                     stampare_a_video("got in")
-                     pos= tagerget_pos
+                     ALLORA  get_player(pls,other_pl_pos) = set_turns_blocked(get_player(pls,other_pl_pos),NO_TURNS_BLOCKED)
+                             stampare_a_video(get_username(get_player(pls,other_pl_pos)))
+                             stampare_a_video("got out of the prison and")
+                             stampare_a_video(get_username(pl))
+                             stampare_a_video("got in")
+                             pos = target_pos
+                     ALTRIMENTI
+                             pos = target_pos
                    FINE
           FINE
 FINE
@@ -1006,7 +1012,7 @@ MENTRE (NOT quit_game)
       stampare_a_video(" rolled a ")
       stampare_a_video(roll)
       move_player(pls,get_player(pls,i),roll,board)
-      wait_keypress("press to move the player...")
+      wait_keypress("press to continue...")
     ALTRIMENTI
       clear_line()
       print_err(INVALID_KEY)

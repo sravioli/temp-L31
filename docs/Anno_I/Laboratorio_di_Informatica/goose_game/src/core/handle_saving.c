@@ -226,8 +226,7 @@ void saved_games() {
     print_err(NO_SAVES);
     printf("\n");
 
-    printf("%sExit this view by pressing b/ESC/ENTER/SPACEBAR%s%s", BOLD, RESET,
-           LINE_END);
+    printf("Exit this view by pressing b/ESC/ENTER/SPACEBAR");
 
     logger.log("waiting for back key...");
     int display = TRUE;
@@ -235,6 +234,9 @@ void saved_games() {
       char key = _getch();
       if (is_back_key(key)) {
         display = FALSE;
+      } else {
+        printf("\n");
+        print_err(INVALID_KEY_ERROR);
       }
     }
 
