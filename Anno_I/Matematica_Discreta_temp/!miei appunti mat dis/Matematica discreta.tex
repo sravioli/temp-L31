@@ -1,0 +1,36 @@
+\documentclass[
+    a4paper,
+    11pt,
+]{book}
+
+% custom preamble package, to not clutter main document
+\usepackage{preamble}
+
+\begin{document}
+
+% custom title page
+\input{titlepage.tex}
+
+% ToC, LiF, LiT
+\tableofcontents
+\listoffigures
+\listoftables
+
+% LiThms -- ignore remarks, examples -- increase number width
+\listoftheorems[ignore={remark,example,examples},numwidth=3.5em]
+
+\newpage
+
+
+\input{Cenni_di_logica}%
+\input{Cenni_Teoria_Insiemi}%
+
+% \input{Numeri_Interi}%
+% \input{Strutture_Algebriche}%
+% \input{Cenni_di_calcolo_combinatorio}%
+% \input{Grafi}%
+% \input{Matrici}%
+
+
+
+\end{document}

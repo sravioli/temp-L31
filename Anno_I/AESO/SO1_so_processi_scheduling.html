@@ -1,0 +1,3106 @@
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31, A.A. 2021-22, dell'Università di Bari "Aldo Moro".">
+      
+      
+        <meta name="author" content="Simone Fidanza">
+      
+      
+        <link rel="canonical" href="https://sravioli.github.io/L31/Anno_I/AESO/SO1_so_processi_scheduling.html">
+      
+      
+        <link rel="prev" href="AE5_istruzioni_indirizzamento.html">
+      
+      
+        <link rel="next" href="SO2_thread_smp_microkernel.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Sistema operativo, gestione dei processi e scheduling - Appunti di Informatica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Montserrat";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sistema-operativo-gestione-dei-processi-e-scheduling" class="md-skip">
+          Vai al contenuto
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Intestazione">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-header__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Appunti di Informatica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sistema operativo, gestione dei processi e scheduling
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Passa alla modalità chiara"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità chiara" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="purple"  aria-label="Passa alla modalità scura"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità scura" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Condividi" aria-label="Condividi" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Cancella" aria-label="Cancella" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inizializza la ricerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-tabs__link md-tabs__link--active">
+        Anno I
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigazione" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-nav__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    Appunti di Informatica
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Anno I
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Anno I
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          AESO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          AESO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-nav__link">
+        Tipi di dato e la loro rappresentazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE4_expr_booleane_karnaugh.html" class="md-nav__link">
+        Espressioni logiche booleane e mappe di Karnaugh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE5_istruzioni_indirizzamento.html" class="md-nav__link">
+        Formati di istruzioni e indirizzamento
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Sistema operativo, gestione dei processi e scheduling
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="SO1_so_processi_scheduling.html" class="md-nav__link md-nav__link--active">
+        Sistema operativo, gestione dei processi e scheduling
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#obiettivi-di-un-sistema-operativo" class="md-nav__link">
+    Obiettivi di un sistema operativo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-operativo-come-interfaccia" class="md-nav__link">
+    Sistema operativo come interfaccia
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servizi-offerti-dal-sistema-operativo" class="md-nav__link">
+    Servizi offerti dal sistema operativo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-operativo-come-gestore-delle-risorse" class="md-nav__link">
+    Sistema operativo come gestore delle risorse
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-multiprogrammati" class="md-nav__link">
+    Batch multiprogrammati
+  </a>
+  
+    <nav class="md-nav" aria-label="Batch multiprogrammati">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-programmazione" class="md-nav__link">
+    Multi-programmazione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processo-job-task" class="md-nav__link">
+    Processo = Job = Task
+  </a>
+  
+    <nav class="md-nav" aria-label="Processo = Job = Task">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementazione-di-un-processo" class="md-nav__link">
+    Implementazione di un processo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-della-memoria" class="md-nav__link">
+    Gestione della memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stati-dei-processi" class="md-nav__link">
+    Stati dei processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descrizione-dei-processi" class="md-nav__link">
+    Descrizione dei Processi
+  </a>
+  
+    <nav class="md-nav" aria-label="Descrizione dei Processi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#process-control-block-pcb" class="md-nav__link">
+    Process Control Block (PCB)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#immagine-dei-processi-in-memoria" class="md-nav__link">
+    Immagine dei processi in memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creazione-e-terminazione-dei-processi" class="md-nav__link">
+    Creazione e terminazione dei processi
+  </a>
+  
+    <nav class="md-nav" aria-label="Creazione e terminazione dei processi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-due-stati" class="md-nav__link">
+    Modello a due stati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-cinque-stati" class="md-nav__link">
+    Modello a cinque stati
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-accodamento" class="md-nav__link">
+    Strategie di accodamento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-switch" class="md-nav__link">
+    Context Switch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modalita-di-esecuzione-dei-processi" class="md-nav__link">
+    Modalità di esecuzione dei processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creazione-dei-processi" class="md-nav__link">
+    Creazione dei Processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evoluzione-del-modello-a-cinque-stati" class="md-nav__link">
+    Evoluzione del modello a cinque stati
+  </a>
+  
+    <nav class="md-nav" aria-label="Evoluzione del modello a cinque stati">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-sei-stati" class="md-nav__link">
+    Modello a sei stati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-sette-stati" class="md-nav__link">
+    Modello a sette stati
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schedulazione" class="md-nav__link">
+    Schedulazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Schedulazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-lungo-termine" class="md-nav__link">
+    Scheduler di lungo termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-medio-termine" class="md-nav__link">
+    Scheduler di medio termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-breve-termine" class="md-nav__link">
+    Scheduler di breve termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduling-della-cpu-nel-dispatcher" class="md-nav__link">
+    Scheduling della CPU nel Dispatcher
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algoritmi-di-schedulazione" class="md-nav__link">
+    Algoritmi di schedulazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Algoritmi di schedulazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-come-first-served-fcfs" class="md-nav__link">
+    First Come First Served (FCFS)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-driven" class="md-nav__link">
+    Event Driven
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#round-robin-rr" class="md-nav__link">
+    Round Robin (RR)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highest-response-ratio-next-hrrn" class="md-nav__link">
+    Highest Response Ratio Next (HRRN)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortest-process-next-spn" class="md-nav__link">
+    Shortest Process Next (SPN)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulazione-a-code-multiple" class="md-nav__link">
+    Schedulazione a code multiple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulazione-a-code-multiple-con-feedback" class="md-nav__link">
+    Schedulazione a code multiple con feedback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO2_thread_smp_microkernel.html" class="md-nav__link">
+        Thread, SMP e Microkernel
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO3_gestione_risorse_problemi.html" class="md-nav__link">
+        Gestione delle risorse e problematiche annesse
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO4_gestione_memoria.html" class="md-nav__link">
+        Gestione della memoria centrale
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO5_file_system.html" class="md-nav__link">
+        Il file system
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Laboratorio di Informatica
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Laboratorio di Informatica
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/00_introduzione.html" class="md-nav__link">
+        Introduzione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/01_test_debugging.html" class="md-nav__link">
+        Test e Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+          Goose game
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Goose game
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/index.html" class="md-nav__link">
+        Gioco dell'oca
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/CHANGELOG.html" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-02-2023.html" class="md-nav__link">
+        Appunti del 02-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-08-2023.html" class="md-nav__link">
+        Appunti del 08-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-09-2023.html" class="md-nav__link">
+        Appunti del 09-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-16-2023.html" class="md-nav__link">
+        Appunti del 16-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-23-2023.html" class="md-nav__link">
+        Appunti del 23/03/23
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-29-2023.html" class="md-nav__link">
+        Appunti del 29/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-30-2023.html" class="md-nav__link">
+        Appunti del 30/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-20-2023.html" class="md-nav__link">
+        Appunti del 20/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-26-2023.html" class="md-nav__link">
+        Appunti del 26/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/05-10-23.html" class="md-nav__link">
+        Appunti del 10/05/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/consegna0.html" class="md-nav__link">
+        Correzione della prima consegna
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Linguaggi di Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linguaggi di Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/00_introduzione.html" class="md-nav__link">
+        Linguaggi di Programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/01_intro_linguaggi.html" class="md-nav__link">
+        Introduzione ai linguaggi di programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/02_teoria_linguaggi.html" class="md-nav__link">
+        Introduzione alla teoria dei linguaggi formali
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/03_grammatiche_linguaggi.html" class="md-nav__link">
+        Grammatiche e Linguaggi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/04_linguaggi_CF_e_non.html" class="md-nav__link">
+        Linguaggi liberi da contesto e linguaggi dipendenti da contesto
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Matematica Discreta temp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Matematica Discreta temp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+          !miei appunti mat dis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          !miei appunti mat dis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Matematica_Discreta_temp/%21miei%20appunti%20mat%20dis/INDEX.html" class="md-nav__link">
+        INDICE SOMMARIO    <!-- rifarsi a questo per l'indicizzazione degli appunti -->
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/00_intro_calcolatori.html" class="md-nav__link">
+        Introduzione ai calcolatori
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/01_problem_solving.html" class="md-nav__link">
+        Problem Solving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/02_algoritmo_euclide.html" class="md-nav__link">
+        Algoritmo di Euclide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/03_notazione_lineare.html" class="md-nav__link">
+        Notazione Lineare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/04_algebra_booleana.html" class="md-nav__link">
+        Algebra Booleana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/05_dati.html" class="md-nav__link">
+        I Dati
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/06_metodologia_TD.html" class="md-nav__link">
+        Metodologia Top-Down
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/07_funzioni_procedure.html" class="md-nav__link">
+        Funzioni e procedure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/08_tipi_semplici.html" class="md-nav__link">
+        Tipi semplici
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/10_array.html" class="md-nav__link">
+        Array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_11" id="__nav_2_5_11_label" tabindex="0">
+          Exercises
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Exercises
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/08.10.21.html" class="md-nav__link">
+        Esercizi del 08/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/14.10.21.html" class="md-nav__link">
+        Esercizio del 14/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/21.10.21.html" class="md-nav__link">
+        Esercizi del 21/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/28.10.21.html" class="md-nav__link">
+        Esercizio del 28/10/21
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#obiettivi-di-un-sistema-operativo" class="md-nav__link">
+    Obiettivi di un sistema operativo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-operativo-come-interfaccia" class="md-nav__link">
+    Sistema operativo come interfaccia
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servizi-offerti-dal-sistema-operativo" class="md-nav__link">
+    Servizi offerti dal sistema operativo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-operativo-come-gestore-delle-risorse" class="md-nav__link">
+    Sistema operativo come gestore delle risorse
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-multiprogrammati" class="md-nav__link">
+    Batch multiprogrammati
+  </a>
+  
+    <nav class="md-nav" aria-label="Batch multiprogrammati">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-programmazione" class="md-nav__link">
+    Multi-programmazione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processo-job-task" class="md-nav__link">
+    Processo = Job = Task
+  </a>
+  
+    <nav class="md-nav" aria-label="Processo = Job = Task">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementazione-di-un-processo" class="md-nav__link">
+    Implementazione di un processo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-della-memoria" class="md-nav__link">
+    Gestione della memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stati-dei-processi" class="md-nav__link">
+    Stati dei processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#descrizione-dei-processi" class="md-nav__link">
+    Descrizione dei Processi
+  </a>
+  
+    <nav class="md-nav" aria-label="Descrizione dei Processi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#process-control-block-pcb" class="md-nav__link">
+    Process Control Block (PCB)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#immagine-dei-processi-in-memoria" class="md-nav__link">
+    Immagine dei processi in memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creazione-e-terminazione-dei-processi" class="md-nav__link">
+    Creazione e terminazione dei processi
+  </a>
+  
+    <nav class="md-nav" aria-label="Creazione e terminazione dei processi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-due-stati" class="md-nav__link">
+    Modello a due stati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-cinque-stati" class="md-nav__link">
+    Modello a cinque stati
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-accodamento" class="md-nav__link">
+    Strategie di accodamento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-switch" class="md-nav__link">
+    Context Switch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modalita-di-esecuzione-dei-processi" class="md-nav__link">
+    Modalità di esecuzione dei processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creazione-dei-processi" class="md-nav__link">
+    Creazione dei Processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evoluzione-del-modello-a-cinque-stati" class="md-nav__link">
+    Evoluzione del modello a cinque stati
+  </a>
+  
+    <nav class="md-nav" aria-label="Evoluzione del modello a cinque stati">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-sei-stati" class="md-nav__link">
+    Modello a sei stati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modello-a-sette-stati" class="md-nav__link">
+    Modello a sette stati
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schedulazione" class="md-nav__link">
+    Schedulazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Schedulazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-lungo-termine" class="md-nav__link">
+    Scheduler di lungo termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-medio-termine" class="md-nav__link">
+    Scheduler di medio termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-di-breve-termine" class="md-nav__link">
+    Scheduler di breve termine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduling-della-cpu-nel-dispatcher" class="md-nav__link">
+    Scheduling della CPU nel Dispatcher
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algoritmi-di-schedulazione" class="md-nav__link">
+    Algoritmi di schedulazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Algoritmi di schedulazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-come-first-served-fcfs" class="md-nav__link">
+    First Come First Served (FCFS)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-driven" class="md-nav__link">
+    Event Driven
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#round-robin-rr" class="md-nav__link">
+    Round Robin (RR)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highest-response-ratio-next-hrrn" class="md-nav__link">
+    Highest Response Ratio Next (HRRN)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortest-process-next-spn" class="md-nav__link">
+    Shortest Process Next (SPN)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulazione-a-code-multiple" class="md-nav__link">
+    Schedulazione a code multiple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulazione-a-code-multiple-con-feedback" class="md-nav__link">
+    Schedulazione a code multiple con feedback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/sRavioli/L31/edit/main/docs/Anno_I/AESO/SO1_so_processi_scheduling.md" title="Modifica" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/sRavioli/L31/raw/main/docs/Anno_I/AESO/SO1_so_processi_scheduling.md" title="Vedi il sorgente di questa pagina" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="sistema-operativo-gestione-dei-processi-e-scheduling">Sistema operativo, gestione dei processi e scheduling<a class="headerlink" href="#sistema-operativo-gestione-dei-processi-e-scheduling" title="Link permanente">⚓︎</a></h1>
+<h2 id="obiettivi-di-un-sistema-operativo">Obiettivi di un sistema operativo<a class="headerlink" href="#obiettivi-di-un-sistema-operativo" title="Link permanente">⚓︎</a></h2>
+<p>Un sistema operativo ha principalmente tre obiettivi:</p>
+<ul>
+<li><strong>convenienza</strong> nell'uso del calcolatore rispetto ai potenziali utenti;</li>
+<li><strong>efficienza</strong> nell'utilizzo del calcolatore e delle sue parti costitutive;</li>
+<li><strong>capacità di evolversi</strong> rispetto a evoluzioni hardware, esigenze degli
+  utenti e bug.</li>
+</ul>
+<h2 id="sistema-operativo-come-interfaccia">Sistema operativo come interfaccia<a class="headerlink" href="#sistema-operativo-come-interfaccia" title="Link permanente">⚓︎</a></h2>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>flowchart LR
+  subgraph PC
+    App(Application Program)
+    Utilities
+    OS(Operating System)
+    HW(Computer Hardware)
+  end
+
+  App --&gt; User(End User)
+  Utilities &amp; OS --&gt; Programmer
+  HW --&gt; Dev(Operating System Developer)</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Il sistema operativo:</p>
+<ul>
+<li>nasconde i dettagli hardware al programmatore;</li>
+<li>fornisce un'<strong>interfaccia</strong> per utilizzare il sistema.</li>
+</ul>
+<p>Il sistema operativo agisce quindi in maniera <strong>trasparente</strong>.</p>
+<p>Un'<strong>interfaccia</strong> è un componente fisico o logico che permette a due o più
+sistemi elettronici di comunicare e interagire.</p>
+<!-- TODO: aggiungere immagine (a scala). -->
+
+<h2 id="servizi-offerti-dal-sistema-operativo">Servizi offerti dal sistema operativo<a class="headerlink" href="#servizi-offerti-dal-sistema-operativo" title="Link permanente">⚓︎</a></h2>
+<p>Il sistema operativo offre vari servizi:</p>
+<ul>
+<li><strong>creazione dei programmi</strong>: compilatore, debugger come utilità offerte al
+  programmatore. Non sono parte del sistema operativo ma sono accessibili
+  tramite esso;</li>
+<li><strong>esecuzione dei programmi</strong>: caricamento in memoria dei programmi,
+  inizializzazione dei dispositivi I/O, ecc;</li>
+<li><strong>accesso ai dispositivi di I/O</strong>: l'utente/programmatore ignora il set di
+  istruzioni e i segnali dei dispositivi;</li>
+<li><strong>accesso controllato ai file</strong>: comprensione del formato, meccanismi di
+  protezione, associazione file indirizzi di memoria;</li>
+<li><strong>accesso al sistema</strong> (inteso in senso lato);</li>
+<li><strong>rilevazione e correzione degli errori hardware</strong> o generati da programmi in
+  esecuzione;</li>
+<li><strong>contabilità e statistiche d'uso delle risorse</strong>, dei tempi di risposta (al
+  fine di migliorare le prestazioni).</li>
+</ul>
+<h2 id="sistema-operativo-come-gestore-delle-risorse">Sistema operativo come gestore delle risorse<a class="headerlink" href="#sistema-operativo-come-gestore-delle-risorse" title="Link permanente">⚓︎</a></h2>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>flowchart LR
+  subgraph PC[" "]
+  Controller1[I/O Controller]
+  Controller2[I/O Controller]
+  Processore
+  subgraph Memoria
+    subgraph OS[Sistema Operativo]
+      Kernel(Kernel)
+    end
+    Programmi
+    Dati
+    end
+  end
+  Dispositivo1([Dispositivo I/O]) &lt;--&gt; Controller1
+  Dispositivo2([Dispositivo I/O]) &lt;--&gt; Controller2</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Il sistema operativo:</p>
+<ul>
+<li>dirige la CPU nell'utilizzo delle altre risorse del sistema e nella
+  temporizzazione dell'esecuzione dei programmi;</li>
+<li>decide quando un programma in esecuzione può utilizzare una risorsa. Il
+  processore stesso è una risorsa.</li>
+</ul>
+<p>Il <strong>Kernel</strong> è Parte del sistema operativo risiedente in memoria centrale,
+contiene le funzioni del sistema operativo usate più frequentemente.</p>
+<h2 id="batch-multiprogrammati">Batch multiprogrammati<a class="headerlink" href="#batch-multiprogrammati" title="Link permanente">⚓︎</a></h2>
+<p>Con <strong>batch multiprogrammati</strong> si intende sistemi dove è consentita la
+multiprogrammazione, ovvero l'esecuzione di più programmi in contemporanea.</p>
+<!-- markdownlint-disable MD046 -->
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Mono-programmazione</label><label for="__tabbed_1_2">Multi-programmazione</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Ad esempio:</p>
+<ul>
+<li>Lettura di un record: <span class="arithmatex">\(0.0015 \second\)</span>;</li>
+<li>Esecuzione di <span class="arithmatex">\(100\)</span> istruzioni: <span class="arithmatex">\(0.0001 \second\)</span>;</li>
+<li>Scrittura di un record: <span class="arithmatex">\(0.0015 \second\)</span>;</li>
+<li>Totale <span class="arithmatex">\(0.0031 \second\)</span>.</li>
+</ul>
+<p>Percentuale di utilizzo della CPU:</p>
+<div class="arithmatex">\[
+    \frac{0.0001 \cancel{\second}}{0.0031 \cancel{\second}} = 0.032
+                                                            = 3.2 \%
+\]</div>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Presenza di più programmi in memoria;</li>
+<li>Obiettivo: limitare l'inattività del processore, quando un job effettua
+  un'operazione di I/O la CPU può essere impegnata da un altro processo;</li>
+<li>Elaborazione seriale dei task.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="multi-programmazione">Multi-programmazione<a class="headerlink" href="#multi-programmazione" title="Link permanente">⚓︎</a></h3>
+<!-- TODO: aggiungere immagine della multiprogrammazione. -->
+
+<p>Le difficoltà della multi-programmazione sono le seguenti:</p>
+<ul>
+<li>Gestione della memoria;</li>
+<li>Decidere quale Job mandare in esecuzione (<em>schedulazione</em>).</li>
+</ul>
+<h2 id="processo-job-task">Processo = Job = Task<a class="headerlink" href="#processo-job-task" title="Link permanente">⚓︎</a></h2>
+<div class="admonition def">
+<p class="admonition-title">Processo</p>
+<p>Un'attività caratterizzata dall'esecuzione di una sequenza di istruzioni,
+uno stato corrente e un set di istruzioni di sistema</p>
+</div>
+<p>Le componenti di un processo sono le seguenti:</p>
+<ul>
+<li><ins>Programma</ins>, che comprende il codice eseguibile;</li>
+<li><ins>Dati</ins>, che comprendono: variabili, spazio di lavoro, buffer</li>
+<li><ins>Contesto di esecuzione</ins>, ovvero le informazioni necessarie al sistema
+  operativo per gestire il processo:<ul>
+<li>Contenuto dei registri della CPU</li>
+<li>Priorità</li>
+<li>Stato di esecuzione</li>
+<li>Stato di attesa su un dispositivo di I/O</li>
+</ul>
+</li>
+</ul>
+<h3 id="implementazione-di-un-processo">Implementazione di un processo<a class="headerlink" href="#implementazione-di-un-processo" title="Link permanente">⚓︎</a></h3>
+<p>L'immagine è veramente troppo complicata per ricrearla.</p>
+<!-- TODO: aggiungere immagine dell'implementazione di un processo. -->
+
+<h3 id="gestione-della-memoria">Gestione della memoria<a class="headerlink" href="#gestione-della-memoria" title="Link permanente">⚓︎</a></h3>
+<p>Il sistema operativo deve assolvere cinque compiti</p>
+<ol>
+<li>isolamento dei processi;</li>
+<li>allocazione e gestione automatica della memoria: la gerarchia delle memorie
+   deve essere trasparente all'utente;</li>
+<li>supporto alla programmazione modulare: variazione di dimensione dei programmi;</li>
+<li>protezione e controllo dell'accesso: gestione di aree di memoria condivise
+   tra i processi;</li>
+<li>memorizzazione a lungo termine.</li>
+</ol>
+<p>Queste necessità sono soddisfatte da:</p>
+<ul>
+<li><strong>memoria virtuale</strong>: i programmi indirizzano la memoria con riferimenti
+  logici ignorando gli aspetti fisici, quando un programma è in esecuzione solo
+  una sua parte risiede effettivamente in memoria centrale;</li>
+<li><strong>file system</strong>: implementa la memorizzazione a lungo termine.</li>
+</ul>
+<h3 id="stati-dei-processi">Stati dei processi<a class="headerlink" href="#stati-dei-processi" title="Link permanente">⚓︎</a></h3>
+<p>Il compito principale di un sistema operativo è il controllo dell'esecuzione
+dei processi. In particolare, è possibile classificare lo stato attuale di un
+processo mediante, appunto, uno <strong>stato</strong>. Tale classificazione consente di
+gestire in maniera differente processi in stato differente.</p>
+<h3 id="descrizione-dei-processi">Descrizione dei Processi<a class="headerlink" href="#descrizione-dei-processi" title="Link permanente">⚓︎</a></h3>
+<p>Il sistema operativo necessita di uno strumento per gestire i processi, che
+tenga traccia di tutte le informazioni disponibili. Esso prende il nome di
+<strong>Descrittore di Processo</strong>, oppure <strong>Process Control Block</strong> (<em>PCB</em>).</p>
+<pre class="mermaid"><code>flowchart TB
+  subgraph VirtualMemory[Virtual Memory]; P1; P2; Pn; end
+  subgraph ComputerResources[Computer Resources]
+    Processor; I/O; I/O1; MainMemory
+  end
+  P1 --&gt; Processor &amp; I/O &amp; I/O1[I/O]
+  P2 -.-&gt; I/O
+  P1 &amp; P2 --&gt;  MainMemory[Main Memory]
+  Pn -.-&gt; MainMemory</code></pre>
+<h4 id="process-control-block-pcb">Process Control Block (PCB)<a class="headerlink" href="#process-control-block-pcb" title="Link permanente">⚓︎</a></h4>
+<p>È costituito da:</p>
+<ol>
+<li>un identificatore di processo, detto anche <strong>Process IDentification</strong> (<strong>PID</strong>),
+   è un valore numerico univoco;</li>
+<li>le informazioni sullo stato del processore, queste contengono:<ul>
+<li>registri dati visibili all'utente, questi dipendono dall'architettura
+    del calcolatore;</li>
+<li>registri di controllo e di stato, che a loro volta contengono:<ul>
+<li><em>Program Counter</em>: indirizzo della prossima istruzione da eseguire;</li>
+<li><em>Registri di stato</em>: includono i flag per l'abilitazione degli
+     interrupt;</li>
+<li><em>Registri</em> che contengono codici relativi alla condizione, come:
+     segno, overflow, etc.</li>
+</ul>
+</li>
+<li>Puntatori allo stack, che vengono usati per procedure e funzioni.</li>
+</ul>
+</li>
+<li>le informazioni di controllo del processo, queste contengono:<ul>
+<li>schedulazione e informazioni di stato:<ul>
+<li>stato del processo (<em>Running</em>, <em>Ready</em>, etc.);</li>
+<li>priorità nelle code di scheduling;</li>
+<li>informazioni correlate alla schedulazione (tempo di attesa, tempo
+    di esecuzione, etc);</li>
+<li>evento del quale è in attesa (se è in attesa).</li>
+</ul>
+</li>
+<li>Strutturazione dati, ovvero puntatori ad altri processi che siano
+    figli/padre o che siano per l'implementazione di code.</li>
+<li>Comunicazione tra processi, avviene mediante flag, segnali e messaggi
+    per la comunicazione.</li>
+<li>privilegi, in relazione all'uso della memoria, dei dispositivi, etc.</li>
+<li>gestione della memoria, sono presenti dei limiti di memoria, ovvero un
+    insieme degli indirizzi accessibili (base, limite).</li>
+<li>Contabilizzazione delle risorse, ovvero le risorse controllate dal
+    processo, come lista dei file aperti, lista dei dispositivi I/O, e la
+    loro storia.</li>
+</ul>
+</li>
+</ol>
+<h3 id="immagine-dei-processi-in-memoria">Immagine dei processi in memoria<a class="headerlink" href="#immagine-dei-processi-in-memoria" title="Link permanente">⚓︎</a></h3>
+<!-- TODO: aggiungere immagine dei processi in mem. -->
+
+<p>Nell'esempio le immagini occupano locazioni contigue di memoria, in una
+implementazione reale ciò può non essere vero. Dipende dalla politica di
+gestione della memoria.</p>
+<h3 id="creazione-e-terminazione-dei-processi">Creazione e terminazione dei processi<a class="headerlink" href="#creazione-e-terminazione-dei-processi" title="Link permanente">⚓︎</a></h3>
+<p>Eventi che portano alla <strong>creazione</strong> dei processi:</p>
+<ol>
+<li>richiesta da terminale (un utente accede al sistema);</li>
+<li>il sistema operativo genera un processo sulla base della richiesta di un
+   processo utente (es. stampa: il processo generatore continua la sua
+   esecuzione);</li>
+<li>un processo utente genera un nuovo processo, processo padre e processo figlio
+   (es. sfruttare il parallelismo: un processo server genera diverse istanze per
+   gestire diverse richieste).</li>
+</ol>
+<p>Eventi che portano alla terminazione dei processi:</p>
+<ol>
+<li>terminazione normale (end);</li>
+<li>uscita dell'utente dall'applicazione;</li>
+<li>superamento del tempo massimo;</li>
+<li>memoria non disponibile;</li>
+<li>violazione dei limiti di memoria;</li>
+<li>fallimento di un'operazione, che sia aritmetica o di I/O, etc.;</li>
+<li>terminazione del genitore;</li>
+<li>richiesta del genitore.</li>
+</ol>
+<h4 id="modello-a-due-stati">Modello a due stati<a class="headerlink" href="#modello-a-due-stati" title="Link permanente">⚓︎</a></h4>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+    direction LR
+    NotRunning: Not-Running
+
+    [*] --&gt; NotRunning: Ingresso
+    NotRunning --&gt; Running: Alloca
+    Running --&gt; NotRunning: Pausa
+    Running --&gt; [*]: Uscita</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Nel modello a due stati, lo stato <em>Not-Running</em> include due possibilità:</p>
+<ol>
+<li>il processo è pronto per essere eseguito</li>
+<li>il processo è in attesa di un evento o di un dispositivo I/O</li>
+</ol>
+<p>Il dispatcher (scheduler) non può semplicemente scegliere il processo da più
+tempo in attesa, poiché esso potrebbe essere in attesa di un trasferimento I/O</p>
+<p>Si giunge dunque al modello a cinque stati:</p>
+<ul>
+<li>vengono introdotti gli stati <em>New</em> e <em>Exit</em> (anche <em>Terminated</em>);</li>
+<li>lo stato di <em>Not-Running</em> viene diviso negli stati <em>Ready</em> (pronto
+  all'esecuzione) e <em>Blocked</em> (in attesa di un evento, una risorsa, etc).</li>
+</ul>
+<h4 id="modello-a-cinque-stati">Modello a cinque stati<a class="headerlink" href="#modello-a-cinque-stati" title="Link permanente">⚓︎</a></h4>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+
+  [*] --&gt; New
+  New --&gt; Ready: Admit
+  Ready --&gt; Running: Dispatch
+  Ready --&gt; Exit: Kill
+
+  Running --&gt; Exit: Release
+  Running --&gt; Ready: Timeout
+  Running --&gt; Blocked: Event Wait
+
+  Blocked --&gt; Ready: Event Occurs
+  Blocked --&gt; Exit: Kill
+
+  Exit --&gt; [*]</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Le transizioni <em>Ready</em>&rarr;<em>Exit</em> e <em>Blocked</em>&rarr;<em>Exit</em> si hanno nel caso in cui
+un processo genitore termina il processo figlio.</p>
+<p>I nuovi stati <em>New</em> e <em>Exit</em>:</p>
+<ul>
+<li><strong>New</strong>: il sistema operativo associa al processo il PID, alloca e costruisce
+  le tabelle per la gestione del processo. Il processo <ins><strong>non</strong></ins> è caricato
+  in memoria;</li>
+<li><strong>Exit</strong>: rilascio delle risorse. Il sistema operativo può mantenere alcune
+  informazioni (es. contabilità).</li>
+</ul>
+<h3 id="strategie-di-accodamento">Strategie di accodamento<a class="headerlink" href="#strategie-di-accodamento" title="Link permanente">⚓︎</a></h3>
+<p>La prima strategia è quella della coda di <em>Blocked</em> singola:</p>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  state Admit &lt;&lt;join&gt;&gt;
+    RQ: Coda di Ready
+    BQ: Coda di Blocked
+    [*] --&gt; Admit
+    Admit --&gt; RQ: Admit
+    BQ --&gt; Admit: Event Occurs
+    RQ --&gt; Processor: Dispatch
+
+  Processor --&gt; [*]: Release
+  Processor --&gt; Admit: Timeout
+  Processor --&gt; BQ: Event Wait</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>L'altra strategia di accodamento fa uso di più code di <em>Blocked</em>:</p>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  state Admit &lt;&lt;join&gt;&gt;
+    ReadyQueue: Coda di Ready
+    [*] --&gt; Admit
+    Admit --&gt; ReadyQueue: Admit
+    ReadyQueue --&gt; Processor: Dispatch
+
+  state EventWait &lt;&lt;fork&gt;&gt;
+    BlockedQueues: Code di Blocked
+    state BlockedQueues {
+      direction LR
+      BlockedQueue1: Coda di Blocked #1
+      BlockedQueue2: Coda di Blocked #2
+      BlockedQueue3: Coda di Blocked #3
+      BlockedQueuen: Coda di Blocked #n
+    }
+    EventWait --&gt; BlockedQueue1: Event #1 Wait
+    EventWait --&gt; BlockedQueue2: Event #2 Wait
+    EventWait --&gt; BlockedQueue3: Event #3 Wait
+    EventWait --&gt; BlockedQueuen: Event #n Wait
+
+  state EventOccurs &lt;&lt;join&gt;&gt;
+    BlockedQueue1 --&gt; EventOccurs: Event #1 Occurs
+    BlockedQueue2 --&gt; EventOccurs: Event #2 Occurs
+    BlockedQueue3 --&gt; EventOccurs: Event #3 Occurs
+    BlockedQueuen --&gt; EventOccurs: Event #n Occurs
+    EventOccurs --&gt; Admit
+
+  state ProcessorFork &lt;&lt;fork&gt;&gt;
+    Processor --&gt; ProcessorFork
+    ProcessorFork --&gt; Admit: Timeout
+    ProcessorFork --&gt; EventWait: Event Wait
+    ProcessorFork --&gt; [*]: Release</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="context-switch">Context Switch<a class="headerlink" href="#context-switch" title="Link permanente">⚓︎</a></h3>
+<p>Il context-switch avviene quando c'è passaggio della CPU a un nuovo processo.
+Le cause principali sono:</p>
+<ul>
+<li>clock interrupt: il processo termina il tempo a sua disposizione e torna nella
+  coda di ready;</li>
+<li>I/O interrupt: un'operazione di I/O termina, il sistema operativo sposta il
+  processo in attesa di tale evento da <em>Blocked</em> a <em>Ready</em> e decide se far
+  riprendere l'esecuzione del processo precedente.</li>
+<li>memory fault: l'indirizzo di memoria generato è sul disco (memoria virtuale) e
+  deve essere portato in <abbr title="Random Access Memory">RAM</abbr>. Il sistema operativo carica il blocco, nel
+  frattempo il processo che ha generato la richiesta è in <em>Blocked</em>, al termine
+  del trasferimento andrà in <em>Ready</em>;</li>
+<li>trap: errore di esecuzione, il processo potrebbe andare in <em>Exit</em>;</li>
+<li>supervisor call (es. file open, il processo utente va in <em>Blocked</em>).</li>
+</ul>
+<!-- TODO: aggiungere diagramma del context switch. Forse troppo difficile. -->
+
+<p>Le operazioni svolte dal sistema operativo in modalità supervisor al momento del
+cambio di processo in stato di <em>Running</em> sono le seguenti:</p>
+<ul>
+<li>salvataggio del contesto del processo che abbandona la CPU, ovvero dei valori
+  dei registri della CPU, quali: pc, psw, reg, etc;</li>
+<li>cambio del valore di stato nel PCB, da <em>Running</em> si passa a <em>Ready</em> o
+  <em>Blocked</em> o <em>Exit</em>;</li>
+<li>spostamento del PCB in nuova coda (<em>Ready</em> o <em>Blocked</em>) o deallocare le sue
+  risorse (<em>Exit</em>);</li>
+<li>aggiornamento delle strutture dati gestione memoria (area dello stack);</li>
+<li>selezione di nuovo processo per lo stato running (dispatcher);</li>
+<li>aggiornamento del suo stato nel PCB;</li>
+<li>ripristino del contesto.</li>
+</ul>
+<p>Il context-switch time è <strong>overhead</strong>, ovvero il sistema operativo non svolge
+alcun compito che sia utile all'utente. Il tempo dipende dalla complessità del
+sistema operativo e dall'hardware.</p>
+<h3 id="modalita-di-esecuzione-dei-processi">Modalità di esecuzione dei processi<a class="headerlink" href="#modalita-di-esecuzione-dei-processi" title="Link permanente">⚓︎</a></h3>
+<p>Le modalità di esecuzione sono due: <em>modalità utente</em>, ovvero l'esecuzione di
+processi utente e <em>modalità sistema</em> o <em>Kernel</em> o <em>Controllo</em>, ovvero
+l'esecuzione di istruzioni che hanno come scopo:</p>
+<ul>
+<li>la gestione dei processi, ovvero creazione e terminazione, schedulazione,
+  cambio di contesto, sincronizzazione e PCB;</li>
+<li>la gestione della memoria, ovvero allocazione, trasferimento da disco a <abbr title="Random Access Memory">RAM</abbr>
+  e viceversa, gestione della paginazione, della segmentazione, etc;</li>
+<li>la gestione I/O, ovvero la gestione dei buffer, l'allocazione a canali I/O;</li>
+<li>il supporto, ovvero la gestione delle interruzioni, la contabilità.</li>
+</ul>
+<h3 id="creazione-dei-processi">Creazione dei Processi<a class="headerlink" href="#creazione-dei-processi" title="Link permanente">⚓︎</a></h3>
+<p>Per creare un processo si seguono i seguenti passi:</p>
+<ol>
+<li>assegnare al processo un PID unico, dunque aggiungere una entry level alla
+   tabella dei processi;</li>
+<li>allocare lo spazio per il processo e per tutti gli elementi della sua
+   immagine (PCB, User Stack, area di memoria dati e istruzioni, aree condivise);</li>
+<li>
+<p>inizializzazione del PCB, ovvero (in pseudocodice):</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Text Only</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>stato del processore := 0
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>process counter := prossima istruzione
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>puntatori allo stack
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>stato := ready
+</code></pre></div></td></tr></table></div>
+</li>
+<li>
+<p>inserimenti nella coda di ready;</p>
+</li>
+<li>estende le strutture al fine della fatturazione o delle statistiche.</li>
+</ol>
+<h3 id="evoluzione-del-modello-a-cinque-stati">Evoluzione del modello a cinque stati<a class="headerlink" href="#evoluzione-del-modello-a-cinque-stati" title="Link permanente">⚓︎</a></h3>
+<p>Nonostante la memoria virtuale, un programma per essere eseguito deve essere in
+<abbr title="Random Access Memory">RAM</abbr>. Con elevata probabilità tutti i processi in memoria restano in attesa di
+operazioni di I/O. Questo significa che il processore resta inattivo poiché è
+molto più veloce dei dispositivi I/O. Le soluzioni applicabili sono le seguenti:</p>
+<ul>
+<li>espandere la memoria, risulta essere costoso e poco efficiente dato che i
+  programmi sono sempre più grandi;</li>
+<li>effettuare lo <strong>swapping</strong>, ovvero spostare un processo dalla <abbr title="Random Access Memory">RAM</abbr> alla memoria
+  secondaria. Questo porta all'introduzione dello stato di <strong>Suspend</strong>. Lo
+  swapping è anch'esso un'operazione di I/O, ma in generale è la più rapida tra
+  queste.</li>
+</ul>
+<h4 id="modello-a-sei-stati">Modello a sei stati<a class="headerlink" href="#modello-a-sei-stati" title="Link permanente">⚓︎</a></h4>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+
+  [*] --&gt; New
+  New --&gt; Ready: Admit
+
+  Ready --&gt; Suspended: Suspend
+  Ready --&gt; Running: Dispatch
+  Ready --&gt; Exit
+
+  Running --&gt; Ready: Timeout
+  Running --&gt; Blocked: Event wait
+  Running --&gt; Exit: Release
+
+  Suspended --&gt; Ready: Activate
+  Suspended --&gt; Blocked: Activate
+
+  Blocked --&gt; Suspended: Suspend
+  Blocked --&gt; Ready: Event occurs
+  Blocked --&gt; Exit
+
+  Exit --&gt; [*]</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Con <strong>swap out</strong> si intende lo scaricamento del processo sul disco, ovvero la
+transizione da blocked a suspended.
+Invece con <strong>swap in</strong> si intende l'operazione inversa allo swap out.</p>
+<p>Il modello a sei stati pone un problema analogo a quello a due stati: va quindi
+scisso lo stato di <em>Suspended</em> in <em>Ready/Suspended</em> e <em>Blocked/Suspended</em>.</p>
+<p>Ciò consente al sistema operativo di scegliere tra i processi in <em>New</em> e in
+<em>Suspended</em>, per essere portati in <em>Ready</em>.</p>
+<h4 id="modello-a-sette-stati">Modello a sette stati<a class="headerlink" href="#modello-a-sette-stati" title="Link permanente">⚓︎</a></h4>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  ReadySuspended: Ready/Suspended
+  BlockedSuspended: Blocked/Suspended
+
+  [*] --&gt; New
+  New --&gt; Ready: Admit
+  New --&gt; ReadySuspended: Admit
+
+  Ready --&gt; ReadySuspended: Suspend
+  Ready --&gt; Running: Dispatch
+  Ready --&gt; Exit
+
+  Running --&gt; Ready: Timeout
+  Running --&gt; ReadySuspended: Suspend
+  Running --&gt; Blocked: Event Wait
+  Running --&gt; Exit: Release
+
+  Blocked --&gt; BlockedSuspended: Suspend
+  Blocked --&gt; Exit
+
+  BlockedSuspended --&gt; Blocked: Activate
+  BlockedSuspended --&gt; ReadySuspended: Event Occurs
+  BlockedSuspended --&gt; Exit
+
+  ReadySuspended --&gt; Ready: Activate
+  ReadySuspended --&gt; Exit
+
+  Exit --&gt; [*]</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>È simile al modello a cinque stati di sospensione. È presente un parallelismo
+tra i processi in memoria principale e quelli in memoria secondaria.</p>
+<p>Esiste uno schema di gestione della memoria noto come memoria virtuale, nel
+quale un processo può trovarsi solo parzialmente in <abbr title="Random Access Memory">RAM</abbr>. Quando si fa
+riferimento a un indirizzo su disco questo viene caricato. Dunque gli stati di
+sospensione in quel caso sono inutili.</p>
+<p>La transizione da <em>Ready</em> a <em>Ready/Suspended</em> avviene laddove vi sia la
+necessità di maggiore memoria per allocare un processo più grande o a maggiore
+priorità.</p>
+<h2 id="schedulazione">Schedulazione<a class="headerlink" href="#schedulazione" title="Link permanente">⚓︎</a></h2>
+<p>La schedulazione, ossia la scelta dell'ordine di esecuzione dei processi, e la
+relativa politica di allocazione deve tenere in considerazione i seguenti
+fattori:</p>
+<ul>
+<li><strong>equità</strong>, ovvero tutti i processi che appartengono alla stessa classe o che
+  hanno richieste simili o che hanno lo stesso costo devono avere la stessa
+  possibilità di accesso alle risorse;</li>
+<li><strong>tempo di risposta differenziale</strong>, ovvero il sistema operativo discrimina
+  tra classi che hanno bisogno di risorse diverse e di tempi diversi (es. i
+  processi I/O-bound che fanno forte uso di I/O vengono schedulati per primi);</li>
+<li><strong>efficienza</strong>, è necessario massimizzare il <em>throughput</em>, ovvero la quantità
+  di dati trasmessi, e minimizzare il tempo di risposta.</li>
+</ul>
+<p>Con scheduling si intende un insieme di tecniche e meccanismi interni del
+sistema operativo che amministrano l'ordine in cui il lavoro viene svolto.
+L'obiettivo primario dello scheduling è l'ottimizzazione delle prestazioni del
+sistema.</p>
+<p>Il sistema operativo può prevedere fino a tre tipi di scheduler:</p>
+<ul>
+<li>Scheduler di <em>lungo</em> termine (<strong>SLT</strong>);</li>
+<li>Scheduler di <em>medio</em> termine (<strong>SMT</strong>);</li>
+<li>Scheduler di <em>breve</em> termine (<strong>SBT</strong>).</li>
+</ul>
+<p>Gli scheduler intervengono secondo il seguente schema:</p>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  ReadySuspended: Ready/Suspended
+
+  New --&gt; Ready: SLT
+  New --&gt; ReadySuspended: SLT
+  ReadySuspended --&gt; Ready: SMT
+  Ready --&gt; Running: SBT
+
+  BlockedSuspended: Blocked/Suspended
+  BlockedSuspended --&gt; Blocked: SMT</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="scheduler-di-lungo-termine">Scheduler di lungo termine<a class="headerlink" href="#scheduler-di-lungo-termine" title="Link permanente">⚓︎</a></h3>
+<p>Determina quali programmi sono ammessi nel sistema per essere processati, quindi
+controlla le transizioni da <em>New</em> a <em>Ready</em> e da <em>New</em> a <em>Ready/Suspended</em>.
+Controlla, inoltre, il grado di multiprogrammazione (<em>New</em>&rarr;<em>Ready</em>), avere
+più processi significa avere minor tempo percentuale di esecuzione per ciascuno
+di questi.</p>
+<p>Le stime effettuate dal programmatore o dal sistema forniscono informazioni sulle
+risorse necessarie all'esecuzione, come le dimensioni della memoria, il tempo
+di esecuzione totale, etc.</p>
+<p>Il lavoro dello scheduler di lungo termine si basa quindi sulla stima del
+comportamento globale dei job.</p>
+<p>Le strategie principali dello scheduler sono:</p>
+<ol>
+<li>fornire alla coda dei processi pronti, quindi allo scheduler di breve termine,
+   gruppi di processi che siano bilanciati tra loro nello sfruttamento della CPU
+   e dell'I/O;</li>
+<li>aumentare il numero di processi provenienti dalla coda batch quando il
+   carico della CPU diminuisce;</li>
+<li>diminuire, fino anche a bloccare, i lavori provenienti dalla coda batch
+   quando il carico aumenta e/o i tempi di risposta del sistema diminuiscono.</li>
+</ol>
+<p>La frequenza di chiamata dello scheduler a lungo termine è bassa e consente di
+implementare strategie anche complesse di selezione dei lavori e di
+dimensionamento del carico dei processi da inviare alla coda di <em>Ready</em>.</p>
+<h3 id="scheduler-di-medio-termine">Scheduler di medio termine<a class="headerlink" href="#scheduler-di-medio-termine" title="Link permanente">⚓︎</a></h3>
+<p>Si occupa di gestire la schedulazione delle transizioni:</p>
+<ul>
+<li><em>Ready/Suspended</em>&rarr;<em>Ready</em>;</li>
+<li><em>Blocked/Suspended</em>&rarr;<em>Blocked</em>.</li>
+</ul>
+<p>Si basa sulla necessità di gestire il livello di multiprogrammazione. La
+presenza di molti processi sospesi in memoria riduce la disponibilità per nuovi
+processi pronti. In questo caso lo scheduler di breve termine è obbligato a
+scegliere tra i pochi processi pronti, dunque:</p>
+<ul>
+<li>utilizza le informazioni del Descrittore di Processo (<strong>PCB</strong>) per stabilire
+  la richiesta di memoria del processo;</li>
+<li>tenta di allocare spazio in memoria centrale;</li>
+<li>riposiziona il processo in memoria nella coda di <em>Ready</em>.</li>
+</ul>
+<p>Viene attivato quando:</p>
+<ul>
+<li>si rende disponibile lo spazio in memoria;</li>
+<li>l'arrivo di processi pronti scende al di sotto di una soglia specificata.</li>
+</ul>
+<h3 id="scheduler-di-breve-termine">Scheduler di breve termine<a class="headerlink" href="#scheduler-di-breve-termine" title="Link permanente">⚓︎</a></h3>
+<p>Prende anche il nome di <strong>dispatcher</strong>. Si occupa di gestire la transizione
+da <em>Ready</em> a <em>Run</em> e viene eseguito molto frequentemente. Viene invocato quando
+si verifica un evento:</p>
+<ul>
+<li>clock interrupts;</li>
+<li>I/O interrupts;</li>
+<li>chiamate del sistema operativo;</li>
+<li>signals.</li>
+</ul>
+<p>La sua principale strategia è orientata alla massimizzazione delle prestazioni
+del sistema secondo un specifico insieme di obiettivi.</p>
+<h3 id="scheduling-della-cpu-nel-dispatcher">Scheduling della CPU nel Dispatcher<a class="headerlink" href="#scheduling-della-cpu-nel-dispatcher" title="Link permanente">⚓︎</a></h3>
+<!-- TODO: aggiungere immagine. -->
+
+<p>Esecuzione di un processo:</p>
+<ol>
+<li>Ciclo di elaborazione (CPU);</li>
+<li>Attesa di completamento di I/O.</li>
+</ol>
+<p>Lo scheduling della CPU riguarda la distribuzione delle sequenze di elaborazione
+della CPU.</p>
+<p>Un processo si dice <strong>I/O-bound</strong> quando presenta molte operazioni di I/O, al
+contrario si dice <strong>CPU-bound</strong> quando presenta poche operazioni di I/O.</p>
+<h2 id="algoritmi-di-schedulazione">Algoritmi di schedulazione<a class="headerlink" href="#algoritmi-di-schedulazione" title="Link permanente">⚓︎</a></h2>
+<p>Innanzitutto, si definiscano:</p>
+<ul>
+<li>il <strong>tempo di ricircolo</strong> come il tempo trascorso tra l'avvio di un processo,
+  ovvero la sua immissione nel sistema, e la terminazione dello stesso;</li>
+<li>il <strong>tempo di attesa</strong> come il tempo che un processo trascorre in attesa delle
+  risorse a causa di conflitti con altri processi. Si può calcolare come la
+  differenza tra il tempo di ricircolo e il tempo di esecuzione. Sostanzialmente
+  valuta la sorgente di inefficienza, essendo il prezzo da pagare per condividere
+  delle risorse.</li>
+</ul>
+<p>L'efficienza degli algoritmi di schedulazione è misurabile utilizzando i tempi
+sopracitati. Un buon algoritmo di scheduling cerca di bilanciare l'esecuzione
+dei processi al meglio, massimizzando l'uso del processore e riducendo i tempi
+di attesa.</p>
+<!-- markdownlint-disable MD046 -->
+<div class="admonition tip">
+<p class="admonition-title">Decision mode</p>
+<p>Può essere di due tipi.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Non-Preemptive (non-interrompibile)</label><label for="__tabbed_2_2">Preemptive (interrompibile)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Un processo in <em>Running</em> abbandonerà tale stato solo se termina
+l'esecuzione o si blocca per un'operazione di I/O.</p>
+</div>
+<div class="tabbed-block">
+<p>Un processo in <em>Running</em> può essere interrotto e spostato in <em>Ready</em>
+del sistema operativo (es. se giunge un processo "più importante" in
+<em>Ready</em>).</p>
+<p>Il <strong>pro</strong> è che nessun processo può monopolizzare il processore, il
+<strong>contro</strong> è che crea problemi dove vi sono processi che condividono
+dati e dunque richiedono meccanismi di sincronizzazione.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="first-come-first-served-fcfs">First Come First Served (FCFS)<a class="headerlink" href="#first-come-first-served-fcfs" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>gantt
+  title First Come First Served
+  dateFormat  ss
+  axisFormat  %S
+
+  section A
+    Running     :A, 0, 3s
+  section B
+    Running     :B, after A, 9s
+  section C
+    Running     :C, after B, 3s
+  section D
+    Running     :D, after C, 3s
+  section E
+    Running     :E, after D, 2s</code></pre>
+<p>Applica il principio della coda:</p>
+<ul>
+<li>Ogni processo entra in coda di <em>Ready</em>;</li>
+<li>Quando un processo abbandona lo stato di <em>Running</em> si seleziona il processo
+  che da più tempo è in stato di <em>Ready</em>.</li>
+</ul>
+<p>Favorisce i processi CPU-bound. Un processo I/O-bound che richiede poco tempo
+di esecuzione potrebbe attendere molto tempo prima che gli venga assegnata la
+CPU. Genera l'effetto convoglio: tutti i processi in coda attendono che un
+processo CPU-bound termini.
+È senza prelazione, ovvero con basso sfruttamento delle componenti e con un
+basso lavoro utile del sistema.</p>
+<p>Le prestazioni dipendono unicamente dall'ordine di arrivo dei Jobs. Ad esempio,
+siano <span class="arithmatex">\(p_1\)</span> e <span class="arithmatex">\(p_2\)</span> due processi con tempo di esecuzione totale di
+<span class="arithmatex">\(20\second\)</span> e <span class="arithmatex">\(2\second\)</span> rispettivamente.</p>
+<!-- markdownlint-disable MD046 -->
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1"><span class="arithmatex">\(p_1\)</span> prima di <span class="arithmatex">\(p_2\)</span></label><label for="__tabbed_3_2"><span class="arithmatex">\(p_2\)</span> prima di <span class="arithmatex">\(p_1\)</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<pre class="mermaid"><code>stateDiagram-v2
+    direction LR
+    state Ordine {
+        direction LR
+        p2 --&gt; p1
+    }
+    Ordine --&gt; FCFS</code></pre>
+<p>Tempi di riciclo:</p>
+<ul>
+<li><span class="arithmatex">\(p_1 = 20 \second\)</span>;</li>
+<li><span class="arithmatex">\(p_2 = 22 \second\)</span>;</li>
+<li><span class="arithmatex">\(t_{\rm medio} = 21 \second\)</span>.</li>
+</ul>
+<p>Tempo di attesa:</p>
+<ul>
+<li><span class="arithmatex">\(p_1 = 0 \second\)</span>;</li>
+<li><span class="arithmatex">\(p_2 = 20 \second\)</span>;</li>
+<li><span class="arithmatex">\(t_{\rm medio} = 10 \second\)</span>.</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>stateDiagram-v2
+    direction LR
+    state Ordine {
+        direction LR
+        p1 --&gt; p2
+    }
+    Ordine --&gt; FCFS</code></pre>
+<p>Tempi di riciclo:</p>
+<ul>
+<li><span class="arithmatex">\(p_1 = 2 \second\)</span>;</li>
+<li><span class="arithmatex">\(p_2 = 22 \second\)</span>;</li>
+<li><span class="arithmatex">\(t_{\rm medio} = 12 \second\)</span>.</li>
+</ul>
+<p>Tempo di attesa:</p>
+<ul>
+<li><span class="arithmatex">\(p_1 = 0 \second\)</span>;</li>
+<li><span class="arithmatex">\(p_2 = 2 \second\)</span>;</li>
+<li><span class="arithmatex">\(t_{\rm medio} = 1 \second\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="event-driven">Event Driven<a class="headerlink" href="#event-driven" title="Link permanente">⚓︎</a></h3>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  state Admit &lt;&lt;fork&gt;&gt;
+    [*] --&gt; Admit: Admit
+    Admit --&gt; RQ0
+    Admit --&gt; RQ1
+    Admit --&gt; RQ2
+    Admit --&gt; RQ3
+    Admit --&gt; RQn
+
+  Code: Code di Ready
+  state Code {
+    RQ0: Coda di Ready #0
+    RQ1: Coda di Ready #1
+    RQ2: Coda di Ready #2
+    RQ3: Coda di Ready #3
+    RQn: Coda di Ready #n
+  }
+
+  BQ: Coda Blocked
+  BQ --&gt; Admit: Event Occurs
+
+  state Dispatch &lt;&lt;join&gt;&gt;
+    RQ0 --&gt; Dispatch
+    RQ1 --&gt; Dispatch
+    RQ2 --&gt; Dispatch
+    RQ3 --&gt; Dispatch
+    RQn --&gt; Dispatch
+    Dispatch --&gt; Processor: Dispatch
+
+  Processor --&gt; [*]: Release
+  Processor --&gt; BQ: Event Wait
+  Processor --&gt; Admit: Preemption</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>È uno schema che ragiona secondo un <strong>valore di priorità</strong> assegnato a ciascun
+processo: lo scheduler sceglierà sempre il processo pronto con priorità maggiore.
+La priorità può essere assegnata dall'utente o dal sistema e può essere di tipo
+statico o dinamico. La priorità dinamica varia in base a:</p>
+<ul>
+<li>valore iniziale;</li>
+<li>caratteristiche del processo;</li>
+<li>richiesta di risorse;</li>
+<li>comportamento durante l'esecuzione.</li>
+</ul>
+<p>Tale modello è generalmente applicato nei sistemi dove il tempo di risposta,
+soprattutto ad eventi esterni, è critico.</p>
+<p>Il sistemista può influire sull'ordine in cui uno scheduler serve gli eventi
+esterni modificando le priorità assegnate ai processi. Le prestazioni sono
+dipendenti da una accurata pianificazione nell'assegnazione delle priorità.
+Le priorità possono essere definite:</p>
+<ul>
+<li>internamente al sistema operativo, utilizzando grandezze misurabili quali
+  l'uso di memoria, file aperti, rapporto tra picchi medi di I/O e di CPU;</li>
+<li>esternamente al sistema operativo, utilizzando la rilevanza del processo,
+  la sua criticità.</li>
+</ul>
+<p>Il <strong>problema</strong> sta nel fatto che non è in grado di garantire il completamento
+di un processo in un intervallo di tempo finito dalla sua creazione. Questo
+perché potrebbe essere continuamente sorpassato da processi a priorità più alta.
+Tale situazione prende il nome di <ins>starvation</ins>.</p>
+<p>La soluzione <strong>soluzione</strong> sta nell'usare l'aging, ovvero al passare del tempo
+in stato di <em>Ready</em>, la priorità del processo aumenta.</p>
+<h3 id="round-robin-rr">Round Robin (RR)<a class="headerlink" href="#round-robin-rr" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>gantt
+  title Round Robin (RR)
+  dateFormat  ss
+  axisFormat  %S
+
+  section A
+    Running     :A1,       0, 2s
+    Running     :A2, after B1, 1s
+
+  section B
+    Running     :B1, after A1, 1s
+    Running     :B2, after A2, 1s
+    Running     :B3, after C1, 1s
+    Running     :B4, after C2, 1s
+    Running     :B5, after C3, 1s
+    Running     :B6, after C4, 1s
+
+  section C
+    Running     :C1, after B2, 1s
+    Running     :C2, after D1, 1s
+    Running     :C3, after D2, 1s
+    Running     :C4, after D3, 1s
+
+  section D
+    Running     :D1, after B3, 1s
+    Running     :D2, after E1, 1s
+    Running     :D3, after E2, 1s
+    Running     :D4, after B6, 2s
+
+  section E
+    Running     :E1, after B4, 1s
+    Running     :E2, after B5, 1s</code></pre>
+<p>Utilizza come principio il <strong>time slice</strong>, ovvero una preemption basata sul
+clock (clock interrupt). Ogni processo utilizza il processore per un dato
+intervallo di tempo, i valori tipici sono <span class="arithmatex">\(10\)</span>–<span class="arithmatex">\(100 \millisecond\)</span>.</p>
+<p>Al verificarsi dell'interrupt il processo in esecuzione viene portato nella coda
+di <em>Ready</em>, che è gestita First In First Out (<em><abbr title="First In, First Out">FIFO</abbr></em>).</p>
+<p>Con <span class="arithmatex">\(n\)</span> processi in <em>Ready</em> e un time quantum <span class="arithmatex">\(q\)</span>, ogni processo ottiene
+<span class="arithmatex">\(\ifrac{1}{n}\)</span> del tempo di CPU, con frazioni di tempo al più pari a <span class="arithmatex">\(q\)</span>.
+Il tempo massimo di attesa in <em>Ready</em> è pari a <span class="arithmatex">\(q \cdot (n − 1)\)</span>. Le
+prestazioni sono dipendenti dal time quantum, infatti:</p>
+<ul>
+<li>se <span class="arithmatex">\(q\)</span> è troppo grande, degenera in First Come First Served;</li>
+<li>se <span class="arithmatex">\(q\)</span> troppo piccolo, il numero di context switch aumenta, causando un
+  consumo di risorse.</li>
+</ul>
+<p>La schedulazione Round Robin fornisce una buona condivisione delle risorse del
+sistema, perché:</p>
+<ul>
+<li>i processi più brevi possono completare l'operazione in un <span class="arithmatex">\(q\)</span>, il che
+  equivale ad un buon tempo di risposta;</li>
+<li>i processi più lunghi sono forzati a passare più volte per la coda dei
+  processi pronti, il tempo è proporzionale alle loro richieste di risorse;</li>
+<li>per i processi interattivi lunghi, se l'esecuzione tra due fasi interattive
+  riesce a completarsi in un <span class="arithmatex">\(q\)</span>, il tempo di risposta è buono.</li>
+</ul>
+<p>La realizzazione di uno scheduler Round Robin richiede il supporto di un Timer
+che invia un'interruzione alla scadenza di ogni <span class="arithmatex">\(q\)</span>, forzando lo scheduler a
+sostituire il processo in esecuzione. Il timer viene riazzerato se un processo
+cede il controllo al sistema operativo prima della scadenza del suo <span class="arithmatex">\(q\)</span>.</p>
+<h3 id="highest-response-ratio-next-hrrn">Highest Response Ratio Next (HRRN)<a class="headerlink" href="#highest-response-ratio-next-hrrn" title="Link permanente">⚓︎</a></h3>
+<p>Siano:</p>
+<ul>
+<li><span class="arithmatex">\(w\)</span> il tempo speso in coda di Ready, quindi in attesa della disponibilità
+  del processore;</li>
+<li><span class="arithmatex">\(s\)</span> il tempo di servizio previsto.</li>
+</ul>
+<p>Si definisce il response ratio come:</p>
+<div class="arithmatex">\[ \text{response ratio} = \frac{w + s}{s} = 1 + \frac{w}{s} \]</div>
+<p>L'algoritmo Highest Response Ratio Next manda in esecuzione il processo con il
+più alto valore di response ration. Osservazioni:</p>
+<ul>
+<li>quando un processo entra in coda per la prima volta ha un response ratio pari
+  a <span class="arithmatex">\(1\)</span>;</li>
+<li>tiene in considerazione l'età del processo, applica quindi un meccanismo di
+  aging, è proprio <span class="arithmatex">\(w\)</span>.</li>
+</ul>
+<h3 id="shortest-process-next-spn">Shortest Process Next (SPN)<a class="headerlink" href="#shortest-process-next-spn" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>gantt
+  title Shortest Process Next (SPN)
+  dateFormat  ss
+  axisFormat  %S
+
+  section A
+    Running     :A,     0, 3s
+
+  section B
+    Running     :B, after A, 6s
+
+  section C
+    Running     :C, after E, 4s
+
+  section D
+    Running     :D, after C, 2s
+
+  section E
+    Running     :E, after B, 2s</code></pre>
+<p>Il processo scelto dalla coda di <em>Ready</em> è quello con il più breve tempo di
+esecuzione stimato, ovvero la più breve sequenza di operazioni svolte dal
+processore.</p>
+<p>Il <strong>pro</strong> è che il Shortest Process Next è ottimale nel fornire il tempo di
+attesa minimo per un dato insieme di processi. Il <strong>contro</strong> è che è sia
+difficile stimare la durata della prossima sequenza di CPU che oneroso, è
+inoltre possibile la starvation per processi fortemente CPU-bound.</p>
+<p>Ha una versione preemptive: se arriva nuovo processo con una sequenza di CPU
+minore del tempo necessario per la conclusione della sequenza di CPU del processo
+attualmente in esecuzione, si ha il prerilascio della CPU a favore del processo
+appena arrivato. Questo schema è anche noto come <strong>Shortest Remaining Time First</strong>
+(<strong>SRTF</strong>) oppure <strong>Shortest Remaining Time Next</strong> (<strong>SRTN</strong>).</p>
+<h3 id="schedulazione-a-code-multiple">Schedulazione a code multiple<a class="headerlink" href="#schedulazione-a-code-multiple" title="Link permanente">⚓︎</a></h3>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  system: System Processes
+  interactive: Interactive Processes
+  interactiveEditing: Interactive Editing Processes
+  batch: Batch Processes
+  student: Student Processes
+
+  state ready &lt;&lt;fork&gt;&gt;
+    [*] --&gt; ready
+    ready --&gt; system: Hi Priority
+    ready --&gt; interactive
+    ready --&gt; interactiveEditing
+    ready --&gt; batch
+    ready --&gt; student: Lo Priority
+
+  state stop &lt;&lt;join&gt;&gt;
+    system --&gt; stop
+    interactive --&gt; stop
+    interactiveEditing --&gt; stop
+    batch --&gt; stop
+    student --&gt; stop
+    stop --&gt;  [*]</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>La coda di <em>Ready</em> viene divisa in sotto-code:</p>
+<ul>
+<li>Foreground, per processi interattivi;</li>
+<li>Background, per processi batch.</li>
+</ul>
+<p>Ogni coda ha un proprio algoritmo di schedulazione (es. Foreground con Round
+Robin, Background con First Come First Served). Vi è necessita di uno scheduling
+tra le code:</p>
+<ul>
+<li>a priorità fissa e con prelazione (es. serve prima la coda Foreground e
+  poi quella di Background);</li>
+<li>time slice, a ogni coda è associato un certo ammontare di tempo di CPU (es.
+  <span class="arithmatex">\(80\%\)</span> alla Foreground con Round Robin, <span class="arithmatex">\(20\%\)</span> alla Background con FCFS).</li>
+</ul>
+<h3 id="schedulazione-a-code-multiple-con-feedback">Schedulazione a code multiple con feedback<a class="headerlink" href="#schedulazione-a-code-multiple-con-feedback" title="Link permanente">⚓︎</a></h3>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  q8: Round Robin, q = 8s
+  q16: Round Robin, q = 16s
+  fcfs: First Come First Served
+
+  [*] --&gt; q8: Ingresso
+  q8 --&gt; q16: Timeout
+  q16 --&gt; fcfs: Timeout
+  fcfs --&gt; [*]: Release
+  q16 --&gt; [*]: Release
+  q8 --&gt; [*]: Release</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Implementa l'aging: un processo può essere spostato da una coda all'altra.</p>
+<p>Le code Multilevel-Feedback sono definite dai seguenti parametri:</p>
+<ul>
+<li>Numero di code;</li>
+<li>Algoritmo di scheduling per ogni coda;</li>
+<li>Metodi usati per l'upgrading e il downgrading di ogni processo.</li>
+</ul>
+<!-- markdownlint-disable MD046 -->
+<div class="admonition example">
+<p class="admonition-title">Esempio</p>
+<p>Tre code:</p>
+<ul>
+<li><span class="arithmatex">\(Q_0\)</span> con Round Robin con <span class="arithmatex">\(q = 8 \millisecond\)</span>;</li>
+<li><span class="arithmatex">\(Q_1\)</span> con Round Robin con <span class="arithmatex">\(q = 16 \millisecond\)</span>;</li>
+<li><span class="arithmatex">\(Q_2\)</span> con First Come First Served.</li>
+</ul>
+<p>Scheduling:</p>
+<ul>
+<li>Un nuovo processo entra nella coda <span class="arithmatex">\(Q_0\)</span></li>
+<li>Quando ottiene la CPU, la impegna per <span class="arithmatex">\(8 \millisecond\)</span>. Se non termina
+  entro gli <span class="arithmatex">\(8 \millisecond\)</span> viene spostato in <span class="arithmatex">\(Q_1\)</span>;</li>
+<li>Il processo in <span class="arithmatex">\(Q_1\)</span> viene nuovamente servito con politica Round Robin
+  e riceve la CPU per ulteriori <span class="arithmatex">\(16 \millisecond\)</span>;</li>
+<li>Se ancora non termina viene spostato in <span class="arithmatex">\(Q_2\)</span> e servito con First Come
+  First Served.</li>
+</ul>
+</div>
+<p>﻿*[ASCII]: American Standard Code for Information Interchange</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Ultimo aggiornamento:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+        <br>
+        Creata:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Torna su
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Piede" >
+        
+          
+          <a href="AE5_istruzioni_indirizzamento.html" class="md-footer__link md-footer__link--prev" aria-label="Precedente: Formati di istruzioni e indirizzamento" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Precedente
+              </span>
+              <div class="md-ellipsis">
+                Formati di istruzioni e indirizzamento
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="SO2_thread_smp_microkernel.html" class="md-footer__link md-footer__link--next" aria-label="Prossimo: Thread, SMP e Microkernel" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Prossimo
+              </span>
+              <div class="md-ellipsis">
+                Thread, SMP e Microkernel
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:<fsimone2002@proton.me>" target="_blank" rel="noopener" title="Mandami una mail" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sRavioli" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/who.dat.boy___" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "toc.follow", "navigation.top", "navigation.footer", "search.suggest", "search.share", "header.autohide", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiato", "clipboard.copy": "Copia", "search.result.more.one": "1 altro in questa pagina", "search.result.more.other": "# altri in questa pagina", "search.result.none": "Nessun documento trovato", "search.result.one": "1 documento trovato", "search.result.other": "# documenti trovati", "search.result.placeholder": "Scrivi per iniziare a cercare", "search.result.term.missing": "Non presente", "select.version": "Seleziona la versione"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../../javascripts/mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

@@ -1,0 +1,17 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}[
+            group/.style={ellipse, draw, minimum height=50pt, minimum width=70pt, label=above:#1},
+            my dot/.style={circle, fill, minimum width=2.5pt, label=#1, inner sep=0pt}
+        ]
+
+        \node (a) [right=30pt, my dot=right:\(a\)] {};
+        \node (b) [yshift=16pt, xshift=-20pt, below=of a, my dot=right:\(b\)] {};
+        \node (x) [yshift=16pt, xshift=+16pt, below=of b, my dot=right:\(x\)] {};
+        \node (3) [yshift=16pt, xshift=-25pt, below=of x, my dot=right:\(3\)] {};
+
+        \node [fit = (a) (b) (x) (3), group=\(B\)] {};
+    \end{tikzpicture}
+\end{figure}

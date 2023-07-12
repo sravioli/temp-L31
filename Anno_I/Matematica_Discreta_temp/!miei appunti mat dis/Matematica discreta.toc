@@ -1,0 +1,26 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {chapter}{\numberline {1}Cenni di Logica}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Proposizioni Atomiche}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Connettivi Logici}{6}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Negazione}{6}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Disgiunzione}{6}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Congiunzione}{7}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Implicazione}{7}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Doppia implicazione}{8}{subsection.1.2.5}%
+\contentsline {section}{\numberline {1.3}Formule della logica proposizionale}{8}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Regole di inferenza}{10}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Modus Ponens o Metodo di Dimostrazione Diretta}{10}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Modus Tollens}{11}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Dimostrazione per contrapposizione}{11}{subsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.4.4}Dimostrazione per assurdo}{12}{subsection.1.4.4}%
+\contentsline {section}{\numberline {1.5}Predicati}{12}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Cenni di Teoria degli Insiemi}{15}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Numeri razionali}{16}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Decimali e Frazioni}{16}{subsection.2.1.1}%
+\contentsline {section}{\numberline {2.2}Numeri reali}{17}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Insiemi numerici}{17}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Relazioni}{23}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Relazioni d'ordine}{26}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Relazioni d'equivalenza}{29}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Funzioni}{33}{section.2.5}%

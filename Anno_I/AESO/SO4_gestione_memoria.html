@@ -1,0 +1,3960 @@
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31, A.A. 2021-22, dell'Università di Bari "Aldo Moro".">
+      
+      
+        <meta name="author" content="Simone Fidanza">
+      
+      
+        <link rel="canonical" href="https://sravioli.github.io/L31/Anno_I/AESO/SO4_gestione_memoria.html">
+      
+      
+        <link rel="prev" href="SO3_gestione_risorse_problemi.html">
+      
+      
+        <link rel="next" href="SO5_file_system.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Gestione della memoria centrale - Appunti di Informatica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Montserrat";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gestione-della-memoria-centrale" class="md-skip">
+          Vai al contenuto
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Intestazione">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-header__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Appunti di Informatica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gestione della memoria centrale
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Passa alla modalità chiara"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità chiara" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="purple"  aria-label="Passa alla modalità scura"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità scura" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Condividi" aria-label="Condividi" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Cancella" aria-label="Cancella" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inizializza la ricerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-tabs__link md-tabs__link--active">
+        Anno I
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigazione" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-nav__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    Appunti di Informatica
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Anno I
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Anno I
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          AESO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          AESO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-nav__link">
+        Tipi di dato e la loro rappresentazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE4_expr_booleane_karnaugh.html" class="md-nav__link">
+        Espressioni logiche booleane e mappe di Karnaugh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE5_istruzioni_indirizzamento.html" class="md-nav__link">
+        Formati di istruzioni e indirizzamento
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO1_so_processi_scheduling.html" class="md-nav__link">
+        Sistema operativo, gestione dei processi e scheduling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO2_thread_smp_microkernel.html" class="md-nav__link">
+        Thread, SMP e Microkernel
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO3_gestione_risorse_problemi.html" class="md-nav__link">
+        Gestione delle risorse e problematiche annesse
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Gestione della memoria centrale
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="SO4_gestione_memoria.html" class="md-nav__link md-nav__link--active">
+        Gestione della memoria centrale
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#principi-di-base" class="md-nav__link">
+    Principi di base
+  </a>
+  
+    <nav class="md-nav" aria-label="Principi di base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-della-memoria" class="md-nav__link">
+    Allocazione della memoria
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monoallocazione" class="md-nav__link">
+    Monoallocazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Monoallocazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monitor-monoprocesso" class="md-nav__link">
+    Monitor Monoprocesso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modalita-dello-schema" class="md-nav__link">
+    Modalità dello schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prestazioni" class="md-nav__link">
+    Prestazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partizionamento-statico" class="md-nav__link">
+    Partizionamento statico
+  </a>
+  
+    <nav class="md-nav" aria-label="Partizionamento statico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swapping" class="md-nav__link">
+    Swapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_1" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partizionamento-dinamico" class="md-nav__link">
+    Partizionamento dinamico
+  </a>
+  
+    <nav class="md-nav" aria-label="Partizionamento dinamico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_1" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compattazione" class="md-nav__link">
+    Compattazione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione-e-condivisione" class="md-nav__link">
+    Meccanismi di protezione e condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_1" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#segmentazione" class="md-nav__link">
+    Segmentazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Segmentazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_2" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_2" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione_1" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collegamento-dinamico" class="md-nav__link">
+    Collegamento dinamico
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_2" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paginazione" class="md-nav__link">
+    Paginazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Paginazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_3" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+    <nav class="md-nav" aria-label="Principi operativi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizzazione-delle-tdp" class="md-nav__link">
+    Organizzazione delle TDP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#velocizzazione-del-tempo-di-traduzione" class="md-nav__link">
+    Velocizzazione del tempo di traduzione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_3" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione_2" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memoria-virtuale" class="md-nav__link">
+    Memoria virtuale
+  </a>
+  
+    <nav class="md-nav" aria-label="Memoria virtuale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_4" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabelle" class="md-nav__link">
+    Tabelle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrompibilita-dellistruzione" class="md-nav__link">
+    Interrompibilità dell'istruzione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-della-memoria-virtuale" class="md-nav__link">
+    Gestione della memoria virtuale
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestione della memoria virtuale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-allocazione-e-sostituzione" class="md-nav__link">
+    Strategie di allocazione e sostituzione
+  </a>
+  
+    <nav class="md-nav" aria-label="Strategie di allocazione e sostituzione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#localita-dei-programmi" class="md-nav__link">
+    Località dei programmi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-sostituzione" class="md-nav__link">
+    Strategie di sostituzione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algoritmi-di-sostituzione" class="md-nav__link">
+    Algoritmi di sostituzione
+  </a>
+  
+    <nav class="md-nav" aria-label="Algoritmi di sostituzione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-in-first-out" class="md-nav__link">
+    First In First Out
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#least-recently-used" class="md-nav__link">
+    Least Recently Used
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#belady" class="md-nav__link">
+    Belady
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#not-recently-used" class="md-nav__link">
+    Not Recently Used
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algoritmi-di-sostituzione-globale" class="md-nav__link">
+    Algoritmi di sostituzione globale
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-allocazione-delle-pagine" class="md-nav__link">
+    Strategie di allocazione delle pagine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-set" class="md-nav__link">
+    Working set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporti-hardware" class="md-nav__link">
+    Supporti hardware
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_3" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO5_file_system.html" class="md-nav__link">
+        Il file system
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Laboratorio di Informatica
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Laboratorio di Informatica
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/00_introduzione.html" class="md-nav__link">
+        Introduzione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/01_test_debugging.html" class="md-nav__link">
+        Test e Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+          Goose game
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Goose game
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/index.html" class="md-nav__link">
+        Gioco dell'oca
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/CHANGELOG.html" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-02-2023.html" class="md-nav__link">
+        Appunti del 02-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-08-2023.html" class="md-nav__link">
+        Appunti del 08-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-09-2023.html" class="md-nav__link">
+        Appunti del 09-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-16-2023.html" class="md-nav__link">
+        Appunti del 16-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-23-2023.html" class="md-nav__link">
+        Appunti del 23/03/23
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-29-2023.html" class="md-nav__link">
+        Appunti del 29/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-30-2023.html" class="md-nav__link">
+        Appunti del 30/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-20-2023.html" class="md-nav__link">
+        Appunti del 20/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-26-2023.html" class="md-nav__link">
+        Appunti del 26/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/05-10-23.html" class="md-nav__link">
+        Appunti del 10/05/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/consegna0.html" class="md-nav__link">
+        Correzione della prima consegna
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Linguaggi di Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linguaggi di Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/00_introduzione.html" class="md-nav__link">
+        Linguaggi di Programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/01_intro_linguaggi.html" class="md-nav__link">
+        Introduzione ai linguaggi di programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/02_teoria_linguaggi.html" class="md-nav__link">
+        Introduzione alla teoria dei linguaggi formali
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/03_grammatiche_linguaggi.html" class="md-nav__link">
+        Grammatiche e Linguaggi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/04_linguaggi_CF_e_non.html" class="md-nav__link">
+        Linguaggi liberi da contesto e linguaggi dipendenti da contesto
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Matematica Discreta temp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Matematica Discreta temp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+          !miei appunti mat dis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          !miei appunti mat dis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Matematica_Discreta_temp/%21miei%20appunti%20mat%20dis/INDEX.html" class="md-nav__link">
+        INDICE SOMMARIO    <!-- rifarsi a questo per l'indicizzazione degli appunti -->
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/00_intro_calcolatori.html" class="md-nav__link">
+        Introduzione ai calcolatori
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/01_problem_solving.html" class="md-nav__link">
+        Problem Solving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/02_algoritmo_euclide.html" class="md-nav__link">
+        Algoritmo di Euclide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/03_notazione_lineare.html" class="md-nav__link">
+        Notazione Lineare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/04_algebra_booleana.html" class="md-nav__link">
+        Algebra Booleana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/05_dati.html" class="md-nav__link">
+        I Dati
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/06_metodologia_TD.html" class="md-nav__link">
+        Metodologia Top-Down
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/07_funzioni_procedure.html" class="md-nav__link">
+        Funzioni e procedure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/08_tipi_semplici.html" class="md-nav__link">
+        Tipi semplici
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/10_array.html" class="md-nav__link">
+        Array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_11" id="__nav_2_5_11_label" tabindex="0">
+          Exercises
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Exercises
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/08.10.21.html" class="md-nav__link">
+        Esercizi del 08/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/14.10.21.html" class="md-nav__link">
+        Esercizio del 14/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/21.10.21.html" class="md-nav__link">
+        Esercizi del 21/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/28.10.21.html" class="md-nav__link">
+        Esercizio del 28/10/21
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#principi-di-base" class="md-nav__link">
+    Principi di base
+  </a>
+  
+    <nav class="md-nav" aria-label="Principi di base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-della-memoria" class="md-nav__link">
+    Allocazione della memoria
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monoallocazione" class="md-nav__link">
+    Monoallocazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Monoallocazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monitor-monoprocesso" class="md-nav__link">
+    Monitor Monoprocesso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modalita-dello-schema" class="md-nav__link">
+    Modalità dello schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prestazioni" class="md-nav__link">
+    Prestazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partizionamento-statico" class="md-nav__link">
+    Partizionamento statico
+  </a>
+  
+    <nav class="md-nav" aria-label="Partizionamento statico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swapping" class="md-nav__link">
+    Swapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_1" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partizionamento-dinamico" class="md-nav__link">
+    Partizionamento dinamico
+  </a>
+  
+    <nav class="md-nav" aria-label="Partizionamento dinamico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_1" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compattazione" class="md-nav__link">
+    Compattazione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione-e-condivisione" class="md-nav__link">
+    Meccanismi di protezione e condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_1" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#segmentazione" class="md-nav__link">
+    Segmentazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Segmentazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_2" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_2" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione_1" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collegamento-dinamico" class="md-nav__link">
+    Collegamento dinamico
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_2" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paginazione" class="md-nav__link">
+    Paginazione
+  </a>
+  
+    <nav class="md-nav" aria-label="Paginazione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_3" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+    <nav class="md-nav" aria-label="Principi operativi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizzazione-delle-tdp" class="md-nav__link">
+    Organizzazione delle TDP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#velocizzazione-del-tempo-di-traduzione" class="md-nav__link">
+    Velocizzazione del tempo di traduzione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-protezione_3" class="md-nav__link">
+    Meccanismi di protezione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meccanismi-di-condivisione_2" class="md-nav__link">
+    Meccanismi di condivisione
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memoria-virtuale" class="md-nav__link">
+    Memoria virtuale
+  </a>
+  
+    <nav class="md-nav" aria-label="Memoria virtuale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principi-operativi_4" class="md-nav__link">
+    Principi operativi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabelle" class="md-nav__link">
+    Tabelle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrompibilita-dellistruzione" class="md-nav__link">
+    Interrompibilità dell'istruzione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-della-memoria-virtuale" class="md-nav__link">
+    Gestione della memoria virtuale
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestione della memoria virtuale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-allocazione-e-sostituzione" class="md-nav__link">
+    Strategie di allocazione e sostituzione
+  </a>
+  
+    <nav class="md-nav" aria-label="Strategie di allocazione e sostituzione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#localita-dei-programmi" class="md-nav__link">
+    Località dei programmi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-sostituzione" class="md-nav__link">
+    Strategie di sostituzione
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algoritmi-di-sostituzione" class="md-nav__link">
+    Algoritmi di sostituzione
+  </a>
+  
+    <nav class="md-nav" aria-label="Algoritmi di sostituzione">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-in-first-out" class="md-nav__link">
+    First In First Out
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#least-recently-used" class="md-nav__link">
+    Least Recently Used
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#belady" class="md-nav__link">
+    Belady
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#not-recently-used" class="md-nav__link">
+    Not Recently Used
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algoritmi-di-sostituzione-globale" class="md-nav__link">
+    Algoritmi di sostituzione globale
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategie-di-allocazione-delle-pagine" class="md-nav__link">
+    Strategie di allocazione delle pagine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-set" class="md-nav__link">
+    Working set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporti-hardware" class="md-nav__link">
+    Supporti hardware
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusioni_3" class="md-nav__link">
+    Conclusioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/sRavioli/L31/edit/main/docs/Anno_I/AESO/SO4_gestione_memoria.md" title="Modifica" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/sRavioli/L31/raw/main/docs/Anno_I/AESO/SO4_gestione_memoria.md" title="Vedi il sorgente di questa pagina" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="gestione-della-memoria-centrale">Gestione della memoria centrale<a class="headerlink" href="#gestione-della-memoria-centrale" title="Link permanente">⚓︎</a></h1>
+<!-- markdownlint-disable MD024 -->
+<h2 id="principi-di-base">Principi di base<a class="headerlink" href="#principi-di-base" title="Link permanente">⚓︎</a></h2>
+<p>La gestione della memoria si occupa di allocare la memoria fisica ai processi
+che ne fanno richiesta. Nessun processo può diventare attivo prima di avere
+ottenuto un certo quantitativo di memoria.</p>
+<p>L'utilizzo globale delle risorse e tutte le altre prestazioni di un calcolatore
+vengono influenzate dalle prestazioni del <em>modulo di gestione della memoria</em> sia
+in funzione della sua efficienza nell'allocare memoria, sia per l'influenza che
+può avere sullo scheduler.</p>
+<p>Un buon gestore di memoria in un ambiente multiprogrammato deve garantire la
+protezione dei dati, impedendo ai processi attivi di sconfinare nello spazio di
+indirizzamento di altri processi, e permettere allo stesso tempo la loro
+condivisione affinché i processi cooperanti possano accedere ad aree comuni di
+memoria.</p>
+<h3 id="allocazione-della-memoria">Allocazione della memoria<a class="headerlink" href="#allocazione-della-memoria" title="Link permanente">⚓︎</a></h3>
+<p>I moduli di gestione della memoria si differenziano in base al tipo di
+allocazione della stessa, che può  essere:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Contigua</label><label for="__tabbed_1_2">Non contigua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>La memoria viene allocata in modo tale che ciascun oggetto occupa un insieme
+di locazioni i cui indirizzi sono strettamente consecutivi. Esistono vari
+tipi di allocazione contigua:</p>
+<ul>
+<li>monoallocazione;</li>
+<li>partizionamento statico;</li>
+<li>partizionamento dinamico;</li>
+<li>segmentazione.</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>La memoria viene allocata in modo tale che un unico oggetto logico viene
+posto  in aree separate e non adiacenti. Durante l'esecuzione di un processo
+viene eseguita la traduzione degli indirizzi per ristabilire la
+corrispondenza tra lo spazio virtuale di indirizzamento (contiguo) e gli
+indirizzi fisici. Le tipologie afferenti sono:</p>
+<ul>
+<li>paginazione;</li>
+<li>memoria virtuale.</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="monoallocazione">Monoallocazione<a class="headerlink" href="#monoallocazione" title="Link permanente">⚓︎</a></h2>
+<h3 id="monitor-monoprocesso">Monitor Monoprocesso<a class="headerlink" href="#monitor-monoprocesso" title="Link permanente">⚓︎</a></h3>
+<p>È lo schema più semplice per la gestione della memoria che viene suddivisa in
+due aree contigue:</p>
+<ul>
+<li>la prima allocata permanentemente ad una porzione residente del sistema
+  operativo (Monitor);</li>
+<li>la seconda assegnata ai processi in esecuzione, processi utente o porzioni
+  non residenti del sistema operativo, per il tempo necessario al completamento.</li>
+</ul>
+<p>Questo schema viene generalmente utilizzato da sistemi operativi monoprocesso
+per microcomputer.</p>
+<h3 id="modalita-dello-schema">Modalità dello schema<a class="headerlink" href="#modalita-dello-schema" title="Link permanente">⚓︎</a></h3>
+<p>Il sistema operativo:</p>
+<ul>
+<li>tiene traccia solo della prima e dell'ultima locazione disponibile per i
+  processi transienti;</li>
+<li>viene posto ad uno dei due estremi della memoria;</li>
+<li>ingloba i vettori di interrupt;</li>
+<li>altri suoi moduli temporanei vengono posti all'altra estremità della memoria.</li>
+</ul>
+<p>Alla richiesta di esecuzione di un programma, il sistema operativo:</p>
+<ul>
+<li>si assicura che le dimensioni del processo siano compatibili con la memoria
+  disponibile;</li>
+<li>conferisce il controllo al processo utente fino al suo completamento o ad
+  eventuali condizioni di errore;</li>
+<li>al termine del processo la memoria viene liberata e può essere assegnata ad
+  un altro processo in attesa.</li>
+</ul>
+<h3 id="meccanismi-di-protezione">Meccanismi di protezione<a class="headerlink" href="#meccanismi-di-protezione" title="Link permanente">⚓︎</a></h3>
+<p>Raramente un monitor monoprocesso supporta meccanismi di protezione tra processi
+utente in quanto in ogni istante vi può essere al massimo un solo processo
+residente in memoria. Gli eventuali meccanismi si riferiscono alla protezione
+del codice del sistema operativo da eventuali sconfinamenti del processo
+transiente in esecuzione.</p>
+<p>La protezione del sistema operativo dai processi utente è spesso effettuata
+mediante supporti hardware come:</p>
+<ul>
+<li>registri barriera;</li>
+<li>diritti di accesso mediante bit di protezione;</li>
+<li>sistema operativo in memoria a sola lettura.</li>
+</ul>
+<p>I <strong>registri barriera</strong> sono usati per tracciare un confine tra le aree dei
+processi di sistema e dei processi transienti. Nel registro viene memorizzata
+la prima locazione disponibile al processo e il sistema operativo effettua i
+controlli di sconfinamento. Questo metodo richiede la capacità di distinguere
+l'esecuzione del sistema operativo da quella dei processi utente definendo gli
+stati "utente" e "supervisore".</p>
+<p>Un altro metodo per proteggere la memoria consiste nel memorizzare i diritti
+di accesso, mediante bit di protezione, nella memoria stessa. Ad ogni parola
+di memoria viene associato un bit di protezione che viene posto a <span class="arithmatex">\(1\)</span> nelle
+zone che contengono il sistema operativo e a <span class="arithmatex">\(0\)</span> nelle restanti. I processi
+utente accedono solo a parole con bit <span class="arithmatex">\(0\)</span>, mentre il sistema operativo ha
+accesso illimitato.</p>
+<p>Un modo semplice e diffuso per proteggere il codice del sistema operativo dai
+programmi utente consiste nel porre il sistema operativo in memoria a sola
+lettura. Nelle applicazioni generiche, come i personal computer, questo metodo
+non è solitamente utilizzato per la sua scarsa flessibilità e impossibilità di
+correggere o aggiornare il codice del sistema operativo.</p>
+<p>La condivisione del codice e dei dati in memoria non ha molto senso negli
+ambienti monoprocesso e raramente viene supportata dai relativi monitor. I
+programmi utente potrebbero passarsi dei dati, mediante accordi interni,
+ponendoli in locazioni di memoria che non vengono sovrascritte durante
+l'esecuzione di processi partecipanti, o mediante file.</p>
+<h3 id="prestazioni">Prestazioni<a class="headerlink" href="#prestazioni" title="Link permanente">⚓︎</a></h3>
+<p>Difetti:</p>
+<ul>
+<li>la mancanza di supporti per la multi-programmazione produce un abbassamento
+  dell'efficienza sia della memoria che della CPU;</li>
+<li>la memoria può risultare sovradimensionata per la maggioranza dei processi</li>
+<li>processi di dimensione più grande della memoria non possono essere eseguiti,
+  oppure richiedono particolari suddivisioni del codice (overlay);</li>
+<li>i programmi tendono ad essere ottimizzati rispetto alla dimensione, comportando
+  spesso sacrifici di funzionalità e velocità.</li>
+</ul>
+<p>Pregi:</p>
+<ul>
+<li>basso costo di progettazione del modulo di gestione della memoria;</li>
+<li>contenuti supporti hardware specifici per la gestione della memoria.</li>
+</ul>
+<h2 id="partizionamento-statico">Partizionamento statico<a class="headerlink" href="#partizionamento-statico" title="Link permanente">⚓︎</a></h2>
+<p>Un modo per supportare la multiprogrammazione consiste nel dividere la memoria
+in diverse partizioni, ciascuna delle quali può essere allocata a un processo
+diverso. Il partizionamento statico implica che la suddivisione della memoria
+venga fatta "fuori linea" e che da quel momento le partizioni rimangano di
+dimensioni fisse.</p>
+<p>Il numero e la dimensione di ciascuna partizione vengono determinati durante la
+generazione del sistema considerando:</p>
+<ul>
+<li>capacità della memoria fisica disponibile;</li>
+<li>grado desiderato di multiprogrammazione;</li>
+<li>dimensioni dei processi più frequentemente eseguiti;</li>
+</ul>
+<p>Alcuni calcolatori permettono una ridefinizione manuale delle dimensioni delle
+partizioni senza dover ripetere l'intero processo di generazione del sistema.</p>
+<h3 id="principi-operativi">Principi operativi<a class="headerlink" href="#principi-operativi" title="Link permanente">⚓︎</a></h3>
+<p>Il sistema operativo deve tener traccia delle partizioni definite. Lo stato
+corrente delle partizioni ed i loro attributi vengono raccolti in una struttura
+dati chiamata <strong>tabella di descrizione delle partizioni</strong> (<abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>).</p>
+<p>L'unico campo variabile nella <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> è lo stato della partizione che indica in ogni
+istante se la partizione è allocata o no. Gli altri campi contengono valori
+definiti al momento del partizionamento.</p>
+<div class="arithmatex">\[
+  \begin{array}{ cc }
+    \begin{array}{ |c| }\hline
+      \hspace{2.5cm} OS \hspace{2.5cm} \\             \hline
+    \end{array}
+    &amp; \text{Sistema operativo} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_1 \hspace{2.65cm} \\ \\      \hline
+    \end{array}
+    &amp; \text{Processo utente} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{5.8cm} \\             \hline
+    \end{array}
+    &amp; \text{Partizione libera} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_2 \hspace{2.65cm} \\ \\             \hline
+    \end{array}
+    &amp; \text{Processo utente} \\
+  \end{array}
+\]</div>
+<p><abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> dell'esempio precedente:</p>
+<table>
+<thead>
+<tr>
+<th># partizione</th>
+<th>Base partizione</th>
+<th>Dimensione partizione</th>
+<th>Stato partizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0 kB</td>
+<td>200 kB</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td>1</td>
+<td>200 kB</td>
+<td>400 kB</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td>2</td>
+<td>600 kB</td>
+<td>600 kB</td>
+<td>Libera</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1200 kB</td>
+<td>500 kB</td>
+<td>Allocata</td>
+</tr>
+</tbody>
+</table>
+<p>Quando un processo non residente deve essere creato o attivato, il sistema
+operativo tenta di allocare una partizione di memoria libera di dimensioni
+sufficienti per contenerlo, consultando la <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>. Se il test è positivo, il campo
+"stato della partizione" viene impostato ad "Allocata" e l'immagine del processo
+viene caricata nella corrispondente partizione. Quando il processo termina è
+necessario effettuarne uno swapping dalla memoria. Questa informazione verrà
+utilizzata per localizzare e aggiornare lo stato della partizione
+associata al valore "Libera".</p>
+<p>I metodi più comuni per la ricerca di una partizione libera sono:</p>
+<ul>
+<li>first fit: consiste nell'allocare la prima partizione libera sufficientemente
+  larga per contenere il processo;</li>
+<li>best fit: consiste nell'allocare la più piccola delle partizioni libere che
+  contenga il processo.</li>
+</ul>
+<p>Il metodo first fit è più veloce in esecuzione poiché si arresta nella ricerca,
+alla prima partizione libera disponibile, mentre il metodo best fit deve
+controllare, prima di arrestarsi, tutte le partizioni libere disponibili per
+individuarne la migliore.</p>
+<p>Il metodo best fit, tuttavia, è più accurato in esecuzione e quindi può
+raggiungere un miglior utilizzo della memoria, rispetto al metodo first fit,
+riducendo al minimo la differenza di dimensione tra il processo e la partizione
+allocata.</p>
+<p>Quando il numero delle partizioni è molto grande nessuno dei due metodi si
+rivela particolarmente adatto.</p>
+<p>Riassumendo, se esiste una partizione allocabile al processo richiedente:</p>
+<ul>
+<li>l'allocazione viene effettuata;</li>
+<li>la <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> viene aggiornata;</li>
+<li>nel descrittore del processo si registra la partizione associata;</li>
+<li>quando il processo termina la partizione viene disallocata.</li>
+</ul>
+<p>Le cause di mancata disponibilità di una partizione sono:</p>
+<ol>
+<li>non vi sono partizioni di memoria sufficientemente grandi per contenere il
+   processo entrante;</li>
+<li>tutte le partizioni sono allocate;</li>
+<li>alcune partizioni sono libere ma nessuna di esse è sufficientemente grande.</li>
+</ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Caso 1</label><label for="__tabbed_2_2">Caso 2</label><label for="__tabbed_2_3">Caso 3</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Non vi sono partizioni di memoria sufficientemente grandi per contenere il
+processo entrante. Cause:</p>
+<ul>
+<li>errore di scelta della dimensione delle partizioni;</li>
+<li>Processo eccezionalmente più grande della norma.</li>
+</ul>
+<p>La soluzione sta nel ridefinire la dimensione delle partizioni, oppure 
+progettare il programma di origine utilizzando uno schema di overlay.</p>
+</div>
+<div class="tabbed-block">
+<p>Tutte le partizioni sono allocate. Soluzioni:</p>
+<ul>
+<li>attesa di una partizione libera;</li>
+<li>swapping del processo.</li>
+</ul>
+<p>Entrambe le soluzioni possono essere anche applicate al caso <span class="arithmatex">\(3\)</span>.</p>
+</div>
+<div class="tabbed-block">
+<p>Alcune partizioni sono libere ma nessuna di esse è sufficientemente grande.
+In questo caso l'assegnazione di partizioni può continuare</p>
+<ul>
+<li>vengono allocate partizioni a processi più piccoli;</li>
+<li>l'utilizzo della memoria viene mantenuto più elevato;</li>
+<li>si può violare l'ordinamento di attivazione dei processi dallo scheduler 
+  modificando, così, le prestazioni del sistema.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Il funzionamento del gestore della memoria e dello scheduler sono strettamente
+correlati:</p>
+<ul>
+<li>lo scheduler determina quali processi sono pronti, e quindi residenti in
+  memoria, in attesa della CPU;</li>
+<li>il gestore della memoria può decidere di "sfrattare" un processo in memoria
+  per liberare una partizione.</li>
+</ul>
+<h3 id="swapping">Swapping<a class="headerlink" href="#swapping" title="Link permanente">⚓︎</a></h3>
+<p>Lo swapping è l'operazione di rimozione dalla memoria di un processo sospeso e
+il suo successivo caricamento. Nel partizionamento statico questo aumenta il
+livello di occupazione della memoria centrale e, conseguentemente, il livello
+di utilizzo della CPU.</p>
+<p>Quando lo scheduler decide l'introduzione in memoria di un nuovo processo il
+gestore dello swapping ne sceglie uno da rimuovere in base a:</p>
+<ul>
+<li>dimensione della partizione richiesta;</li>
+<li>priorità del processo;</li>
+<li>tipo di evento atteso dal processo;</li>
+<li>tempo già trascorso in memoria.</li>
+</ul>
+<p>Un processo residente in memoria, già parzialmente eseguito, è costituito da:</p>
+<ul>
+<li>codice eseguibile;</li>
+<li>dati finora elaborati;</li>
+<li>stack;</li>
+<li>registri di stato;</li>
+<li>file aperti;</li>
+<li>descrittore del processo.</li>
+</ul>
+<p>Al momento dello swapping questi oggetti vengono registrati in un file su hard
+disk detto file di swapping.</p>
+<p>Tutti i processi che hanno subito uno swapping possono essere mantenuti:</p>
+<ul>
+<li>in un file unico per tutto il sistema</li>
+<li>in file separati, ciascuno associato ad un singolo processo</li>
+</ul>
+<p>Un file di swapping di sistema viene solitamente creato al momento
+dell'inizializzazione del sistema e collocato su una periferica veloce di
+memorizzazione secondaria. L'indirizzo e la dimensione di tale file sono
+solitamente statici in modo da beneficiare di un indirizzamento diretto su disco.</p>
+<p>Un parametro critico per la realizzazione di un file di swapping è la dimensione:</p>
+<ul>
+<li>se troppo grande spreca spazio su dischi veloci</li>
+<li>se troppo piccolo può rendere indisponibile l'operazione di swapping</li>
+</ul>
+<p>L'alternativa è disporre di un file di swapping per ciascun processo presente
+nel sistema che può essere creato dinamicamente al momento della creazione del
+processo o staticamente al momento della preparazione del programma.</p>
+<p>Vantaggi:</p>
+<ul>
+<li>eliminazione del problema del dimensionamento del file unico</li>
+<li>nessuna restrizione sul numero di processi attivi</li>
+</ul>
+<p>Svantaggi:</p>
+<ul>
+<li>maggior spreco di spazio</li>
+<li>maggiori tempi di accesso ai file distribuiti sul disco</li>
+</ul>
+<p>Uno swapping efficiente richiede che i processi siano rilocabili dinamicamente:</p>
+<ul>
+<li>il processo può iniziare l'esecuzione in qualunque area di memoria</li>
+<li>può essere spostato in un'altra area di memoria</li>
+<li>il calcolo degli indirizzi viene effettuato dinamicamente ad esempio con l'uso
+  di un registro base.</li>
+</ul>
+<p>I processi non rilocabili dinamicamente sono legati alle partizioni in cui iniziano
+l'esecuzioni e rendono inefficiente lo swapping. In linea di principio lo
+swapping va utilizzato solo in casi di necessità poiché la CPU spreca un tempo
+elevato nelle operazioni di trasferimento.</p>
+<h3 id="meccanismi-di-protezione_1">Meccanismi di protezione<a class="headerlink" href="#meccanismi-di-protezione_1" title="Link permanente">⚓︎</a></h3>
+<p>L'integrità di un sistema multiprogrammato dipende anche dalla sua capacità di
+garantire l'isolamento tra spazi di indirizzi separati. Non solo si deve
+proteggere il sistema operativo dai processi utente ma bisogna anche proteggere
+i processi utente tra di loro perché nessuno possa invadere lo spazio riservato
+all'altro.</p>
+<p>Un sistema di protezione efficace non può prescindere dall'esistenza di un supporto
+hardware. Nei sistemi che utilizzano per la rilocazione i registri base, vengono
+di solito usati dei registri limite per la protezione.</p>
+<p>Il compito principale di un registro limite consiste nell'individuare i tentativi
+di accesso oltre i limiti dello spazio di indirizzamento assegnato al programma
+in esecuzione dal sistema operativo. Il registro limite contiene solitamente il
+valore dell'indirizzo virtuale più alto contenuto dal programma.</p>
+<p>Ad ogni accesso alla memoria la CPU controlla che il programma non richieda
+indirizzi oltre il limite. Le violazioni vengono rilevate e riferite al sistema
+operativo che le gestisce. L'indirizzo più basso del processo è contenuto nel
+registro base.</p>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  state registroLimite &lt;&lt;choice&gt;&gt;
+  registroBase: Registro Base
+  violazioneProtezione: Violazione di protezione
+  CPU --&gt; registroLimite
+  registroLimite --&gt; +: ≤ di registro\n limite
+  registroLimite --&gt; violazioneProtezione: ≥ di registro\n limite
+  registroBase --&gt; +
+  + --&gt; memoria</code></pre>
+<h3 id="meccanismi-di-condivisione">Meccanismi di condivisione<a class="headerlink" href="#meccanismi-di-condivisione" title="Link permanente">⚓︎</a></h3>
+<p>Un buon sistema di gestione della memoria deve occuparsi, oltre che della
+protezione, anche della condivisione controllata di dati e codice tra processi
+cooperanti. I sistemi a partizioni fisse non sono adatti alla condivisione,
+poiché basano i propri meccanismi sull'isolamento degli spazi di indirizzamento.</p>
+<p>Alcuni possibili metodi di condivisione sono:</p>
+<ol>
+<li>affidare gli oggetti condivisi al sistema operativo che così è in grado di
+   accedere a tutte le risorse. Gli svantaggi di questa tecnica sono:<ul>
+<li>l'area del sistema operativo dovrebbe poter variare dinamicamente;</li>
+<li>le routine dei processi utente devono poter essere "linkate" al sistema operativo
+  dinamicamente.</li>
+</ul>
+</li>
+<li>ogni processo possiede una copia identica dell'oggetto condiviso, che usa e
+   diffonde gli aggiornamenti. Lo svantaggio di questa tecnica consiste nel fatto
+   che se il sistema supporta lo swapping, uno o più processi potrebbero non
+   essere in memoria e quindi non esse re pronti a ricevere gli aggiornamenti.</li>
+<li>collocare i dati in una partizione comune dedicata. In questo caso, però, il
+   sistema operativo considera come violazione i tentativi dei processi
+   partecipanti alla condivisione di accedere a zone di memoria esterne alle
+   rispettive partizioni. Se il sistema usa registri base e limite sono necessari
+   accorgimenti per indirizzare partizioni che potrebbero non essere contigue.</li>
+</ol>
+<h3 id="conclusioni">Conclusioni<a class="headerlink" href="#conclusioni" title="Link permanente">⚓︎</a></h3>
+<p>Il partizionamento statico:</p>
+<ul>
+<li>è uno dei metodi più semplici di gestione della memoria, pur supportando la
+  multiprorammazione;</li>
+<li>richiede un supporto hardware modesto;</li>
+<li>si adegua ad ambienti statici con carico predicibile di lavoro come ambienti
+  in cui vengono eseguiti solo applicativi, controllo di processi e sistemi di
+  tipo bancario.</li>
+</ul>
+<p>Svantaggi:</p>
+<ul>
+<li>il problema principale è la frammentazione interna;</li>
+<li>può richiedere progettazione dei programmi con schemi ad overlay;</li>
+<li>non si adatta a contenere oggetti come stack che possono crescere in maniera
+  non facilmente controllabile;</li>
+<li>il numero di partizioni fissato limita il grato di multiprogrammazione.</li>
+</ul>
+<h2 id="partizionamento-dinamico">Partizionamento dinamico<a class="headerlink" href="#partizionamento-dinamico" title="Link permanente">⚓︎</a></h2>
+<p>Il sistema delle partizioni è analogo a quello del partizionamento statico.</p>
+<p>Il gestore della memoria crea ed assegna partizioni di <em>dimensione variabile
+dinamicamente</em> in base alle richieste dei processi. Quando un processo termina o
+subisce uno swapping, il gestore della memoria restituisce lo spazio liberato
+all'insieme di aree di memoria libere. Il gestore della memoria può creare e
+allocare partizioni finché non viene esaurita la memoria fisica o finché non
+viene raggiunto il massimo grado di multiprogrammazione.</p>
+<h3 id="principi-operativi_1">Principi operativi<a class="headerlink" href="#principi-operativi_1" title="Link permanente">⚓︎</a></h3>
+<p>Alla richiesta di una partizione il gestore della memoria (GM) ricerca una zona
+di memoria libera contigua di dimensione sufficiente. Se si trova un'area adatta
+il sistema operativo vi ricava una partizione in modo da soddisfare esattamente
+le necessità del processo.</p>
+<p>L'eventuale parte rimanente di memoria libera viene restituita all'insieme della
+memoria libera e posta a disposizione del modulo di allocazione. La partizione
+viene creata registrando la sua base, la sua dimensione e il suo stato (Allocata)
+nella <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> o in una tabella equivalente.</p>
+<p>Alcune di queste informazioni vengono anche registrate nel descrittore di
+processo. Dopo aver caricato l'immagine del processo nella partizione creata,
+il processo in oggetto viene sottoposto al controllo di un modulo del sistema
+operativo che si occupa delle operazioni successive. Quando un processo termina
+o subisce uno swapping il sistema operativo restituisce la partizione all'area
+libera e cancella la riga corrispondente nella <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>. L'insieme delle aree libere
+varia dinamicamente, gli spazi interni all'area libera vengono utilizzati per
+mantenere una lista a puntatori.</p>
+<div class="admonition example">
+<p class="admonition-title">Esempio</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Tabella</label><label for="__tabbed_3_2">Memoria</label><label for="__tabbed_3_3">Lista aree libere</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>Base</th>
+<th>Dimensione</th>
+<th>Stato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td>0</td>
+<td>200</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>400</td>
+<td>100</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>500</td>
+<td>250</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>750</td>
+<td>150</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.55cm} OS \hspace{2.55cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \\ \hspace{5.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.65cm} p_1 \hspace{2.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_2 \hspace{2.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_3 \hspace{2.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{5.65cm} \\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  a1: 100
+  a1: 300
+
+  a2: 900
+  a2: 100
+
+  [*] --&gt; a1: puntatore alla\n prima area libera
+  a1 --&gt; a2
+  a2 --&gt; [*]</code></pre>
+</div>
+</div>
+</div>
+<p>Dopo che viene allocata la partizione <span class="arithmatex">\(1\)</span>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1"><abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr></label><label for="__tabbed_4_2">Memoria</label><label for="__tabbed_4_3">Lista aree libere</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>Base</th>
+<th>Dimensione</th>
+<th>Stato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td>0</td>
+<td>200</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td>100</td>
+<td>120</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>400</td>
+<td>100</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>500</td>
+<td>250</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>750</td>
+<td>150</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.5cm} OS \hspace{2.5cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.65cm} p_4 \hspace{2.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{5.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.65cm} p_1 \hspace{2.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_2 \hspace{2.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_3 \hspace{2.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{5.65cm} \\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  a1: 220
+  a1: 180
+
+  a2: 900
+  a2: 100
+
+  [*] --&gt; a1: puntatore alla\n prima area libera
+  a1 --&gt; a2
+  a2 --&gt; [*]</code></pre>
+</div>
+</div>
+</div>
+<p>Dopo che viene liberata la partizione <span class="arithmatex">\(3\)</span>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1"><abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr></label><label for="__tabbed_5_2">Memoria</label><label for="__tabbed_5_3">Lista aree libere</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>Base</th>
+<th>Dimensione</th>
+<th>Stato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td>0</td>
+<td>200</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td>100</td>
+<td>120</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>400</td>
+<td>100</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>750</td>
+<td>150</td>
+<td>Allocata</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.55cm} OS \hspace{2.55cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.65cm} p_4 \hspace{2.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{5.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.65cm} p_1 \hspace{2.65cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{5.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.65cm} p_3 \hspace{2.65cm} \\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{5.65cm} \\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  a1: 220
+  a1: 180
+
+  a2: 500
+  a2: 250
+
+  a3: 900
+  a3: 100
+
+  [*] --&gt; a1: puntatore alla\n prima area libera
+  a1 --&gt; a2
+  a2 --&gt; a3 
+  a3 --&gt; [*]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>Gli algoritmi più comuni per selezionare un'aria di memoria all'interno della
+quale creare una partizione sono:</p>
+<ul>
+<li><strong>first-fit</strong>, termina la ricerca quando viene individuato il primo blocco di
+  memoria sufficientemente grande da contenere il processo;</li>
+<li><strong>best-fit</strong>, (variante del first-fit) il puntatore alla lista delle aree
+  libere, dopo avere effettuato un'allocazione, viene salvato cosicché la ricerca
+  successiva continua da dove si era fermata la precedente;</li>
+<li><strong>next-fit</strong>, alloca il blocco di memoria libero più piccolo che può contenere
+  il processo;</li>
+<li><strong>worst-fit</strong>, al contrario, alloca il blocco di memoria libero più grande le
+  cui dimensioni superino quelle della partizione richiesta.</li>
+</ul>
+<h3 id="compattazione">Compattazione<a class="headerlink" href="#compattazione" title="Link permanente">⚓︎</a></h3>
+<p>Lo schema di partizionamento dinamico genera, inevitabilmente, "buchi" di
+memoria inutilizzabile. Per questo motivo può anche diventare impossibile
+l'allocazione di memoria richiesta da un processo, pur contenendo la memoria
+globalmente un'area di dimensione sufficiente. Questo fenomeno si chiama
+frammentazione esterna.</p>
+<p>Quando la frammentazione raggiunge un grado elevato è necessario effettuare la
+<strong>compattazione della memoria</strong> che consiste nello spostare i processi residenti
+in memoria in modo da creare partizioni libere più grandi. Questa operazione
+generalmente richiede un grande costo di CPU.</p>
+<p>La compattazione può essere effettuata:</p>
+<ol>
+<li>Continuamente:<ul>
+<li>la memoria viene compattata ogni volta che un processo libera un'area;</li>
+<li>la frammentazione è ridotta al minimo;</li>
+<li>questa operazione ha un grande costo di CPU.</li>
+</ul>
+</li>
+<li>Su necessità:<ul>
+<li>la compattazione viene effettuata quando non si riesce ad allocare memoria
+  ad un processo richiedente;</li>
+<li>un controllo preliminare verifica se il totale dell'area liberabile è
+  sufficiente a contenere il processo.</li>
+</ul>
+</li>
+</ol>
+<p>La compattazione può essere effettuata in due modi:</p>
+<ol>
+<li>Spostamento selettivo incrementale:<ul>
+<li>ricerca di una strategia ottima di movimento per compattare al meglio la
+  memoria;</li>
+<li>consente di risparmiare tempo negli spostamenti;</li>
+<li>Poco utilizzata perché richiede un sovraccarico notevole.</li>
+</ul>
+</li>
+<li>Spostamento globale:<ul>
+<li>tutte le partizioni vengono rilocate ad uno dei due estremi della memoria;</li>
+<li>il tempo di trasferimento delle partizioni non è ottimizzabile;</li>
+<li>non richiede strategie particolari.</li>
+</ul>
+</li>
+</ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Memoria</label><label for="__tabbed_6_2">Spostamento Selettivo</label><label for="__tabbed_6_3">Spostamento Globale</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.55cm} OS \hspace{2.55cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.7cm} P \hspace{2.7cm}\\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} Q \hspace{2.7cm}\\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \\ \\ \\ \hspace{5.8cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} R \hspace{2.7cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{5.8cm} \\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.55cm} OS \hspace{2.55cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.7cm} P \hspace{2.7cm}\\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \\ \\ \\ \\ \\ \hspace{5.8cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} R \hspace{2.7cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} Q \hspace{2.7cm}\\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+  \begin{array}{ c }
+    \begin{array}{ |c| }\hline
+      \hspace{2.55cm} OS \hspace{2.55cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \hspace{2.7cm} P \hspace{2.7cm}\\ \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} Q \hspace{2.7cm}\\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \hspace{2.7cm} R \hspace{2.7cm} \\ \hline
+    \end{array} \\
+%
+    \begin{array}{ |c| }\hline
+      \\ \\ \\ \\ \\ \\ \hspace{5.8cm} \\ \hline
+    \end{array} \\
+  \end{array}
+\]</div>
+</div>
+</div>
+</div>
+<h3 id="meccanismi-di-protezione-e-condivisione">Meccanismi di protezione e condivisione<a class="headerlink" href="#meccanismi-di-protezione-e-condivisione" title="Link permanente">⚓︎</a></h3>
+<p>Le tecniche di protezione e condivisione sono analoghe a quelle del
+partizionamento statico, considerato che il supporto hardware è simile. Nel
+partizionamento dinamico è possibile una particolare forma di condivisione:</p>
+<ul>
+<li>a due partizioni contigue è consentito sovrapporsi, mettendo un'area in comune</li>
+<li>questa forma di condivisione è molto restrittiva, in quanto, può avvenire solo
+  tra due processi.</li>
+</ul>
+<h3 id="conclusioni_1">Conclusioni<a class="headerlink" href="#conclusioni_1" title="Link permanente">⚓︎</a></h3>
+<p>Il partizionamento dinamico:</p>
+<ul>
+<li>richiede un supporto hardware modesto, analogo al partizionamento statico;</li>
+<li>la differenza tra i due schemi risiede sostanzialmente nel software;</li>
+<li>elimina la frammentazione interna ma produce quella esterna che può essere
+  eliminata con la compattazione;</li>
+<li>si adegua ad ambienti con carico non predicibile di lavoro come ad esempio
+  sviluppo di software.</li>
+</ul>
+<h2 id="segmentazione">Segmentazione<a class="headerlink" href="#segmentazione" title="Link permanente">⚓︎</a></h2>
+<p>La segmentazione è uno schema di gestione della memoria che si basa sulla
+divisione dello spazio di indirizzamento dei processi in entità logiche che
+possono essere poste in aree non contigue di memoria. La segmentazione fornisce
+strumenti per la rilocazione dinamica, la protezione e la condivisione.</p>
+<p>La frammentazione esterna può essere ridotta se la dimensione delle aree richieste
+è più piccola. Un programma eseguibile può essere suddiviso, ad esempio, in
+codice, dati e stack; ciascuno di questi oggetti può essere posto in un segmento
+diverso di dimensioni differenti. La segmentazione condivide alcune proprietà:</p>
+<ul>
+<li>degli <strong>schemi di allocazione contigua</strong> relativamente ad un singolo segmento,
+  poiché i dati di ogni singola entità logica devono essere posti in un'area
+  contigua di memoria;</li>
+<li>degli <strong>schemi di allocazione non contigua</strong> relativamente all'intero spazio di
+  indirizzamento del processo, poiché blocchi logici diversi possono essere
+  messi in segmenti non contigui.</li>
+</ul>
+<h3 id="principi-operativi_2">Principi operativi<a class="headerlink" href="#principi-operativi_2" title="Link permanente">⚓︎</a></h3>
+<ul>
+<li>La raccolta degli oggetti in segmenti viene predisposta dal programmatore;</li>
+<li>Ciascun segmento inizia all'indirizzo virtuale zero;</li>
+<li>Ogni segmento ha un nome che viene poi tradotto in un indirizzo in fase di
+  caricamento in memoria;</li>
+<li>Un singolo dato all'interno del segmento viene identificato dallo
+  "spiazzamento" relativo all'inizio del segmento cui appartiene.</li>
+</ul>
+<p>L'indirizzamento nella segmentazione è di tipo bidimensionale, infatti la
+designazione univoca di un dato o di una istruzione richiede il nome del
+segmento e lo spiazzamento all'interno del segmento. La memoria fisica,
+naturalmente, mantiene l'indirizzamento lineare, per cui è necessario un
+meccanismo per la traduzione degli indirizzi bidimensionali di segmenti virtuali
+in indirizzi fisici.</p>
+<p>Il caricamento di un processo segmentato avviene nel seguente modo:</p>
+<ul>
+<li>il sistema operativo cerca di allocare <span class="arithmatex">\(n\)</span> partizioni adatte per gli <span class="arithmatex">\(n\)</span>
+  segmenti in cui è suddiviso il processo;</li>
+<li>il sistema operativo crea un descrittore di segmento registrandovi l'indirizzo
+  fisico in cui è stato posto il segmento e la sua dimensione;</li>
+<li>l'insieme dei descrittori di segmento di un processo viene raccolto nella
+  tabella dei descrittori di segmento (<abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>).</li>
+</ul>
+<p>La traduzione di un indirizzo avviene nel seguente modo:</p>
+<ul>
+<li>l'indirizzo bidimensionale virtuale I (segment, displacement) è tradotto in
+  modo equivalente al meccanismo del registro base;</li>
+<li>il segment viene utilizzato per ritrovare l'indirizzo fisico del segmento
+  nella <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>;</li>
+<li>il displacement viene sommato all'indirizzo fisico del segmento per ottenere
+  l'indirizzo fisico richiesto;</li>
+<li>la dimensione del segmento, riportata nella <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>, viene utilizzata anche per
+  controllare eventuali violazioni.</li>
+</ul>
+<p>Le dimensioni della <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> sono legate alle dimensioni dello spazio virtuale di
+indirizzamento di un processo. I processori della famiglia Intel, ad esempio,
+supportano fino a <span class="arithmatex">\(16000\)</span> segmenti di <span class="arithmatex">\(64 \KB\)</span>. La <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> può essere costituita
+da qualche riga fino a qualche migliaia di righe. Essa viene tenuta in memoria,
+in uno dei segmenti associati al processo.
+Due registi hardware, <abbr title="Registro Base della Tabella dei Descrittori di Segmento">RBTDS</abbr> e <abbr title="Registro Limite della Tabella dei Descrittori di Segmento">RLTDS</abbr>, contengono l'indirizzo di inizio e fine
+della <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> associata al processo in esecuzione. Ciò consente anche il controllo
+d'accesso a segmenti non assegnati al processo.</p>
+<ul>
+<li><abbr title="Registro Base della Tabella dei Descrittori di Segmento">RBTDS</abbr>: Registro Base della Tabella dei Descrittori di Segmento</li>
+<li><abbr title="Registro Limite della Tabella dei Descrittori di Segmento">RLTDS</abbr>: Registro Limite della Tabella dei Descrittori di Segmento</li>
+</ul>
+<p>La base ed il limite della nuova <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> vengono caricati nei registri <abbr title="Registro Base della Tabella dei Descrittori di Segmento">RBTDS</abbr> e <abbr title="Registro Limite della Tabella dei Descrittori di Segmento">RLTDS</abbr>.
+Quando un processo subisce uno swapping, al ritorno in memoria va aggiornata la
+sua <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>. Generalmente si preferisce rigenerarla totalmente utilizzando la mappa
+statica fornita dal linker. L'eventuale compattazione richiede l'aggiornamento
+nella <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> delle righe relative ai segmenti spostati.</p>
+<p>La traduzione di ciascun indirizzo bidimensionale virtuale richiede due accessi in
+memoria:</p>
+<ul>
+<li>uno alla <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> per tradurre l'indirizzo del segmento da virtuale a fisico;</li>
+<li>l'altro per accedere fisicamente alla locazione richiesta.</li>
+</ul>
+<p>La segmentazione, quindi, raddoppia il tempo per l'accesso ad una locazione di
+memoria.</p>
+<p>Se i descrittori di segmento sono pochi, o se alcuni sono utilizzati più
+frequentemente, conviene specificare il loro caricamento in opportuni registri
+hardware. I processori della famiglia Intel, ad esempio, dispongono di <span class="arithmatex">\(4\)</span>
+registri utilizzabili da schemi di segmentazione:</p>
+<ul>
+<li>CS: Code Segment;</li>
+<li>DS: Data Segment;</li>
+<li>SS: Stack Segment;</li>
+<li>ES: Extra Segment.</li>
+</ul>
+<h3 id="meccanismi-di-protezione_2">Meccanismi di protezione<a class="headerlink" href="#meccanismi-di-protezione_2" title="Link permanente">⚓︎</a></h3>
+<p>La forma più naturale di protezione per un sistema segmentato è l'utilizzo di
+registri base e limite. La protezione tra spazi di indirizzamento di processi
+differenti è garantita dalla collocazione dei segmenti in aree disgiunte di
+memoria. Una caratteristica offerta dai sistemi segmentati consiste nel fornire
+un livello di protezione all'interno dello spazio di indirizzamento di un singolo
+processo. È possibile definire diritti e modalità di accesso per ogni "tipo" di
+segmento. È possibile definire ad esempio:</p>
+<ul>
+<li>accesso in modalità "execute" (o anche "read-only") al segmento codice;</li>
+<li>accesso in modalità "read/write" al segmento stack;</li>
+<li>accesso "read-only" o "read/write" al segmento dati.</li>
+</ul>
+<p>I diritti di accesso possono essere registrati in un campo dellaTDS</p>
+<h3 id="meccanismi-di-condivisione_1">Meccanismi di condivisione<a class="headerlink" href="#meccanismi-di-condivisione_1" title="Link permanente">⚓︎</a></h3>
+<p>La segmentazione offe una condivisione semplice e flessibile. Gli oggetti
+condivisi sono collocati in segmenti dedicati e separati. Il segmento condiviso
+può essere mappato, attraverso la <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>, nello spazio di indirizzamento virtuale
+di tutti i processi autorizzati ad accedervi. Lo spiazzamento interno di un dato
+risulta identico per tutti i processi che lo condividono.</p>
+<p>Nell'esempio in figura (pagina successiva) è possibile vedere tre processi che
+condividono il codice di un editor. Ogni processo ha il proprio documento in un
+segmento dati privato. La condivisione del codice di un applicativo tra molti
+utenti può consentire un notevole risparmio di memoria. Particolari accorgimenti
+vanno adottati in sistemi che supportano lo swapping.</p>
+<!-- TODO: aggiungere immagine -->
+
+<h3 id="collegamento-dinamico">Collegamento dinamico<a class="headerlink" href="#collegamento-dinamico" title="Link permanente">⚓︎</a></h3>
+<p>Il Collegamento Dinamico indica il caricamento di una procedura, ad esempio una
+libreria, in fase di esecuzione di un processo e solo su sua richiesta. Lo
+spazio in memoria per una procedura viene occupato solo se e quando tale
+procedura viene richiesta. La segmentazione consente di aggiungere nuovi segmenti
+al processo richiedente, aggiornando la <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr> e i registri base e limite della <abbr title="Tabella dei Descrittori di Segmento">TDS</abbr>.</p>
+<h3 id="conclusioni_2">Conclusioni<a class="headerlink" href="#conclusioni_2" title="Link permanente">⚓︎</a></h3>
+<ul>
+<li>eliminando la necessità di allocare processi in aree contigue si rende più
+  efficiente la gestione della memoria fisica;</li>
+<li>viene eliminata la frammentazione interna;</li>
+<li>viene ridotta la frammentazione esterna;</li>
+<li>sono supportate efficientemente protezione e condivisione;</li>
+<li>viene supportato il collegamento dinamico;</li>
+</ul>
+<p>Gli svantaggi principali sono:</p>
+<ul>
+<li>necessità di effettuare comunque la compattazione che è resa più complessa;</li>
+<li>il duplice accesso alla memoria deve essere supportato da hardware apposito;</li>
+<li>la gestione della memoria da parte del sistema operativo è più complessa
+  rispetto a quella per il partizionamento statico e dinamico;</li>
+<li>non rende ancora possibile l'esecuzione di processi più grandi delle
+  dimensioni fisiche della memoria.</li>
+</ul>
+<h2 id="paginazione">Paginazione<a class="headerlink" href="#paginazione" title="Link permanente">⚓︎</a></h2>
+<p>La memoria fisica viene concettualmente suddivisa in pagine di dimensione fissa
+chiamate pagine fisiche. Anche lo spazio di indirizzamento dei processi viene
+diviso in pagine virtuali della stessa dimensione delle pagine fisiche. Il
+meccanismo di traduzione fa corrispondere indirizzamenti all'interno di pagine
+virtuali ad indirizzamenti in pagine fisiche. Ogni pagina è mappata separatamente,
+per cui non è necessaria la contiguità delle pagine fisiche.</p>
+<h3 id="principi-operativi_3">Principi operativi<a class="headerlink" href="#principi-operativi_3" title="Link permanente">⚓︎</a></h3>
+<p>Ogni indirizzo all'interno di un processo è diviso in:</p>
+<ul>
+<li>bit più significativi &rarr; numero di pagina (virtuale);</li>
+<li>bit meno significativi &rarr; spiazzamento (reale).</li>
+</ul>
+<p>Il sistema operativo tiene traccia della corrispondenza tra pagine virtuali e
+pagine fisiche mediante la tabella delle pagine (<abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>):</p>
+<ul>
+<li>la <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> viene costruita al momento del caricamento del processo</li>
+<li>ogni riga della tabella contiene l'indirizzo di partenza della pagina fisica
+  in cui è allocata la corrispondente pagina virtuale (solo i bit più
+  significativi);</li>
+<li>la tabella è costituita da un numero di righe pari al numero di pagine
+  occupate.</li>
+</ul>
+<p>Principi operativi: esempio</p>
+<ul>
+<li>Memoria: <span class="arithmatex">\(1 \MB\)</span>;</li>
+<li>Dimensione Pagina: <span class="arithmatex">\(256 \byte\)</span>;</li>
+<li>Numero di pagine: <span class="arithmatex">\(4096\)</span>;</li>
+<li>Lunghezza dell'indirizzo: <span class="arithmatex">\(20 \bit\)</span>.</li>
+</ul>
+<p>Lo spazio di indirizzamento di un ipotetico processo utente che occupi <span class="arithmatex">\(1008 \byte\)</span>
+viene diviso in quattro pagine virtuali numerate da <span class="arithmatex">\(0\)</span> a <span class="arithmatex">\(3\)</span>.</p>
+<p>La traduzione dell'indirizzo virtuale avviene nel seguente modo:</p>
+<ul>
+<li>un meccanismo hardware divide l'indirizzo virtuale in:<ul>
+<li>12 bit più significativi (numero di pagina)</li>
+<li>8 bit meno significativi (displacement interno alla pagina)</li>
+</ul>
+</li>
+<li>il numero di pagina viene usato all'interno della <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> per ottenere il
+  corrispondente indirizzo della pagina fisica.</li>
+<li>l'indirizzo ottenuto, concatenato con il displacement, fornisce l'indirizzo
+  fisico cercato.</li>
+</ul>
+<!-- TODO: aggiungere immagine (slide 65) -->
+
+<p>Il sistema operativo tiene traccia dello stato di tutte le pagine fisiche
+mediante la tabella di memoria (<abbr title="Tabella Di Memoria">TDM</abbr>):</p>
+<ul>
+<li>in ogni riga della <abbr title="Tabella Di Memoria">TDM</abbr> è indicato lo stato della relativa pagina: "Libera" o<br />
+  "Allocata";</li>
+<li>il numero di righe della tabella è uguale al numero di pagine fisiche.</li>
+</ul>
+<p>Quando un processo termina o subisce uno swapping:</p>
+<ul>
+<li>restituisce tutte le pagine fisiche ad esso assegnate;</li>
+<li>la sua <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> viene eliminata.</li>
+</ul>
+<p>Quando il processo richiedente ha uno spazio di indirizzamento non multiplo della
+dimensione delle pagine fisiche si crea il fenomeno della frammentazione interna
+della pagina. Questo è comunque un fenomeno molto ridotto e legato alla
+dimensione della pagina fisica.</p>
+<p>Particolare attenzione va posta nella scelta della tecnica di memorizzazione
+delle aree libere. La consultazione della <abbr title="Tabella Di Memoria">TDM</abbr> statica per trovare <span class="arithmatex">\(n\)</span> pagine
+fisiche libere, infatti, richiede una ricerca su un numero di righe in media
+<span class="arithmatex">\(x = \ifrac{n}{q}\)</span>, dove <span class="arithmatex">\(q\)</span> è la probabilità che una pagina sia libera e
+si lega alla percentuale di memoria libera <span class="arithmatex">\(u\)</span>:</p>
+<div class="arithmatex">\[ q = \frac{u}{100} \qquad  0 &lt; q &lt; 1 \]</div>
+<p>In sostanza <span class="arithmatex">\(x\)</span> è legata ad <span class="arithmatex">\(\ifrac{1}{q}\)</span> e quindi aumenta con l'aumentare
+della memoria utilizzata.</p>
+<div class="admonition example">
+<p class="admonition-title">Esempio</p>
+<p>Dati:</p>
+<div class="arithmatex">\[ n = 10, \qquad u = 40\%, \qquad q = 0.4 \]</div>
+<p><span class="arithmatex">\(x\)</span> in media è di <span class="arithmatex">\(25\)</span> righe per ritrovare <span class="arithmatex">\(10\)</span> pagine libere 
+(nell'ipotesi che le pagine siano distribuite casualmente).</p>
+</div>
+<p>Per questo motivo si preferisce sostituire la <abbr title="Tabella Di Memoria">TDM</abbr> con una lista a puntatori
+contenente i numeri delle pagine fisiche:</p>
+<ul>
+<li><span class="arithmatex">\(n\)</span> pagine da allocare si individuano nei primi <span class="arithmatex">\(n\)</span> nodi della lista;</li>
+<li>in fase di deallocazione vengono inseriti in testa alla lista gli <span class="arithmatex">\(n\)</span> nodi
+  relativi alle pagine liberate.</li>
+</ul>
+<p>Vantaggi: il tempo di allocazione e disallocazione non dipende dalla percentuale
+di occupazione della memoria.</p>
+<p>Svantaggi: per il singolo elemento vi è un lieve spreco di memoria e di tempo
+rispetto alla gestione di una tabella statica.</p>
+<!-- TODO: aggiungere immagine della $ di traduzione (slide 70) -->
+
+<p>I meccanismi hardware per la paginazione vengono utilizzati per due scopi:</p>
+<ol>
+<li><strong>Risparmiare la memoria necessaria per le <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr></strong>;</li>
+<li><strong>Velocizzare la traduzione da indirizzi virtuali a fisici</strong>.</li>
+</ol>
+<h4 id="organizzazione-delle-tdp">Organizzazione delle <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr><a class="headerlink" href="#organizzazione-delle-tdp" title="Link permanente">⚓︎</a></h4>
+<div class="admonition example">
+<p class="admonition-title">Esempio</p>
+<p>Si abbiano <span class="arithmatex">\(16 \MB\)</span> di <abbr title="Random Access Memory">RAM</abbr>, una dimensione pagina di <span class="arithmatex">\(256 \byte\)</span> un numero
+di righe della <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> pari a <span class="arithmatex">\(64\,000\)</span>, una dimensione della riga di <span class="arithmatex">\(16 \bit\)</span>
+e una dimensione della tabella di <span class="arithmatex">\(128 \KB\)</span>. Non è quindi possibile
+allocare il massimo numero di righe indirizzabili per ogni <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>.</p>
+</div>
+<p>È ragionevole costruire tabelle con un numero di righe uguale alle pagine
+effettivamente utilizzate. Si rende necessario quindi l'uso di due registri
+hardware:</p>
+<ul>
+<li>registro limite della <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> (<abbr title="Registro Limite della Tabella di Descrizione delle Partizioni">RLTDP</abbr>), che contiene il numero di pagina virtuale
+  più alto utilizzato dal processo;</li>
+<li>registro base della <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> (<abbr title="Registro Base della Tabella di Descrizione delle Partizioni">RBTDP</abbr>) che contiene l'indirizzo di partenza della
+  <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>.</li>
+</ul>
+<p>I valori dei registri sono di norma memorizzati nel descrittore di processo.
+Questo meccanismo consente anche il controllo di accesso a pagine non assegnate<br />
+al processo.</p>
+<h4 id="velocizzazione-del-tempo-di-traduzione">Velocizzazione del tempo di traduzione<a class="headerlink" href="#velocizzazione-del-tempo-di-traduzione" title="Link permanente">⚓︎</a></h4>
+<p>La traduzione di ciascun indirizzo virtuale richiede due accessi in memoria:</p>
+<ul>
+<li>uno alla <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> per prelevare il numero di pagina fisica</li>
+<li>l'altro per accedere fisicamente alla locazione richiesta</li>
+</ul>
+<p>In sostanza la paginazione raddoppia il tempo per l'accesso ad una locazione di
+memoria. Un metodo di velocizzazione è l'uso di una cache di traduzione in cui
+vengono mantenuti gli indirizzi delle pagine usate più frequentemente.</p>
+<h3 id="meccanismi-di-protezione_3">Meccanismi di protezione<a class="headerlink" href="#meccanismi-di-protezione_3" title="Link permanente">⚓︎</a></h3>
+<p>Spazi di indirizzamento distinti vengono di norma allocati in zone disgiunte
+della memoria fisica. Gli accessi alla memoria sono ristretti al proprio spazio
+di indirizzamento. Il registro limite della <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> blocca i tentativi di accedere a
+pagine virtuali oltre il limite assegnato al processo. I valori dei registri
+sono modificati esclusivamente da istruzioni privilegiate del sistema operativo.</p>
+<p>L'aggiunta di alcuni bit alle righe delle <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr> consente di definire e controllare
+il tipo di accesso alla pagina. Nella paginazione non ha senso la protezione
+interna allo spazio di indirizzamento del processo, poiché non prevede
+tipizzazione di dati.</p>
+<h3 id="meccanismi-di-condivisione_2">Meccanismi di condivisione<a class="headerlink" href="#meccanismi-di-condivisione_2" title="Link permanente">⚓︎</a></h3>
+<p>La condivisione è immediata con lo schema di paginazione, infatti:</p>
+<ul>
+<li>una copia unica di una pagina fisica può essere mappata in molti spazi di
+  indirizzamento;</li>
+<li>
+<p>i diversi processi possono avere un tipo di accesso diverso alla pagina.</p>
+</li>
+<li>
+<p>la condivisione viene riconosciuta ed effettuata da programmi di sistema,
+  poiché la paginazione è trasparente all'utente;</p>
+</li>
+<li>il codice condiviso deve naturalmente essere rientrante o eseguito in mutua
+  esclusione.</li>
+</ul>
+<div class="admonition def">
+<p class="admonition-title">Codice rientrante</p>
+<p>È un codice che non si automodifica e variabili, costanti e stack sono
+raggruppati in aree separate.</p>
+</div>
+<h2 id="memoria-virtuale">Memoria virtuale<a class="headerlink" href="#memoria-virtuale" title="Link permanente">⚓︎</a></h2>
+<p>La memoria virtuale è uno schema di gestione della memoria in cui soltanto una
+parte dello spazio di indirizzamento virtuale di un processo "residente" viene
+effettivamete caricata in memoria. Con questo tipo di gestione si ha che:</p>
+<ul>
+<li>la somma di tutti gli spazi di indirizzamento virtuali dei processi attivi può
+  superare la capacità della memoria fisica;</li>
+<li>la dimensione ammissibile per lo spazio di indirizzamento virtuale di un
+  singolo processo può superare la capacità della memoria fisica disponibile in
+  un sistema.</li>
+</ul>
+<p>Gli schemi dei precedenti tipi di gestione della memoria tendevano ad una
+occupazione della memoria vicina al <span class="arithmatex">\(100\%\)</span> mentre lo schema con memoria
+virtuale "sembra" fornire un grado di occupazione superiore al <span class="arithmatex">\(100\%\)</span>. Questo
+risultato si ottiene:</p>
+<ul>
+<li>mantenendo in memoria secondaria l'immagine dell'intero spazio virtuale di
+  indirizzamento del processo;</li>
+<li>
+<p>trasferendo in memoria fisica soltanto alcune parti al momento in cui sono
+  necessarie.</p>
+</li>
+<li>
+<p>il sistema operativo sceglie tempi e modalità di trasferimento in memoria
+  fisica tenendo conto di fattori quali:</p>
+<ul>
+<li>richieste dei processi attivi</li>
+<li>priorità dei processi</li>
+<li>disponibilità globali del sistema</li>
+</ul>
+</li>
+</ul>
+<p>Dal punto di vista del programmatore:</p>
+<ul>
+<li>i dettagli della gestione sono trasparenti;</li>
+<li>non è necessario l'adeguamento di un programma ad una memoria limitata;</li>
+<li>un programma può essere eseguito su sistemi con disponibilità di memoria fisica
+  diversa, senza alcun adattamento.</li>
+</ul>
+<p>Dal punto di vista del Sistema Operativo:</p>
+<ul>
+<li>un processo può essere caricato in uno spazio di dimensione arbitrarie;</li>
+<li>si riduce la frammentazione esterna;</li>
+<li>non è necessario modificare l'ordine previsto di esecuzione di un processo;</li>
+<li>il quantitativo di memoria assegnato ad un processo può variare durante la
+  sua esecuzione;</li>
+<li>il sistema operativo può dinamicamente scegliere di velocizzare l'esecuzione
+  di un processo allocando un quantitativo maggiore di memoria o, in alternativa,
+  aumentare il grado di multiprogrammazione.</li>
+</ul>
+<p>Osservazioni:</p>
+<ul>
+<li>un'istruzione può essere completata soltanto se quanto gli è necessario (codice,
+  stack, dati) è presente in memoria;</li>
+<li>un processo che richiede un "oggetto" fuori dalla memoria viene sospeso per un
+  tempo "relativamente" lungo;</li>
+</ul>
+<p>L'importanza dell'uso dello schema di memoria virtuale si basa sulle seguenti
+osservazioni:</p>
+<ul>
+<li>durante una specifica esecuzione, alcune parti del programma non vengono
+  indirizzate;</li>
+<li>le diverse condizioni interne o esterne causano diversi tracciati ad ogni
+  esecuzione di un processo;</li>
+<li>alcune parti di un programma vengono eseguite molto raramente (es. routine di
+  gestione errori);</li>
+<li>alcuni programmi contengono tracciati complementari (es. compilatori).</li>
+</ul>
+<h3 id="principi-operativi_4">Principi operativi<a class="headerlink" href="#principi-operativi_4" title="Link permanente">⚓︎</a></h3>
+<p>Il funzionamento della memoria virtuale è analogo alla paginazione ed alla
+segmentazione e quindi con uso di tabelle di traduzione. La differenza sostanziale
+è che alcune pagine possono essere "mancanti", per cui il processo di traduzione
+è più articolato. Sia <span class="arithmatex">\(V = \set{0,\; 1,\; \dotsc,\; v-1}\)</span> lo spazio di
+indirizzamento di un processo e sia <span class="arithmatex">\(M = \set{0,\; 1,\; \dotsc,\; m-1}\)</span> lo
+spazio di memoria fisica assegnato con <span class="arithmatex">\(v &gt; m\)</span>. Il meccanismo di traduzione
+deve realizzare la funzione <span class="arithmatex">\(f\)</span> che associa i nomi virtuali alle locazioni
+fisiche:</p>
+<div class="arithmatex">\[
+  f\colon V \to M \tc f(x) =
+  \begin{cases}
+    r                        &amp; \text{se \(x\) è in memoria reale in locazione } r\\
+    \text{``cond. critica''} &amp; \text{se \(x\) non è nella memoria reale} \\
+  \end{cases}
+\]</div>
+<h3 id="tabelle">Tabelle<a class="headerlink" href="#tabelle" title="Link permanente">⚓︎</a></h3>
+<p>Lo schema di memoria virtuale fa uso della tabella di traduzione delle pagine
+(nel caso di memoria virtuale con schema a paginazione) con aggiunta di <span class="arithmatex">\(1 \bbit\)</span>
+di "presenza" che viene posto a <span class="arithmatex">\(1\)</span> se la pagina è in memoria reale mentre
+viene posto a <span class="arithmatex">\(0\)</span> se si tratta di una pagina mancante (page fault).</p>
+<p>Il caricamento di un processo avviene nel seguente modo: il sistema operativo
+crea la <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>, ponendo ad <span class="arithmatex">\(1\)</span> i bit di presenza delle pagine portate in memoria.
+Se viene richiesta, successivamente, una pagina mancante il processo viene
+sospeso in attesa del suo caricamento, altri processi vengono posti in esecuzione
+nel frattempo.</p>
+<p>Lo schema di memoria virtuale fa uso anche della Tabella di Descrizione del File
+(<abbr title="Tabella di Descrizione del File">TDF</abbr>). La <abbr title="Tabella di Descrizione del File">TDF</abbr> è equivalente alla <abbr title="Tabella di Descrizione delle Partizioni">TDP</abbr>, associa al numero di pagine virtuali
+l'indirizzo di residenza di queste sulla memoria secondaria.</p>
+<!-- TODO: aggiungere immagine (slide 84) -->
+
+<h3 id="interrompibilita-dellistruzione">Interrompibilità dell'istruzione<a class="headerlink" href="#interrompibilita-dellistruzione" title="Link permanente">⚓︎</a></h3>
+<p>In genere i sistemi supportano:</p>
+<ul>
+<li>l'interruzione di un processo tra due istruzioni;</li>
+<li>ma non supportano l'interrompibilità della singola istruzione.</li>
+</ul>
+<p>Lo schema di memoria virtuale è implementabile solo su sistemi che supportano
+l'interrompibilità della singola istruzione.</p>
+<!-- TODO: che è sta cosa -->
+<p>Istruzione Decrement and branch to
+Indirizzo i: decrement reg(1) and branch to address(i+1)
+if reg(1) = 0
+Indirizzo i+1 address</p>
+<p>Gli indirizzi i e i+1 della singola istruzione potrebbero essere posti rispettivamente
+sull'ultima locazione di una pagina e sulla prima della successiva.</p>
+<p>L'assenza della memoria della pagina successiva causa una interruzione della
+istruzione che deve essere gestita oltre alla interrompibilità della istruzione,
+l'hardware deve essere in grado di gestire i cambiamenti avvenuti durante
+l'esecuzione della stessa. Le possibili soluzioni a questo problema sono:</p>
+<ul>
+<li>gli effetti parziali di una istruzione vengono cancellati e l'istruzione viene
+  ricominciata dopo aver risolto il page fault;<ul>
+<li>dipende strettamente dal tipo di istruzioni, non è facile generalizzare;</li>
+<li>alcuni cambiamenti possono essere irreversibili;</li>
+<li>può richiedere molto lavoro;</li>
+</ul>
+</li>
+<li>l'istruzione viene fatta partire dal punto esatto in cui era stata interrotta,
+  questo tipo di soluzione richiede forme sofisticate di memorizzazione dello
+  stato CPU;</li>
+<li>prima di iniziare l'esecuzione si controllano gli accessi in memoria che
+  l'istruzione eseguirà, però può non essere possibile giustificare il controllo.</li>
+</ul>
+<p>Le soluzioni adottate sono spesso miste e rientrano nelle scelte architetturali</p>
+<h3 id="gestione-della-memoria-virtuale">Gestione della memoria virtuale<a class="headerlink" href="#gestione-della-memoria-virtuale" title="Link permanente">⚓︎</a></h3>
+<p>La gestione della memoria virtuale segue gli schemi analoghi alla paginazione o
+alla segmentazione già discussi, con l'aggiunta della <abbr title="Tabella di Descrizione del File">TDF</abbr>. Ai fini dell'efficienza
+della memoria virtuale l'allocazione di un sottoinsieme delle pagine virtuali su
+pagine fisiche richiede l'applicazione di specifiche strategie. Tali strategie
+si possono classificare in:</p>
+<ul>
+<li>strategie di allocazione: quanta memoria reale allocare a ciascun processo;</li>
+<li>strategie di ricerca: quali oggetti trasferire e quando dalla memoria secondaria
+  alla memoria centrale;</li>
+<li>strategie di sostituzione: in mancanza di spazio, quali oggetti rimuovere per
+  assegnare spazio alle nuove richieste;</li>
+<li>strategie di posizionamento: dove collocare un oggetto che entra in memoria.</li>
+</ul>
+<h4 id="strategie-di-allocazione-e-sostituzione">Strategie di allocazione e sostituzione<a class="headerlink" href="#strategie-di-allocazione-e-sostituzione" title="Link permanente">⚓︎</a></h4>
+<p>Le strategie di allocazione e sostituzione sono immediate, in quanto:</p>
+<ul>
+<li>gli oggetti vengono trasferiti quando servono, si parla infatti di paginazione
+  o segmentazione a richiesta;</li>
+<li>non sono facilmente applicabili strategie di previsione;</li>
+<li>il posizionamento delle pagine segue le regole dello schema con cui è realizzata
+  la memoria virtuale, ossia paginazione e segmentazione.</li>
+</ul>
+<p>Queste due strategie sono particolarmente importanti per l'efficienza della
+gestione della memoria virtuale e richiedono particolare attenzione.</p>
+<p>Importante infatti analizzare il comportamento di un processo, dal punto di vista
+delle sequenze di accesso alla memoria durante la sua esecuzione al fine di:</p>
+<ul>
+<li>minimizzare il tempo di residenza in memoria di un processo(un processo viene
+  sospeso in caso di page fault);</li>
+<li>minimizzare i trasferimenti di pagine (coinvolgono la CPU e i dispositivi di
+  I/O).</li>
+</ul>
+<h5 id="localita-dei-programmi">Località dei programmi<a class="headerlink" href="#localita-dei-programmi" title="Link permanente">⚓︎</a></h5>
+<p>Numerosi studi mostrano che i programmi hanno una forte tendenza a favorire un
+sottoinsieme del loro spazio di indirizzamento durante l'esecuzione. Questo
+fenomeno è conosciuto con il nome di località dei programmi. Dal punto di vista
+del sistema operativo la località si concretizza nel fatto che una parte notevole
+degli accessi, in un periodo di tempo, vengono effettuati su un set ridotto delle
+pagine virtuali di un processo. Un processo si "muove" lentamente da una località
+ad un'altra nel corso della sua esecuzione. La località è una proprietà dinamica
+dei programmi, ossia il set di pagine più referenziate varia lentamente nel tempo.
+Questa importante proprietà è utilizzata per realizzare le strategie di
+allocazione e sostituzione delle pagine nello schema di gestione della memoria
+virtuale.</p>
+<h4 id="strategie-di-sostituzione">Strategie di sostituzione<a class="headerlink" href="#strategie-di-sostituzione" title="Link permanente">⚓︎</a></h4>
+<p>All'occorrenza di una page fault, se il gestore della memoria non ha pagine
+disponibili può disporre due operazioni:</p>
+<ul>
+<li>sospensione del processo che ha generato la page fault</li>
+<li>sostituzione di una pagina in memoria</li>
+</ul>
+<p>La prima operazione è raramente scelta perché:</p>
+<ul>
+<li>l'eccezione di page fault è dovuta allo schema di gestione e non al processo</li>
+<li>la sospensione del processo influirebbe sullo scheduling e sul tempo di risposta
+  relativi al processo;</li>
+<li>in condizioni di memoria piena il tempo che una pagina si liberi può essere
+  lungo.</li>
+</ul>
+<p>La seconda operazione è la via generalmente scelta perché:</p>
+<ul>
+<li>richiede preferibilmente la presenza di 1 bit per il controllo di pagina
+  modificata;</li>
+<li>il dirty bit può rientrare tra i fattori presi in considerazione per scegliere
+  la pagina da sostituire.</li>
+</ul>
+<h4 id="algoritmi-di-sostituzione">Algoritmi di sostituzione<a class="headerlink" href="#algoritmi-di-sostituzione" title="Link permanente">⚓︎</a></h4>
+<p>Esistono numerosi algoritmi per la sostituzione delle pagine tra cui esaminiamo:</p>
+<ul>
+<li>algoritmo <abbr title="First In, First Out">FIFO</abbr> (First In First Out)</li>
+<li>algoritmo <abbr title="Least Recently Used">LRU</abbr> (Least Recently Used)</li>
+<li>algoritmo di Belady</li>
+<li>algoritmo <abbr title="Not Recently Used">NRU</abbr> (Not Recently Used)</li>
+</ul>
+<h5 id="first-in-first-out">First In First Out<a class="headerlink" href="#first-in-first-out" title="Link permanente">⚓︎</a></h5>
+<p>L'algoritmo <abbr title="First In, First Out">FIFO</abbr> sostituisce le pagine che da più tempo risiedono in memoria.
+Il gestore della memoria deve tenere traccia dell'ordine di caricamento delle
+pagine in memoria, ad esempio con una coda <abbr title="First In, First Out">FIFO</abbr> dei numeri di pagina.</p>
+<p>Pregi:</p>
+<ul>
+<li>è di semplice realizzazione;</li>
+<li>richiede di aggiornare la coda solo ad ogni page fault;</li>
+<li>non richiede supporti hardware specifici.</li>
+</ul>
+<p>Difetti:</p>
+<ul>
+<li>la politica <abbr title="First In, First Out">FIFO</abbr> spesso getta via pagine più frequentemente indirizzate, poiché
+  per loro natura permangono più tempo in memoria;</li>
+<li>ciò succede perché questo metodo non tiene traccia dell'ordine di riferimento
+  delle pagine.</li>
+</ul>
+<!-- TODO: aggiungere grafichetto (slide 93-94) -->
+
+<h5 id="least-recently-used">Least Recently Used<a class="headerlink" href="#least-recently-used" title="Link permanente">⚓︎</a></h5>
+<p>L'algoritmo <abbr title="Least Recently Used">LRU</abbr> sostituisce le pagine residenti che meno recentemente sono state
+utilizzate. L'<abbr title="Least Recently Used">LRU</abbr> considerala sequenza del comportamento di un programma con
+l'ipotesi che la pagina meno utilizzata recentemente è quella che ha la minore
+probabilità di essere referenziata in futuro. Una possibile modalità operativa è:</p>
+<ul>
+<li>memorizzare l'uso delle pagine attraverso l'uso di una struttura simile ad
+  uno stack;</li>
+<li>ogni volta che la pagina viene referenziata, viene ricercata nello stack e
+  posta in cima ad esso;</li>
+<li>la pagina da rimuovere viene presa dalla parte bassa dello stack.</li>
+</ul>
+<p>Pregi:</p>
+<ul>
+<li>in media si comporta meglio dell'algoritmo <abbr title="First In, First Out">FIFO</abbr>.</li>
+</ul>
+<p>Difetti:</p>
+<ul>
+<li>l'aggiornamento dello stack va effettuato ad ogni riferimento alla pagina
+  (praticamente ad ogni accesso in memoria);</li>
+<li>l'organizzazione dell'<abbr title="Least Recently Used">LRU</abbr> è tale da richiedere un supporto hardware sofisticato
+  e dedicato alle operazioni relative all'aggiornamento dello stack.</li>
+</ul>
+<!-- TODO: aggiungere grafichetto (slide 96-97) -->
+
+<h5 id="belady">Belady<a class="headerlink" href="#belady" title="Link permanente">⚓︎</a></h5>
+<p>L'algoritmo di Belady sostituisce le pagine che saranno referenziate nel più
+lontano futuro. Non è realizzabile, ma è di importanza teorica poiché consente
+di confrontare le prestazioni degli altri algoritmi.</p>
+<!-- TODO: aggiungere grafichetto (slide 99) -->
+
+<h5 id="not-recently-used">Not Recently Used<a class="headerlink" href="#not-recently-used" title="Link permanente">⚓︎</a></h5>
+<p>L'algoritmo <abbr title="Not Recently Used">NRU</abbr> combina il basso costo <abbr title="First In, First Out">FIFO</abbr> con la registrazione delle pagine
+residenti tipico dell'<abbr title="Least Recently Used">LRU</abbr> sostituendo le pagine non recentemente usate.</p>
+<p>Principi di funzionamento:</p>
+<ul>
+<li>associa <span class="arithmatex">\(1 \bbit\)</span> a ciascuna pagina residente;</li>
+<li>il bit viene posto a <span class="arithmatex">\(1\)</span> ad ogni riferimento alla pagina;</li>
+<li>i bit di tutte le pagine vengono posti a zero ciclicamente;</li>
+<li>al momento di scegliere la pagina, l'algoritmo sceglie tra quelle con bit a
+  <span class="arithmatex">\(0\)</span>;</li>
+<li>facendo uso di una lista circolare, riparte ogni volta dall'ultima pagina
+  esaminata.</li>
+</ul>
+<p>Esistono numerose varianti a questo algoritmo, ma si fondano
+tutte sul principio di basare le proprie decisioni sull'effettivo e
+misurato uso delle pagine prendendo quindi in considerazione le
+sequenze del comportamento di ogni programma</p>
+<!-- TODO: aggiungere tabelle (slide 100) -->
+
+<h5 id="algoritmi-di-sostituzione-globale">Algoritmi di sostituzione globale<a class="headerlink" href="#algoritmi-di-sostituzione-globale" title="Link permanente">⚓︎</a></h5>
+<p>Gli algoritmi di sostituzione globale scelgono la pagina da rimuovere non solo
+tra quelle appartenenti al processo ma tra tutte quelle residenti. Questi algoritmi
+guardano più alle esigenze di sistema che all'andamento individuale di ciascun
+processo e possono variare la strategia degli algoritmi di allocazione. Tra gli
+algoritmi di sostituzione sono i meno utilizzati.</p>
+<h3 id="strategie-di-allocazione-delle-pagine">Strategie di allocazione delle pagine<a class="headerlink" href="#strategie-di-allocazione-delle-pagine" title="Link permanente">⚓︎</a></h3>
+<p>Le strategie di allocazione servono per decidere quanta memoria fisica allocare
+a ciascun processo attivo. L'allocazione di un numero di pagine ottimale:</p>
+<ul>
+<li>riduce la frequenza di page fault</li>
+<li>riduce al minimo indispensabile il tempo di esecuzione</li>
+<li>aumenta l'uso della CPU</li>
+</ul>
+<p>L'allocazione di un numero di pagine molto grande:</p>
+<ul>
+<li>riduce il numero di processi attivi</li>
+<li>abbassa il fattore di utilizzo della CPU</li>
+</ul>
+<p>L'allocazione di un numero di pagine troppo ridotto:</p>
+<ul>
+<li>produce un aumento delle page fault</li>
+<li>aumenta il tempo di residenza in memoria dei processi</li>
+<li>aumenta lo spreco di CPU e dei dispositivi di I/O per il trasferimento delle pagine</li>
+</ul>
+<p>Si consideri, ad esempio, l'istruzione <code>ADD [x], [y]</code> assumendo che il codice
+operativo e gli operandi siano codificati ciascuno in una parola, tale istruzione
+richiede:</p>
+<ul>
+<li><span class="arithmatex">\(3\)</span> accessi in memoria per leggere l'istruzione;</li>
+<li><span class="arithmatex">\(2\)</span> per leggere gli operandi;</li>
+<li><span class="arithmatex">\(2\)</span> per leggere i valori finali da sommare;</li>
+<li><span class="arithmatex">\(1\)</span> per scrivere il risultato.</li>
+</ul>
+<p>Nel caso peggiore, l'esecuzione di questa istruzione richiede <span class="arithmatex">\(6\)</span> pagine
+differenti! Poiché una possibile realizzazione dello schema di memoria virtuale
+è la riesecuzione completa di un istruzione che ha generato una page fault, se
+al processo sono allocate meno di <span class="arithmatex">\(6\)</span> pagine si avrà che:</p>
+<ul>
+<li>non completerà mai questa istruzione;</li>
+<li>provocherà continui page fault.</li>
+</ul>
+<p>Esistono quindi delle indicazioni sul numero minimo di pagine da assegnare ad un
+processo. A riguardo del numero massimo si fanno alcune considerazioni:</p>
+<ul>
+<li>relazione tra frequenza di errori di pagina e memoria assegnata;</li>
+<li>i parametri dipendono dal particolare programma, ma l'andamento degli errori
+  di pagina è simile.</li>
+</ul>
+<p>Un buon algoritmo di allocazione deve variare dinamicamente il numero di pagine
+allocate ad un processo, in base alle sue richieste ed allo stato del sistema
+tenendo presente:</p>
+<ul>
+<li>il limite inferiore: sotto il quale l'aumento degli errori di pagina aumenta
+  molto rapidamente:</li>
+<li>il limite superiore: oltre il quale l'allocazione di altre pagine produce un
+  modesto miglioramento delle prestazioni.</li>
+</ul>
+<p>Algoritmi troppo semplificati possono provocare il thrashing: eccessivo scambio
+di pagine di dati tra la <abbr title="Random Access Memory">RAM</abbr> e la memoria secondaria.</p>
+<h3 id="working-set">Working set<a class="headerlink" href="#working-set" title="Link permanente">⚓︎</a></h3>
+<p>Orientamento comune nella gestione della memoria virtuale è che le strategie di
+allocazione e di sostituzione delle pagine non possono essere trattate in modo
+indipendente in quanto:</p>
+<ul>
+<li>le strategie di allocazione, determinano le condizioni operative delle strategie
+  di sostituzione;</li>
+<li>le strategie di sostituzione possono variare il quantitativo di memoria allocata
+  ai processi.</li>
+</ul>
+<p>La teoria del Working Set tratta in maniera interattiva l'allocazione e la
+sostituzione indicando:</p>
+<ul>
+<li>quante pagine assegnare ad un processo;</li>
+<li>quali pagine è necessario tenere in memoria.</li>
+</ul>
+<p>Le premesse su cui si poggia la teoria del Working set sono:</p>
+<ul>
+<li>durante qualsiasi intervallo di tempo, un processo in esecuzione favorisce un
+  sottoinsieme delle proprie pagine;</li>
+<li>la sequenza d'accesso alla memoria da parte di un processo mostra una relazione
+  tra il passato immediato ed il futuro;</li>
+<li>la frequenza con cui una pagina viene referenziata è una funzione variante
+  lentamente nel tempo.</li>
+</ul>
+<p>Il working-set <span class="arithmatex">\(W(t, \Delta)\)</span> viene definito come l'insieme delle pagine
+referenziate da un programma durante un recente intervallo di tempo:</p>
+<div class="arithmatex">\[
+  W(t, \Delta) = \set{i \in \N \mid r_{t-\Delta+1} &lt; i &lt; r_t}
+\]</div>
+<p>dove <span class="arithmatex">\(r_t\)</span> denota l'accesso in memoria all'istante <span class="arithmatex">\(t\)</span>. In concreto, la
+teoria del working-set suggerisce che:</p>
+<ul>
+<li>un programma deve essere in esecuzione se e solo se il suo working-set è in
+  memoria;</li>
+<li>una pagina di memoria può essere rimpiazzata solo se non fa parte del working-set.</li>
+</ul>
+<p>La determinazione accurata del working-set richiede l'intervento del sistema
+operativo dopo ogni accesso in memoria, pertanto la maggior parte delle
+realizzazioni pratiche approssimano la teoria del working-set.</p>
+<h3 id="supporti-hardware">Supporti hardware<a class="headerlink" href="#supporti-hardware" title="Link permanente">⚓︎</a></h3>
+<p>I supporti hardware richiesti sono gli stessi dello schema di gestione che
+realizza la memoria virtuale, segmentazione o paginazione in più la memoria
+virtuale richiede i supporti per l'aggiornamento di:</p>
+<ul>
+<li><span class="arithmatex">\(1 \bbit\)</span> di presenza;</li>
+<li><span class="arithmatex">\(1 \bbit\)</span> d'uso.</li>
+</ul>
+<p>Particolare attenzione deve essere posta nella scelta della dimensione della
+pagina in relazione alla dimensione di allocazione dei blocchi sulla memoria
+secondaria.</p>
+<p>La protezione e la condivisione in un sistema a memoria virtuale mantengono le
+caratteristiche dello schema con cui è realizzata la memoria virtuale.</p>
+<p>La rimozione dalla memoria di un oggetto condiviso comporta un aggravio tale di
+operazioni da compiere che usualmente si preferisce semplificarne la gestione
+lasciandolo in memoria.</p>
+<h3 id="conclusioni_3">Conclusioni<a class="headerlink" href="#conclusioni_3" title="Link permanente">⚓︎</a></h3>
+<p>Dal punto di vista dell'utente:</p>
+<ul>
+<li>la memoria virtuale consente ai programmatori di concentrarsi sulle prestazioni
+  dei loro programmi senza preoccuparsi del quantitativo di memoria richiesta;</li>
+<li>lo stesso programma può essere eseguito su elaboratori con memoria fisica
+  diversa.</li>
+</ul>
+<p>Dal punto di vista del sistema operativo:</p>
+<ul>
+<li>la memoria virtuale consente di variare il quantitativo di memoria fisica
+  assegnata ad un processo e quindi di variare il numero di processi attivi e
+  di diminuire la memoria sprecata;</li>
+<li>parti di codice dei processi mai utilizzate non vengono mai caricate in memoria.</li>
+</ul>
+<p>﻿*[ASCII]: American Standard Code for Information Interchange</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Ultimo aggiornamento:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+        <br>
+        Creata:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Torna su
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Piede" >
+        
+          
+          <a href="SO3_gestione_risorse_problemi.html" class="md-footer__link md-footer__link--prev" aria-label="Precedente: Gestione delle risorse e problematiche annesse" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Precedente
+              </span>
+              <div class="md-ellipsis">
+                Gestione delle risorse e problematiche annesse
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="SO5_file_system.html" class="md-footer__link md-footer__link--next" aria-label="Prossimo: Il file system" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Prossimo
+              </span>
+              <div class="md-ellipsis">
+                Il file system
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:<fsimone2002@proton.me>" target="_blank" rel="noopener" title="Mandami una mail" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sRavioli" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/who.dat.boy___" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "toc.follow", "navigation.top", "navigation.footer", "search.suggest", "search.share", "header.autohide", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiato", "clipboard.copy": "Copia", "search.result.more.one": "1 altro in questa pagina", "search.result.more.other": "# altri in questa pagina", "search.result.none": "Nessun documento trovato", "search.result.one": "1 documento trovato", "search.result.other": "# documenti trovati", "search.result.placeholder": "Scrivi per iniziare a cercare", "search.result.term.missing": "Non presente", "select.version": "Seleziona la versione"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../../javascripts/mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

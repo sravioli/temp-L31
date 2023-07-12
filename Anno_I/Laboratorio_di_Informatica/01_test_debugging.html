@@ -1,0 +1,3396 @@
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31, A.A. 2021-22, dell'Università di Bari "Aldo Moro".">
+      
+      
+        <meta name="author" content="Simone Fidanza">
+      
+      
+        <link rel="canonical" href="https://sravioli.github.io/L31/Anno_I/Laboratorio_di_Informatica/01_test_debugging.html">
+      
+      
+        <link rel="prev" href="00_introduzione.html">
+      
+      
+        <link rel="next" href="goose_game/index.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Test e Debugging - Appunti di Informatica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Montserrat";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#test-e-debugging" class="md-skip">
+          Vai al contenuto
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Intestazione">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-header__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Appunti di Informatica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Test e Debugging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Passa alla modalità chiara"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità chiara" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="purple"  aria-label="Passa alla modalità scura"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità scura" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Condividi" aria-label="Condividi" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Cancella" aria-label="Cancella" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inizializza la ricerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../AESO/AE1_dati_rappresentazione.html" class="md-tabs__link md-tabs__link--active">
+        Anno I
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigazione" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-nav__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    Appunti di Informatica
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Anno I
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Anno I
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          AESO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          AESO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/AE1_dati_rappresentazione.html" class="md-nav__link">
+        Tipi di dato e la loro rappresentazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/AE4_expr_booleane_karnaugh.html" class="md-nav__link">
+        Espressioni logiche booleane e mappe di Karnaugh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/AE5_istruzioni_indirizzamento.html" class="md-nav__link">
+        Formati di istruzioni e indirizzamento
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/SO1_so_processi_scheduling.html" class="md-nav__link">
+        Sistema operativo, gestione dei processi e scheduling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/SO2_thread_smp_microkernel.html" class="md-nav__link">
+        Thread, SMP e Microkernel
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/SO3_gestione_risorse_problemi.html" class="md-nav__link">
+        Gestione delle risorse e problematiche annesse
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/SO4_gestione_memoria.html" class="md-nav__link">
+        Gestione della memoria centrale
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AESO/SO5_file_system.html" class="md-nav__link">
+        Il file system
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Laboratorio di Informatica
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Laboratorio di Informatica
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="00_introduzione.html" class="md-nav__link">
+        Introduzione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Test e Debugging
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="01_test_debugging.html" class="md-nav__link md-nav__link--active">
+        Test e Debugging
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verifica-delle-condizioni-limite" class="md-nav__link">
+    Verifica delle condizioni limite
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifica delle condizioni limite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#esempio" class="md-nav__link">
+    Esempio
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programmazione-difensiva" class="md-nav__link">
+    Programmazione difensiva
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controllo-dei-valori-di-errore-restituiti" class="md-nav__link">
+    Controllo dei valori di errore restituiti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-sistematico" class="md-nav__link">
+    Testing sistematico
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing sistematico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifica-incrementale" class="md-nav__link">
+    Verifica incrementale
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifica-bottom-up" class="md-nav__link">
+    Verifica bottom-up
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifica-dei-risultati-attesi" class="md-nav__link">
+    Verifica dei risultati attesi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificare-la-copertura-dei-test" class="md-nav__link">
+    Verificare la copertura dei test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-e-funzioni-in-c" class="md-nav__link">
+    Procedure e Funzioni in C
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-test" class="md-nav__link">
+    Unit test
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xunit-test-framework" class="md-nav__link">
+    xUnit test framework
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cunit" class="md-nav__link">
+    CUnit
+  </a>
+  
+    <nav class="md-nav" aria-label="CUnit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#struttura-del-framework" class="md-nav__link">
+    Struttura del framework
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-under-test" class="md-nav__link">
+    Method under test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ciclo-di-unit-test" class="md-nav__link">
+    Ciclo di unit test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggiungere-le-librerie-cunit-a-un-progetto" class="md-nav__link">
+    Aggiungere le librerie CUnit a un progetto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrivere-un-test-method" class="md-nav__link">
+    Scrivere un test method
+  </a>
+  
+    <nav class="md-nav" aria-label="Scrivere un test method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asserzioni-di-base-cunit" class="md-nav__link">
+    Asserzioni di base (CUnit)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempio-di-test-method-per-la-funzione-maxab" class="md-nav__link">
+    Esempio di test method per la funzione max(a,b)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempio-di-metodo-di-test-per-la-funzione-factorialx" class="md-nav__link">
+    Esempio di metodo di test per la funzione factorial(x)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#il-test-registry" class="md-nav__link">
+    Il Test Registry
+  </a>
+  
+    <nav class="md-nav" aria-label="Il Test Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-del-test-registry" class="md-nav__link">
+    Inizializzazione del Test Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite" class="md-nav__link">
+    Test Suite
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-e-pulizia-delle-suite" class="md-nav__link">
+    Inizializzazione e pulizia delle suite
+  </a>
+  
+    <nav class="md-nav" aria-label="Inizializzazione e pulizia delle suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-e-pulizia" class="md-nav__link">
+    Inizializzazione e pulizia
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-method-e-test-suite" class="md-nav__link">
+    Test method e test suite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registrazione-ed-esecuzione-dei-test" class="md-nav__link">
+    Registrazione ed esecuzione dei test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulire-il-registry" class="md-nav__link">
+    Pulire il registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esercitazione-1-cunit" class="md-nav__link">
+    Esercitazione 1 CUnit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#supporto-del-compilatore" class="md-nav__link">
+    Supporto del compilatore
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-reasoning" class="md-nav__link">
+    Backward reasoning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-familiari" class="md-nav__link">
+    Pattern familiari
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sviluppo-incrementale" class="md-nav__link">
+    Sviluppo incrementale
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esaminare-codice-simile" class="md-nav__link">
+    Esaminare codice simile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-rimandare-il-debugging" class="md-nav__link">
+    Non rimandare il debugging
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leggere-e-spiegare-il-codice" class="md-nav__link">
+    Leggere e spiegare il codice
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendere-riproducibile-un-bug" class="md-nav__link">
+    Rendere riproducibile un bug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#divide-et-impera" class="md-nav__link">
+    Divide et impera
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ricerca-di-regolarita" class="md-nav__link">
+    Ricerca di regolarità
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stampe-ausiliarie" class="md-nav__link">
+    Stampe ausiliarie
+  </a>
+  
+    <nav class="md-nav" aria-label="Stampe ausiliarie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#altre-tecniche" class="md-nav__link">
+    Altre tecniche
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugger" class="md-nav__link">
+    Debugger
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compilazione-per-il-debug" class="md-nav__link">
+    Compilazione per il debug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esecuzione-passo-passo" class="md-nav__link">
+    Esecuzione passo-passo
+  </a>
+  
+    <nav class="md-nav" aria-label="Esecuzione passo-passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-into" class="md-nav__link">
+    Step Into
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-over" class="md-nav__link">
+    Step over
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-return" class="md-nav__link">
+    Step return
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#informazioni-di-debug" class="md-nav__link">
+    Informazioni di debug
+  </a>
+  
+    <nav class="md-nav" aria-label="Informazioni di debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variabili" class="md-nav__link">
+    Variabili
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#espressioni" class="md-nav__link">
+    Espressioni
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-trace" class="md-nav__link">
+    Stack trace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoint" class="md-nav__link">
+    Breakpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resume-terminate" class="md-nav__link">
+    Resume &amp; Terminate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoint-condizionali" class="md-nav__link">
+    Breakpoint condizionali
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+          Goose game
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Goose game
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="goose_game/index.html" class="md-nav__link">
+        Gioco dell'oca
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="goose_game/CHANGELOG.html" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-02-2023.html" class="md-nav__link">
+        Appunti del 02-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-08-2023.html" class="md-nav__link">
+        Appunti del 08-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-09-2023.html" class="md-nav__link">
+        Appunti del 09-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-16-2023.html" class="md-nav__link">
+        Appunti del 16-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-23-2023.html" class="md-nav__link">
+        Appunti del 23/03/23
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-29-2023.html" class="md-nav__link">
+        Appunti del 29/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/03-30-2023.html" class="md-nav__link">
+        Appunti del 30/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/04-20-2023.html" class="md-nav__link">
+        Appunti del 20/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/04-26-2023.html" class="md-nav__link">
+        Appunti del 26/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/05-10-23.html" class="md-nav__link">
+        Appunti del 10/05/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/consegna0.html" class="md-nav__link">
+        Correzione della prima consegna
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Linguaggi di Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linguaggi di Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/00_introduzione.html" class="md-nav__link">
+        Linguaggi di Programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/01_intro_linguaggi.html" class="md-nav__link">
+        Introduzione ai linguaggi di programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/02_teoria_linguaggi.html" class="md-nav__link">
+        Introduzione alla teoria dei linguaggi formali
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/03_grammatiche_linguaggi.html" class="md-nav__link">
+        Grammatiche e Linguaggi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/04_linguaggi_CF_e_non.html" class="md-nav__link">
+        Linguaggi liberi da contesto e linguaggi dipendenti da contesto
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Matematica Discreta temp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Matematica Discreta temp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+          !miei appunti mat dis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          !miei appunti mat dis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Matematica_Discreta_temp/%21miei%20appunti%20mat%20dis/INDEX.html" class="md-nav__link">
+        INDICE SOMMARIO    <!-- rifarsi a questo per l'indicizzazione degli appunti -->
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/00_intro_calcolatori.html" class="md-nav__link">
+        Introduzione ai calcolatori
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/01_problem_solving.html" class="md-nav__link">
+        Problem Solving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/02_algoritmo_euclide.html" class="md-nav__link">
+        Algoritmo di Euclide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/03_notazione_lineare.html" class="md-nav__link">
+        Notazione Lineare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/04_algebra_booleana.html" class="md-nav__link">
+        Algebra Booleana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/05_dati.html" class="md-nav__link">
+        I Dati
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/06_metodologia_TD.html" class="md-nav__link">
+        Metodologia Top-Down
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/07_funzioni_procedure.html" class="md-nav__link">
+        Funzioni e procedure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/08_tipi_semplici.html" class="md-nav__link">
+        Tipi semplici
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/10_array.html" class="md-nav__link">
+        Array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_11" id="__nav_2_5_11_label" tabindex="0">
+          Exercises
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Exercises
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/08.10.21.html" class="md-nav__link">
+        Esercizi del 08/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/14.10.21.html" class="md-nav__link">
+        Esercizio del 14/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/21.10.21.html" class="md-nav__link">
+        Esercizi del 21/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/28.10.21.html" class="md-nav__link">
+        Esercizio del 28/10/21
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verifica-delle-condizioni-limite" class="md-nav__link">
+    Verifica delle condizioni limite
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifica delle condizioni limite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#esempio" class="md-nav__link">
+    Esempio
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programmazione-difensiva" class="md-nav__link">
+    Programmazione difensiva
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controllo-dei-valori-di-errore-restituiti" class="md-nav__link">
+    Controllo dei valori di errore restituiti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-sistematico" class="md-nav__link">
+    Testing sistematico
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing sistematico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifica-incrementale" class="md-nav__link">
+    Verifica incrementale
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifica-bottom-up" class="md-nav__link">
+    Verifica bottom-up
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifica-dei-risultati-attesi" class="md-nav__link">
+    Verifica dei risultati attesi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificare-la-copertura-dei-test" class="md-nav__link">
+    Verificare la copertura dei test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-e-funzioni-in-c" class="md-nav__link">
+    Procedure e Funzioni in C
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-test" class="md-nav__link">
+    Unit test
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xunit-test-framework" class="md-nav__link">
+    xUnit test framework
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cunit" class="md-nav__link">
+    CUnit
+  </a>
+  
+    <nav class="md-nav" aria-label="CUnit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#struttura-del-framework" class="md-nav__link">
+    Struttura del framework
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-under-test" class="md-nav__link">
+    Method under test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ciclo-di-unit-test" class="md-nav__link">
+    Ciclo di unit test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggiungere-le-librerie-cunit-a-un-progetto" class="md-nav__link">
+    Aggiungere le librerie CUnit a un progetto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrivere-un-test-method" class="md-nav__link">
+    Scrivere un test method
+  </a>
+  
+    <nav class="md-nav" aria-label="Scrivere un test method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asserzioni-di-base-cunit" class="md-nav__link">
+    Asserzioni di base (CUnit)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempio-di-test-method-per-la-funzione-maxab" class="md-nav__link">
+    Esempio di test method per la funzione max(a,b)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempio-di-metodo-di-test-per-la-funzione-factorialx" class="md-nav__link">
+    Esempio di metodo di test per la funzione factorial(x)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#il-test-registry" class="md-nav__link">
+    Il Test Registry
+  </a>
+  
+    <nav class="md-nav" aria-label="Il Test Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-del-test-registry" class="md-nav__link">
+    Inizializzazione del Test Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite" class="md-nav__link">
+    Test Suite
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-e-pulizia-delle-suite" class="md-nav__link">
+    Inizializzazione e pulizia delle suite
+  </a>
+  
+    <nav class="md-nav" aria-label="Inizializzazione e pulizia delle suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inizializzazione-e-pulizia" class="md-nav__link">
+    Inizializzazione e pulizia
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-method-e-test-suite" class="md-nav__link">
+    Test method e test suite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registrazione-ed-esecuzione-dei-test" class="md-nav__link">
+    Registrazione ed esecuzione dei test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulire-il-registry" class="md-nav__link">
+    Pulire il registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esercitazione-1-cunit" class="md-nav__link">
+    Esercitazione 1 CUnit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#supporto-del-compilatore" class="md-nav__link">
+    Supporto del compilatore
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-reasoning" class="md-nav__link">
+    Backward reasoning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-familiari" class="md-nav__link">
+    Pattern familiari
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sviluppo-incrementale" class="md-nav__link">
+    Sviluppo incrementale
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esaminare-codice-simile" class="md-nav__link">
+    Esaminare codice simile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-rimandare-il-debugging" class="md-nav__link">
+    Non rimandare il debugging
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leggere-e-spiegare-il-codice" class="md-nav__link">
+    Leggere e spiegare il codice
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendere-riproducibile-un-bug" class="md-nav__link">
+    Rendere riproducibile un bug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#divide-et-impera" class="md-nav__link">
+    Divide et impera
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ricerca-di-regolarita" class="md-nav__link">
+    Ricerca di regolarità
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stampe-ausiliarie" class="md-nav__link">
+    Stampe ausiliarie
+  </a>
+  
+    <nav class="md-nav" aria-label="Stampe ausiliarie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#altre-tecniche" class="md-nav__link">
+    Altre tecniche
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugger" class="md-nav__link">
+    Debugger
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compilazione-per-il-debug" class="md-nav__link">
+    Compilazione per il debug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esecuzione-passo-passo" class="md-nav__link">
+    Esecuzione passo-passo
+  </a>
+  
+    <nav class="md-nav" aria-label="Esecuzione passo-passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-into" class="md-nav__link">
+    Step Into
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-over" class="md-nav__link">
+    Step over
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-return" class="md-nav__link">
+    Step return
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#informazioni-di-debug" class="md-nav__link">
+    Informazioni di debug
+  </a>
+  
+    <nav class="md-nav" aria-label="Informazioni di debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variabili" class="md-nav__link">
+    Variabili
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#espressioni" class="md-nav__link">
+    Espressioni
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-trace" class="md-nav__link">
+    Stack trace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoint" class="md-nav__link">
+    Breakpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resume-terminate" class="md-nav__link">
+    Resume &amp; Terminate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoint-condizionali" class="md-nav__link">
+    Breakpoint condizionali
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/sRavioli/L31/edit/main/docs/Anno_I/Laboratorio_di_Informatica/01_test_debugging.md" title="Modifica" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/sRavioli/L31/raw/main/docs/Anno_I/Laboratorio_di_Informatica/01_test_debugging.md" title="Vedi il sorgente di questa pagina" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="test-e-debugging">Test e Debugging<a class="headerlink" href="#test-e-debugging" title="Link permanente">⚓︎</a></h1>
+<details class="def">
+<summary>Bug</summary>
+<p>Errore sintattico o semantico presente in un programma.</p>
+</details>
+<details class="def">
+<summary>Debug</summary>
+<p>Processo di riconoscimento e rimozione dei bug.</p>
+</details>
+<details class="warning">
+<summary>Attenzione</summary>
+<p>I bug sono molto frequenti, anche in programmi semplici.
+Il debug è un'attività difficile, che richiede un tempo imprevedibile e
+occorre adottare tutte le tecniche che riducano la presenza di bug e il
+tempo del debug.</p>
+</details>
+<p>Test e Debugging sono due attività diverse, la prima avviene dopo la scrittura
+del codice, la seconda invece avviene durante la scrittura dello stesso.
+Entrambe mirano a cercare errori nel codice.</p>
+<p>Il debugging non viene effettuato sistematicamente, a differenza del testing.</p>
+<p>Il testing può essere effettuato anche dopo la stesura di una funzione o altro,
+non per forza va effettuato dopo la stesura dell'intero codice.</p>
+<details class="info">
+<summary>Origine della parola Bug</summary>
+<p>Il <span class="arithmatex">\(9\)</span> settembre <span class="arithmatex">\(1947\)</span> il tenente Grace Hopper ed il suo gruppo
+stavano cercando la causa del malfunzionamento di un computer Mark II
+quando, con stupore, si accorsero che una falena si era incastrata tra i
+circuiti. Dopo aver rimosso l'insetto (alle ore <span class="arithmatex">\(15\)</span>:<span class="arithmatex">\(45\)</span>, il tenente
+incollò la falena rimossa sul registro del computer e annotò:
+"<span class="arithmatex">\(1545\)</span>. Relay <span class="arithmatex">\(\#70\)</span> Panel F (moth) in relay. First actual case of
+bug being found".
+Questo registro è conservato presso lo Smithsonian National Museum of
+American History<sup><a href="https://it.wikipedia.org/wiki/Bug#Storia"><span class="arithmatex">\(\dagger\)</span></a></sup>.</p>
+</details>
+<p>Il testing è una fase di verifica sistematica della correttezza di un software.
+È una stima della correttezza ed è parte integrante dei processi di sviluppo
+del software.
+Il testing è parte prevalente nelle metodologie agili.</p>
+<p>Il debugging è un processo atto a scovare la causa di un errore.</p>
+<div class="admonition quote">
+<p class="admonition-title">E. Dijkstra</p>
+<p>Il testing può solo dimostrare la presenza di bug, ma non la loro assenza.</p>
+</div>
+<h2 id="verifica-delle-condizioni-limite">Verifica delle condizioni limite<a class="headerlink" href="#verifica-delle-condizioni-limite" title="Link permanente">⚓︎</a></h2>
+<p>La maggior parte dei bug si verificano in corrispondenza dei limiti:</p>
+<ul>
+<li>Cicli: cosa succede se il numero di cicli è <span class="arithmatex">\(0\)</span>?</li>
+<li>Array: cosa succede se si tenta di colmare un array?</li>
+<li>Input: cosa succede se l'input acquisito è nullo?</li>
+<li>Stream: cosa succede se si accede a un file inesistente, un disco pieno,
+  una connessione interrotta, etc?</li>
+</ul>
+<p>Approccio: ogni volta che si scrive un blocco di codice significativo (ciclo,
+condizione, input), è necessario testarne le condizioni limite.</p>
+<p>Occorre immaginare tutte le possibili condizioni limite e documentarle.</p>
+<h3 id="esempio">Esempio<a class="headerlink" href="#esempio" title="Link permanente">⚓︎</a></h3>
+<p>Il seguente programma tenta di leggere una sequenza di caratteri da un file e
+li memorizza in un array fino a quando viene letta una newline o si raggiunge
+la dimensione massima <code class="highlight"><span class="n">MAX</span></code> maggiore di zero:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">MAX</span><span class="p">];</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetc</span><span class="p">(</span><span class="n">file</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="p">}</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">c</span><span class="p">[</span><span class="o">--</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>Quali sono le condizioni limite?</p>
+<ol>
+<li>l'input è vuoto (<code class="highlight"><span class="sc">&#39;\n&#39;</span></code>);</li>
+<li><code class="highlight"><span class="n">MAX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span></code>;</li>
+<li>l'input ha una lunghezza pari a <code class="highlight"><span class="n">MAX</span></code>;</li>
+<li>l'input ha una lunghezza maggiore di <code class="highlight"><span class="n">MAX</span></code>;</li>
+<li>l'input non contiene una newline (se possibile).</li>
+</ol>
+<p>Riscrivendo il codice usando uno stile più leggibile, si eviterebbe l'errore
+del codice precedente:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">8</a></span>
+<span class="normal"><a href="#__codelineno-1-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">MAX</span><span class="p">];</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">stop</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetc</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">  </span><span class="n">stop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="p">}</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="n">c</span><span class="p">[</span><span class="o">--</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>Esercizio (?)</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="cm">/**</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="cm"> * @brief Restituisce la media aritmetica di una lista di numeri.</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="cm"> *</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="cm"> * @param a la lista di numeri di cui calcolare la media.</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="cm"> * @param len_a la lunghezza della lista di numeri.</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="cm"> * @return la media aritmetica.</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="cm"> */</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="kt">double</span><span class="w"> </span><span class="nf">avg</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len_a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len_a</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">len_a</span><span class="p">;</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="programmazione-difensiva">Programmazione difensiva<a class="headerlink" href="#programmazione-difensiva" title="Link permanente">⚓︎</a></h2>
+<p>Si tratta dell'aggiunta di codice per casi "impossibili":</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_AGE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;???&quot;</span><span class="p">;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Teenager&quot;</span><span class="p">;</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="p">}</span><span class="w"> </span><span class="c1">// ...</span>
+</code></pre></div></td></tr></table></div>
+<p>Non si può assumere che i dati ricevuti in input dal programma siano corretti,
+il più delle volte non lo sono. in questo modo, il programmatore si cautela da
+qualsiasi input venga inserito.</p>
+<h2 id="controllo-dei-valori-di-errore-restituiti">Controllo dei valori di errore restituiti<a class="headerlink" href="#controllo-dei-valori-di-errore-restituiti" title="Link permanente">⚓︎</a></h2>
+<p>Se una funzione restituisce dei valori di errore questi vanno verificati dal
+chiamante:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_to_range</span><span class="p">(</span><span class="n">age</span><span class="p">);</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">range</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;???&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="cm">/* errore */</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="c1">// ...</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">  </span><span class="c1">// ...</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>La funzione non deve preoccuparsi di scrivere all'utente che sia sbagliato,
+etc, essa riceve un numero e trova la sua categoria. Il resto lo gestisce la
+funzione chiamante, altrimenti la funzione chiamante farà il suo normale
+lavoro.</p>
+<p>È possibile che la funzione chiamante non gestisca direttamente l'errore ma
+restituisce un valore specifico e lo gestirà un'altra funzione ancora.</p>
+<p>Una funzione dovrebbe avere un solo compito e un solo output, così se sbaglia
+è più facile capire chi ha sbagliato e dove, rispetto all'avere più compiti
+per la stessa funzione.</p>
+<h2 id="testing-sistematico">Testing sistematico<a class="headerlink" href="#testing-sistematico" title="Link permanente">⚓︎</a></h2>
+<h3 id="verifica-incrementale">Verifica incrementale<a class="headerlink" href="#verifica-incrementale" title="Link permanente">⚓︎</a></h3>
+<p>In questa modalità il testing va di pari passo con l'implementazione. Il test
+viene effetuato su unità elementari, ovvero:</p>
+<ul>
+<li>una procedura o funzione;</li>
+<li>un blocco significativo di procedura.</li>
+</ul>
+<h3 id="verifica-bottom-up">Verifica bottom-up<a class="headerlink" href="#verifica-bottom-up" title="Link permanente">⚓︎</a></h3>
+<p>si tratta di testare prima le parti:</p>
+<ul>
+<li>(componenti/casi) più semplici</li>
+<li>più frequentemente utilizzate</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Ricerca binaria</p>
+<ul>
+<li>in un array vuoto;</li>
+<li>in un array con un solo elemento;</li>
+<li>di un elemento minore di quello presente;</li>
+<li>di un elemento uguale a quello presente;</li>
+<li>di un elemento maggiore di quello presente:</li>
+<li>in un array con due elementi:<ul>
+<li><span class="arithmatex">\(5\)</span> combinazioni possibili.</li>
+</ul>
+</li>
+<li>in presenza di elementi ripetuti;</li>
+<li>in presenza di elementi contigui e non contigui.</li>
+</ul>
+</div>
+<h3 id="verifica-dei-risultati-attesi">Verifica dei risultati attesi<a class="headerlink" href="#verifica-dei-risultati-attesi" title="Link permanente">⚓︎</a></h3>
+<p>Non è prevista la conoscenza dell'algoritmo.</p>
+<p>Per ogni test, occorre conoscere il risultato atteso. Questo è ovvio per molti
+casi, ma non per tutti.</p>
+<p>Ad esempio, per testare un compilatore si può compilare uno o più programmi
+formalmente corretti e testarli.</p>
+<p>Per testare un programma di calcolo numerico, è possibile</p>
+<ul>
+<li>verificare i limiti dell'algoritmo;</li>
+<li>verificare proprietà note;</li>
+<li>testare problemi con risultati già noti;</li>
+<li>analisi statistiche.</li>
+</ul>
+<p>Mentre per testare un programma grafico/multimediale:</p>
+<ul>
+<li>uso di strumenti di image editing;</li>
+<li>analisi statistiche.</li>
+</ul>
+<p>Un esempio di testing di una funzione è il seguente:</p>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  fx: f(x)
+  [*] --&gt; fx: 5
+  [*] --&gt; fx: -4
+  fx --&gt; [*]: errore</code></pre>
+<p>oppure</p>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  fx: f(x)
+  [*] --&gt; fx: 7
+  [*] --&gt; fx: 5
+  fx --&gt; [*]: 12</code></pre>
+<h3 id="verificare-la-copertura-dei-test">Verificare la copertura dei test<a class="headerlink" href="#verificare-la-copertura-dei-test" title="Link permanente">⚓︎</a></h3>
+<p>Il test di copertura è un po' più complicato poiché non si basa più soltanto
+sulla conoscienza dei dati di input.</p>
+<p>I test devono garantire che ogni istruzione sia eseguita almeno una volta,
+questo equivale a testare:</p>
+<ul>
+<li>i rami <code>then..else</code></li>
+<li>tutti i case di una <code class="highlight"><span class="k">switch</span></code></li>
+<li>che l'esecuzione dei cicli avvenga:<ul>
+<li><span class="arithmatex">\(0\)</span>, <span class="arithmatex">\(1\)</span>, <span class="arithmatex">\(n\)</span>, <span class="arithmatex">\(n - 1\)</span> volte, con <span class="arithmatex">\(n\)</span> massimo.</li>
+</ul>
+</li>
+</ul>
+<p>Nel caso di <code class="highlight"><span class="k">if</span></code> i rami sono due, all'aggiunta di un altro <code class="highlight"><span class="k">if</span></code>,
+raddoppiano. Nel caso di un ciclo aumentano di molto.</p>
+<p>Classi di equivalenza, ad esempio, se <span class="arithmatex">\(n \in ]\min,\; \max[\)</span> allora bisogna
+verificare cosa sucede nei seguenti casi</p>
+<div class="arithmatex">\[ n &lt; \min, \qquad n &gt; \max, \qquad n = \min, \qquad n = \max \]</div>
+<p>L'analisi del codice può aiutare a individuare gli input che consentono di
+coprire tutto il codice. La scelta deve essere tale da far attraversare al
+dato un ramo specifico, in modo tale da verificare ogni possibilità.</p>
+<p>Non è inoltre detto che ogni funzione debba essere testata con ogni tipo di
+test. Ad esempio, se non è presente molta elaborazione sarebbe meglio utilizzare
+il test di copertura. Raramente si hanno funzioni con sia molti input che
+molta elaborazione.</p>
+<h2 id="procedure-e-funzioni-in-c">Procedure e Funzioni in C<a class="headerlink" href="#procedure-e-funzioni-in-c" title="Link permanente">⚓︎</a></h2>
+<p>Sono istruzioni non primitive per risolvere parti specifiche di un problema:
+i sottoprogrammi (o metodi). Sono realizzate mediante la definizione di
+unità di programma (sottoprogrammi) distinte dal programma principale (<code>main</code>).
+Rappresentano nuove istruzioni/operatori che agiscono sui dati utilizzati dal
+programma. Sono definite a partire da una sequenza di istruzioni primitive e
+altre procedure/funzioni.</p>
+<p>Tutti i linguaggi di alto livello offrono le possibilità di utilizzare
+funzioni e procedure mediante:</p>
+<ul>
+<li>costrutti per la definizione di sottoprogrammi;</li>
+<li>meccanismi per la chiamata a sottoprogrammi.</li>
+</ul>
+<p>Nei linguaggi ad alto livello funzioni e procedure sono molto utili per
+raggiungere:</p>
+<ul>
+<li>Astrazione;</li>
+<li>Riusabilità;</li>
+<li>Modularità (strutturazione);</li>
+<li>Leggibilità.</li>
+</ul>
+<p>Nella fase di definizione di una funzione o procedura si stabilisce:</p>
+<ul>
+<li>un identificatore del sottoprogramma (cioè il nome da usare per
+  chiamare/invocare lo stesso);</li>
+<li>un corpo del sottoprogramma (cioè, l'insieme di istruzioni che sarà eseguito
+  ogni volta che il sottoprogramma sarà chiamato);</li>
+<li>una lista di parametri formali (cioè come avviene la comunicazione tra l'unità
+  di programma che usa il sottoprogramma ed il sottoprogramma stesso).</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">funzione</label><label for="__tabbed_1_2">procedura</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// prototipo</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="c1">// dichiarazione</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="p">}</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="c1">// chiamata</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">op1</span><span class="p">,</span><span class="w"> </span><span class="n">op2</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">  </span><span class="c1">// ...</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">op1</span><span class="p">,</span><span class="w"> </span><span class="n">op2</span><span class="p">);</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>operatore non primitivo;</li>
+<li>permette di definire nuovi operatori complessi da affiancare a quelli
+  primitivi;</li>
+<li>restituisce un valore di ritorno (mediante <code class="highlight"><span class="k">return</span></code>).</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// prototipo</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1">// dichiarazione</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c1">// chiamata</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">  </span><span class="c1">// ..</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">  </span><span class="n">print</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>istruzione non primitiva;</li>
+<li>è attivabile in un qualunque punto del programma in cui può comparire
+  un'istruzione;</li>
+<li>non restituisce un valore di ritorno (mediante return).</li>
+</ul>
+</div>
+</div>
+</div>
+<p>I parametri costituiscono il mezzo di comunicazione tra unità chiamante e unità
+chiamata, supportano lo scambio di informazioni tra chiamante e sottoprogramma.</p>
+<p>Si differenziano in:</p>
+<ul>
+<li>Parametri formali (specificati nella definizione);</li>
+<li>Parametri attuali (specificati nella chiamata).</li>
+</ul>
+<p>Parametri attuali e formali devono corrispondersi in numero, posizione e tipo.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">parametri formali</label><label for="__tabbed_2_2">parametri attuali</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Sono quelli specificati nella definizione del sottoprogramma. Sono in
+numero prefissato e a ognuno di essi viene associato un tipo. Le istruzioni
+del corpo del sottoprogramma utilizzano i parametri formali.</p>
+</div>
+<div class="tabbed-block">
+<p>Sono i valori effettivamente forniti dall'unità chiamante al sottoprogramma
+all'atto della invocazione.</p>
+</div>
+</div>
+</div>
+<p>Il passaggio di parametri può avvenire in due modi:</p>
+<ul>
+<li>per valore;</li>
+<li>per indirizzo (o riferimento).</li>
+</ul>
+<p>Il C di default adotta il passaggio per valore:</p>
+<ul>
+<li>il valore dei parametri è copiato nello stack;</li>
+<li>il passaggio per riferimento si ottiene memorizzando nello stack l'indirizzo
+  (puntatore) in cui è allocata una variabile;</li>
+<li>il passaggio per valore è anche più "sicuro".</li>
+</ul>
+<h2 id="unit-test">Unit test<a class="headerlink" href="#unit-test" title="Link permanente">⚓︎</a></h2>
+<p>È una tecnica di progetto e sviluppo del software e serve a ottenere evidenza
+che le singole unità software sviluppate siano corrette e pronte all'uso.
+In un linguaggio procedurale come il C una unità può essere un programma, una
+funzione, ecc.</p>
+<p>Per effettuarlo si scrivono degli unit test (o casi di test) rappresentanti
+una sorta di "contratto scritto" che la porzione di codice testata deve
+soddisfare.</p>
+<h3 id="xunit-test-framework">xUnit test framework<a class="headerlink" href="#xunit-test-framework" title="Link permanente">⚓︎</a></h3>
+<p>In principio è stato creato JUnit per Java, da Kent Beck e Erich Gamma.</p>
+<div class="admonition quote">
+<p class="admonition-title">M. Fowler</p>
+<p>Never in the field of software development have so many owed so much to so
+few lines of code.</p>
+</div>
+<p>È stato portato verso innumerevoli altri linguaggi (C/C++, C#, PHP, Python,
+JavaScript, Ruby, etc) dando vita all'ecosistema dei framework di tipo xUnit</p>
+<p>Ha dato vita al Test-Driven Development (<abbr title="Test Driven Development">TDD</abbr>, <em>sviluppo guidato dal test</em>).</p>
+<h3 id="cunit">CUnit<a class="headerlink" href="#cunit" title="Link permanente">⚓︎</a></h3>
+<p>È un framework di unit test per il linguaggio C la cui home page è la seguente
+<a href="http://cunit.sourceforge.net/index.html">http://cunit.sourceforge.net/index.html</a>.</p>
+<p>È una libreria che va inclusa in ogni progetto Eclipse CDT che intende
+avvalersene. La guida di installazione è disponibile qui:
+<a href="http://collab.di.uniba.it/fabio/guide/">http://collab.di.uniba.it/fabio/guide/</a></p>
+<h4 id="struttura-del-framework">Struttura del framework<a class="headerlink" href="#struttura-del-framework" title="Link permanente">⚓︎</a></h4>
+<p>Il framework esegue automaticamente tutte le test suite inserite nel test
+registry. Ogni test suite è composta da uno o più test method logicamente
+correlati (es. suite per testare tutti i metodi di un particolare modulo).</p>
+<pre class="mermaid"><code>flowchart TD 
+  testRegistry(Test Registry) --&gt; suite1(Suite 1) &amp; suiten(Suite n);
+  suite1 --&gt; test1[Test 1] &amp; testm[Test m];
+  suiten --&gt; testn1[Test 1,n] &amp; testnm[Test n,m];</code></pre>
+<h3 id="method-under-test">Method under test<a class="headerlink" href="#method-under-test" title="Link permanente">⚓︎</a></h3>
+<p>Il programma da testare è costituito da diversi file <code>.c</code> (detti moduli)
+contenenti diverse funzioni e/o procedure (es. <code class="highlight"><span class="n">func_1</span><span class="p">()</span></code>, <code class="highlight"><span class="n">func_n</span><span class="p">()</span></code>o
+<code class="highlight"><span class="n">proc_n</span><span class="p">()</span></code>, <code class="highlight"><span class="n">proc_m</span><span class="p">()</span></code>). Queste funzioni e procedure sono detti
+<strong>methods under test</strong>. Per ciascun metodo da testare occorre scrivere almeno
+un test method. Ciascun metodo di test va chiamato <code class="highlight"><span class="n">test_xyz</span><span class="p">()</span></code> (es.
+<code class="highlight"><span class="n">test_funz_1</span><span class="p">()</span></code>, <code class="highlight"><span class="n">test_funz_n</span><span class="p">()</span></code>, o <code class="highlight"><span class="n">test_proc_1</span><span class="p">()</span></code>,
+<code class="highlight"><span class="n">test_proc_m</span><span class="p">()</span></code>).</p>
+<p>Un metodo di test verifica la presenza di errori nel corrispettivo metodo
+sotto test. Con errore si intende un comportamento diverso da quello atteso.</p>
+<div class="admonition warning">
+<p class="admonition-title">Attenzione</p>
+<p>L'ordine di inserimento ha importanza! Le test suite sono eseguite nello
+stesso ordine di inserimento nel registry mentre i test method sono
+eseguiti nello stesso ordine di inserimento nella suite.</p>
+</div>
+<h3 id="ciclo-di-unit-test">Ciclo di unit test<a class="headerlink" href="#ciclo-di-unit-test" title="Link permanente">⚓︎</a></h3>
+<p>Sequenza tipica di uso di un framework di unit test, incluso CUnit:</p>
+<ol>
+<li>Scrivi tutti i test method necessari;</li>
+<li>Crea il test registry;</li>
+<li>Crea la test suite e aggiungila al test registry;</li>
+<li>Aggiungi i test method alle test suite definite;</li>
+<li>Se necessario, ripeti i passi 3-4 per un'altra suite;</li>
+<li>Esegui il test registry;</li>
+<li>Pulisci il test registry.</li>
+</ol>
+<h3 id="aggiungere-le-librerie-cunit-a-un-progetto">Aggiungere le librerie CUnit a un progetto<a class="headerlink" href="#aggiungere-le-librerie-cunit-a-un-progetto" title="Link permanente">⚓︎</a></h3>
+<p>Guida di installazione e configurazione disponibile alla sezione dispense sul
+sito del corso: <a href="http://collab.di.uniba.it/fabio/guide/">http://collab.di.uniba.it/fabio/guide/</a>.</p>
+<p>Quando si prepara il modulo con i metodi di test ricordate di includere i file
+header in questo modo:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;CUnit/Basic.h&quot;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="scrivere-un-test-method">Scrivere un test method<a class="headerlink" href="#scrivere-un-test-method" title="Link permanente">⚓︎</a></h3>
+<p>Un metodo di test in CUnit si presenta sempre nella forma di procedura senza
+parametri, ad esempio <code class="highlight"><span class="kt">void</span><span class="w"> </span><span class="n">test_xyz</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span></code>. Un metodo di test è un
+contratto che stabilisce i vincoli che devono essere soddisfatti dal software:</p>
+<ul>
+<li>i vincoli sono stabiliti attraverso delle asserzioni;</li>
+<li>Un'asserzione in un linguaggio di programmazione è una funzione che verifica
+  una condizione logica e restituisce:<ul>
+<li>Vero, se l'asserzione è rispettata;</li>
+<li>Falso, altrimenti.</li>
+</ul>
+</li>
+</ul>
+<h4 id="asserzioni-di-base-cunit">Asserzioni di base (CUnit)<a class="headerlink" href="#asserzioni-di-base-cunit" title="Link permanente">⚓︎</a></h4>
+<!-- markdownlint-disable MD033 MD013 -->
+<table>
+<thead>
+<tr>
+<th>Asserzione</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CU_ASSERT(int espressione)</code><br><code>CU_TEST(int espressione)</code></td>
+<td>Asserisce che espressione è <code>TRUE</code> (diverso da 0)</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_TRUE(valore)</code></td>
+<td>Asserisce che valore è <code>TRUE</code> (diverso da 0)</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_FALSE(valore)</code></td>
+<td>Asserisce che valore è <code>FALSE</code> (uguale a 0)</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_EQUAL(reale, atteso)</code></td>
+<td>Asserisce che reale <code>==</code> atteso</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_NOT_EQUAL(reale, atteso)</code></td>
+<td>Asserisce che reale <code>!=</code> atteso</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_STRING_EQUAL(reale, atteso)</code></td>
+<td>Asserisce che le stringhe reale e atteso coincidono</td>
+</tr>
+<tr>
+<td><code>CU_ASSERT_STRING_NOT_EQUAL(reale, atteso)</code></td>
+<td>Asserisce che le stringhe reale e atteso differiscono</td>
+</tr>
+</tbody>
+</table>
+<!-- markdownlint-disable 033 013 -->
+
+<h4 id="esempio-di-test-method-per-la-funzione-maxab">Esempio di test method per la funzione <code>max(a,b)</code><a class="headerlink" href="#esempio-di-test-method-per-la-funzione-maxab" title="Link permanente">⚓︎</a></h4>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">test_max</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">  </span><span class="n">CU_ASSERT_EQUAL</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">  </span><span class="n">CU_ASSERT_TRUE</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">-2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span><span class="n">CU_TEST</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">  </span><span class="c1">// questa asserzione è sbagliata e fallisce</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">  </span><span class="n">CU_ASSERT_TRUE</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="esempio-di-metodo-di-test-per-la-funzione-factorialx">Esempio di metodo di test per la funzione <code>factorial(x)</code><a class="headerlink" href="#esempio-di-metodo-di-test-per-la-funzione-factorialx" title="Link permanente">⚓︎</a></h4>
+<div class="arithmatex">\[
+  n! = \begin{cases}
+         1       &amp; \text{se } n = 0 \\
+         n(n-1)! &amp; \text{se } n &gt; 1 \\
+       \end{cases}
+\]</div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">test_factorial</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">  </span><span class="c1">// fallisce</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">  </span><span class="n">CU_ASSERT_EQUAL</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="mi">12</span><span class="p">);</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">  </span><span class="n">CU_ASSERT</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">  </span><span class="n">CU_TEST</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">720</span><span class="p">);</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="il-test-registry">Il Test Registry<a class="headerlink" href="#il-test-registry" title="Link permanente">⚓︎</a></h3>
+<p>Raccoglie tutte le test suite. Quando si esegue un Test Registry si
+eseguono tutte le suite al suo interno e, di conseguenza, tutti i test method
+all'interno delle suite.</p>
+<pre class="mermaid"><code>flowchart TD 
+  testRegistry(Test Registry) --&gt; suite1(Suite 1) &amp; suiten(Suite n);
+  suite1 --&gt; test1[Test 1] &amp; testm[Test m];
+  suiten --&gt; testn1[Test 1,n] &amp; testnm[Test n,m];</code></pre>
+<h4 id="inizializzazione-del-test-registry">Inizializzazione del Test Registry<a class="headerlink" href="#inizializzazione-del-test-registry" title="Link permanente">⚓︎</a></h4>
+<p>L'inizializzazione del test registry è la prima operazione da effettuare:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">5</a></span>
+<span class="normal"><a href="#__codelineno-10-6">6</a></span>
+<span class="normal"><a href="#__codelineno-10-7">7</a></span>
+<span class="normal"><a href="#__codelineno-10-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="c1">// *************************************************</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="c1">// TEST DI UNITÀ</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">  </span><span class="cm">/* inizializza registro - è la prima istruzione */</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">  </span><span class="n">CU_initialize_registry</span><span class="p">();</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">  </span><span class="c1">// ...</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="test-suite">Test Suite<a class="headerlink" href="#test-suite" title="Link permanente">⚓︎</a></h3>
+<p>Una test suite è definita da:</p>
+<ul>
+<li>una descrizione testuale;</li>
+<li>una procedura di inizializzazione (init);</li>
+<li>una procedura di pulitura (clean).</li>
+</ul>
+<p>Le test suite definite vengono aggiunte al test registry (l'ordine è rilevante!)</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="cm">/* aggiungi le suite al test registry */</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="n">CU_pSuite</span><span class="w"> </span><span class="n">pSuite_A</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">    </span><span class="n">CU_add_suite</span><span class="p">(</span><span class="s">&quot;Suite_A&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">init_suite_default</span><span class="p">,</span><span class="w"> </span><span class="n">clean_suite_default</span><span class="p">);</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="n">CU_pSuite</span><span class="w"> </span><span class="n">pSuite_B</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">    </span><span class="n">CU_add_suite</span><span class="p">(</span><span class="s">&quot;Suite_B&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">init_suite_default</span><span class="p">,</span><span class="w"> </span><span class="n">clean_suite_default</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>Di default inizializzazione e pulitura sono procedure vuote.</p>
+<h4 id="inizializzazione-e-pulizia-delle-suite">Inizializzazione e pulizia delle suite<a class="headerlink" href="#inizializzazione-e-pulizia-delle-suite" title="Link permanente">⚓︎</a></h4>
+<p>Le test suite devono essere inizializzate e ripulite prima e dopo l'uso.
+I metodi non sono forniti da CUnit ma devono essere scritti dal programmatore.</p>
+<div class="admonition question">
+<p class="admonition-title">Perché?</p>
+<p>Perché devono liberare le risorse allocate specificatamente per eseguire il
+caso di test (es. file, connessioni, etc.).</p>
+</div>
+<h5 id="inizializzazione-e-pulizia">Inizializzazione e pulizia<a class="headerlink" href="#inizializzazione-e-pulizia" title="Link permanente">⚓︎</a></h5>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span>
+<span class="normal"><a href="#__codelineno-12-4">4</a></span>
+<span class="normal"><a href="#__codelineno-12-5">5</a></span>
+<span class="normal"><a href="#__codelineno-12-6">6</a></span>
+<span class="normal"><a href="#__codelineno-12-7">7</a></span>
+<span class="normal"><a href="#__codelineno-12-8">8</a></span>
+<span class="normal"><a href="#__codelineno-12-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1">// Alloca tutte le risorse necessarie all&#39;esecuzione dei test</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="kt">int</span><span class="w"> </span><span class="nf">init_suite_default</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// tutto ok</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="p">}</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="c1">// dealloca tutte le risorse allocate all&#39;inizializzazione</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="kt">int</span><span class="w"> </span><span class="nf">clean_suite_default</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// tutto ok</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="test-method-e-test-suite">Test method e test suite<a class="headerlink" href="#test-method-e-test-suite" title="Link permanente">⚓︎</a></h3>
+<p>Un test method viene aggiunto ad una test suite specificando:</p>
+<ul>
+<li>il puntatore alla suite</li>
+<li>una descrizione testuale del test</li>
+<li>il puntatore al test method</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span>
+<span class="normal"><a href="#__codelineno-13-4">4</a></span>
+<span class="normal"><a href="#__codelineno-13-5">5</a></span>
+<span class="normal"><a href="#__codelineno-13-6">6</a></span>
+<span class="normal"><a href="#__codelineno-13-7">7</a></span>
+<span class="normal"><a href="#__codelineno-13-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="cm">/* Aggiungi i test alle suite</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="cm"> * NOTA - L&#39;ORDINE DI INSERIMENTO È IMPORTANTE</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="cm"> */</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="n">CU_add_test</span><span class="p">(</span><span class="n">pSuite_A</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test of f1()&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_f1</span><span class="p">);</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="n">CU_add_test</span><span class="p">(</span><span class="n">pSuite_A</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test of f3()&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_f3</span><span class="p">);</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="n">CU_add_test</span><span class="p">(</span><span class="n">pSuite_B</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test of f4()&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_f4</span><span class="p">);</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="n">CU_add_test</span><span class="p">(</span><span class="n">pSuite_B</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test of f2()&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_f2</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>L'ordine dei test nelle suite è rilevante!</p>
+<h3 id="registrazione-ed-esecuzione-dei-test">Registrazione ed esecuzione dei test<a class="headerlink" href="#registrazione-ed-esecuzione-dei-test" title="Link permanente">⚓︎</a></h3>
+<p>La procedura <code>CU_basic_run_tests()</code> esegue tutte le suite del registry e mostra
+i risultati.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
+<span class="normal"><a href="#__codelineno-14-2">2</a></span>
+<span class="normal"><a href="#__codelineno-14-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="cm">/* esegue tutti i casi di test con output sulla console */</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="n">CU_basic_set_mode</span><span class="p">(</span><span class="n">CU_BRM_VERBOSE</span><span class="p">);</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="n">CU_basic_run_tests</span><span class="p">();</span>
+</code></pre></div></td></tr></table></div>
+<p>È possibile impostare il livello di "verbosità" dell'output.</p>
+<h3 id="pulire-il-registry">Pulire il registry<a class="headerlink" href="#pulire-il-registry" title="Link permanente">⚓︎</a></h3>
+<p>Pulizia – dopo aver eseguito tutti i test nel registro. Procedura
+<code>void CU_cleanup_registry(void)</code>.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span>
+<span class="normal"><a href="#__codelineno-15-3">3</a></span>
+<span class="normal"><a href="#__codelineno-15-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="cm">/* pulisce il registro e termina lo unit test */</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="n">CU_cleanup_registry</span><span class="p">();</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="k">return</span><span class="w"> </span><span class="n">CU_get_error</span><span class="p">();</span>
+</code></pre></div></td></tr></table></div>
+<p>Il <code>main()</code> termina con la return dell'eventuale codice di errore di CUnit.</p>
+<h2 id="esercitazione-1-cunit">Esercitazione 1 CUnit<a class="headerlink" href="#esercitazione-1-cunit" title="Link permanente">⚓︎</a></h2>
+<p>Link all'esercitazione: <a href="http://goo.gl/VYfhsN">http://goo.gl/VYfhsN</a></p>
+<p>Implementazione di una serie di funzioni e testing di queste con l'utilizzo di
+CUnit template di CUnit disponibile a <a href="http://goo.gl/uevMHu">http://goo.gl/uevMHu</a>.</p>
+<h2 id="debugging">Debugging<a class="headerlink" href="#debugging" title="Link permanente">⚓︎</a></h2>
+<h3 id="supporto-del-compilatore">Supporto del compilatore<a class="headerlink" href="#supporto-del-compilatore" title="Link permanente">⚓︎</a></h3>
+<p>Molti compilatori emettono dei "warning", cioé dei messaggi di avvertimento:</p>
+<ul>
+<li><code class="highlight"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span></code>;</li>
+<li><code class="highlight"><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span></code>;</li>
+<li>nessun return;</li>
+<li>codice orfano;</li>
+<li>condizioni tautologiche.</li>
+</ul>
+<h3 id="backward-reasoning">Backward reasoning<a class="headerlink" href="#backward-reasoning" title="Link permanente">⚓︎</a></h3>
+<p>Quando si scopre un bug, occorre "pensare al contrario". Partendo dal risultato,
+occorre risalire alla catena delle cause che lo hanno portato. Una delle cause
+della catena sarà errata.</p>
+<p>Scrivere codice leggibile aiuta al backward reasoning e, quindi, a localizzare
+i bug.</p>
+<h3 id="pattern-familiari">Pattern familiari<a class="headerlink" href="#pattern-familiari" title="Link permanente">⚓︎</a></h3>
+<p>Riconoscere variazioni rispetto a "modelli" (pattern) di codice familiari.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">C</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
+<span class="normal"><a href="#__codelineno-16-2">2</a></span>
+<span class="normal"><a href="#__codelineno-16-3">3</a></span>
+<span class="normal"><a href="#__codelineno-16-4">4</a></span>
+<span class="normal"><a href="#__codelineno-16-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5"></a><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>L'uso di un corretto stile di programmazione aiuta a ridurre la presenza di bug.</p>
+<h3 id="sviluppo-incrementale">Sviluppo incrementale<a class="headerlink" href="#sviluppo-incrementale" title="Link permanente">⚓︎</a></h3>
+<p>Testare le procedure man mano che vengono sviluppate. Se i test all'istante <span class="arithmatex">\(t\)</span>
+hanno successo ma falliscono all'istante <span class="arithmatex">\(t + 1\)</span>, allora molto probabilmente
+i bug si annidano nel codice sviluppato tra <span class="arithmatex">\(t\)</span> e <span class="arithmatex">\(t + 1\)</span>.</p>
+<p>La progettazione modulare del codice aiuta a individuare meglio la posizione dei
+bug.</p>
+<h3 id="esaminare-codice-simile">Esaminare codice simile<a class="headerlink" href="#esaminare-codice-simile" title="Link permanente">⚓︎</a></h3>
+<p>Se un bug è presente in una porzione di codice, allora è probabile che se ne
+annidi un altro in un codice simile. Problema del "copy-and-paste". Una buona
+progettazione del codice riduce la ridondanza e, quindi, la possibilità di bug
+duplicati</p>
+<h3 id="non-rimandare-il-debugging">Non rimandare il debugging<a class="headerlink" href="#non-rimandare-il-debugging" title="Link permanente">⚓︎</a></h3>
+<p>Se un bug è individuato, va eliminato subito. Il trasferimento di un bug nei
+passi successivi del ciclo di sviluppo di un software fa crescere il costo del
+debugging in termini esponenziali.</p>
+<details class="quote">
+<summary>D. Wilner, 1997 <abbr title="Institute of Electrical and Electronics Engineers">IEEE</abbr> Real-Time Systems Symposium</summary>
+<p>The Mars Pathfinder mission was widely proclaimed as "flawless" in the
+early days after its July <span class="arithmatex">\(4\)</span>th, <span class="arithmatex">\(1997\)</span> landing on the Martian surface.
+[...] But a few days into the mission, not long after Pathfinder started
+gathering meteorological data, the spacecraft began experiencing total system
+resets, each resulting in losses of data.</p>
+</details>
+<h3 id="leggere-e-spiegare-il-codice">Leggere e spiegare il codice<a class="headerlink" href="#leggere-e-spiegare-il-codice" title="Link permanente">⚓︎</a></h3>
+<p>Leggere il codice e comprenderne il significato. Il codice è un pezzo di
+conoscenza che deve essere compreso dalla macchina e da chi la programma. La
+leggibilità del codice è fondamentale.</p>
+<p>Spiegare ad altri il codice aiuta a ridurre "bias" cognitivi.</p>
+<h3 id="rendere-riproducibile-un-bug">Rendere riproducibile un bug<a class="headerlink" href="#rendere-riproducibile-un-bug" title="Link permanente">⚓︎</a></h3>
+<p>Individuare tutte le condizioni che portano alla manifestazione di un bug</p>
+<ul>
+<li>Input e altri parametri;</li>
+<li>Condizioni della macchina;</li>
+<li>Seed di numeri casuali.</li>
+</ul>
+<h3 id="divide-et-impera">Divide et impera<a class="headerlink" href="#divide-et-impera" title="Link permanente">⚓︎</a></h3>
+<p>Individuare le condizioni minimali che rendono manifesto un bug (es. il più
+piccolo array, la stringa più breve). Il test dei casi limite è fondamentale.</p>
+<p>Le condizioni minimali possono facilitare la localizzazione di un bug. Se il
+bug non si manifesta in un caso limite, provare mediante dimezzamenti successivi
+dell'input. Ricerca binaria sulla lunghezza dell'input.</p>
+<h3 id="ricerca-di-regolarita">Ricerca di regolarità<a class="headerlink" href="#ricerca-di-regolarita" title="Link permanente">⚓︎</a></h3>
+<p>Alcuni bug si presentano con regolarità, ma non sempre. In questo caso, occorre
+capire il modello (<em>pattern</em>) che genera la regolarità.</p>
+<p>Ad esempio un editor di testi salta la visualizzazione di alcuni caratteri,
+l'analisi del testo mostra che i caratteri saltati sono sempre intervallati da
+<span class="arithmatex">\(1023\)</span> caratteri stampati. Regolarità: un carattere saltato ogni <span class="arithmatex">\(1023\)</span>.
+L'analisi del codice rivela che gli array che memorizzano le stringhe sono da
+<span class="arithmatex">\(1024 \byte\)</span> <span class="arithmatex">\(1023\)</span> caratteri + <code>‘\0'</code> portano al bug.</p>
+<h3 id="stampe-ausiliarie">Stampe ausiliarie<a class="headerlink" href="#stampe-ausiliarie" title="Link permanente">⚓︎</a></h3>
+<p>Per seguire l'esecuzione di un programma può essere utile introdurre stampe
+ausiliarie. Valido soprattutto per situazioni che non possono essere tracciate
+da un debugger (es. sistemi distribuiti, programmi paralleli, etc.).</p>
+<p>Le stampe ausiliarie devono necessariamente essere eliminate dopo aver
+scovato il bug. Rischio di violazione delle specifiche. Possono essere
+commentate anziché eliminate.</p>
+<p>Per situazioni complesse, si possono usare strumenti di logging.</p>
+<h4 id="altre-tecniche">Altre tecniche<a class="headerlink" href="#altre-tecniche" title="Link permanente">⚓︎</a></h4>
+<p>Esse sono:</p>
+<ul>
+<li>visualizzazioni grafiche;</li>
+<li>test statistici;</li>
+<li>strumenti di analisi di testo, come:<ul>
+<li>grep;</li>
+<li>diff;</li>
+<li>etc.</li>
+</ul>
+</li>
+</ul>
+<h3 id="debugger">Debugger<a class="headerlink" href="#debugger" title="Link permanente">⚓︎</a></h3>
+<p>Un debugger guarda "dentro" il programma durante l'esecuzione:</p>
+<ul>
+<li>tracing del programma;</li>
+<li>visualizzazione del contenuto delle variabili;</li>
+<li>valutazione dinamica di espressioni;</li>
+<li>breakpoint, anche condizionali;</li>
+<li>stack trace.</li>
+</ul>
+<p>Sono strumenti molto sofisticati, abituarsi al loro uso può migliorare
+significativamente la produttività nella programmazione.</p>
+<h4 id="compilazione-per-il-debug">Compilazione per il debug<a class="headerlink" href="#compilazione-per-il-debug" title="Link permanente">⚓︎</a></h4>
+<p>Un debugger ha bisogno di informazioni aggiuntive nel codice compilato, link tra
+il codice compilato e il codice sorgente.</p>
+<p>Per stabilire la corrispondenza tra codice compilato e codice sorgente, la
+compilazione per il debug non deve essere ottimizzata.</p>
+<p>Due modalità di compilazione:</p>
+<ul>
+<li>Debug, meno efficiente, per il debug;</li>
+<li>Release, Ottimizzata.</li>
+</ul>
+<h4 id="esecuzione-passo-passo">Esecuzione passo-passo<a class="headerlink" href="#esecuzione-passo-passo" title="Link permanente">⚓︎</a></h4>
+<p>Il debugger consente di eseguire il programma un'istruzione alla volta.
+Al termine dell'esecuzione di una istruzione, il controllo passa al debugger,
+che può visualizzare lo stato della macchina (variabili, stack, etc.).</p>
+<p>Per velocizzare il processo di debugging, si può optare per eseguire il
+programma fino a un'istruzione specifica, segnalata da un breakpoint.</p>
+<table>
+<thead>
+<tr>
+<th>Nome</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step into</td>
+<td>Esegue l'istruzione corrente, e procede all'istruzione successiva che sarà effettivamente eseguita</td>
+</tr>
+<tr>
+<td>Step over</td>
+<td>Esegue l'istruzione corrente, trattando le routine come istruzioni primitive</td>
+</tr>
+<tr>
+<td>Step return</td>
+<td>continua l'esecuzione fino al termine della procedura</td>
+</tr>
+</tbody>
+</table>
+<h5 id="step-into">Step Into<a class="headerlink" href="#step-into" title="Link permanente">⚓︎</a></h5>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Stato iniziale</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
+<span class="normal"><a href="#__codelineno-17-2">2</a></span>
+<span class="normal"><a href="#__codelineno-17-3">3</a></span>
+<span class="normal"><a href="#__codelineno-17-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="hll"><span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+</span><a id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Step into</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
+<span class="normal"><a href="#__codelineno-18-2">2</a></span>
+<span class="normal"><a href="#__codelineno-18-3">3</a></span>
+<span class="normal"><a href="#__codelineno-18-4">4</a></span>
+<span class="normal"><a href="#__codelineno-18-5">5</a></span>
+<span class="normal"><a href="#__codelineno-18-6">6</a></span>
+<span class="normal"><a href="#__codelineno-18-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="hll"><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h5 id="step-over">Step over<a class="headerlink" href="#step-over" title="Link permanente">⚓︎</a></h5>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Stato iniziale</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span>
+<span class="normal"><a href="#__codelineno-19-2">2</a></span>
+<span class="normal"><a href="#__codelineno-19-3">3</a></span>
+<span class="normal"><a href="#__codelineno-19-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="hll"><span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+</span><a id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Step over</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span>
+<span class="normal"><a href="#__codelineno-20-2">2</a></span>
+<span class="normal"><a href="#__codelineno-20-3">3</a></span>
+<span class="normal"><a href="#__codelineno-20-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="hll"><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h5 id="step-return">Step return<a class="headerlink" href="#step-return" title="Link permanente">⚓︎</a></h5>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Passo iniziale</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-21-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-21-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-21-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-21-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-21-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-21-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-21-10">10</a></span>
+<span class="normal"><a href="#__codelineno-21-11">11</a></span>
+<span class="normal"><a href="#__codelineno-21-12">12</a></span>
+<span class="normal"><a href="#__codelineno-21-13">13</a></span>
+<span class="normal"><a href="#__codelineno-21-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">product</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7"></a><span class="hll"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><a id="__codelineno-21-8" name="__codelineno-21-8"></a><span class="w">      </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Step return</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span>
+<span class="normal"><a href="#__codelineno-22-2">2</a></span>
+<span class="normal"><a href="#__codelineno-22-3">3</a></span>
+<span class="normal"><a href="#__codelineno-22-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="w">  </span><span class="c1">// printf(&quot;%d &quot;, n);</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="hll"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="cm">/* ... */</span><span class="p">;</span>
+</span><a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="informazioni-di-debug">Informazioni di debug<a class="headerlink" href="#informazioni-di-debug" title="Link permanente">⚓︎</a></h3>
+<h4 id="variabili">Variabili<a class="headerlink" href="#variabili" title="Link permanente">⚓︎</a></h4>
+<p>Le variabili visibili nell'ambito dell'istruzione corrente sono visualizzate:</p>
+<ul>
+<li>Nome, tipo, valore.</li>
+</ul>
+<p>Le variabili che cambiano valore sono evidenziate.</p>
+<h4 id="espressioni">Espressioni<a class="headerlink" href="#espressioni" title="Link permanente">⚓︎</a></h4>
+<p>Un'espressione è un pezzo ben formato di codice (<em>snippet</em>) che può essere
+valutato per produrre un risultato.</p>
+<h4 id="stack-trace">Stack trace<a class="headerlink" href="#stack-trace" title="Link permanente">⚓︎</a></h4>
+<p>Visualizza la pila delle chiamate, Si può selezionare un elemento della pila per
+conoscerne lo stato corrente.</p>
+<h3 id="breakpoint">Breakpoint<a class="headerlink" href="#breakpoint" title="Link permanente">⚓︎</a></h3>
+<p>Un breakpoint interrompe il flusso di esecuzione su una linea selezionata</p>
+<ul>
+<li>i breakpoint possono essere inseriti o rimossi;</li>
+<li>i breakpoint inseriti possono essere attivati o disattivati.</li>
+</ul>
+<h3 id="resume-terminate">Resume &amp; Terminate<a class="headerlink" href="#resume-terminate" title="Link permanente">⚓︎</a></h3>
+<ul>
+<li>Resume: esegue le istruzioni fino al prossimo breakpoint oppure al termine del
+  programma;</li>
+<li>Terminate: interrompe l'esecuzione del programma. Utile quando:<ul>
+<li>il programma va in loop infinito;</li>
+<li>si scova un programma.</li>
+</ul>
+</li>
+</ul>
+<p>Attenzione: i programmi non terminati rimangono in esecuzione per il sistema
+operativo:</p>
+<ul>
+<li>occupazione inutile di memoria;</li>
+<li>problemi per la ricompilazione.</li>
+</ul>
+<h3 id="breakpoint-condizionali">Breakpoint condizionali<a class="headerlink" href="#breakpoint-condizionali" title="Link permanente">⚓︎</a></h3>
+<p>I breakpoint possono interrompere l'esecuzione solo quando una condizione
+diventa vera. Condizione: espressione booleana.</p>
+<p>﻿*[ASCII]: American Standard Code for Information Interchange</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Ultimo aggiornamento:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+        <br>
+        Creata:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Torna su
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Piede" >
+        
+          
+          <a href="00_introduzione.html" class="md-footer__link md-footer__link--prev" aria-label="Precedente: Introduzione" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Precedente
+              </span>
+              <div class="md-ellipsis">
+                Introduzione
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="goose_game/index.html" class="md-footer__link md-footer__link--next" aria-label="Prossimo: Gioco dell&#39;oca" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Prossimo
+              </span>
+              <div class="md-ellipsis">
+                Gioco dell'oca
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:<fsimone2002@proton.me>" target="_blank" rel="noopener" title="Mandami una mail" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sRavioli" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/who.dat.boy___" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "toc.follow", "navigation.top", "navigation.footer", "search.suggest", "search.share", "header.autohide", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiato", "clipboard.copy": "Copia", "search.result.more.one": "1 altro in questa pagina", "search.result.more.other": "# altri in questa pagina", "search.result.none": "Nessun documento trovato", "search.result.one": "1 documento trovato", "search.result.other": "# documenti trovati", "search.result.placeholder": "Scrivi per iniziare a cercare", "search.result.term.missing": "Non presente", "select.version": "Seleziona la versione"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../../javascripts/mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

@@ -1,0 +1,1277 @@
+% !TEX root = ./Matematica discreta.tex
+
+\chapter{Cenni di Teoria degli Insiemi}\label{chapt:Cenni_Teoria_Insiemi}
+Il concetto di Insieme è primitivo, ovvero non può essere definito senza coinvolgere altri concetti che a loro volta non possono essere definiti. Com'è possibile definire un insieme allora? Vi sono vari modi:
+\begin{enumerate}
+    \item elencare tutti i suoi oggetti. Seguono alcuni esempi:
+        \begin{enumerate}[label=\roman*.]
+            \item \(A = \set{0, -1, \sqrt{3}, 6, 28}\);
+            \item \(B = \set{a, x, b, 3}\);
+            \item \(C = \set{2, +, *, :, t}\);
+            \item \(\N = \set{0, 1, 2, 3, \dotsc}\), ovvero l'insieme dei numeri naturali;
+            \item \(\Z = \set{\dotsc, -2, -1, 0, 1, 2, \dotsc}\), ovvero l'insieme dei numeri relativi.
+        \end{enumerate}
+    \item esprimere una proprietà caratteristica, ovvero una proprietà che venga verificata da tutti e soli gli oggetti facenti parte di quell'insieme. In simboli:
+    \[
+        A = \set{\isdiv{x}{P}(x)}.
+    \]
+    Seguono ora degli esempi:
+        \begin{enumerate}[label=\roman*.]
+            \item \(D = \set{\isdiv{x}{x} \text{ è una lettera dell'alfabeto italiano}}\);
+            \item \(E = \set{x \mid \forall n \in \N \quad x = 2n}\), l'insieme dei numeri naturali pari;
+            \item \(\N_* = \set{\isdiv{n}{n} \in \N \setminus \{0}\}\);
+            \item \(\N = \set{\isdiv{x}{x} \in \Z_+}\).
+        \end{enumerate}
+    \item rappresentare graficamente l'insieme tramite diagramma di Eulero-Venn:
+    \input{tikz_diagramma_Venn}
+\end{enumerate}
+
+Dunque un insieme è formato da oggetti. Se \(A\) è un insieme, la circostanza che un oggetto \(a\) faccia parte degli oggetti che costituiscono l'insieme \(A\) si esprime dicendo che ``\(a\) appartiene ad \(A\)'' oppure che ``\(a\) è elemento di \(A\)''. In simboli si esprime tramite l'utilizzo di ``\(\in\)'', ovvero il simbolo di appartenenza. Scriveremo dunque:
+\[
+    a \in A, \qquad A \ni a;
+\]
+l'oggetto \(a\) si dice \emph{elemento} dell'insieme \(A\). È possibile scrivere proposizioni che hanno un senso e un valore di verità utilizzando il simbolo di appartenenza, ad esempio: \(7 \in \N\) (\true[l]) e \(\pi \in \N\) (\false[l]).
+
+Se si vuole esprimere in simboli la circostanza che un oggetto \(a\) non appartenga ad \(A\) si utilizzerà ``\(\notin\)'':
+\[
+    a \notin A, \qquad A \centernot\ni a.
+\]
+In altre parole \(\neg(a \in A)\) si scrive \(a \notin A\), per esempio: \(\pi \notin \N\).
+
+
+\section{Numeri razionali}\label{susec:numeri_razionali}
+Abbiamo già introdotto gli insiemi \(\N\) e \(\Z\), introduciamo ora l'insieme dei numeri razionali: \(\Q\). Questo è l'insieme di tutte le frazioni, ovvero l'insieme di tutti i numeri decimali con cifre periodiche. \(\Q\) è definito nel seguente modo:
+\[
+    \Q = \set{\frac{p}{q} \;\middle|\; (p,q \in \Z) \land (q \neq 0)}.
+\]
+
+Siano \(p/q, r/s \in \Q\) con \(q,s \neq 0\). Le due frazioni saranno uguali quando:
+\[
+    \frac{p}{q} = \frac{r}{s}
+    \iff
+    (\exists h \in \Z \tc (r = hp) \land (s = hq)) \lor (\exists k \in \Z \tc (p = kr) \land (q = ks)).
+\]
+Ad esempio, \(1/2 = 2/4\), perché \(2 = 2 \cdot 1\) e \(4 = 2 \cdot 2\); in questo caso \(h = 2\).
+
+Presa la frazione \(p/q\), chiameremo \(p\) \textbf{numeratore} e \(q\) \textbf{denominatore}. Considerata la frazione \(-(3/4)\), essa potrà essere scritta come \((-3)/4\) oppure come \(3/(-4)\).
+
+
+\subsection{Decimali e Frazioni}\label{subsec:decimali_frazioni}
+Come detto in precedenza, i numeri razionali possono essere espressi in due modi diversi, o come frazioni o come numeri decimali. Questo vuol dire che è possibile passare da una forma all'altra, vediamo come.
+
+Per passare da frazione a decimale il procedimento risulta essere molto semplice, è necessario dividere il numeratore per il denominatore, ad esempio:
+\[
+    \frac{10}{3} = 3.\bar{3},
+    \qquad
+    \frac{1}{2} = 0.5\bar{0}
+\]
+Nel caso in cui non sia presente alcun decimale periodico, vuol dire che viene omesso \(\bar{0}\), infatti \(0.5 = 0.5\bar{0}\).
+
+Per passare da decimale a frazione il procedimento è leggermente più complesso. Siano \(c \in \Z\), \(a_1, \dotsc, a_h \in \N\) e \(b_1, \dotsc, b_k \in \N\); si consideri il generico numero decimale \(q\):
+\[
+    q = c.a_1 a_2 \dotsc a_h \overline{b_1 b_2 \dotsc b_k}.
+\]
+Si ha che
+\[
+    c.a_1 a_2 \dotsc a_h \overline{b_1 b_2 \dotsc b_k} = \frac{c a_1 \dotsc a_h}{10^h} + \frac{b_1 \dotsc b_k}{9k \cdot 10^h}.
+\]
+La formula precedente permette di convertire un numero decimale in una frazione, ad esempio:
+\[
+    0.\bar{9} = \frac{0}{10^0} + \frac{9}{9 \cdot 10^0} = 0 + \frac{9}{9} = 0 + 1 = 1.
+\]
+In generale si ha che
+\[
+    a.\bar{9} = a + 0.\bar{9} = a + 1.
+\]
+Un altro esempio è il seguente:
+\[
+    10.01\overline{211} = \frac{1001}{10^2} + \frac{211}{999 \cdot 10^2}
+                        = \frac{1001 \cdot 999 + 211}{99 \cdot 900}
+                        = \frac{1,000,21\cancel{0}}{99,90\cancel{0}}
+                        = \frac{100,021}{9,990}
+\]
+
+
+\section{Numeri reali}
+Introduciamo ora l'insieme dei numeri reali. Questi sono numeri razionali e irrazionali, che sono numeri decimali non periodici. Alcuni esempi di numeri irrazionali sono
+\begin{alignat*}{1}
+        \sqrt{2} &= 1.414213 \dotsc \\
+        \sqrt{5} &= 2.236067 \dotsc \\
+             \pi &= 3.141592 \dotsc
+\end{alignat*}
+L'insieme si denota con \(\R\)
+
+
+\section{Insiemi numerici}\label{sec:insiemi_numerici}
+\begin{definition}[sottoinsieme improprio]\label{def:sottoinsieme_improprio}
+    Siano \(A,B\) due insiemi. Si dice che \(A\) è un sottoinsieme di \(B\) oppure che \(A\) è contenuto in \(B\) o ancora che \(A\) è incluso in \(B\) se ogni elemento di \(A\) è anche elemento di \(B\). Si scriverà \(A \subseteq B\).
+\end{definition}
+
+\begin{examples}
+    Seguono alcuni esempi di insiemi e sottoinsiemi:
+        \begin{enumerate}
+            \item \(\set{3, -2, 5} \subseteq \Z\);
+            \item \(\N \subseteq \Z \subseteq \Q \subseteq \R\);
+            \item Considerati \(A = \set{7, a, -1, *}\) e \(B = \set{-3, 7, a, -1, *, \cdot}\), si ha che \(A \subseteq B\);
+        \end{enumerate}
+\end{examples}
+
+\begin{remark}
+    Appartenenza e inclusione sono diversi: \(\in \mathop{\neq} \subseteq\), infatti scrivere \(3 \subseteq \N\) è errato, bisognerebbe scrivere \(3 \in \N\) oppure \(\{3\} \subseteq \N\).
+\end{remark}
+
+
+\begin{definition}[insiemi uguali]\label{def:insiemi_uguali}
+    Siano \(A,B\) due insiemi. Si dice che \(A = B\) se e solo se i due insiemi hanno gli stessi elementi, ovvero ogni elemento di \(A\) è anche elemento di \(B\) e ogni elemento di \(B\) è anche elemento di \(A\).
+\end{definition}
+
+\begin{remark}
+    Si avrà che \(A = B\) quando \((A \subseteq B) \land (B \subseteq A)\). In simboli scriveremo:
+    \[
+        A = B \iff \left[(\forall x \in A) (x \in B)\right] \lor \left[(\forall y \in B) (y \in A)\right].
+    \]
+\end{remark}
+
+\begin{remark}
+    Dire che \(A\) non è sottoinsieme di \(B\), significa dire, in simboli, che:
+    \[
+        \neg(A \subseteq B) \iff \neg \left[(\forall x \in A) (x \in B)\right]
+                            \iff (\exists x \in A) (x \notin B)
+    \]
+\end{remark}
+
+\begin{examples}
+Seguono due esempi:
+    \begin{enumerate}
+        \item \(\Z \nsubseteq \N\) perché ad esempio \(\exists {-}4 \in \Z \tc {-}4 \notin \N\);
+        \item Considerati \(A = \set{-2, a, 3, x}\) e \(B = \set{-2, a, 1, 3, y}\) si ha che
+        \[
+            [A \centernot\subset B] \land [B \centernot\subset A].
+        \]
+    \end{enumerate}
+\end{examples}
+
+
+Siano \(A,B\) due insiemi. Dire che \(A \neq B\) equivale a dire, in simboli, che:
+\begin{equation*}
+    \begin{split}
+        A \neq B &\iff \neg(A = B)
+                  \iff \neg[(\forall x \in A) (x \in B) \land (\forall y \in B) (y \in A)]         \\
+                 &\iff \neg[(\forall x \in A) (x \in B)] \land \neg[(\forall y \in B) (y \in A)]   \\
+                 &\iff [(\exists x \in A)(x \notin B)] \lor [(\exists y \in B)(y \notin A)]
+    \end{split}
+\end{equation*}
+Si deduce dunque che \(A \nsubseteq B \implies A \neq B\). Se \(A \subseteq B\) è contemplata la possibilità che \(A = B\), ad esempio \(\N \subseteq \N\) (\(\N\) è contenuto ed è uguale ad \(\N\)). In generale si ha che \(\forall A \text{ insieme } A \subseteq A\)
+
+
+\begin{definition}[sottoinsieme proprio]\label{def:sottoinsieme_proprio}
+    Si dice che \(A\) è un sottoinsieme proprio di \(B\) se \(A\) è contenuto in \(B\) ma è diverso da \(B\). Si utilizza il simbolo \(\subsetneq\).
+\end{definition}
+Dunque \(A \subsetneq B \iff \left[(A \subseteq B) \land (A \neq B)\right]\).
+
+\begin{example}
+    Tra gli insiemi numerici finora introdotti è presente la seguente relazione:
+    \[
+        \N \subsetneq \Z \subsetneq \Q \subsetneq \R.
+    \]
+\end{example}
+Dire che \(A \subsetneq B\), equivale a dire, in simboli, che
+\[
+    A \subsetneq B \iff (A \subset B) \land (B \centernot\subset A)
+                   \iff \left[\left((\forall x \in A) (x \in B)\right) \land \left((\exists x \in B) (x \notin A)\right)\right].
+\]
+
+\begin{definition}[insieme vuoto]\label{def:insieme_vuoto}
+    L'unico insieme privo di elementi è l'insieme vuoto. Esso si indica col simbolo \(\emptyset\) e valgono le seguenti relazioni:
+    \begin{itemize}
+        \item \((\forall x)(x \notin \emptyset)\);
+        \item \(\forall A \text{ insieme } \emptyset \subset A\)
+    \end{itemize}
+\end{definition}
+
+
+\begin{proposition}[proprietà dell'inclusione]\label{prop:proprietà_inclusione}
+    Siano \(A, B, C\) insiemi. Allora risulta:
+    \begin{enumerate}
+        \item \(A \subseteq A\);
+        \item \([A \subseteq B] \land [B \subseteq A] \implies A = B\);
+        \item \([A \subseteq B] \land [B \subseteq C] \implies A \subseteq C\).
+    \end{enumerate}
+\end{proposition}
+
+
+\begin{definition}[insieme unione]\label{def:insieme_unione}
+    Siano \(A, B\) due insiemi. Si dice insieme unione di \(A\) e \(B\) l'insieme
+    \[
+        A \cup B = \set{x \;\middle|\; [x \in A] \lor [x \in B]}.
+    \]
+\end{definition}
+Si ha dunque che
+\[
+    x \in A \cup B \iff [x \in A] \lor [x \in B]
+\]
+L'unione di due insiemi può essere rappresentata come nella~\cref{fig:insieme_unione}
+
+\input{tikz_insieme_unione}
+
+
+\begin{examples}
+    Seguono vari esempi:
+    \begin{enumerate}
+        \item Siano \(A = \set{a, -1, b, -2}\) e \(B = \set{3, 2, 1}\), avremo che:
+              \[
+                  A \cup B = \set{a, -1, b, -2, 3, 2, 1};
+              \]
+        \item Siano \(X = \set{a, b, c, d}\) e \(Y = \set{b, e, f}\), si ha che:
+              \[
+                  X \cup Y = \set{a, b, c, d, e, f};
+              \]
+        \item Considerati \(\N\) e \(\Z\), \(\N \cup \Z = \Z\).
+    \end{enumerate}
+\end{examples}
+
+\begin{proposition}[proprietà dell'unione]\label{prop:proprietà_unione}
+    Siano \(A, B\) insiemi. Allora risulta:
+    \begin{enumerate}
+        \item \(A \cup \emptyset = A\);
+        \item \([A \subset (A \cup B)] \land [B \subset (A \cup B)]\);
+        \item \(A \cup A = A\);
+        \item \(A \subset B \iff A \cup B = B\).
+    \end{enumerate}
+\end{proposition}
+
+
+\begin{definition}[insieme intersezione]\label{def:insieme_intersezione}
+    Siano \(A, B\) due insiemi. Si dice insieme intersezione di \(A\) e \(B\) l'insieme
+    \[
+        A \cap B = \set{x \;\middle|\; [x \in A] \land [x \in B]}.
+    \]
+\end{definition}
+L'intersezione di due insiemi può essere rappresentata come nella~\cref{fig:insieme_intersezione}
+
+\input{tikz_insieme_intersezione}
+
+\begin{proposition}[proprietà dell'intersezione]\label{prop:proprietà_intersezione}
+    Siano \(A, B\) due insiemi. Allora risulta:
+    \begin{enumerate}
+        \item \([A \cap B \subset A] \land [A \cap B \subset B]\);
+        \item \(A \cap B = A \iff A \subset B\);
+        \item \(A \cap \emptyset = \emptyset\);
+        \item \(A \cap A = A\)
+    \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[proprietà di intersezione e unione]\label{prop:proprietà_unione_intersezione}
+    Siano \(A, B, C\) insiemi. Allora:
+    \begin{enumerate}
+        \item Proprietà associative:
+              \[
+                    \left[(A \cup B) \cup C = A \cup (B \cup C)\right]
+                    \land
+                    \left[(A \cap B) \cap C = A \cap (B \cap C)\right];
+              \]
+        \item Proprietà commutative:
+              \[
+                    \left[A \cup B = B \cup A\right]
+                    \land
+                    \left[A \cap B = B \cap A\right];
+              \]
+        \item Proprietà distributive
+              \[
+                    \left[(A \cap B) \cup C = (A \cup C) \cap (B \cup C)\right]
+                    \land
+                    \left[(A \cup B) \cap C = (A \cup B) \cap (B \cup C)\right].
+              \]
+    \end{enumerate}
+\end{proposition}
+
+
+\begin{definition}[insieme complementare]\label{def:insieme_complementare}
+    Siano \(A, B\) insiemi con \(B \subsetneq A\). Si dice insieme complementare di \(B\) rispetto ad \(A\) l'insieme
+    \[
+        \complement_A(B) = \set{x \in \isdiv{A}{x} \notin B}.
+    \]
+    Dunque
+    \[
+        x \in \complement_A(B) \iff [x \in A] \land [x \notin B].
+    \]
+\end{definition}
+L'insieme complementare è rappresentato graficamente nella~\cref{fig:insieme_complementare}
+
+\input{tikz_insieme_complementare}
+
+\begin{examples}
+    Seguono due esempi:
+    \begin{enumerate}
+        \item \(\complement_\Z(\N) = \set{x \in \\isdiv{Z}{n} \text{ è negativo}} = \set{\dotsc, -3, -2, -1}\)
+        \item Presi \(A = \set{1, 2, 3, 4, 5, 6}\) e \(B = \set{1, 3, 5}\), si ha
+        \[
+            \complement_A(B) = \set{2, 4, 6}.
+        \]
+    \end{enumerate}
+\end{examples}
+
+
+\begin{proposition}[leggi di De Morgan, proprietà complementare]\label{prop:de_morgan_complementare}
+    Siano \(A, B, C\) insiemi, con \(B,C \subsetneq A\). Risulta:
+    \begin{enumerate}[label=\textnormal{\arabic*}.]
+        \item \(\complement_A(A) = \emptyset\);
+        \item \(\complement_A(\emptyset) = A\);
+        \item \(B \cup \complement_A(B) = A\);
+        \item \(\complement_A(B \cup C) = \complement_A(B) \cap \complement_A(C)\);
+        \item \(\complement_A(B \cap C) = \complement_A(B) \cup \complement_A(C)\).
+    \end{enumerate}
+\end{proposition}
+I punti 4. e 5. sono noti come \emph{leggi di De Morgan}. Dimostriamo la prima legge di De Morgan.
+
+\begin{proof}
+    Siano \(A, B, C\) insiemi, con \(B,C \subsetneq A\); per provare la prima legge di De Morgan è necessario provare che:
+    \[
+        \left[\complement_A(B \cup C) \subseteq \left(\complement_A(B) \cap \complement_A(C)\right)\right]
+        \land
+        \left[\left(\complement_A(B) \cap \complement_A(C)\right) \subseteq \complement_A(B \cup C)\right].
+    \]
+    Sia \(x \in A\). Dire che \(x \in \complement_A(B \cup C)\) equivale a dire che \((x \in A) \land (x \notin B \cup C)\), ovvero \((x \in A) \land \neg(x \in B \cup C)\). Ma questo è come scrivere \((x \in A) \land \neg(x \in B \lor x \in C)\), che negando la seconda parte diventa \((x \in A) \land (x \notin B \lor x \notin C)\). Ma allora questo è come dire che \((x \in A) \land (x \notin B) \lor (x \notin C)\)
+    \begin{equation*}
+        \begin{split}
+            x \in \complement_A(B \cup C)%
+                &\iff \left((x \in A) \land (x \notin B)\right) \lor \left((x \in A)(x \notin C)\right)   \\
+                &\iff x \in \complement_A(B) \land x \in \complement_A(C)                                 \\
+                &\iff x \in \complement_A(B) \cap \complement_A(C).                                       \\
+        \end{split}
+    \end{equation*}
+    La legge risulta essere dimostrata.
+    % La seconda legge risulta essere simile da dimostrare.
+\end{proof}
+
+\begin{definition}[insieme differenza]\label{def:insieme_differenza}
+    Siano \(A, B\) insiemi. Si dice insieme differenza di \(A\) e \(B\) e si indica con i simboli \(A - B\) oppure \(A \setminus B\) l'insieme:
+    \[
+        A \setminus B = \set{x \in \isdiv{A}{x} \notin B}.
+    \]
+\end{definition}
+
+\begin{remark}
+    Siano \(A, B\) insiemi. Se \(B \subseteq A\) allora \(A \setminus B = \complement_A(B)\)
+    \input{tikz_insieme_differenza_oss}
+    Dunque \(A \setminus B = \complement_A(A \cap B)\).
+\end{remark}
+
+\begin{examples}
+    Seguono due esempi:
+    \begin{enumerate}
+        \item Siano \(A = \set{x, y, z}\) e \(B = \set{a, b, x}\). Si ha che:
+            \[
+                A \setminus B = \set{y, z}, \qquad
+                B \setminus A = \set{a, b}.
+            \]
+        \item L'insieme dei numeri irrazionali può essere indicato con \(\R \setminus \Q\).
+    \end{enumerate}
+\end{examples}
+
+\begin{definition}[insieme delle parti]\label{def:insieme_parti}
+    Sia \(A\) un insieme. L'insieme di tutti i sottoinsiemi di \(A\) si dice insieme delle parti di \(A\). Si indica col simbolo
+    \[
+        \powerset(A)
+    \]
+\end{definition}
+
+\begin{examples}
+    Seguono degli esempi:
+    \begin{enumerate}
+        \item Sia \(A = \set{a, b, c}\), si ha
+        \[
+            \powerset(A) = \set{\emptyset, \set{a}, \set{b}, \set{c} \set{a, b}, \set{b, c}, \set{a, c}, \set{a, b, c}};
+        \]
+        \item \(\powerset(\emptyset) = \set{\emptyset}\);
+        \item Sia \(B = \set{1}\), si ha \(\powerset(B) = \set{\emptyset, \set{1}}\).
+    \end{enumerate}
+\end{examples}
+
+
+\begin{remark}
+    Sia \(A\) un insieme. Si ha che \([\emptyset \in \powerset(A)] \land [A \in \powerset(A)]\)
+\end{remark}
+
+
+\begin{definition}[insiemi disgiunti]\label{def:insiemi:disgiunti}
+    Siano \(A, B\) insiemi. Si dice che \(A\) e \(B\) sono disgiunti quando \(A \cap B = \emptyset\)
+\end{definition}
+
+
+\begin{examples}
+    Seguono due esempi:
+    \begin{enumerate}
+        \item Sia \(P\) l'insieme dei numeri interi pari e sia \(D\) l'insieme dei numeri interi dispari. Si ha
+            \[
+                P \cap D = \emptyset
+            \]
+            e dunque \(P\) e \(D\) sono disgiunti. Inoltre \(P \cup D = \Z\).
+        \item Siano \(A = \set{1, 2, 3, 4}\) e \(B = \set{0, 6, 9, 8}\). Si ha che
+            \[
+                A \cap B = \emptyset
+            \]
+            e quindi \(A\) e \(B\) sono disgiunti.
+    \end{enumerate}
+\end{examples}
+
+\begin{remark}
+    Siano \(a, b\) due oggetti. Si ha che \(\set{a, b} = \set{b, a}\). È quindi irrilevante l'ordine in cui si scrivono gli elementi. Per questo \(\set{a, b}\) si chiama coppia non ordinata.
+
+    Siano \(A\) un insieme e \(a, b \in A\). Si indica col simbolo \((a, b)\) la coppia ordinata la cui prima coordinata è \(a\) e la seconda coordinata è \(b\). Si ha che \((a, b) \neq (b, a)\).
+\end{remark}
+Naturalmente si possono considerare le coppie ordinate di elementi di insiemi diversi: se \(X, Y\) sono due insiemi, con \(x \in X\) e \(y \in Y\) si ha che \((x, y) \neq (y, x)\).
+
+
+\begin{definition}[prodotto cartesiano]\label{def:profotto_cartesiano}
+    Siano \(A, B\) due insiemi. L'insieme i cui elementi sono tutte le possibili coppie aventi prima coordinata un elemento di \(A\) e seconda coordinata un elemento di \(B\) si dice prodotto cartesiano di \(A\) e \(B\). Questo insieme si indica col simbolo \(A \times B\). Quindi
+    \[
+        A \times B = \set{(a, b) \middle| [a \in A] \land [b \in B]}
+    \]
+\end{definition}
+
+\begin{remark}
+    Siano \(A, B\) due insiemi con \(A \neq B\). Si ha che
+    \[
+        A \times B \neq B \times A.
+    \]
+\end{remark}
+
+\begin{example}
+    Un esempio di prodotto cartesiano è \(\R \times \R\)
+    \input{tikz_piano_cartesiano}
+    Il piano cartesiano può essere rappresentato con \(\R \times \R\).
+\end{example}
+
+\begin{example}
+    Siano \(A = \set{a, b, c}\) e \(B = \set{1, 2, 3, 4}\). Si ha che
+    \begin{alignat*}{1}
+            A \times B = \{
+                &(a, 1), (a, 2), (a, 3), (a, 4), \\
+                &(b, 1), (b, 2), (b, 3), (b, 4), \\
+                &(c, 1), (c, 2), (c, 3), (c, 4)%
+            \},
+    \end{alignat*}
+    mentre
+    \begin{alignat*}{1}
+        B \times A = \{
+            &(1, a), (1, b), (1, c), \\
+            &(2, a), (2, b), (2, c), \\
+            &(3, a), (3, b), (3, c), \\
+            &(4, a), (4, b), (4, c)%
+        \}.
+    \end{alignat*}
+    Dunque \(A \times B \neq B \times A\) e in questo caso \(A \times B \cap B \times A = \emptyset\).
+\end{example}
+
+
+\section{Relazioni}\label{sec:relazioni}
+
+\begin{definition}[relazione]\label{def:relazione}
+    Siano \(A, B\) due insiemi. Una relazione tra gli elementi di \(A\) e quelli di \(B\) è un sottoinsieme del prodotto cartesiano \(A \times B\).
+\end{definition}
+In altri termini una relazione tra gli elementi di \(A\) e gli elementi di \(B\) è un insieme di coppie ordinate la cui prima coordinata è un elemento di \(A\) mentre la seconda coordinata è un elemento di \(B\).
+
+\begin{examples}
+    Seguono degli esempi:
+    \begin{enumerate}
+        \item Siano \(A = \set{a, b, c}\) e \(B = \set{1, 2, 3, 4}\). Si ha
+            \[
+                \rel[0]{A}{B} = \set{(a, 1)} \subseteq A \times B
+            \]
+            dove \(\rel[0]{A}{B}\) è una relazione tra gli elementi di \(A\) e gli elementi di \(B\). Anche
+            \[
+                \rel[1]{A}{B} = \set{(b, 1), (b, 2), (c, 3), (c, 4)}
+            \]
+            è una relazione e \(\rel[1]{A}{B} \subseteq A \times B\);
+        \item una relazione su \(\R \times \R\) può essere la seguente:
+            \[
+                \rel[2]{\R} = \set{(\sqrt{2}, 3), (5, -2), (-\sqrt{3}, -\sqrt{3})}.
+            \]
+            Di nuovo, \(\rel[2]{\R} \subseteq \R \times \R\);
+        \item una relazione di \(\Z \times \Z\) è la seguente:
+            \[
+                \rel[3]{\Z} = \set{(a, b) \in \Z \times \Z : b = 2a}
+            \]
+            e ancora \(\rel[3]{\Z} \subseteq \Z \times \Z\) e si ha
+            \[
+                \rel[3]{\Z} = \set{\dotsc, (0, 0), (1, 2), (-1, -2), (3, 6), \dotsc};
+            \]
+        \item una relazione su \(\N \times \Z\) è:
+            \[
+                \rel[4]{\N \times \Z} = \set{(n, m) \in \N \times \Z : m = -n} \subseteq \Z \times \Z.
+            \]
+            \(\rel[4]{\N}{\Z}\) è una relazione tra gli elementi di \(\N\) e quelli di \(\Z\);
+        \item una relazione su \(\Z \times \Z\) è:
+            \[
+                \rel[5]{\Z} = \set{(n, m) \in \Z \times \Z : m = -n} \subseteq \Z \times \Z.
+            \]
+            Notiamo che \(\rel[4]{\N}{\Z} \neq \rel[5]{\Z}\), visto che il prodotto cartesiano prende in considerazione due insiemi differenti.
+    \end{enumerate}
+\end{examples}
+
+\begin{example}
+    Sia \(A\) un insieme. Si dice diagonale di \(A\) l'insieme:
+    \[
+        \setdiag{A} = \set{(a, b) \in A \times \isdiv{A}{a} = b}
+    \]
+\end{example}
+
+\begin{remark}
+    Sia \(A\) un insieme. Si ha
+    \[
+        A \times \emptyset = \emptyset \times A = \emptyset.
+    \]
+    Per questo si considerano soltanto relazioni tra gli elementi di due insiemi non vuoti.
+\end{remark}
+
+
+\begin{definition}[relazione riflessiva]\label{def:relazione_riflessiva}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione tra gli elementi di \(A\) (o semplicemente su \(A\)). Si dice che \(\rel{A}\) è riflessiva se
+    \[
+        \forall a \in A \; (a, a) \in \rel{A}
+    \]
+\end{definition}
+
+\begin{example}
+    La bisettrice del \(1^\text{\!o}\) e \(3^\text{o}\) quadrante rappresenta la diagonale \(\setdiag{\R}\). La diagonale è riflessiva.
+    \input{tikz_bisettrice_1-3_quadr}
+\end{example}
+
+\begin{remark}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). \(\rel{A}\) è riflessiva se e solo se \(\setdiag{A} \subseteq \rel{A}\).
+\end{remark}
+
+\begin{remark}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). Allora, perché \(\rel{A}\) non sia riflessiva basta che \(\exists x \in A \tc (x, x) \notin \R\).
+\end{remark}
+
+
+\begin{example}
+    Sia \(X\) l'insieme dei residenti a Bari. La relazione
+    \[
+        \rel{X} = \set{(x, y) \in X \times \isdiv{X}{x} \text{ ha la stessa madre di } y}
+    \]
+    risulta essere simmetrica e riflessiva.
+\end{example}
+
+\begin{definition}[relazione simmetrica]\label{def:relazione_simmetrica}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). Si dice che \(\rel{A}\) è simmetrica se
+    \[
+        \left(\forall x,y \in A\right)\left((x, y) \in \rel{A} \implies (y, x) \in \rel{A} \right).
+    \]
+\end{definition}
+
+\begin{definition}[relazione antisimmetrica]\label{def:relazione_antisimmetrica}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). Si dice che \(\rel{A}\) è antisimmetrica se
+    \[
+        \left(\forall a,b \in A\right) \left((a, b) \in \rel{A} \land (b, a) \in \rel{A}\right) \implies a = b.
+    \]
+    Equivalentemente
+    \[
+        (\forall a,b \in A, \; a \neq b) \left((a, b) \in \rel{A} \implies (b, a) \notin \rel{A}\right).
+    \]
+\end{definition}
+
+\begin{remark}
+    Una relazione simmetrica \textbf{non} può essere antisimmetrica e una relazione antisimmetrica \textbf{non} può essere simmetrica, a esclusione della diagonale \(\Delta\).
+\end{remark}
+
+\begin{example}
+    {\Large wtf}\\
+    Siano \(a,b \in \R\) con \(a \leq b \land b \leq a \implies a = b\). Sia \(\rel{\R}\) una relazione e sia \((a, b) \in \rel{\R}\)
+\end{example}
+
+
+\begin{definition}[relazione transitiva]\label{def:relazione_transitiva}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). Si dice che \(\rel{A}\) è transitiva se
+    \[
+        (\forall a,b,c \in A) \left((a, b) \in \rel{A} \land (b, c) \in \rel{A}\right) \implies (a, c) \in \rel{A}
+    \]
+\end{definition}
+
+
+\begin{examples}
+    Sia \(A = \set{a, b, c, d}\). Seguono una serie di relazioni su \(A^2\):
+    \begin{enumerate}
+        \item la relazione:
+            \[
+                \rel[1]{A} = \set{(a, a), (a, b), (b, b), (c, c), (d, d)}
+            \]
+            risulta essere riflessiva ma non simmetrica, perché \((a, b) \in \rel[1]{A}\) ma \((b, a) \notin \rel[1]{A}\), è antisimmetrica ed è transitiva;
+%
+        \item la relazione:
+            \[
+                \rel[2]{A} = \set{(a, a), (a, b), (b, a)}
+            \]
+            non è riflessiva perché \((b, b), (c, c), (d, d) \notin \rel[2]{A}\) e non è transitiva ma è simmetrica perché \((a, b) \land (b, a) \in \rel[2]{A}\);
+%
+        \item la relazione:
+            \[
+                \rel[3]{A} = \set{(a, b), (b, c), (a, c)}
+            \]
+            non è né riflessiva, né simmetrica ma è sia antisimmetrica che transitiva;
+%
+        \item la relazione:
+            \[
+                \rel[4]{A} = \set{(a, a), (b, b), (c, c), (d, d), (a, b), (b, a), (a, c), (c, a), (b, c), (c, b)}
+            \]
+            è sia riflessiva, sia simmetrica e sia transitiva;
+%
+        \item la relazione:
+            \[
+                \rel[5]{A} = \set{(a, a), (b, b), (c, c), (d, d), (a, b), (b, c), (a, c)}
+            \]
+            è riflessiva, antisimmetrica e transitiva, ma non è simmetrica;
+%
+        \item la relazione:
+            \[
+                \rel[6]{A} = \set{(a, a), (b, b), (d, d), (a, b), (b, c)}
+            \]
+            non è né riflessiva, perché \((c, c) \notin \rel[6]{A}\), né simmetrica, né transitiva, ma è antisimmetrica;
+%
+        \item la relazione:
+            \[
+                \rel[7]{A} = \set{(a, b), (b, c), (a, c), (b, a), (c, b), (c, a)}
+            \]
+            non è riflessiva e nemmeno transitiva, però è simmetrica;
+%
+        \item la relazione:
+            \[
+                \rel[8]{A} = \set{(a, b), (b, c), (a, c), (b, a), (c, b)}
+            \]
+            non è né simmetrica, perché \((a, c) \in \rel[8]{A}\) ma \((c, a) \notin \rel[8]{A}\), né riflessiva, né antisimmetrica e nemmeno transitiva;
+%
+        \item la relazione:
+            \[
+                \rel[9]{A} = \set{(a, b), (b, c), (a, c), (b, a)}
+            \]
+            non è né simmetrica, né riflessiva, né transitiva e nemmeno antisimmetrica.
+    \end{enumerate}
+\end{examples}
+
+\begin{example}
+    Sia \(\Pi\) l'insieme delle rette di un piano fissato. Sia \(\rel{\Pi}\) una relazione su \(\Pi^2\):
+    \[
+        \rel{\Pi} = \set{(r, s) \in \Pi \times \Pi \mid r \text{ ha la stessa direzione di } s}
+    \]
+    % TODO: (2) - @to-complete [example] - \rel{\Pi} - l. 18/10/'21
+\end{example}
+
+
+\subsection{Relazioni d'ordine}\label{subsec:relazioni_d'ordine}
+
+\begin{definition}[relazione d'ordine]\label{def:relazione_d'ordine}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione su \(A^2\). Si dice che \(\rel{A}\) è una relazione d'ordine se è riflessiva, antisimmetrica e transitiva.
+\end{definition}
+
+\begin{remark}
+    Sia \(\rel{A}\) una relazione d'ordine sull'insieme \(A\), essa viene denotata col simbolo \(\leq\). Dunque
+    \[
+        \forall a,b \in A \quad (a, b) \in \rel{A} \text{ si scrive } a \leq b.
+    \]
+\end{remark}
+
+Ad esempio, le relazioni \(\rel[1]{A}\) e \(\rel[5]{A}\), enunciate nella serie di esempi che segue la~\cref{def:relazione_transitiva}, sono due relazioni d'ordine.
+Esplicitiamo la \(\rel[1]{A}\) tramite l'uso del simbolo della relazione d'ordine \(\leq\):
+\[
+    a \leq a, \quad
+    b \leq b, \quad
+    c \leq c, \quad
+    d \leq d, \quad
+    a \leq b.
+\]
+Esplicitiamo ora la \(\rel[5]{A}\):
+\[
+    a \leq a, \quad
+    b \leq b, \quad
+    c \leq c, \quad
+    d \leq d, \quad
+    a \leq b, \quad
+    b \leq c, \quad
+    a \leq c.
+\]
+
+\begin{example}
+    Definiamo la relazione d'ordine naturale su  \(\Z\)
+    \[
+        (\forall n,m \in \Z) \left(n \leq m \iff \exists h \in \N : m = h + n \right).
+    \]
+    Ad esempio \(-7 \leq -5\) perché \(-5 = 2 - 7\), dove \(h = 2\).
+    Dunque \(\leq\) è una relazione d'ordine su \(\Z\).
+\end{example}
+
+\begin{proof}
+    dimostriamo che \(\leq\) è una relazione d'ordine su \(\Z\). Bisogna dimostrare che \(\leq\) è sia riflessiva che antisimmetrica che transitiva. Dimostriamo che \(\leq\) è riflessiva, ovvero che
+    \[
+        (\forall n \in \N) \left(n \leq n\right).
+    \]
+    Basta prendere \(h = 0\), infatti:
+    \[
+        (\forall n \in \N) \left(\exists h = 0 \in \N : n = 0 + n\right).
+    \]
+    Dimostriamo ora che \(\leq\) è antisimmetrica, ovvero che
+    \[
+        (\forall n,m \in \Z) \left((n \leq m \land m \leq n) \implies (n = m)\right).
+    \]
+    Siano dunque \(n,m \in \Z\) con \((n \leq m \land m \leq n)\), questo vuol dire che
+    \[
+        \left(\exists h \in \N : m = h + n\right)
+        \land
+        \left(\exists h \in \N : n = h + m\right).
+    \]
+    Si ha dunque
+    \[
+        m = h + n
+          = h + (k + m)
+          = (h + k) + m,
+    \]
+    ma allora \(m = (h + k) + m\), dunque \(h + k = 0\), però \(h,k \in \N\) allora necessariamente \(h,k = 0\)\footnote{%
+        Proprietà dell'annullamento della somma in \(\N\):
+        \[
+            (\forall r,s \in \N) \left(r + s = 0 \implies r = 0 \land s = 0\right)
+        \]
+    }, pertanto \(m = 0 + n\), ovvero \(m = n\).
+    Dimostriamo che \(\leq\) è antisimmetrica. Siano \(n,m,p \in \Z\), con \(n \leq m \land m \leq p\); è necessario verificare che \(n \leq p\). Dire che \(n \leq m \land m \leq p\) implica
+    \[
+        \left(\exists h \in \N : m = h + n\right)
+        \land
+        \left(\exists k \in \N : p = k + m\right),
+    \]
+    allora
+    \[
+        p = k + m
+          = k + (h + n)
+          = (k + h) + n.
+    \]
+    Sia \(t = k + h\), allora
+    \[
+        \exists t \in \N : p = t + n \implies n \leq p.
+    \]
+    \(\leq\) è effettivamente una relazione d'ordine su \(\Z\).
+\end{proof}
+
+\begin{examples}
+    Sia \(A\) un insieme. La relazione di inclusione \(\subseteq\) è una relazione d'ordine su \(\powerset(A)\)
+    \begin{enumerate}
+        \item \(\forall X     \in \powerset(A)\;  X \subseteq X \), \(\subseteq\) è riflessiva;
+        \item \(\forall X,Y   \in \powerset(A)\; [X \subseteq Y \land Y \subseteq X] \implies X = Y \), \(\subseteq\) è antisimmetrica;
+        \item \(\forall X,Y,Z \in \powerset(A)\; [X \subseteq Y \land Y \subseteq Z] \implies X \subseteq Z\), \(\subseteq\) è transitiva;
+    \end{enumerate}
+\end{examples}
+
+
+
+\begin{definition}[divisibilità]\label{def:divisibilità}
+    Siano \(a,b \in \Z\) con \(b \neq 0\). Si dice che \(b\) divide \(a\) oppure che \(b\) è divisore di \(a\) oppure, allo stesso modo, che \(a\) è multiplo di \(b\) oppure ancora che \(a\) moltiplica \(b\) e si scrive:
+    \[
+        \isdiv{a}{b}
+    \]
+    se e solo se \(\exists h \in \Z : a = h \cdot b\).
+\end{definition}
+
+\begin{example}
+    Si ha ad esempio
+    \[
+        \isdiv{3}{12}, \quad
+        \isdiv{-2}{8}, \quad
+        \isdiv{5}{0}.
+    \]
+    questo perché \(\exists h = 4 \in \Z : 12 = 3h\), \(\exists k = -4 \in \Z : 8 = -2k\) e \(\exists t = 0 \in \Z : 5 = 5t\).
+\end{example}
+
+\begin{remark}
+    \(\forall b \in \Z\), con \(b \neq 0\) si ha \(\isdiv{b}{0}\). Infatti \(\exists h = 0 \in \Z : 0 = hb\)
+\end{remark}
+\begin{remark}
+    \(\forall a \in \Z_*\), si ha
+    \[
+        \isdiv{a}{a}, \quad
+        \isdiv{a}{{-}a}, \quad
+        \isdiv{{-}a}{a}, \quad
+        \isdiv{{-}a}{{-}a}.
+    \]
+\end{remark}
+\begin{remark}
+    \(\forall a \in \Z\), si ha
+    \[
+        \isdiv{1}{a} \land \isdiv{-1}{a}.
+    \]
+\end{remark}
+
+
+\begin{proposition}[proprietà divisibilità]\label{prop:proprietà_divisibilità}
+    Siano \(a,b,c \in \Z\) con \(a \neq 0\), risulta:
+    \begin{enumerate}
+        \item \(\isdiv{a}{b} \implies \left(\isdiv{a}{{-}b} \land \isdiv{{-}a}{b} \land \isdiv{{-}a}{{-}b}\right)\);
+        \item \(\left(b \neq 0 \land \isdiv{a}{b} \land \isdiv{b}{a}\right) \implies a = \pm b\);
+        \item \((\isdiv{a}{b} \land \isdiv{b}{c}) \implies \isdiv{a}{c}\);
+        \item \((\isdiv{a}{b} \land \isdiv{a}{c}) \implies \isdiv{a}{b \pm c}\);
+        \item \(\isdiv{a}{b} \implies \isdiv{a}{bc}\).
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    dimostriamo la 1. e la 2.
+    % TODO: (0) - @to-complete [proof] - propr. a|b - l. 18/10/'21
+\end{proof}
+
+% TODO: (4) - @to-complete [text] - \mid è una rel ordinata su \N - l. 18/10/'21
+
+
+\begin{definition}[insieme totalmente ordinato]\label{def:insieme_totalmente_ordinato}
+    Sia \((A, \leq)\) un insieme ordinato. Si dice che \((A, \leq)\) è totalmente ordinato se
+    \[
+        (\forall x,y \in A) (x \leq y \lor y \land x).
+    \]
+    Si dirà che è parzialmente ordinato se
+    \[
+        \exists x,y \in A : x \nleq y \land y \nleq x.
+    \]
+\end{definition}
+
+Ad esempio, \((\Z, \leq)\) è totalmente ordinato e \((\powerset(A), \subseteq)\) è parzialmente ordinato.
+
+\begin{example}
+    Sia \(A = \set{1, 2, 3, 4}\). Si ha che:
+    \begin{equation*}
+    \begin{split}
+        \powerset(A) = \{\emptyset,
+            \setsc{1, 2, 3, 4, {1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}}, \\
+            \setsc{{1, 2, 3}, {1, 2, 4}, {1, 3, 4}, {2, 3, 4}, {1, 2, 3, 4}}
+        \}.
+    \end{split}
+    \end{equation*}
+    Prendiamo, ad esempio, i due sottoinsiemi di \(\powerset(A)\), \(\set{1, 2}\) e \(\set{1, 3, 4}\), notiamo che
+    \[
+        \set{1, 2} \nsubseteq \set{1, 3, 4}
+        \qquad
+        \set{1, 3, 4} \nsubseteq \set{1, 2}.
+    \]
+\end{example}
+
+\begin{example}
+    L'insieme \((\N_*, \mid)\) è parzialmente ordinato, infatti
+    \[
+        \isndiv{5}{16} \land \isndiv{16}{5}
+    \]
+\end{example}
+
+\begin{example}
+    Sia \(D_{20} = \set{1, 2, 4, 5, 10, 20}\). L'insieme \((D_{20}, \mid)\) è un insieme ordinato:
+    \[
+        \isdiv{1}{2}, \quad
+        \isdiv{1}{4}, \quad
+        \dotsc,       \quad
+        \isdiv{2}{4}, \quad
+        \isdiv{2}{10},
+    \]
+    ma non è totalmente ordinato, infatti:
+    \[
+        \isndiv{4}{10} \land \isndiv{10}{4}.
+    \]
+\end{example}
+
+In generale, dato \((A, \leq)\) insieme ordinato e \(B \subseteq A\), con \(B \neq \emptyset\), si può considerare la relazione d'ordine indotta \(\leq_B\):
+\[
+    \forall a,b \in B \quad a \leq_B b \iff a \leq b.
+\]
+Dunque anche \((B, \leq_B)\) è un insieme ordinato.
+
+
+\begin{definition}[minimo e massimo]\label{def:minimo_massimo}
+    Sia \((A, \leq)\) un insieme ordinato e sia \(B \subseteq A\). Sia \(x_0 \in B\), esso si dice
+    \begin{itemize}
+        \item \emph{minimo} di \(B\) se:
+            \[
+                \forall x \in B \quad x_0 \leq x;
+            \]
+        \item \emph{massimo} di \(B\) se:
+            \[
+                \forall x \in B \quad x \leq x_0.
+            \]
+    \end{itemize}
+    Se esiste il minimo di \(B\) (anche detto il più piccolo elemento di \(B\)) si indica con \(\min{(B)}\); se esiste il massimo di \(B\) (anche detto il più grande elemento di \(B\)) si indica con \(\max{(B)}\).
+\end{definition}
+
+
+\begin{proposition}[unicità massimo e minimo]\label{prop:unicità_massimo_minimo}
+    Sia \((A, \leq)\) un insieme ordinato e sia \(B \subseteq A\). Se esiste un minimo (o un massimo) di \(B\), esso è unico.
+\end{proposition}
+
+\begin{proof}
+    Siano \(x_0, y_0 \in B\) due minimi di \(B\). Si ha
+    \[
+        \forall x \in B \;\; x_0 \leq x
+        \land
+        \forall x \in B \;\; y_0 \leq x.
+    \]
+    In particolare
+    \[
+        (x_0 \leq y_0 \land y_0 \leq x_0) \implies x_0 = y_0.
+    \]
+    Come volevasi dimostrare.
+\end{proof}\\
+
+\begin{examples}
+    Seguono degli esempi di insiemi ordinati o meno che abbiano massimo, minimo o nessuno dei due.
+    \begin{enumerate}
+        \item \((\N, \leq)\) ammette minimo, che è \(0\) ma non ammette massimo;
+        \item \((\Z, \leq)\) non ammette né minimo, né massimo;
+        \item \((\N_*, \leq)\) ammette minimo che è \(1\) ma non ammette massimo;
+        \item \(D_{20}\) ammette minimo che è \(1\) e massimo che è \(20\);
+        \item \((\powerset(A), \subseteq)\) ammette minimo che è \(\emptyset\) e massimo che è \(A\);
+        \item sia \(A = \set{-2, 0, 1, 2, 3}\). \(A\) ha minimo che è \(-2\) e massimo che è \(3\).
+    \end{enumerate}
+\end{examples}
+
+
+\subsection{Relazioni d'equivalenza}\label{sec:Relazioni_d'equivalenza}
+
+\begin{definition}[relazione d'equivalenza]\label{def:relazione_d'equivalenza}
+    Sia \(A\) un insieme non vuoto. Una relazione \(\rel{}\) su \(A\) si dice di equivalenza se è riflessiva, simmetrica e transitiva.
+\end{definition}
+
+\begin{example}
+    Sia \(\Pi\) l'insieme delle rette del piano. La relazione
+    \[
+        \rel[1]{\Pi} = \set{(r, s) \in \Pi \times \Pi \mid r \text{ ha la stessa direzione di } s},
+    \]
+    è una relazione di equivalenza. La relazione
+    \[
+        \rel[2]{\Pi} = \set{(r, s) \in \Pi \times \Pi \mid r \text{ è perpendicolare ad } s},
+    \]
+    non è di equivalenza e nemmeno d'ordine.
+\end{example}
+
+\begin{example}
+    Sia \(A\) l'insieme dei residenti a Bari e sia \(\rel[1]{A}\) una relazione su \(A^2\):
+    \[
+        (\forall x,y \in A) (x, y) \in \R \iff x \text{ ha la stessa madre di } y.
+    \]
+    \(\rel[1]{A}\) è riflessiva, simmetrica e transitiva e quindi è di equivalenza.
+\end{example}
+
+\begin{example}
+    Sia \(A\) un insieme non vuoto. La diagonale
+    \[
+        \setdiag{A} = \set{(x, y) \in A \times A \mid x = y}
+    \]
+    è una relazione sia d'equivalenza che d'ordine (è l'unica che verifica entrambe le definizioni).
+\end{example}
+
+
+\begin{definition}[classe d'equivalenza]\label{def:classe_d'equivalenza}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione di equivalenza su \(A\). Per ogni elemento \(a\) di \(A\) si dice classe di equivalenza di \(a\) rispetto a \(\rel{A}\) il sottoinsieme di \(A\):
+    \[
+        \eqvclass{a}{A^2} = \set{b \in A \mid (a, b) \in \rel{A}}.
+    \]
+\end{definition}
+
+\begin{examples}
+    Seguono una serie di esempi
+    \begin{enumerate}
+        \item Sia \(A = \set{a, b, c}\) e sia
+            \[
+                \rel{A} = \set{(a, a), (b, b), (c, c), (a, b), (b, a)}.
+            \]
+            Si ha
+            \[
+                \eqvclass{a}{A^2} = \set{a, b} =\eqvclass{b}{A^2},
+                \quad
+                \eqvclass{c}{A^2} = \set{c}.
+            \]
+%
+        \item La relazione:
+            \[
+                \rel[\prime]{\Z} = \set{(x, y) \in \Z \times \Z \mid x^2 = y^2};
+            \]
+            risulta essere:
+            \begin{itemize}
+                \item riflessiva perché:
+                    \[
+                        \forall x \in \Z \quad x^2 = x^2 \implies (x, x) \in \rel[\prime]{\Z};
+                    \]
+    %
+                \item simmetrica perché:
+                    \begin{alignat*}{1}
+                        \forall x,y \in \Z \quad (x, y) \in \rel[\prime]{\Z}
+                            &\implies x^2 = y^2   \\
+                            &\implies y^2 = x^2   \\
+                            &\implies (y, x) \in \rel[\prime]{\Z};
+                    \end{alignat*}
+    %
+                \item transitiva perché:
+                    \begin{alignat*}{1}
+                        \forall x,y,z \in \Z \quad (x, y) \in \rel[\prime]{\Z} \land (y, z) \in \rel[\prime]{\Z}
+                            &\implies x^2 = y^2 \land y^2 = z^2   \\
+                            &\implies x^2 = z^2                   \\
+                            &\implies (x, z) \in \rel[\prime]{\Z}.
+                    \end{alignat*}
+    %
+            \end{itemize}
+            Si ha, per esempio:
+            \[
+               \eqvclass{0}{\Z^2}[\prime] = \set{0},                                     \quad
+               \eqvclass{1}{\Z^2}[\prime] = \set{1, -1} =\eqvclass{-1}{\Z^2}[\prime], \quad
+               \eqvclass{2}{\Z^2}[\prime] = \set{2, -2} =\eqvclass{-2}{\Z^2}[\prime].
+            \]
+            Si evince che per ogni \(x \in \Z\), per \(x \neq 0\),
+            \[
+               \eqvclass{x}{\Z^2}[\prime] = \set{-x, x}.
+            \]
+%
+        \item La relazione:
+            \[
+                \rel[\second]{A} = \set{(n, m) \in \Z_* \times \Z_* \mid n \cdot m > 0}
+            \]
+            risulta essere di equivalenza, perché è:
+            \begin{itemize}
+                \item riflessiva, infatti:
+                    \[
+                        \forall n \in \Z_* \quad n \cdot n = n^2 > 0 \implies (n, n) \in \rel[\second]{\Z_*};
+                    \]
+    %
+                \item simmetrica, infatti:
+                    \begin{alignat*}{1}
+                        \forall n,m \in \Z_* \quad (n, m) \in \rel[\second]{\Z}
+                            &\implies n \cdot m > 0 \\
+                            &\implies m \cdot n > 0 \\
+                            &\implies (m, n) \in \rel[\second]{\Z}
+                    \end{alignat*}
+    %
+                \item transitiva, infatti:
+                    \begin{alignat*}{1}
+                        \forall n,m,p \in \Z_* \quad (n, m) \in \rel[\second]{\Z} \land (m, p) \in \rel[\second]{\Z}
+                            &\implies n \cdot m \cdot m \cdot p > 0 \\
+                            &\implies np \cdot m^2 > 0 \\
+                            &\implies np > 0 \\
+                            &\implies (n, p) \in \rel[\second]{\Z}.
+                    \end{alignat*}
+    %
+            \end{itemize}
+        Si ha, per esempio:
+        \[
+           \eqvclass{1}{\Z^2}[\second] = \set{1, 2, 3, \dotsc, n}, \quad
+           \eqvclass{-1}{\Z^2}[\second] = \set{-1, -2, -3, \dotsc, -n}.
+        \]
+    \end{enumerate}
+\end{examples}
+
+
+\begin{proposition}[proprietà classi d'equivalenza]\label{prop:proprietà_classi_di_equivalenza}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione di equivalenza su \(A\). Allora risulta:
+    \begin{enumerate}
+        \item \(\forall a \in A \emspace{1.85} \eqvclass{a}{A^2} \neq \emptyset\);
+        \item \(\forall a,b \in A \quad \eqvclass{a}{A^2} = \eqvclass{b}{A^2} \iff (a, b) \in \rel{A}\);
+        \item \(\forall a,b \in A \quad \eqvclass{a}{A^2} \cap \eqvclass{b}{A^2} = \emptyset \iff (a, b) \notin \rel{A}\).
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    Dimostriamo i \(3\) punti precedenti:
+    \begin{enumerate}
+        \item \(\forall a \in A \quad \eqvclass{a}{A^2} \neq 0\) perché \(a \in \eqvclass{a}{A^2}\) in quanto \((a, a) \in \rel{A}\);
+        \item dimostriamo la doppia implicazione:
+            \begin{lhs}
+                È necessario provare che \(\eqvclass{a}{A^2} = \eqvclass{b}{A^2}\), ovvero
+                \[
+                    \eqvclass{a}{A^2} \subseteq \eqvclass{b}{A^2}
+                    \land
+                    \eqvclass{b}{A^2} \subseteq \eqvclass{a}{A^2}.
+                \]
+                Siano dunque \((a, b) \in \rel{A}\) e sia \(c \in \eqvclass{a}{A^2}\), quindi si ha che \((a, v) \in \rel{As} \land (a, b) \in \rel{A}\), dato che \(\rel{A}\) è simmetrica si ha che \((b, a) \in \rel{A} \land (a, c) \in \rel{A}\). Poiché \(\rel{A}\) è transitiva \((b, c) \in \rel{A}\) e dunque \(c \in \eqvclass{b}{A^2}\).
+                È stato preso \(c \in \eqvclass{a}{A^2}\) ed è stato provato che \(c \in \eqvclass{b}{A^2}\), da cui segue che \(\eqvclass{a}{A^2} \subseteq \eqvclass{b}{A^2}\). L'altra inclusione è analoga.
+            \end{lhs}
+            \begin{rhs}
+                Siano \(a,b \in A\). Bisogna dimostrare che \((a, b) \in \rel{A}\), si supponga che \(\eqvclass{a}{A^2} = \eqvclass{b}{A^2}\). Dunque, \(a \in \eqvclass{a}{A^2} = \eqvclass{b}{A^2}\) e quindi \(a \in \eqvclass{b}{A^2}\). Si ha quindi che \((b, a) \in \rel{A}\)
+                e per simmetria anche \((a, b) \in \rel{A}\).
+            \end{rhs}
+        \item dimostriamo, anche qui, la doppia implicazione:
+            \begin{lhs}
+                è necessario dimostrare che \(\eqvclass{a}{A^2} \cap \eqvclass{b}{A^2} = \emptyset\). Siano \(a,b \in \rel{A}\), per assurdo, si supponga che \(\eqvclass{a}{A^2} \cap \eqvclass{b}{A^2} \neq \emptyset\). Allora \(\exists c \in \eqvclass{a}{A^2} \cap \eqvclass{b}{A^2}\) e quindi \((a, c) \in \rel{A} \land (b, c) \in \rel{A}\), che per simmetria diventa \((a, c) \in \rel{A} \land (c, b) \in \rel{A}\) che, per transitività diventa \((a, b) \in \rel{A}\), che è assurdo.
+            \end{lhs}
+            \begin{rhs}
+                bisogna dimostrare che \((a, b) \notin \rel{A}\). Siano \(a,b \in \rel{A}\); per assurdo, si supponga che \((a, b) \in \rel{A}\) allora \(b \in \eqvclass{b}{A^2}\) e \(b \in \eqvclass{a}{A^2}\) per definizione di classe d'equivalenza, dunque si ha \(b \in \eqvclass{b}{A^2} \cap \eqvclass{a}{A^2} = \emptyset\), che è assurdo.
+            \end{rhs}
+    \end{enumerate}
+    La dimostrazione risulta quindi conclusa.
+\end{proof}
+
+\begin{remark}
+    Siano \(A,B\) due insiemi, si ha
+    \[
+        A \cup B = \set{x \mid x \in A \lor x \in B};
+    \]
+    siano \(A,B,C\) tre insiemi, si ha:
+    \[
+        \left(A \cup B\right) \cup C = A \cup \left(B \cup C\right)
+                                     = A \cup B \cup C
+                                     = \set{x \mid x \in A \lor x \in B \lor x \in C}.
+    \]
+    Siano \(A_1, \dotsc, A_n\) insiemi, si ha:
+    \begin{alignat*}{1}
+        A_1 \cup A_2 \cup \cdots \cup A_n &= \set{x \mid x \in A_1 \lor x \in A_2 \lor \cdots \lor x \in A_n}\\
+                                          &= \set{x \mid \exists i = 1, \dotsc, n : x \in A_i}
+    \end{alignat*}
+    In generale, data una famiglia di insiemi \(A_i\) con \(i \in I \subseteq \R\), si ha:
+    \[
+        \bigcup_{i \in I} A_i = \set{x \mid \exists i \in I : x \in A_i}
+    \]
+    e
+    \[
+        \forall j \in I \quad A_j \subseteq \bigcup_{i \in I} A_i
+    \]
+\end{remark}
+
+\begin{proposition}%[]\label{prop:}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione di equivalenza su \(A^2\). Allora l'unione delle classi di equivalenza di \(x\) al variare di \(x\) in \(A\) è l'insieme \(A\). In simboli:
+    \[
+        \bigcup_{x \in A} \eqvclass{x}{A^2} = A.
+    \]
+\end{proposition}
+
+\begin{proof}
+    bisogna dimostrare che
+    \[
+        \bigcup_{x \in A}\eqvclass{x}{A^2} \subseteq A
+        \land
+        A \subseteq \bigcup_{x \in A}\eqvclass{x}{A^2}.
+    \]
+    Sia dunque
+    \[
+        y \in \bigcup_{x \in A}\eqvclass{x}{A^2},
+    \]
+    allora \(\exists x_0 \in A : y \in \eqvclass{x_0}{A^2} \subseteq A\) e quindi \(y \in A\). Sia ora  \(y \in A\), allora \(y \in \eqvclass{y}{A^2}\) e quindi
+    \[
+        y \in \bigcup_{x \in A}\eqvclass{x}{A^2}.
+    \]
+    La dimostrazione risulta conclusa.
+\end{proof}
+
+
+\begin{definition}[partizione]\label{def:partizione}
+    Sia \(A\) un insieme non vuoto e sia \(\pi \subseteq \powerset(A)\). si dice che \(\pi\) è una partizione di \(A\) se:
+    \begin{enumerate}
+        \item \(\forall X \in \pi \quad X \neq \emptyset\);
+        \item \(\forall X,Y \in \pi \quad X \neq Y \implies X \cap Y = \emptyset\);
+        \item \(\bigcup_{x \in \pi} x = A\).
+    \end{enumerate}
+\end{definition}
+
+
+\begin{remark}
+    Siano \(A\) un insieme e \(\rel{A}\) una relazione di equivalenza su \(A^2\). Allora l'insieme
+    \[
+        \pi = \set{\eqvclass{a}{A^2} \;\middle|\; a \in A}
+    \]
+    è una partizione di \(A\). Infatti
+    \begin{enumerate}
+        \item \(\forall a \in A \quad \eqvclass{a}{A^2} \neq \emptyset\);
+        \item \(\forall a,b \in A \quad \eqvclass{a}{A^2} \neq \eqvclass{b}{A^2} \implies \eqvclass{a}{A^2} \cup \eqvclass{b}{A^2} = \emptyset\);
+        \item \(\bigcup_{a \in A} \eqvclass{a}{A^2} = A\).
+    \end{enumerate}
+\end{remark}
+
+In generale, se \(\pi\) è una partizione su un insieme \(X\) ad essa si può associare una relazione di equivalenza.
+
+\begin{definition}[insieme quoziente]\label{def:insieme_quoziente}
+    Siano \(A\) un insieme non vuoto e \(\rel{A}\) una relazione di equivalenza su \(A^2\). Si dice insieme quoziente di \(A\) per \(\rel{A}\) e si indica con il simbolo
+    \[
+        \quot{A}{\rel{A}} \subseteq \powerset(A)
+    \]
+    l'insieme di tutte le classi d equivalenza rispetto a \(\rel{A}\). In simboli
+    \[
+        \quot{A}{\rel{A}} = \set{\eqvclass{a}{A^2} \;\middle|\; a \in \rel{A}}.
+    \]
+    Si tratta di una partizione su \(A\).
+\end{definition}
+
+
+\section{Funzioni}\label{sec:funzioni}
+
+\begin{definition}[relazione funzionale]\label{def:relazione_funzionale}
+    Siano \(A\) e \(B\) due insiemi non vuoti e sia \(\rel{A}{B} \subseteq A \times B\). \(\rel{A}{B}\) è una relazione funzionale se
+    \[
+        \forall a \in A \quad \exists! b \in B : (a, b) \in \rel{A}{B}.
+    \]
+\end{definition}
+
+\begin{remark}
+    se \(\exists a \in A\) e \(\exists b_1,b_2 \in B\), con \(b_1 \neq b_2\) si può avere che \((a, b_1) \in \rel{A}{B}\) ma anche \((a, b_2) \in \rel{A}{B}\) e quindi \(\rel{A}{B}\) non è più una relazione funzionale.
+
+    Se \(\exists a \in A\) che non è la prima coordinata di alcuna coppia, allora \(\rell\) non è funzionale.
+\end{remark}
+
+\begin{example}
+    Dati gli insiemi \(A = \set{1, 2, 3, 4, 5}\) e \(B = \set{a, b, x, y}\), la relazione
+    \[
+        \rel[1]{A}{B} = \set{(1, a), (1, b), (2, a), (3, b), (4, x), (5, x)}
+    \]
+    non è funzionale perché \((1, a), (1, b) \in \rel[1]{A}{B}\). Al contrario la relazione
+    \[
+        \rel[2]{A}{B} = \set{(1, a), (2, a), (3, b), (4, x), (5, y)}
+    \]
+    è funzionale. Invece, la relazione
+    \[
+        \rel[3]{A}{B} = \set{(1, y), (3, x), (5, a), (4, b)}
+    \]
+    non è funzionale in quanto non esiste in \(\rel[3]{A}{B}\) alcuna coppia con prima coordinata \(2\).
+\end{example}
+
+\begin{definition}[funzione]\label{def:funzione}
+    Siano \(A,B\) due insiemi non vuoti e sia \(\rel{A}{B}\) (per brevità
+    \(\rell\)) una relazione funzionale tra gli elementi di \(A\) e quelli di
+    \(B\). La terna \(f = (A, B, \rell)\) si dice \em{funzione} o
+    \em{applicazione} oppure \em{mappa} tra \(A\) e \(B\).
+
+    \begin{itemize}
+        \item[\(A\)] si dice insieme di partenza o dominio di \(f\);
+        \item[\(B\)] si dice insieme di arrivo di \(f\);
+        \item[\(\rell\)] si dice grafico di \(f\).
+    \end{itemize}
+    La funzione \(f = (A, B, \rell)\) si denota col simbolo
+    \[
+        f\colon A \to B
+    \]
+    Quindi
+    \[
+        \forall a \in A \quad \exists! b \in B \tc (a, b) \in \rell.
+    \]
+\end{definition}
+
+\begin{examples}
+    Seguono degli esempi:
+    \begin{enumerate}
+        \item \(\rell{1} = \set{(x, y) \in \N \times \Z \mid y = -x}\) è una relazione funzionale, infatti
+            \[
+                \forall x \in \N \;\; \exists! y = -x \in \Z \tc (x, y) \in \R
+            \]
+            Scriviamo la funzione come \(f_1 = (\N, \Z, \rell{1})\) e dunque \(\forall x \in \Z \; f(x) = -x\).
+            \(f_1\) si può scrivere anche come \(f_1 \colon \N \to \Z\) e si ha quindi \(x \mapsto -x\);
+%
+        \item \(\rell{2} = \set{(x, y) \in \Z \times \Z \mid y = -x}\) è una relazione funzionale. \\
+            Scriviamo la funzione come \(f_2 = (\Z, \Z, \R)\), essa si può quindi scrivere anche come \(f_2 = \Z \to \Z\) e quindi si ha \(x \mapsto -x\);
+%
+        \item \(\rell{3} = \set{(x, y) \in \Q^* \times \Q \mid y = 2/x}\) è una relazione funzionale, infatti
+            \[
+                \forall x \in \Q^* \quad \exists! y \in \Q \tc y = 2/x
+            \]
+            Scriviamo la funzione come \(f_3 \colon \Q^* \to \Q\) e quindi \(x \mapsto 2/x\);
+%
+        \item \(\rell{4} = \set{(x, y) \in \Q \times \Q \mid y = 2/x}\) non è una relazione funzionale, perché
+            \[
+                \exists x = 0 \in \Q \tc \forall y \in \Q \quad (0, y) \notin \rell{4};
+            \]
+%
+        \item \(\rell{5} = \set{(x, y) \in \Q^* \times \Q^* \mid y = 2/x}\) è una relazione funzionale. Scriviamo la funzione come \(f_5 = (\Q^*, \Q^*, \rell{5})\) oppure come \(f_5 \colon \Q^* \to \Q^*\) e dunque \(x \mapsto 2/x\).
+    \end{enumerate}
+\end{examples}
+
+
+\begin{remark}
+    Siano \(f \colon A \to B\) e \(g \colon C \to D\) due funzioni, segue che \(x \mapsto f(x)\) e \(y \mapsto g(y)\). Si ha che
+    \[
+        f = g \Longleftrightarrow A = C \land B = D \land \forall x \in A = C \quad f(x) = g(x).
+    \]
+\end{remark}

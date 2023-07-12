@@ -1,0 +1,388 @@
+% !TEX root = ./Matematica discreta.tex
+
+
+% Declare that this style file requires at least LaTeX version 2e.
+\NeedsTeXFormat{LaTeX2e}
+
+% Provide the name of your page, the date it was last updated, and a comment about what it's used for
+\ProvidesPackage{preamble}[26/11/2021 preamble for mat dis]
+
+
+
+% PAGE SIZE & FORMAT %----------------------------------------------------------------------------------%
+\usepackage{geometry}   % to customize the doc layout
+\newgeometry{
+    % paper   = a5paper,
+    top    = 2.5cm,   % setting top margin
+    bottom = 2.5cm,   % setting bottom margin
+    % showframe,        % demo, to show page borders
+}
+
+
+
+%% PACKAGES %-------------------------------------------------------------------------------------------%
+
+% basically required for every document
+\usepackage[T1]{fontenc}      % to have T1 font encoding (8-bit) that has 256 glyphs
+\usepackage[utf8]{inputenc}   % to have UTF-8 input encoding support
+\usepackage[italian]{babel}   % to translate chapters etc.
+
+
+% required by biblatex
+\usepackage{csquotes}   % gives lots of option for quotations
+
+
+% to use and define colors
+\usepackage[x11names]{xcolor}
+
+
+% to have filler text
+\usepackage{lipsum}
+
+
+% to have better lists
+\usepackage{enumitem}
+
+
+% math related packages
+\usepackage[e]{esvect}   % allows to have much nicer vectors
+\usepackage{
+    amsmath,     % provides lots of maths features
+    amssymb,     % adds some symbols
+    mathtools,   % provides nice math symbs and more
+    nccmath,     % extends and improves AMSmath
+    siunitx,     % for nice SI units & "." aligned cols
+    commath,     % to better typeset differentals
+    amsthm,      % cool theorems envs
+    thmtools,    % also cool theorems envs
+    % mathdots,    % give more dots options
+    mathrsfs,    % for fancy capital letters
+    % mathtools,   % more matrices, etc
+    % calc,        % makes arithmetic simpler for LaTeX commands
+    bm,          % allows to use boldface symbols
+    cancel,      % to cancel symbols/nums/other in equations
+    centernot,   % to have centered negation for math operators
+    % nicefrac,    % better inline fractions, but 1/2 might be better
+}
+
+% \mathtoolsset{firstline-afterskip=0pt}  % what does this do ???
+
+
+% to insert and deal with images
+% \usepackage{graphicx}
+
+% \graphicspath{
+%     {./images/}         % set path relative to .tex file
+%     {C:/user/images/}   % set absolute path
+% }
+
+
+% to improve tables typesetting
+\usepackage{
+    booktabs,    % provides command to display correct hlines in tables
+    tabularx,    % provides tabular env & more
+    array,       % gives the options for column formats (also (egs.) >{<\bfseries>}l)
+    % multirow,    % allows text to span for multiple rows
+    % longtable,   % allows to write tables that continue to the next page
+}
+
+
+% improve "standard" text typesetting
+\usepackage{
+    enumitem,      % provides control over the layout of: enumerate, itemize and description
+    multicol,      % defines multicols environment which typesets text in multiple columns
+    % listings,      % enables the user to typeset programs
+    % stackengine,   % provides ways to stack objects vertically
+}
+
+
+% to rotate pages and/or tables
+% \usepackage{
+%     lscape,     % provides env to rotate pages
+%     % rotating,   % to rotate images & tables
+% }
+
+
+% to have hyperlinks
+\usepackage{hyperref}            % standard ref
+\usepackage[italian]{cleveref}   % to have clever refences
+
+
+\definecolor{urls}{HTML}{0D57A7}    % define color for urls
+\definecolor{links}{HTML}{ED127B}   % define color for hypeflinks
+\definecolor{cits}{HTML}{4D940B}    % define color for citations
+
+% to use the color defined above
+\hypersetup{
+    colorlinks  = true,    % to display colored links
+    urlcolor    = urls,    % assign color to url
+    linkcolor   = links,   % assign color to hyperlinks
+    citecolor   = cits,    % assign color to citations
+}
+
+% change index hyperref color
+% \definecolor{Ultramarine}{HTML}{120A8F}
+% \definecolor{Sapphire}{HTML}{0F52BA}
+% \definecolor{Azure}{HTML}{007FFF}
+
+% \renewcommand{\cftchapfont}{\normalfont\hypersetup{linkcolor=Ultramarine}}
+% \renewcommand{\cftsecfont}{\normalfont\hypersetup{linkcolor=Sapphire}}
+% \renewcommand{\cftsubsecfont}{\normalfont\hypersetup{linkcolor=Azure}}
+% \renewcommand{\cftfigfont}{\normalfont\hypersetup{linkcolor=Sapphire}}
+% \renewcommand{\cfttabfont}{\normalfont\hypersetup{linkcolor=Sapphire}}
+
+
+% to adjust the separation between number and title in TOC
+\usepackage{tocloft}
+
+\advance\cftchapnumwidth 0.4em\relax
+\advance\cftsecindent 0.4em\relax
+\advance\cftsecnumwidth 0.4em\relax
+\advance\cftfignumwidth 0.4em\relax
+\advance\cfttabnumwidth 0.4em\relax
+% \advance\cfttheonumwidth 0.4em\relax
+
+% custom vertical skip after chap/sec/subsec
+% \renewcommand{\cftchapafterpnum}{\vskip5pt}
+% \renewcommand{\cftsecafterpnum}{\vskip2pt}
+% \renewcommand{\cftsubsecafterpnum}{\vskip1pt}
+
+% to rename the list of theorem to italian
+\renewcommand{\listtheoremname}{Lista dei Teoremi}
+
+
+% to produce graphs and drawings
+\usepackage{pgfplots}
+\pgfplotsset{
+               compat = 1.17,    % to choose 1.17 version
+       minor tick num = 1,       % to have only 1 minor tick
+    legend cell align = left,    % align legend entries to the left
+          axis on top = true,    % puts axixs on top of graphs
+        enlargelimits = false,   % to make data fit the graphic area
+}
+
+% NOTE: @add-comments [tikz] - must ++ comments to explain
+\usetikzlibrary{
+    patterns,        % to make use of patterns
+    calc,            % to calculate varous things like coords
+    angles,          % to draw angles better
+    quotes,          % idk
+    intersections,   % idk
+    through,         % idk
+    hobby,           % idk
+    arrows.meta,
+    datavisualization.formats.functions,
+    positioning,
+    decorations.pathreplacing,
+    fillbetween,
+    shapes,
+    positioning,
+    fit
+}
+
+
+% to have custom counters
+\usepackage{chngcntr}
+
+% make counter count within the section (resets on new sec)
+\counterwithin{figure}{section}     % for figures
+\counterwithin{table}{section}      % for tables
+\counterwithin{equation}{section}   % for equations
+
+% to have "eq." in front of the eq. number
+\renewcommand{\theequation}{eq.\,\thesection.\arabic{equation}}
+
+
+% to change caption appearance
+\usepackage[
+    font = scriptsize,   % choose font size
+]{caption}[2020/09/12]   % choose latest version
+
+% for tables
+\captionsetup[table]{
+    name          = Tab.,        % change caption to "Tab." instead of "Tabella"
+    skip          = 7pt,         % change caption vspace from table
+    % justification = centering,   % to center caption
+}
+
+% for figures
+\captionsetup[figure]{name=Fig.}
+
+
+% % to use a bibliography and to cite other people work
+% \usepackage{biblatex}            % auto formats bibliography & more
+
+% \addbibresource{citations.bib}   % import the .bib file
+
+
+\usepackage{
+    scrextend,   % to have the "addmargin" env
+    hyphenat,    % to prevent hyphenation in title
+}
+
+
+%%% COMMANDS %------------------------------------------------------------------------------------------%
+
+\usepackage{xparse}
+
+% Numeric Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% the mod of a num/func/etc
+\renewcommand{\mod}[1]{\mathrm{mod}\,#1}
+
+% to have True in binary (1) or in letter (T)
+\newcommand{\true}[1][b]{%
+    \ifx b#1%
+        \bgroup\(1\)\egroup
+    \else
+    \ifx l#1%
+        \bgroup\textsc{v}\egroup
+    \fi
+    \fi
+}
+
+% to have False in binary (0) or in letter (F)
+\newcommand{\false}[1][b]{%
+    \ifx b#1%
+        \bgroup\(0\)\egroup
+    \else%
+    \ifx l#1%
+        \bgroup\textsc{f}\egroup
+    \fi
+    \fi
+}
+
+% custom em spacing command
+\newcommand{\emspace}[1]{\hspace*{#1em}}
+
+% to have extra "so that"
+\newcommand{\tc}{\mathrm{\emspace{.5}t.c.\emspace{.5}}}
+
+% better looking (IMHO) <\emptyset>
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% nice looking powerset notation using <\wp>
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+
+% automatic powerset listing: <\setsd{1, 2, 3} = {{1}, {2}, {3}}>
+\def\setsc#1{\def\sep{\def\sep{,}}\@for\tmp:=#1 \do{\sep\{\tmp\}}}
+\def\setsd#1{\{\def\sep{\def\sep{,}}\@for\tmp:=#1 \do{\sep\{\tmp\}}\}}
+
+% to better typeset <R_{set^2}^{num}> or <R_{(set x set)}^{num}>, does support no <^{num}>
+\NewDocumentCommand{\rel}{ o m g }{
+    \IfNoValueTF {#1} {
+        % if 1st optional argument IS NOT given
+        \IfNoValueTF {#3} {
+            % if 3rd optional argument IS NOT given
+            \mathcal{R}_{#2^2}
+        }{
+            % if 3rd optional argument IS given
+            \mathcal{R}_{\left(#2 \times #3\right)}
+        }
+    }{   % if 1st optional argument IS given
+        \IfNoValueTF {#3} {
+            % if 3rd optional argument IS NOT given
+            \mathcal{R}_{#2^2}^{\raisebox{.07em}{\tiny\ensuremath{\!#1}}}
+        }{
+            % if 3rd optional argument IS given
+            \mathcal{R}_{\left(#2 \times #3\right)}^{\raisebox{.07em}{\tiny\ensuremath{\!#1}}}
+        }
+    }
+}
+
+% simple <\mathcal{R}> with no args
+\NewDocumentCommand{\rell}{ g }{
+    \IfNoValueTF {#1} {
+        \mathcal{R}
+    }{
+        \mathcal{R}^{#1}
+    }
+}
+
+
+% avoid using the same name for the Δ (letter) and Δ (set)
+\newcommand{\setdiag}[1]{\Delta\big(#1^2\big)}
+
+% avoid having <n \mid n> in the document (could confuse the <\mid> for a <so that>)
+\newcommand{\isdiv}[2]{#1 \!\mid\! #2}
+\newcommand{\isndiv}[2]{#1 \!\nmid\! #2}   % negation
+
+% avoid writing <{\prime\prime}>, instead write <{\second}>
+\newcommand{\second}{\prime\prime}
+
+% avoid writing <{[x]}_{\mathcal{R}_{set^2}^{num}}>
+\NewDocumentCommand{\eqvclass}{ m m o }{
+    \IfNoValueTF {#3} {
+        {\left[\emspace{.1} #1 \emspace{.1}\right]}_{\mathcal{R}_{#2}}
+    }{
+        {\left[\emspace{.1} #1 \emspace{.1}\right]}_{\mathcal{R}_{#2}^{\ensuremath{\!#3}}}
+    }
+}
+
+
+
+
+
+%%%% THEOREMS & CO. %-----------------------------------------------------------------------------------%
+
+% define the spacing around theorem environment
+\def\thm@space@setup{%
+    \thm@preskip=0.7cm
+    \thm@postskip=\thm@preskip % or whatever, if you don't want them to be equal
+}
+
+
+% STANDARD THEOREMS/DEFS/ETC
+\declaretheorem[numberwithin=section, name=Teorema]{theorem}            % TEOREMA
+\declaretheorem[sibling=theorem,      name=Definizione]{definition}     % DEFINIZIONE
+\declaretheorem[sibling=theorem,      name=Lemma]{lemma}                % LEMMA
+\declaretheorem[sibling=theorem,      name=Proposizione]{proposition}   % PROPOSIZIONE
+\declaretheorem[sibling=theorem,      name=Corollario]{corollary}       % COROLLARIO
+
+% custom named theorems/etc
+\declaretheorem[sibling=theorem,      name=Paradosso di Russel]{paradosso_russel}   % PARADOSSO DI RUSSEL
+
+% other "theorems" that are not theorems but follow the same style
+\declaretheorem[numbered=no, name=Osservazione, style=remark]{remark}     % OSSERVAZIONE
+\declaretheorem[numbered=no, name=Esempio,      style=remark]{example}    % ESEMPIO
+\declaretheorem[numbered=no, name=Esempi,       style=remark]{examples}   % ESEMPI
+
+
+% change <\textit{Dimostrazione.}> to <\textsc{dimostrazione:}>
+\renewenvironment{proof}{\noindent\textsc{Dimostrazione:}}{\qed}   % DIMOSTRAZIONE
+
+% have two "sections" for right/left hand side of proof (when proving <==>)
+\newenvironment{lhs}{\\\noindent\textbf{\scriptsize LHS\;:}}{\hfill\null\vspace{0.1cm}}
+\newenvironment{rhs}{\\\noindent\textbf{\scriptsize RHS\;:}}{}
+
+
+
+
+%%%%% INPUT PATHS %---------------------------------------------------------------------------------------%
+
+% avoid writing <\input{folder/file_name}> and simply write <\input{file_name}>
+\def\input@path{
+    {./!miei appunti mat dis/../tables}     % for tables
+    {./!miei appunti mat dis/../tikzpics}   % for tikzfigures
+    % {./!miei appunti mat dis/../graphs}
+}
+
+
+
+%%%%% TESTS %---------------------------------------------------------------------------------------------%
+
+
+\newcommand{\quot}[2]{#1 \raisebox{-0.2em}{\ensuremath{{\left/\right.}_{\!#2}}}}
+
+\newcommand{\quotient}[2]{#1}
+
+
+
+
+\endinput

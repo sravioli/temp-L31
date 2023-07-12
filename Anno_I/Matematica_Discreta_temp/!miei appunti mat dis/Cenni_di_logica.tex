@@ -1,0 +1,483 @@
+% !TEX root = ./Matematica discreta.tex
+
+\chapter{Cenni di Logica}\label{chapt:cenni_di_logica}
+
+\section{Proposizioni Atomiche}\label{sec:proposizioni_atomiche}
+Le proposizioni possono essere distinte in:
+
+\begin{itemize}
+    \item proposizioni \textbf{atomiche}, dette anche proposizioni semplici;
+    \item proposizioni \textbf{molecolari}, dette anche proposizioni composte.
+\end{itemize}
+
+Una proposizione si dice \textbf{atomica} o semplice se è formata da un
+soggetto, da un verbo ed eventualmente da uno o più complementi. In altre
+parole la proposizione atomica non può essere scomposta in parti più semplici.
+Queste proposizioni permettono di dire con certezza se siano Vere (\true[l]) o
+False (\false[l])
+Alcuni esempi sono i seguenti:
+
+\begin{enumerate}[label=\(\alph*\))]
+    \item \(5\) è un numero primo (\true[l]);
+    \item \(10\) è un numero dispari (\false[l]);
+    \item Roma si trova in Piemonte (\false[l]).
+\end{enumerate}
+
+Proposizioni come ``la matematica è bella'' non permettono di dire se siano
+Vere o False.
+
+Si prenda la proposizione ``\(x\) è un numero positivo''. Questa non è una
+proposizione atomica e non è possibile dire se sia \true[l]{} o \false[l]{}
+poiché è presente un'incognita, ovvero \(x\); in base all'insieme di
+appartenenza di \(x\) il valore (\true[l]/\false[l]) della proposizione
+cambia. È necessario sostituire un numero al posto di \(x\), sostituendo
+\(3/2\) la proposizione risulta \true[l]{}, sostituendo \(-\sqrt{2}\) risulta
+\false[l]{}.
+
+Per poter conoscere il valore della proposizione precedente è possibile
+utilizzare dei quantificatori:
+
+\begin{itemize}
+    \item \(\forall\) – ``per ogni'';
+    \item \(\exists\) – ``esiste''.
+\end{itemize}
+
+Questi quantificatori hanno senso se la variabile varia in un universo,
+quest'ultimo non è altro che un insieme.
+
+Un insieme in Matematica è un raggruppamento di elementi di qualsiasi tipo
+numerico, logico o concettuale) che può essere individuato mediante una
+caratteristica comune agli elementi che vi appartengono oppure per semplice
+elencazione degli elementi dell'insieme. L'insieme dei numeri naturali \((\N\),
+ad esempio, racchiude al suo interno tutti i numeri interi positivi. Gli
+oggetti di un insieme vengono detti \textbf{elementi}. L'argomento verrà
+trattato approfonditamente nel capitolo~\nameref{chapt:Cenni_Teoria_Insiemi}.
+
+Se \(A\) è un insieme e \(a\) è un suo elemento è possibile scrivere
+
+\[
+    a \in A \quad \text{oppure} \quad A \ni a
+\]
+
+che si legge ``\(a\) appartiene ad \(A\)'' oppure ``\(a\) è elemento di \(A\)''.
+Al contrario, per esprimere la non appartenenza all'insieme si scriverà
+
+\[
+    a \notin A \quad \text{oppure} \quad A \centernot\ni a
+\]
+
+\begin{example}
+    Si prenda come universo l'insieme \(\N\) che è definito come
+    \(\N \coloneqq \{0,1,2,\dotsc,n\}\).
+    La proposizione \(1 \in \N\) risulta essere \true[l]. Prendendo la
+    proposizione \(\forall x \in \N \; x \geq 0\) essa risulta \true{}
+    considerando lo \(0\) positività).
+
+    Si prenda ora l'insieme \(\Z \coloneqq \{\dotsc,-2,-1,0,1,2,\dotsc\}\), l'insieme dei numeri relativi. Prendendo la proposizione \(\forall x \in \Z \; x \geq 0\) essa risulterà \false{}. Scrivendo invece \(\exists x \in \Z \tc x \geq 0\) la proposizione risulta \true[l].
+\end{example}
+
+
+\section{Connettivi Logici}\label{sec:connettivi_logici}
+Un connettivo logico o operatore logico, è un elemento grammaticale di collegamento che instaura fra due proposizioni \(a\) e \(b\) una qualche relazione che dia origine ad una terza proposizione \(c\) con un valore vero o falso, in base ai valori delle due proposizioni 
+% fattori 
+ed al carattere del connettivo utilizzato. I connettivi logici permettono dunque di formare delle proposizioni più complesse.
+
+\subsection{Negazione}\label{subsec:negazione}
+Il primo connettivo logico è la \textsc{negazione}: data una proposizione atomica \(a\), la sua negazione si indica con \(\neg{a}\) oppure con \(\bar{a}\) e si legge ``non \(a\)''. Dunque \(\neg{a}\) è negazione di \(a\), di conseguenza se \(a\) è \true[l]{} allora \(\neg{a}\) è \false[l]{} e, al contrario, se \(a\) è \false[l]{} allora \(\neg{a}\) è \true[l]{}. Se una proposizione è vera le si assegna il valore \(1\), se è falsa le si assegna il valore \(0\).
+
+\input{tab_T-F_negazione}
+
+\begin{example}
+    Si prenda la proposizione \(b\): ``\(10\) è un numero dispari'' che ha valore \false, la sua negazione \(\neg b\) sarà ``\(10\) \textbf{non} è un numero dispari e assume valore'' \true.
+\end{example}
+
+\begin{example}
+    Si prenda la proposizione \(p\): ``Milano è la capitale dell'Italia'', essa ha valore \false, però la sua negazione \(\neg p\), ``Milano non è la capitale dell'Italia'', ha valore \true.
+\end{example}
+
+
+\subsection{Disgiunzione}\label{subsec:disgiunzione}
+Il secondo connettivo logico è la \textsc{disgiunzione}, essa si indica col simbolo ``\(\lor\)''. Prese due proposizioni \(a, b\) la proposizione \(a \lor b\) si legge ``\(a\) \textbf{o} \(b\)'' e si chiama disgiunzione di \(a\) e \(b\).
+
+\input{tab_T-F_disgiunzione}
+
+\begin{example}
+    Si prendano le proposizioni \(p\): ``\(\sqrt{2}\) è un numero razionale'' (\false) e \(q\): ``\(5\) è un numero pari'' (\false). Si avrà che \(p \lor q\): ``(\(\sqrt{2}\) è un numero razionale) \(\lor\) (\(5\) è un numero pari)'' risulterà essere Falsa (\false).
+
+    Preso \(q'\): ``\(5\) è un numero dispari'', si ha che \(p \lor q'\): ``(\(\sqrt{2}\) è un numero razionale) \(\lor\) (\(5\) è un numero dispari)'' che ha valore di verità (\true).
+\end{example}
+
+
+\subsection{Congiunzione}\label{subsec:congiunzione}
+Il terzo connettivo logico è la \textsc{congiunzione}, essa si indica con il simbolo ``(\(\land\))''. Prese due proposizioni atomiche \(a\) e \(b\), allora la proposizione \(a \land b\) si legge ``\(a\) \textbf{e} \(b\)'' si dice congiunzione di \(a\) e \(b\).
+
+\input{tab_T-F_congiunzione}
+
+\begin{example}
+    Si prendano le proposizioni \(p\): ``la mosca è un insetto'' (\true) e \(q\): ``\(4\) è un multiplo di \(2\)'' (\true). La proposizione \(p \land q\): ``(la mosca è un insetto) \(\land\) (\(4\) è un multiplo di \(2\))'' (\true).
+\end{example}
+
+\begin{example}
+    Si prendano le proposizioni \(r\): ``l'asino vola'' (\false) e \(s\) ``\(\sqrt{2}\) è positivo'' (\true). La proposizione \(r \land s\): ``(l'asino vola) \(\land\) (\(\sqrt{2}\) è positivo)'' risulta essere falsa (\false)
+\end{example}
+
+
+\subsection{Implicazione}\label{subsec:implicazione}
+Il quarto connettivo logico è l'\textsc{implicazione}, essa si indica con il simbolo ``\(\longrightarrow\)''. Prese due proposizioni atomiche \(a\) e \(b\), allora la proposizione \(a \longrightarrow b\) si legge ``\(a\) implica \(b\)'' oppure ``se \(a\) allora \(b\)'' e presenta la seguente tabella di verità
+
+\input{tab_T-F_implicazione}
+
+\begin{paradosso_russel}
+    Se \(1 = 2\) allora io sono il Papa. Se \(1 = 2\) allora io e il Papa siamo due, ma \(2 = 1\) allora io sono il Papa.
+\end{paradosso_russel}
+Il paradosso si verifica poiché si parte da una proposizione falsa.
+
+\begin{example}
+    Prese le proposizioni \(a\): ``l'automobile viaggia'' e \(b\): ``l'automobile ha carburante''. Ne risulta che se la \(a\) ha valore di verità \true, allora \(b\) ha valore di verità \true{}; se, invece, \(a\) ha valore di verità \false, allora non è possibile dire che \(b\) sia vera.
+\end{example}
+
+
+\subsection{Doppia implicazione}\label{subsec:doppia_implicazione}
+Il quinto connettivo logico è la \textsc{doppia implicazione}, essa si indica con ``\(\longleftrightarrow \)''. Prese due proposizioni atomiche \(a\) e \(b\), allora la proposizione \(a \longleftrightarrow  b\) si legge ``\(a\) se e solo se \(b\)'' e corrisponde a \((a \longrightarrow b) \land (b \longrightarrow a)\). Ha la seguente tabella di verità.
+
+\input{tab_T-F_doppia_implicazione}
+
+
+\section{Formule della logica proposizionale}\label{sec:formule_logica_proposizionale}
+Siano \(a_1, a_2, \dotsc, a_n\) dei simboli. Una formula si ottiene nel modo seguente:
+\begin{enumerate}
+    \item \(a_1, a_2, \dotsc, a_n\) sono formule;
+    \item se \(a,b\) sono formule, sono formule anche:
+        \[
+            \neg a, \quad a \land b, \quad a \lor b, \quad a \longrightarrow b, \quad a \longleftrightarrow  b
+        \]
+    \item le formule si ottengono esclusivamente da \(1\). e \(2\).
+\end{enumerate}
+
+\begin{example}
+    Siano \(p, q, r\) delle formule allora anche
+    \begin{gather}
+        \big(p \land (q \longrightarrow r)\big) \longleftrightarrow \big((\neg q) \lor (\neg r)\big) \label{eq:formula_1} \\
+        \big((\neg p) \longrightarrow (q \land r)\big) \lor \big(p \longrightarrow q\big) \label{eq:formula_2}    
+    \end{gather}
+\end{example}
+risultano essere delle formule. L'ordine da seguire è il seguente:
+\begin{enumerate}
+    \item negazione \((\neg)\);
+    \item congiunzione e disgiunzione \((\land, \lor)\);
+    \item implicazione e doppia implicazione \((\longrightarrow, \longleftrightarrow)\).  
+\end{enumerate}
+È dunque possibile eliminare delle parentesi che risultano essere in eccesso, l'\ref{eq:formula_1} si scriverà:
+\[
+    \big(p \land (q \longrightarrow r)\big) \longleftrightarrow (\neg q \lor \neg r)
+\]
+e l'\ref{eq:formula_2} diventa:
+\[
+    (\neg p \longrightarrow q \land r) \lor (p \longrightarrow q).
+\]
+La tavola di verità, ad esempio, dell'\ref{eq:formula_1} è la~\cref{tab:T-F_formula_1}.\\
+
+\input{tab_T-F_formula_1}
+
+\noindent Nel caso di una formula con \(k\) variabili si esamineranno \(2^k\) casi differenti.\\
+
+Se la tavola di verità di una formula è sempre vera, allora tale formula si dice \underline{tautologia}; se è sempre falsa si dice \underline{contraddizione}.
+\newpage
+
+\begin{example}
+    Sia \(a\) una formula. Si avrà che \(a \land \neg a\) è una contraddizione, infatti:
+    \input{tab_T-F_es_contraddiz_1}
+    \noindent Al contrario, \(\neg a \lor a\) è una tautologia, infatti:
+    \input{tab_T-F_es_tautologia_1}
+\end{example}
+
+\begin{example}
+    Siano \(a, b\) due formule. Un altro esempio di tautologia è la seguente formula
+    \[
+        \neg(a \land b) \longleftrightarrow \neg a \lor \neg b,
+    \]
+    la tabella di verità è la seguente:
+    \input{tab_T-F_es_tautologia_2}
+\end{example}
+% \newpage
+
+\begin{example}
+    Siano \(a\): ``\(5\) è pari'' e \(b\): ``\(3\) è primo'' due proposizioni. Si avrà che:
+    \begin{itemize}
+        \item \(a \land b\) è Falsa (\false);
+        \item \(\neg(a \land b)\) è Vera (\true);
+        \item \(\neg(a \land b) \longleftrightarrow \neg a \lor \neg b \implies (5 \text{ è dispari}) \lor (3 \text{ non è primo})\) è Vera (\true).
+    \end{itemize}
+\end{example}
+
+\begin{definition}[conseguenza logica]\label{def:implicazione_logica}
+    Siano \(a, b\) due formule. Si dice che \(b\) è conseguenza logica di \(a\) e si scrive
+    \[
+        a \implies b
+    \]
+    se \(b\) è vero ogni qualvolta \(a\) è vera.
+\end{definition}
+
+\begin{definition}[formule semanticamente equivalenti]\label{def:semanticamente_equivalenti}
+    Siano \(a, b\) due formule. Si dice che \(a\) e \(b\) sono semanticamente equivalenti se \(b\) è conseguenza logica di \(a\) e \(a\) è conseguenza logica di \(b\):
+    \[
+        a \iff b \quad\text{vuol dire}\quad [a \implies b] \land [b \implies a].
+    \]
+\end{definition}
+
+\begin{proposition}\label{prop:stessa_tab_T-F}
+    Siano \(a, b\) due formule. Risulta che \(a\) e \(b\) sono semanticamente equivalenti se e soltanto se hanno la stessa tavola di verità.
+\end{proposition}
+
+\begin{proof}
+    \begin{lhs}
+        Supponiamo che \(a\) e \(b\) siano semanticamente equivalenti. Se \(a\) ha valore di verità \true, allora anche \(b\) ha valore di verità \true, perché \(b\) è conseguenza logica di \(a\). Se \(a\) ha valore di verità \false, allora anche \(b\) ha valore di verità \false, perché se \(b\) avesse valore di verità \true, \(a\), che è conseguenza logica di \(b\), avrebbe valore di verità \true. Scambiando tra loro \(a\) e \(b\) si deduce che \(a\) e \(b\) hanno la stessa tavola di verità.
+    \end{lhs}
+    \begin{rhs}
+        Supponiamo che \(a\) e \(b\) abbiano la stessa tavola di verità. Se \(a\) ha valore di verità \true, allora anche \(b\) ha valore di verità \true{} e quindi \(b\) è conseguenza logica di \(a\). Se \(b\) ha valore di verità \true{}, allora anche \(a\) ha valore di verità \true{} e quindi \(a\) è conseguenza logica di \(b\) e dunque \(a\) e \(b\) sono semanticamente equivalenti.
+    \end{rhs}
+\end{proof}
+
+\begin{remark}
+    Siano \(a, b\) due formule. Allora \(a \Longleftrightarrow b\) se e solo se \(a \longleftrightarrow b\) è una tautologia.\\
+\end{remark}
+
+
+\section{Regole di inferenza}\label{sec:regole_di_inferenza}
+Nella logica matematica una regola di inferenza è uno schema formale che si applica nell'eseguire un'inferenza. In altre parole, è una regola che permette di passare da un numero finito di proposizioni assunte come premesse a una proposizione che funge da conclusione.
+
+\subsection{Modus Ponens o Metodo di Dimostrazione Diretta}\label{subsec:modus_ponens}
+Nella logica, il modus ponens, è una semplice e valida regola d'inferenza, che afferma che se \(P \longrightarrow  Q\) è una proposizione Vera, e anche la premessa \(P\) è Vera, allora la conseguenza \(Q\) è vera; in notazione con operatori logici:
+\[
+    \big(P \land (P \longrightarrow Q)\big) \implies Q.
+\]
+La conclusione si evince dalla tabella di verità:
+\input{tab_T-F_modus_ponens}
+
+\noindent infatti quando \(P\) e \(P \longrightarrow Q\) sono Vere, anche \(Q\) è vero.
+
+\begin{example}
+    Se \(n\) è un numero intero pari, allora anche \(n^2\) è un numero intero pari.
+    Dunque la proposizione \(P\): ``\(n\) è pari'' afferma che \(\exists h \tc n = 2h\). Verifichiamo che la proposizione \(Q\): ``\(n^2\) è pari'' sia Vera:
+    \[
+        n^2 = {\left(2h\right)}^2
+            = 2^2 h^2
+            = 2 \left(2h^2\right)
+    \]
+    che è effettivamente un numero pari dato che \(\exists k = 2h^2 \tc n^2 = 2k\).
+    % Si noti che se \(P\) è Vera e \(P \longrightarrow Q\) è Vera allora anche \(Q\) è vera.
+\end{example}
+
+
+\subsection{Modus Tollens}\label{subsec:modus_tollens}
+Siano \(P, Q\) due formule. Il modus tollens asserisce che se \(P \longrightarrow Q\) è Vera, ed è Vera anche la negazione di \(Q\), allora la negazione di \(P\) è un enunciato vero; in simboli:
+\[
+    \left[(P \longrightarrow Q) \land \neg Q\right] \longrightarrow \neg P
+\]
+La tabella di verità è la seguente:
+\input{tab_T-F_modus_tollens}
+Grazie alla tavola di verità del modus tollens possiamo concludere che esso è una tautologia.
+\begin{example}
+    Si considerino le due proposizioni \(P\): ``Luca ha sete'' e \(Q\): ``Luca beve''. Le loro negazioni sono \(\neg P\): ``Luca non ha sete'' e \(\neg Q\): ``Luca non beve''. La proposizione \(P \longrightarrow Q\) equivale a: ``Luca ha sete allora Luca beve''. Secondo la regola del modus tollens, se \(P \longrightarrow Q \) è Vera e anche \(\neg Q\) è Vera, allora \(\neg P\) è Vera. In questo esempio: ``se Luca ha sete allora beve (\(P \longrightarrow Q\)), ma Luca non beve (\(\neg Q\)), quindi Luca non ha sete (\(\neg P\))''.
+\end{example}
+
+\begin{remark}
+    Si ricordi che il modus tollens afferma che se \(P \longrightarrow Q\) è un enunciato Vero, ed è Vera anche la negazione di \(Q\), allora \(\neg P\) è un enunciato Vero.
+    La sua corretta formulazione con i simboli dovrebbe essere la seguente:
+    \[
+        [(P \longrightarrow Q) \land \neg Q] \implies \neg P,
+    \]
+    ossia l'ultima implicazione dovrebbe essere un'implicazione logica. Tuttavia, poiché il modus tollens è una tautologia, i due simboli possono essere usati indistintamente.
+\end{remark}
+
+
+\subsection{Dimostrazione per contrapposizione}\label{subsec:dim_contrapposizione}
+In matematica, la dimostrazione per contrapposizione è una regola di inferenza in cui si deduce la proposizione dalla sua contropositiva. In altre parole, la conclusione \(P \longrightarrow Q\) è dedotta dimostrando che \(\neg Q \longrightarrow \neg P\). Spesso questo approccio viene utilizzato quando la negazione è più semplice da dimostrare rispetto alla proposizione originale. In formule:
+\[
+    [P \longrightarrow Q] \iff [\neg Q \longrightarrow \neg P].
+\]
+
+Logicamente, la validità della dimostrazione per contrapposizione può essere dimostrata osservando la seguente tavola di verità:
+\input{tab_T-F_dim_contrapposizione}
+Si può notare come \(P \longrightarrow Q\) e \(\neg Q \longrightarrow \neg P\) hanno la stessa tavola di verità, dunque per la~\cref{prop:stessa_tab_T-F} sono semanticamente equivalenti.
+
+\begin{example}
+    Sia \(n\) un numero intero. Si provi che se \(n^2\) è pari, allora \(n\) è pari. Nonostante una dimostrazione diretta (\cref{subsec:modus_ponens}) è possibile, usiamo la dimostrazione per contrapposizione. Il contropositivo della proposizione precedente è: ``se \(n\) non è pari, \(n^2\) non è pari''. Quest'ultima proposizione può essere provata come segue: se \(n\) non è pari allora è dispari. Il prodotto di due numeri dispari è dispari, quindi \(n^2 = n \cdot n\) è dispari, dunque \(n^2\) non è pari.
+    Avendo provato il contropositivo, possiamo affermare che la proposizione iniziale è Vera.
+\end{example}
+
+
+\subsection{Dimostrazione per assurdo}\label{subsec:dimostrazione_per_assurdo}
+La dimostrazione per assurdo è un tipo di argomentazione logica nella quale, muovendo dalla negazione della tesi che si intende sostenere e facendone seguire una sequenza di passaggi logico-deduttivi, si giunge a una conclusione incoerente e contraddittoria. Tale risultato, nella logica argomentativa, confermerebbe l'ipotesi iniziale, per mezzo della falsificazione della sua negazione. In formule:
+\[
+    \big[\neg Q \longrightarrow (R \land \neg R)\big] \implies Q,
+\]
+dove \(R\) è un'altra proprietà di cui è già noto il valore di verità.
+
+\begin{example}
+    Si consideri la proposizione \(Q\): ``non esistono \(x,y\) numeri interi tali che \(3x + 6y = 5\)''. Supponiamo \((\neg Q)\) che esistano due numeri interi \(x_0, y_0\) tali che 
+    \[
+        3x_0 + 6y_0 = 5
+    \]
+    allora
+    \[
+        3(x_0 + 2y_0) = 5
+    \]
+    dunque \(5\) sarebbe un multiplo di \(3\). Dunque si ha che \(R\): ``\(5\) non è multiplo di \(3\)'' \textbf{e} \(\neg R\): ``\(5\) è multiplo di \(3\)''. Si è giunti ad una contraddizione, dunque la dimostrazione risulta conclusa.
+\end{example}
+
+
+\section{Predicati}\label{sec:predicati}
+Si prenda in considerazione \(P\): ``\(x\) è un numero pari'', questa non è una proposizione perché non è possibile sapere il suo valore di verità. Quest'ultimo dipende dal valore che l'incognita \(x\) assume: al variare di \(x\) si otterranno proposizioni che potranno essere vere o false. Una frase del genere è dunque detta \textbf{predicato} e a seconda dei valori della \(x\) si trasformerà in una proposizione Vera o una proposizione Falsa.
+È possibile sostituire qualsiasi valore alla \(x\)? No, perché soltanto alcuni valori della \(x\) danno un senso alla frase: ``\(7\) è un numero pari'' è Falso, ma almeno ha senso; ``cerchio è un numero pari'' non è né vero né falso perché la frase non ha alcun significato.
+
+Quindi gli elementi che possono essere sostituiti alla \(x\) fanno parte di un determinato insieme e sono tali che sostituendoli alla \(x\) si ottiene una frase dotata di senso. Tale insieme è detto dominio del predicato. Il dominio è un insieme da cui vengono presi degli elementi da sostituire alla \(x\) e stabilire il valore di verità del predicato.
+L'insieme dei valori di \(x\) che rendono vero il predicato si chiama insieme di verità del predicato.
+
+Per esprimere un predicato in formule si scriverà:
+\begin{gather*}
+    \big(\forall x \in U_x\big) \left(P(x)\right) \\
+    \big(\exists x \in U_x\big) \left(P(x)\right)
+\end{gather*}
+dove \(U_x\) è l'universo in cui varia la variabile \(x\) e \(P(x)\) è una proprietà che ha senso per \emph{tutti} gli elementi di \(U_x\).
+
+\begin{example}
+    Si consideri il predicato \(P(x)\): ``\(x\) è pari''. Preso \(U_x = \Z = \{\dotsc, -2,-1,0,1,2, \dotsc\}\). Si ha dunque \(Q\colon \left(\forall x \in \Z\right)(P(x))\), ovvero:
+    \[
+        Q\colon \left(\forall x \in \Z\right) (x \text{ è pari})
+    \]
+    che risulta essere una proposizione Falsa perché, ad esempio, \(\exists 5 \in \Z\) che è un numero dispari.
+    Preso invece il predicato ``\(\forall x \in \Z\;\;\; x\) è un numero intero'', esso risulta essere Vero.
+    Si consideri ora \(R\colon \forall x \in \Z x \) è positivo è Falsa perché, ad esempio, \(-2 \in \Z\) non verifica \(R\).
+\end{example}
+
+\noindent Diamo allora la definizione di predicato.
+\begin{definition}[predicato]\label{def:predicato}
+    Un predicato è un'affermazione che coinvolge una o più variabili: \(x,y,z, \dotsc\) ciascuna delle quali varia in un universo \(U_x,U_y,U_z, \dotsc\) con l'uso di un opportuno quantificatore.
+\end{definition}
+
+\begin{example}
+    Si prenda in considerazione la proposizione \(A\): ``ogni numero intero relativo moltiplicato per \(1\) dà per risultato lo stesso numero intero'', che in simboli diventa:
+    \[
+        A\colon \left(\forall a \in \Z\right)(a \cdot 1 = 1 \cdot a = a),
+    \]
+    dove \(P(a)\) è appunto \((a \cdot 1 = a \cdot a = a)\), che ricordiamo può essere scritto anche come \((a \cdot 1 = a \land 1 \cdot a = a)\). Ovviamente la proposizione \(A\) risulta essere Vera. Dunque \(\neg A\) è Falsa:
+    \begin{alignat*}{1}
+        \neg A\colon (\exists a \in \Z)\; \neg \left(P(a)\right)%
+            &\implies (\exists a \in \Z)\; \neg (a \cdot 1 = a \cdot a = a) \\
+            &\implies (\exists a \in \Z)\; [\neg (a \cdot 1 = a) \lor \neg (1 \cdot a = a)] \\
+            &\implies (\exists a \in \Z)\; (a \cdot 1 \neq a \lor 1 \cdot a \neq a);
+    \end{alignat*}
+    questo perché:
+    \[
+        \neg (a \land b) \iff \neg a \land \neg b
+    \]
+\end{example}
+
+\begin{example}
+    Si consideri la proposizione \(B\): ``ogni numero intero naturale è dispari''. Vediamo innanzitutto come si definisce un numero dispari in \(\Z\) e in \(\N\):
+    \begin{alignat*}{1}
+        n \in \Z \text{ dispari se } &\exists h \in Z \tc n = 2h + 1, \\
+        n \in \N \text{ dispari se } &\exists h \in Z \tc n = 2h + 1.
+    \end{alignat*}
+    Per esempio \(-15\) è dispari, infatti \(\exists h = -8 \in \Z \tc {-}15 = 2(-8) + 1\).
+
+    Scriviamo ora \(B\) in simboli:
+    \[
+        B\colon (\forall n \in \N) (n \text{ è dispari}),
+    \]
+    dove \(P(n)\colon n \text{ è dispari}\). Notiamo che \(B\) è Falsa: esiste almeno un numero pari che appartiene ad \(\N\). Sarà allora Vera \(\neg B\):
+    \begin{alignat*}{1}
+        \neg B\colon (\exists n \in \N)\; \neg \left(P(n)\right)%
+            &\implies (\exists n \in \N)\; \neg (n \text{ è dispari}) \\
+            &\implies (\exists n \in \N)\; (n \text{ non è dispari}) \\
+            &\implies (\exists n \in \N)\; (n \text{ è pari}),
+    \end{alignat*}
+    come volevasi dimostrare.
+\end{example}
+
+\begin{example}
+    Si consideri \(C\): ``esiste un numero naturale che è un quadrato perfetto''. Un quadrato è perfetto se la sua radice è numero intero. Scriviamo \(C\) in simboli:
+    \[
+        C\colon (\exists n \in \N) (\exists h \in \N \tc n = h^2),
+    \]
+    dove \(P(n)\colon (\exists h \in \N \tc n = h^2)\). Questa proposizione è Vera: esiste, ad esempio \(4\) la cui radice \(\sqrt{4} = 2\) verifica la relazione precedente.
+    Logicamente \(\neg C\) sarà Falsa:
+    \begin{alignat*}{1}
+        \neg C\colon (\forall n \in \N) \big(\neg P(n)\big)%
+            &\implies (\forall n \in \N)\; \neg (\exists h \in \N \tc n = h^2) \\
+            &\implies (\forall n \in \N) \big(\forall h \in \N\; \neg (n = h^2)\big) \\
+            &\implies (\forall n \in \N) (\forall h \in \N n \neq h^2).
+    \end{alignat*}
+\end{example}
+
+\noindent In generale, le negazioni dei predicati col quantificatore universale ``per ogni'' sono le seguenti:
+\[
+    \neg \left((\forall x \in U_x)\left(P(x)\right)\right)
+    \implies
+    (\exists x \in U_x)\left(\neg P(x)\right);
+\]
+mentre per l'altro quantificatore universale ``esiste'' sono:
+\[
+    \neg \left((\exists x \in U_x)\left(P(x)\right)\right)
+    \implies
+    (\forall x \in U_x)\left(\neg P(x)\right).
+\]
+
+Segue ora una lista di esempi sui predicati e le loro relative negazioni.
+\begin{examples}
+    Sia \(U\) l'insieme di tutti gli esseri umani.
+    \begin{enumerate}
+        \item \(P_1 \colon \text{ tutti hanno almeno un cugino}\), è Falsa. In simboli:
+            \begin{alignat*}{2}
+                P_1\colon
+                    &(\forall x \in U) (\exists y \in U \tc y \text{ è cugino di } x)
+                        & \quad 0                                                       \\
+                \neg P_1\colon
+                    &(\exists x \in U) (\forall y \in U \; y \text{ non è cugino di } x)
+                        & \quad 1
+            \end{alignat*}
+%
+        \item \(P_2 \colon \text{ tutti gli esseri umani sono cugini tra di loro}\), è Falsa. In simboli:
+            \begin{alignat*}{2}
+                P_2 \colon
+                    &(\forall x,y \in U) (x \text{ è cugino di } y)
+                        & \quad 0                                                       \\
+                \neg P_2 \colon
+                    &(\exists x,y \in U) (x \text{ non è cugino di } y)
+                        & \quad 1
+            \end{alignat*}
+%
+        \item \(P_3 \colon 3 \text{ è un numero primo}\), che è Vera e \(P_4 \colon \sqrt{5} \text{ è un numero razionale}\), che è Falsa.
+            \begin{alignat*}{3}
+                (P_3 \land P_4), \quad &\neg(P_3 \lor P_4), \quad &(\neg P_3 \land \neg P_4) &\quad 0 \\
+                \neg(P_3 \land P_4), \quad &(\neg P_3 \lor \neg P_4), \quad &(P_3 \lor P_4)  &\quad 1
+            \end{alignat*}
+%
+        \item \(P_5 \colon (\forall a \in \N) \left((\exists y \in \Z) (y - a^2 = -1)\right)\), è Vera.
+            \begin{alignat*}{2}
+                P_5 \colon
+                    &(\forall a \in \N) \left((\exists y \in \Z) (y = a^2 -1)\right)
+                        &\quad 1 \\
+                \neg P_5 \colon
+                    &(\exists a \in \N) \left((\forall y \in \Z) (y \neq a^2 - 1)\right)
+                        &\quad 0
+            \end{alignat*}
+    \end{enumerate}
+\end{examples}
+
+\begin{remark}
+    Considerato il predicato
+    \[
+        (\forall x \in U) \left(P(x)\right)
+    \]
+    si deduce che l'universale deduce il particolare:
+    \[
+        (\exists x \in U) \left(P(x)\right)
+    \]
+    che risulta essere Vera. Se \(P(x)\) è Vero per ogni \(x\), lo sarà anche per una singola \(x\). Non è Vero l'inverso, infatti:
+    \[
+        (\exists x \in U) \left(P(x)\right) \centernot\longrightarrow (\forall x \in U) \left(P(x)\right);
+    \]
+    poiché se \(P(x)\) è Vero per una \(x\), non è detto che lo sia per tutte le altre.
+\end{remark}

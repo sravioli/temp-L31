@@ -1,0 +1,24 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}
+        \node (A)   at (-2.7, +1)  {\(A\)};
+        \node (B)   at (+2.7, +1)  {\(B\)};
+
+        \begin{scope}
+            \clip (-1, 0) ellipse (2cm and 1cm);
+            \draw[
+                pattern = north west lines,
+                even odd rule,
+            ] (+1, 0) ellipse (2cm and 1cm)
+              (-1, 0) ellipse (2cm and 1cm);
+        \end{scope}
+
+        \draw (+1, 0) ellipse (2cm and 1cm);
+        \draw (-1, 0) ellipse (2cm and 1cm);
+
+        \node[preaction={fill, white}, rounded corners=3mm] (A-B) at (-1.8, 0) {\(A \setminus B\)};
+    \end{tikzpicture}
+\caption{Insieme differenza tra due insiemi \(A, B\) nel caso in cui \(B \subseteq A\).}\label{fig:insieme_differenza_oss}
+\end{figure}

@@ -1,0 +1,2505 @@
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31, A.A. 2021-22, dell'Università di Bari "Aldo Moro".">
+      
+      
+        <meta name="author" content="Simone Fidanza">
+      
+      
+        <link rel="canonical" href="https://sravioli.github.io/L31/Anno_I/AESO/SO2_thread_smp_microkernel.html">
+      
+      
+        <link rel="prev" href="SO1_so_processi_scheduling.html">
+      
+      
+        <link rel="next" href="SO3_gestione_risorse_problemi.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Thread, SMP e Microkernel - Appunti di Informatica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Montserrat";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#thread-smp-e-microkernel" class="md-skip">
+          Vai al contenuto
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Intestazione">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-header__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Appunti di Informatica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Thread, SMP e Microkernel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Passa alla modalità chiara"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità chiara" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="purple"  aria-label="Passa alla modalità scura"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità scura" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Condividi" aria-label="Condividi" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Cancella" aria-label="Cancella" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inizializza la ricerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-tabs__link md-tabs__link--active">
+        Anno I
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigazione" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-nav__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    Appunti di Informatica
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Anno I
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Anno I
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          AESO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          AESO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-nav__link">
+        Tipi di dato e la loro rappresentazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE4_expr_booleane_karnaugh.html" class="md-nav__link">
+        Espressioni logiche booleane e mappe di Karnaugh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE5_istruzioni_indirizzamento.html" class="md-nav__link">
+        Formati di istruzioni e indirizzamento
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO1_so_processi_scheduling.html" class="md-nav__link">
+        Sistema operativo, gestione dei processi e scheduling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Thread, SMP e Microkernel
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="SO2_thread_smp_microkernel.html" class="md-nav__link md-nav__link--active">
+        Thread, SMP e Microkernel
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#thread" class="md-nav__link">
+    Thread
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multithreading" class="md-nav__link">
+    Multithreading
+  </a>
+  
+    <nav class="md-nav" aria-label="Multithreading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vantaggi-dei-thread" class="md-nav__link">
+    Vantaggi dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svantaggi-dei-thread" class="md-nav__link">
+    Svantaggi dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stati-dei-thread" class="md-nav__link">
+    Stati dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operazioni-di-base" class="md-nav__link">
+    Operazioni di base
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempi-di-multithreading" class="md-nav__link">
+    Esempi di multithreading
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorie-di-thread" class="md-nav__link">
+    Categorie di Thread
+  </a>
+  
+    <nav class="md-nav" aria-label="Categorie di Thread">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-level-thread" class="md-nav__link">
+    User Level Thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kernel-level-thread-puro" class="md-nav__link">
+    Kernel Level Thread puro
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approcci-misti" class="md-nav__link">
+    Approcci misti
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relazione-tra-thread-e-processi" class="md-nav__link">
+    Relazione tra Thread e Processi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#symmetric-multi-processing" class="md-nav__link">
+    Symmetric Multi Processing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stati-dei-thread-in-windows" class="md-nav__link">
+    Stati dei Thread in Windows
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microkernel" class="md-nav__link">
+    MicroKernel
+  </a>
+  
+    <nav class="md-nav" aria-label="MicroKernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vantaggi-del-microkernel" class="md-nav__link">
+    Vantaggi del MicroKernel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-del-microkernel" class="md-nav__link">
+    Design del MicroKernel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funzioni-minime-del-microkernel" class="md-nav__link">
+    Funzioni minime del MicroKernel
+  </a>
+  
+    <nav class="md-nav" aria-label="Funzioni minime del MicroKernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gestione-primitiva-della-memoria" class="md-nav__link">
+    Gestione primitiva della memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comunicazione-tra-processi" class="md-nav__link">
+    Comunicazione tra processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-degli-interrupt-e-dellio" class="md-nav__link">
+    Gestione degli Interrupt e dell'I/O
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO3_gestione_risorse_problemi.html" class="md-nav__link">
+        Gestione delle risorse e problematiche annesse
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO4_gestione_memoria.html" class="md-nav__link">
+        Gestione della memoria centrale
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO5_file_system.html" class="md-nav__link">
+        Il file system
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Laboratorio di Informatica
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Laboratorio di Informatica
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/00_introduzione.html" class="md-nav__link">
+        Introduzione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/01_test_debugging.html" class="md-nav__link">
+        Test e Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+          Goose game
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Goose game
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/index.html" class="md-nav__link">
+        Gioco dell'oca
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/CHANGELOG.html" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-02-2023.html" class="md-nav__link">
+        Appunti del 02-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-08-2023.html" class="md-nav__link">
+        Appunti del 08-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-09-2023.html" class="md-nav__link">
+        Appunti del 09-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-16-2023.html" class="md-nav__link">
+        Appunti del 16-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-23-2023.html" class="md-nav__link">
+        Appunti del 23/03/23
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-29-2023.html" class="md-nav__link">
+        Appunti del 29/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-30-2023.html" class="md-nav__link">
+        Appunti del 30/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-20-2023.html" class="md-nav__link">
+        Appunti del 20/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-26-2023.html" class="md-nav__link">
+        Appunti del 26/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/05-10-23.html" class="md-nav__link">
+        Appunti del 10/05/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/consegna0.html" class="md-nav__link">
+        Correzione della prima consegna
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Linguaggi di Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linguaggi di Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/00_introduzione.html" class="md-nav__link">
+        Linguaggi di Programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/01_intro_linguaggi.html" class="md-nav__link">
+        Introduzione ai linguaggi di programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/02_teoria_linguaggi.html" class="md-nav__link">
+        Introduzione alla teoria dei linguaggi formali
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/03_grammatiche_linguaggi.html" class="md-nav__link">
+        Grammatiche e Linguaggi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/04_linguaggi_CF_e_non.html" class="md-nav__link">
+        Linguaggi liberi da contesto e linguaggi dipendenti da contesto
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Matematica Discreta temp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Matematica Discreta temp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+          !miei appunti mat dis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          !miei appunti mat dis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Matematica_Discreta_temp/%21miei%20appunti%20mat%20dis/INDEX.html" class="md-nav__link">
+        INDICE SOMMARIO    <!-- rifarsi a questo per l'indicizzazione degli appunti -->
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/00_intro_calcolatori.html" class="md-nav__link">
+        Introduzione ai calcolatori
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/01_problem_solving.html" class="md-nav__link">
+        Problem Solving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/02_algoritmo_euclide.html" class="md-nav__link">
+        Algoritmo di Euclide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/03_notazione_lineare.html" class="md-nav__link">
+        Notazione Lineare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/04_algebra_booleana.html" class="md-nav__link">
+        Algebra Booleana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/05_dati.html" class="md-nav__link">
+        I Dati
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/06_metodologia_TD.html" class="md-nav__link">
+        Metodologia Top-Down
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/07_funzioni_procedure.html" class="md-nav__link">
+        Funzioni e procedure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/08_tipi_semplici.html" class="md-nav__link">
+        Tipi semplici
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/10_array.html" class="md-nav__link">
+        Array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_11" id="__nav_2_5_11_label" tabindex="0">
+          Exercises
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Exercises
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/08.10.21.html" class="md-nav__link">
+        Esercizi del 08/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/14.10.21.html" class="md-nav__link">
+        Esercizio del 14/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/21.10.21.html" class="md-nav__link">
+        Esercizi del 21/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/28.10.21.html" class="md-nav__link">
+        Esercizio del 28/10/21
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#thread" class="md-nav__link">
+    Thread
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multithreading" class="md-nav__link">
+    Multithreading
+  </a>
+  
+    <nav class="md-nav" aria-label="Multithreading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vantaggi-dei-thread" class="md-nav__link">
+    Vantaggi dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svantaggi-dei-thread" class="md-nav__link">
+    Svantaggi dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stati-dei-thread" class="md-nav__link">
+    Stati dei thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operazioni-di-base" class="md-nav__link">
+    Operazioni di base
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esempi-di-multithreading" class="md-nav__link">
+    Esempi di multithreading
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorie-di-thread" class="md-nav__link">
+    Categorie di Thread
+  </a>
+  
+    <nav class="md-nav" aria-label="Categorie di Thread">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-level-thread" class="md-nav__link">
+    User Level Thread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kernel-level-thread-puro" class="md-nav__link">
+    Kernel Level Thread puro
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approcci-misti" class="md-nav__link">
+    Approcci misti
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relazione-tra-thread-e-processi" class="md-nav__link">
+    Relazione tra Thread e Processi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#symmetric-multi-processing" class="md-nav__link">
+    Symmetric Multi Processing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stati-dei-thread-in-windows" class="md-nav__link">
+    Stati dei Thread in Windows
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microkernel" class="md-nav__link">
+    MicroKernel
+  </a>
+  
+    <nav class="md-nav" aria-label="MicroKernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vantaggi-del-microkernel" class="md-nav__link">
+    Vantaggi del MicroKernel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-del-microkernel" class="md-nav__link">
+    Design del MicroKernel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funzioni-minime-del-microkernel" class="md-nav__link">
+    Funzioni minime del MicroKernel
+  </a>
+  
+    <nav class="md-nav" aria-label="Funzioni minime del MicroKernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gestione-primitiva-della-memoria" class="md-nav__link">
+    Gestione primitiva della memoria
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comunicazione-tra-processi" class="md-nav__link">
+    Comunicazione tra processi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestione-degli-interrupt-e-dellio" class="md-nav__link">
+    Gestione degli Interrupt e dell'I/O
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/sRavioli/L31/edit/main/docs/Anno_I/AESO/SO2_thread_smp_microkernel.md" title="Modifica" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/sRavioli/L31/raw/main/docs/Anno_I/AESO/SO2_thread_smp_microkernel.md" title="Vedi il sorgente di questa pagina" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="thread-smp-e-microkernel">Thread, <abbr title="Symmetric Multi Processing">SMP</abbr> e Microkernel<a class="headerlink" href="#thread-smp-e-microkernel" title="Link permanente">⚓︎</a></h1>
+<h2 id="thread">Thread<a class="headerlink" href="#thread" title="Link permanente">⚓︎</a></h2>
+<p>Un thread è un <strong>flusso di esecuzione indipendente</strong> (traccia) all'interno di
+un processo. Un processo può essere diviso in più thread per:</p>
+<ul>
+<li>ottenere un parallelismo dei flussi di esecuzione all'interno del processo;</li>
+<li>gestire chiamate bloccanti o situazioni di risposta asincrona.</li>
+</ul>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  state Processo {
+    Thread1: Thread #1
+    state Thread1 { [*] --&gt; [*] }
+    Thread2: Thread #2
+    state Thread2 { [*] --&gt; [*] }
+  }</code></pre>
+<div class="admonition example">
+<p class="admonition-title">Esempio</p>
+<p>Si desidera implementare un web server.
+Se lo si implementasse come un processo mono-thread, potrebbe gestire solamente
+un client alla volta. Le altre richieste verrebbero completamente ignorate,
+neanche poste in coda.</p>
+<p>Se il server venisse implementato come un processo che resta in attesa delle
+richieste, vi sono due possibili soluzioni:</p>
+<ul>
+<li>Avviare un nuovo processo che processi la singola richiesta;</li>
+<li>Avviare un nuovo thread che processi la singola richiesta.</li>
+</ul>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<p>Avviare un nuovo processo è molto più oneroso rispetto all'avviare un nuovo thread.
+Allo stesso modo, effettuare il context-switch di un processo è molto più oneroso
+rispetto a quello di un thread.</p>
+<h2 id="multithreading">Multithreading<a class="headerlink" href="#multithreading" title="Link permanente">⚓︎</a></h2>
+<p>Il <strong>multithreading</strong> è la capacità di un sistema operativo di supportare più
+thread per ogni processo.</p>
+<!-- markdownlint-disable MD046 -->
+<pre class="mermaid"><code>stateDiagram-v2
+  SingleProcess1: Processo Singolo
+  state SingleProcess1 {
+    SingleThread1: Thread Singolo
+    state SingleThread1 { Inizio --&gt; Fine }
+  }
+
+  SingleProcess2: Processo Singolo
+  state SingleProcess2 {
+    MultipleThreads1: Thread Multipli
+    state MultipleThreads1 {
+      Inizio1: Inizio
+      Inizio2: Inizio
+      Fine1: Fine
+      Fine2: Fine
+      Inizio1 --&gt; Fine1
+      Inizio2 --&gt; Fine2
+    }
+  }</code></pre>
+<pre class="mermaid"><code>stateDiagram-v2
+  MultipleProcesses1: Processi Multipli
+  state MultipleProcesses1 {
+    SingleProcess3: Processo Singolo #1
+    state SingleProcess3 {
+      SingleThread2: Thread Singolo
+      state SingleThread2 {
+        Inizio3: Inizio
+        Fine3: Fine
+        Inizio3 --&gt; Fine3
+      }
+    }
+    SingleProcess4: Processo Singolo #2
+    state SingleProcess4 {
+      SingleThread3: Thread Singolo
+      state SingleThread3 {
+        Inizio4: Inizio
+        Fine4: Fine
+        Inizio4 --&gt; Fine4
+       }
+    }
+  }
+
+  MultipleProcesses2: Processi Multipli
+  state MultipleProcesses2 {
+    SingleProcess5: Processo Singolo #1
+    state SingleProcess5 {
+      MultipleThreads2: Thread Multipli
+      state MultipleThreads2 {
+        Inizio5: Inizio
+        Inizio6: Inizio
+        Fine5: Fine
+        Fine6: Fine
+        Inizio5 --&gt; Fine5
+        Inizio6 --&gt; Fine6
+      }
+    }
+    SingleProcess6: Processo Singolo #1
+    state SingleProcess6 {
+      MultipleThreads3: Thread Multipli
+      state MultipleThreads3 {
+        Inizio7: Inizio
+        Inizio8: Inizio
+        Fine7: Fine
+        Fine8: Fine
+        Inizio7 --&gt; Fine7
+        Inizio8 --&gt; Fine8
+      }
+    }
+  }</code></pre>
+<!-- markdownlint-enable MD046 -->
+
+<p>Un sistema operativo con singolo processo a singolo thread è ad esempio MS-DOS,
+il thread esiste all'interno nel processo.</p>
+<p>Un sistema operativo con processi multipli a singolo thread è lo UNIX.</p>
+<p>Sistemi operativi multithread sono ad esempio:</p>
+<ul>
+<li>Windows</li>
+<li>Solaris</li>
+<li>MAC</li>
+<li>OS/2</li>
+</ul>
+<!-- markdownlint-disable MD046 -->
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Processo</label><label for="__tabbed_1_2">Thread</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Un processo possiede delle risorse, dunque ha uno spazio di indirizzamento
+virtuale che contiene l'immagine del processo. Può inoltre chiedere:</p>
+<ul>
+<li>ulteriore memoria;</li>
+<li>il controllo di canali di I/O;</li>
+<li>il controllo di dispositivi;</li>
+<li>files.</li>
+</ul>
+<p>Possiede inoltre: uno stato (<em>Ready</em>, <em>Running</em>, <em>Blocked</em>, <em>Suspended</em>) e
+una priorità. Deve essere schedulato.</p>
+<p>Le informazioni del processo sono contenute nel <strong>Process Control Block</strong>
+(PCB).</p>
+</div>
+<div class="tabbed-block">
+<p>Un thread non possiede risorse in quanto utilizza quelle del processo.
+Viene anche chiamato <em>Light Weight Process</em>.</p>
+<p>Il thread possiede un proprio stato, una propria priorità e deve essere
+schedulato tra gli stessi thread, sottostando però alla schedulazione del
+processo.
+I thread inoltre:</p>
+<ul>
+<li>Condividono lo stato e le risorse del processo a cui appartengono;</li>
+<li>Risiedono nello stesso spazio di indirizzamento;</li>
+<li>Hanno accesso agli stessi dati.</li>
+</ul>
+<p>Le informazioni del thread sono contenute nel <strong>Thread Control Block</strong>.</p>
+</div>
+</div>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<p>Dunque è più facile condividere le informazioni tra i thread.</p>
+<h3 id="vantaggi-dei-thread">Vantaggi dei thread<a class="headerlink" href="#vantaggi-dei-thread" title="Link permanente">⚓︎</a></h3>
+<p>I thread posseggono vari vantaggi rispetto ai processi:</p>
+<ul>
+<li>il tempo di creazione di un nuovo thread è minore di quello di creazione di
+  un nuovo processo;</li>
+<li>il tempo di terminazione di un thread è minore di quello di terminazione di
+  un processo;</li>
+<li>il tempo necessario allo switch tra threads all'interno dello stesso processo
+  è minore rispetto al tempo di switch tra processi;</li>
+</ul>
+<p>I thread all'interno di uno stesso processo condividono sia memoria che files:
+lo scambio dei dati avviene senza la richiesta di intervento del kernel. Vi è però
+la necessità di sincronizzare le attività dei threads.</p>
+<p>Alcuni esempi:</p>
+<ul>
+<li>l'esecuzione foreground e background, es. il foglio di calcolo: un thread
+  gestisce il menù e legge i comandi, un altro li esegue e aggiorna il foglio;</li>
+<li>l'elaborazione asincrona, es. elaboratore di testo: un thread di scarico su
+  disco ad ogni minuto evita delle perdite per cadute di tensione;</li>
+<li>la velocità di esecuzione: la lettura e il calcolo effettuati da thread
+  diversi aumentano la velocità.</li>
+</ul>
+<h3 id="svantaggi-dei-thread">Svantaggi dei thread<a class="headerlink" href="#svantaggi-dei-thread" title="Link permanente">⚓︎</a></h3>
+<p>I thread presentano due svantaggi principali:</p>
+<ul>
+<li>la sospensione di un processo richiede la sospensione contemporanea di tutti
+  i thread contenuti nello stesso. Questo poiché bisogna liberare lo spazio
+  in memoria e i thread utilizzano lo stesso spazio di memoria condivisa;</li>
+<li>la terminazione di un processo richiede che tutti i threads siano terminati.</li>
+</ul>
+<h3 id="stati-dei-thread">Stati dei thread<a class="headerlink" href="#stati-dei-thread" title="Link permanente">⚓︎</a></h3>
+<p>Posseggono tre stati: <em>Ready</em>, <em>Running</em> e <em>Blocked</em>.</p>
+<p>Lo stato <em>Suspended</em> non è presente poiché non ha senso per un thread, è già
+presente a livello di processo. Se un processo viene swappato, lo stesso avviene
+per tutti i suoi thread.</p>
+<h3 id="operazioni-di-base">Operazioni di base<a class="headerlink" href="#operazioni-di-base" title="Link permanente">⚓︎</a></h3>
+<p>Un thread ha quattro operazioni di base:</p>
+<ol>
+<li><strong>creazione</strong>:<ul>
+<li>la creazione di un processo implica la creazione di un thread;</li>
+<li>un thread può creare altri thread.</li>
+</ul>
+</li>
+<li><strong>Blocco</strong> (attesa di un evento):<ul>
+<li>salvataggio del contesto per il thread: <abbr title="Program Counter">PC</abbr>, Stack pointer, registri <abbr title="Central Processing Unit">CPU</abbr></li>
+</ul>
+</li>
+<li><strong>Sblocco</strong>:<ul>
+<li>lo stato nelTCB viene modificato (Blocked -&gt; Ready)</li>
+<li>il thread viene accodato a quelli in attesa di processore</li>
+</ul>
+</li>
+<li><strong>Terminazione</strong>:<ul>
+<li>deallocazione del contesto registri, deallocazione stack</li>
+</ul>
+</li>
+</ol>
+<p>Il blocco di un thread blocca l'intero processo? no (?).</p>
+<h3 id="esempi-di-multithreading">Esempi di multithreading<a class="headerlink" href="#esempi-di-multithreading" title="Link permanente">⚓︎</a></h3>
+<p>Un esempio di multithreading è il <strong>Remote Procedure Call</strong>, ovvero la chiamata
+da parte di un processo a una procedura attiva su un elaboratore diverso dal
+chiamante. Vediamo il caso di due chiamate <abbr title="Remote Procedure Call">RPC</abbr> diverse a diversi host:</p>
+<pre class="mermaid"><code>gantt
+  title RCP utilizzando un Thread singolo
+  dateFormat  ss
+  axisFormat  %L
+  section Process 1
+    RCP req.        :milestone, m1, after run, 0ms
+    Running         :run, 0, 1ms
+    Blocked         :crit, block, after run, 2ms
+
+    RCP req. start  :milestone, m1, after run1, 0s
+    Running         :run1, after block, 1ms
+    Blocked         :crit, block1, after run1, 2ms
+
+    Running         :run2, after block1, 3ms</code></pre>
+<p>Il questo caso, dopo la <abbr title="Remote Procedure Call">RPC</abbr>, il processo resta in attesa di risposta del server,
+senza effettuare alcuna operazione.</p>
+<pre class="mermaid"><code>gantt
+  title RCP utilizzando un Thread per server
+  dateFormat  ss
+  axisFormat  %L
+  section Thread A
+    RCP request             :milestone, RCP1, after runA, 0ms
+    Running                 :runA, 0, 1ms
+    Blocked                 :crit, blockA, after runA, 2ms
+    Running                 :runA1, after blockA, 2ms
+    Wait for processor      :crit, blockA1, after runA1, 1ms
+    Running                 :runA2, after blockA1, 2ms
+
+  section Thread B
+    RCP request       :milestone, RCP2, after runB, 0ms
+    Running           :runB, after runA, 1ms
+    Blocked           :crit, blockB, after runB, 2ms
+    Running           :runB1, after blockB, 2ms</code></pre>
+<p>In questo caso, invece, quando viene effettuata una richiesta <abbr title="Remote Procedure Call">RPC</abbr>, il processo
+si sposta su un altro thread. In questo modo il tempo di attesa viene ridotto.</p>
+<p>Un altro esempio di multithreading è un programma di video-scrittura, gestione
+e pubblicazione di pagine su desktop. Questo possiede tre thread sempre attivi:</p>
+<ol>
+<li>gestione degli eventi;</li>
+<li>gestione dei servizi (stampa, lettura dati, disposizione testo, attivazione
+   di altri thread);</li>
+<li>disegno dello schermo.</li>
+</ol>
+<p>Un altro esempio ancora è quello dello scorrimento pagina con barra laterale. In
+questo caso il thread eventi controlla la barra di scorrimento, il thread di
+ridisegno dello schermo ridisegna la pagina in base allo spostamento. Vi è
+ovviamente la necessità di sincronizzare i due threads.</p>
+<!-- markdownlint-disable MD046 -->
+<div class="admonition warning">
+<p class="admonition-title">Attenzione</p>
+<p>Esistono delle attività che sono bloccanti per tutti i thread. Quando accade
+compare il cursore "busy".</p>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<h2 id="categorie-di-thread">Categorie di Thread<a class="headerlink" href="#categorie-di-thread" title="Link permanente">⚓︎</a></h2>
+<!-- markdownlint-disable MD046 -->
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">User Level Thread</label><label for="__tabbed_2_2">Kernel Level Thread</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>I thread a livello utente sono:</p>
+<ul>
+<li>realizzati tramite librerie senza l'intervento del kernel (es. di librerie:
+  Posix Pthread, Mach C-threads, UI-threads Solaris2);</li>
+<li>trasparenti al Kernel.</li>
+</ul>
+<p>Lo svantaggio è che se il Kernel è a singolo thread il blocco del thread a
+livello utente blocca l'intero processo (il sistema operativo continua a
+schedulare i processi).</p>
+</div>
+<div class="tabbed-block">
+<p>Nei thread a livello di kernel:</p>
+<ul>
+<li>lo stesso kernel si occupa della creazione, scheduling e gestione;</li>
+<li>i thread possono essere eseguiti su diversi processori;</li>
+<li>la gestione è però più lenta degli <abbr title="User Level Thread">ULT</abbr>.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- markdownlint-enable MD046 -->
+
+<h3 id="user-level-thread">User Level Thread<a class="headerlink" href="#user-level-thread" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    Thread1: Thread #1
+    Thread2: Thread #2
+    Thread3: Thread #3
+    ThreadsLibrary: Libreria Utente
+    state ThreadsLibrary {
+      state ProcessFork &lt;&lt;fork&gt;&gt;
+    }
+  }
+
+  KernelSpace: Spazio Kernel
+  state KernelSpace { Process }
+  Process --&gt; ProcessFork
+  ProcessFork --&gt; Thread1
+  ProcessFork --&gt; Thread2
+  ProcessFork --&gt; Thread3</code></pre>
+<p>Il lavoro di gestione dei threads è svolto dalla libreria utente. Per questo il
+kernel ignora l'esistenza dei threads. Gli <abbr title="User Level Thread">ULT</abbr> utilizzano il modello <ins>molti a
+uno</ins>.</p>
+<p>La libreria permette di:</p>
+<ul>
+<li>creare e distruggere i threads;</li>
+<li>scambiare messaggi tra threads;</li>
+<li>schedulare;</li>
+<li>salvare e caricare i contesti dei thread.</li>
+</ul>
+<p>Tali attività sono svolte all'interno del processo utente, pertanto <strong>il kernel
+continua a schedulare i processi come unità a sè stanti</strong>.</p>
+<p>I <strong>vantaggi</strong> dell'<abbr title="User Level Thread">ULT</abbr> sono i seguenti:</p>
+<ul>
+<li>risparmio di sovraccarico, questo avviene perché il cambio di thread avviene
+  all'interno dello spazio di indirizzamento utente e non viene richiesto
+  l'intervento del kernel;</li>
+<li>schedulazione differente per ogni applicazione, c'è un'ottimizzazione in base
+  al tipo di applicazione;</li>
+<li>viene eseguito da qualsiasi sistema operativo, la libreria a livello utente
+  è condivisa dalle applicazioni.</li>
+</ul>
+<p>Gli <strong>svantaggi</strong> dell'<abbr title="User Level Thread">ULT</abbr> sono i seguenti:</p>
+<ul>
+<li>la chiamata a sistema da parte di un thread blocca tutti i thread del processo;</li>
+<li>il kernel assegna un processo a un singolo processore, quindi non è possibile
+  avere multiprocessing a livello di thread (thread dello stesso processo su più
+  processori);</li>
+</ul>
+<p>Delle soluzioni parziali sono:</p>
+<ul>
+<li>sviluppare l'applicazione a livello di processi, andando a perdere i vantaggi
+  dei threads;</li>
+<li>fare uso del <strong>jacketing</strong>, ovvero convertire una chiamata bloccante in una
+  non bloccante. Nel caso di I/O si invoca una procedura di jacketing che
+  verifica se il dispositivo è occupato, se sì il thread passa in <em>Ready</em> e un
+  altro thread va in <em>Running</em>.</li>
+</ul>
+<h3 id="kernel-level-thread-puro">Kernel Level Thread puro<a class="headerlink" href="#kernel-level-thread-puro" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    Thread1: Thread #1
+    Thread2: Thread #2
+    Thread3: Thread #3
+  }
+
+  KernelSpace: Spazio Kernel
+  note left of KernelSpace
+    La gestione dei thread
+    avviene nello Spazio Kernel
+  end note
+  state KernelSpace {
+    state ProcessFork &lt;&lt;fork&gt;&gt;
+    Process --&gt; ProcessFork
+  }
+  ProcessFork --&gt; Thread1
+  ProcessFork --&gt; Thread2
+  ProcessFork --&gt; Thread3</code></pre>
+<p>Il lavoro di gestione dei threads è svolto dal kernel e fa uso del <ins>modello
+uno a uno</ins>. A livello utente una <abbr title="Application Program Interface">API</abbr> consente l'accesso alla parte del kernel
+che gestisce.</p>
+<p>Il kernel mantiene informazioni su:</p>
+<ul>
+<li>contesto del processo;</li>
+<li>contesto dei threads;</li>
+<li>scambio messaggi tra threads.</li>
+</ul>
+<p><strong>La schedulazione viene effettuata a livello di thread</strong>:</p>
+<ul>
+<li>se un thread di un processo è bloccato, una altro thread dello stesso processo
+  puà essere eseguito;</li>
+<li>i thread di uno stesso processo possono essere schedulati su diversi processori.</li>
+</ul>
+<p>Lo <strong>svantaggio</strong> del <abbr title="Kernel Level Thread">KLT</abbr> è che il trasferimento del controllo da un thread a un
+altro richiede l'intervento del kernel (overhead).</p>
+<h3 id="approcci-misti">Approcci misti<a class="headerlink" href="#approcci-misti" title="Link permanente">⚓︎</a></h3>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction BT
+
+  UserSpace: Spazio Utente
+  state UserSpace {
+    ThreadsLibrary: Libreria Utente
+    state ThreadsLibrary {
+      state ThreadsLibFork &lt;&lt;fork&gt;&gt;
+    }
+    UserThread1: Thread Utente #1
+    UserThread2: Thread Utente #2
+    UserThread3: Thread Utente #3
+    UserThread4: Thread Utente #4
+  }
+
+  KernelSpace: Spazio Kernel
+  state KernelSpace {
+    Process1: Processo #1
+    Process2: Processo #2
+    KernelThread1: Thread Kernel #1\n (processo #1)
+    KernelThread2: Thread Kernel #2\n (processo #1)
+    KernelThread3: Thread Kernel #1\n (processo #2)
+  }
+
+  Process1 --&gt; KernelThread1
+  Process1 --&gt; KernelThread2
+  Process2 --&gt; KernelThread3
+  ThreadsLibFork --&gt; UserThread1
+  ThreadsLibFork --&gt; UserThread2
+  ThreadsLibFork --&gt; UserThread3
+
+  KernelThread1 --&gt; ThreadsLibFork
+  KernelThread2 --&gt; ThreadsLibFork
+  KernelThread3 --&gt; UserThread4</code></pre>
+<p>Fa uso del <ins>modello molti a molti</ins>, ovvero più thread di livello utente sono
+in corrispondenza con più thread di livello kernel.</p>
+<p>I thread sono creati nello spazio utente, vari thread di uno stesso processo
+possono essere eseguiti contemporaneamente su più processori, inoltre una
+chiamata bloccante non blocca necessariamente l'intero processo. Vi è la
+necessità di comunicazione fra kernel e libreria di thread per mantenere un
+appropriato numero di thread kernel allocati all'applicazione.</p>
+<p>Con <abbr title="Light Weight Process">LWP</abbr> si intende una struttura intermedia che appare alla libreria dei thread
+utente come un processore virtuale sul quale schedulare l'esecuzione.
+As esempio una applicazione <abbr title="Central Processing Unit">CPU</abbr>-bound su un sistema monoprocessore implica|
+che un solo thread per volta possa essere eseguito, quindi per essa sarà
+sufficiente un unico <abbr title="Light Weight Process">LWP</abbr> per thread.</p>
+<p>Una applicazione I/O-bound tipicamente richiede un <abbr title="Light Weight Process">LWP</abbr> per ciascuna chiamata di
+sistema bloccante.</p>
+<h3 id="relazione-tra-thread-e-processi">Relazione tra Thread e Processi<a class="headerlink" href="#relazione-tra-thread-e-processi" title="Link permanente">⚓︎</a></h3>
+<!-- markdownlint-disable MD013 MD033 -->
+<table>
+<thead>
+<tr>
+<th align="left">Thread a processi</th>
+<th align="left">Descrizione</th>
+<th align="left">Sistemi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">uno a uno</td>
+<td align="left">Ogni thread di esecuzione è un<br>processo unico con il proprio spazio<br>di indirizzamento e le proprie risorse</td>
+<td align="left">Molte implementazioni di UNIX</td>
+</tr>
+<tr>
+<td align="left">molti a uno</td>
+<td align="left">Ogni processo ha associato un proprio<br>spazio di indirizzamento e delle risorse.<br>In ogni processo si possono creare ed<br>eseguire molti thread</td>
+<td align="left">WindowsNT<br>Solaris<br>OS/2<br>MACH</td>
+</tr>
+<tr>
+<td align="left">uno a molti</td>
+<td align="left">Un thread può spostarsi da un processo<br>all’altro: ciò permette di spostare<br>facilmente i thread tra sistemi diversi</td>
+<td align="left">Ra(clouds)<br>Emerald</td>
+</tr>
+<tr>
+<td align="left">molti a molti</td>
+<td align="left">Combina le proprietà degli approcci<br> molti a uno e uno a molti</td>
+<td align="left">TRIX</td>
+</tr>
+</tbody>
+</table>
+<!-- markdownlint-enable MD013 MD033 -->
+
+<p>Gli ultimi due punti (uno a molti e molti a molti), sono ambienti distribuiti:
+i thread possono spostarsi tra più calcolatori.</p>
+<h2 id="symmetric-multi-processing">Symmetric Multi Processing<a class="headerlink" href="#symmetric-multi-processing" title="Link permanente">⚓︎</a></h2>
+<p>È un sistema multiprocessore con una memoria centralizzata condivisa chiamata
+memoria principale, operante sotto un unico sistema operativo con due o più
+processori omogenei. Nel <abbr title="Symmetric Multi Processing">SMP</abbr>:</p>
+<ul>
+<li>i processori condividono le stesse risorse;</li>
+<li>tutti i processori possono effettuare le stesse funzioni;</li>
+<li>ogni processore esegue una stessa copia del sistema operativo;</li>
+<li>ogni processore gestisce la schedulazione dei processi o thread disponibili.</li>
+</ul>
+<p>Le difficoltà del <abbr title="Symmetric Multi Processing">SMP</abbr> sono le seguenti:</p>
+<ul>
+<li>i processori non devono schedulare lo stesso processo;</li>
+<li>la comunicazione tra processori: memoria condivisa (possibilità di effettuare
+  accessi simultanei alla memoria – memoria multiporta);</li>
+<li>coerenza della cache: RAW, WAR, RAR, WAW (risolto a livello hardware).</li>
+</ul>
+<p>il multiprocessore <strong>deve essere trasparente all'utente</strong>: il programmatore deve
+operare come se fosse in multiprogrammazione su monoprocessore.</p>
+<p>I punti critici della progettazione di un sistema operativo per <abbr title="Symmetric Multi Processing">SMP</abbr> sono i
+seguenti:</p>
+<ul>
+<li>processi e thread del Kernel concorrenti: l'esecuzione contemporanea su
+  diversi processori non deve compromettere le strutture di gestione del sistema
+  operativo (tabelle, etc);</li>
+<li>schedulazione: vi è necessità di evitare conflitti;</li>
+<li>sincronizzazione: mutua esclusione e ordinamento degli eventi;</li>
+<li>gestione della memoria condivisa;</li>
+<li>tolleranza ai guasti: in caso di "perdita di un processore" devono essere
+  aggiornate le strutture di controllo del sistema operativo.</li>
+</ul>
+<h2 id="stati-dei-thread-in-windows">Stati dei Thread in Windows<a class="headerlink" href="#stati-dei-thread-in-windows" title="Link permanente">⚓︎</a></h2>
+<pre class="mermaid"><code>stateDiagram-v2
+  direction LR
+  state Eseguibile {
+    direction LR
+    Ready --&gt; Standby: Scelta processo\n da eseguire
+    Running --&gt; Ready: Interrotto
+    Standby --&gt; Running: Scambio
+  }
+  NonEseguibile: Non Eseguibile
+  state NonEseguibile {
+    direction LR
+    Waiting --&gt; Transition: Sblocca risorsa\n non disponibile
+    Terminated
+  }
+  Running --&gt; Terminated: Termina
+  Running --&gt; Waiting: Blocca/Sospendi
+  Waiting --&gt; Ready: Sblocca/Ripristina\n risorsa disponibile
+  Transition --&gt; Ready: Risorsa disponibile</code></pre>
+<p>Lo stato <em>Standby</em> è legato alla disponibilità del processore (<abbr title="Symmetric Multi Processing">SMP</abbr>) richiesto
+per il thread. Se la priorità è sufficientemente alta, il processo in <em>Running</em>
+può essere interrotto. Lo stato di <em>Waiting</em> è legato all'I/O e all'attesa per
+la sincronizzazione. Lo stato <em>Transition</em> si ha quando il thread è pronto per
+l'esecuzione ma le risorse non sono disponibili (es. lo stack può essere stato
+spostato su disco mentre era in waiting).</p>
+<p>Supporto di <abbr title="Symmetric Multi Processing">SMP</abbr>:</p>
+<ul>
+<li>i thread (inclusi quelli del kernel) possono essere eseguiti su ogni
+  processore;</li>
+<li>il primo thread in <em>Ready</em> viene assegnato al primo processore disponibile;</li>
+<li>i thread appartenenti allo stesso processo possono essere eseguiti
+  contemporaneamente) su diversi processori;</li>
+<li>l'esecuzione di un thread sempre sullo stesso processore porta ad avere i
+  dati ancora in cache.</li>
+</ul>
+<h2 id="microkernel">MicroKernel<a class="headerlink" href="#microkernel" title="Link permanente">⚓︎</a></h2>
+<p>È un piccolo nucleo del sistema operativo e contiene le funzioni essenziali di
+quest'ultimo. I servizi tradizionalmente inclusi nel sistema operativo sono
+sottosistemi esterni al microkernel ed eseguiti in modalità utente, quali:</p>
+<ul>
+<li>device drivers</li>
+<li>file systems</li>
+<li>virtual memory manager</li>
+<li>windowing system</li>
+<li>security services</li>
+</ul>
+<p>L'interazione in un Kernel a livelli avviene solo tra strati adiacenti, mentre
+nel Microkernel la comunicazione avviene attraverso quest'ultimo, che
+ridireziona i messaggi.</p>
+<h3 id="vantaggi-del-microkernel">Vantaggi del MicroKernel<a class="headerlink" href="#vantaggi-del-microkernel" title="Link permanente">⚓︎</a></h3>
+<p>I vantaggi del microKernel sono i seguenti:</p>
+<ul>
+<li><strong>interfaccia uniforme</strong>: i moduli usano le stesse interfacce per le richieste
+  al microKernel;</li>
+<li><strong>estensibilità</strong>: l'introduzione di nuovi servizi o modifiche non richiede
+  modifiche del microKernel;</li>
+<li><strong>flessibilità</strong>: a seconda delle applicazioni certe caratteristiche possono
+  essere ridotte o potenziate per soddisfare al meglio le richieste dei clienti
+  (es. Windows Home/Professional/Ultimate);</li>
+<li><strong>portabilità</strong>: il cambio dell'hardware comporterà unicamente la modifica del
+  microkernel.</li>
+<li><strong>affidabilità</strong>: lo sviluppo di piccole porzioni di codice ne permette una
+  migliore ottimizzazione e test.</li>
+<li><strong>supporto ai sistemi distribuiti</strong>: ogni servizio è identificato da un numero
+  nel microkernel e una richiesta da client non è necessario che sappia dove si
+  trova il server in grado di soddisfare la stessa. La messaggistica viene
+  gestita dal microkernel.</li>
+</ul>
+<h3 id="design-del-microkernel">Design del MicroKernel<a class="headerlink" href="#design-del-microkernel" title="Link permanente">⚓︎</a></h3>
+<p>Il microKernel deve contenere:</p>
+<ul>
+<li>le funzioni che dipendono direttamente dall'hardware (gestione degli interrupt
+  e I/O);</li>
+<li>le funzioni per la comunicazione tra processi (<abbr title="InterProcess Communication">IPC</abbr>);</li>
+<li>gestione primitiva della memoria;</li>
+</ul>
+<p>I sistemi con microKernel presentano un problema a livello di prestazioni:
+Costruire, inviare, accettare, decodificare un messaggio costa più che una
+chiamata al sistema operativo. Le possibili soluzioni sono:</p>
+<ul>
+<li>aggiungere funzionalità al microkernel riduce il numero di cambiamenti di
+  stato (utente/kernel). Vi è però una riduzione di flessibilità, interfacce
+  minime, etc;</li>
+<li>ridurre ulteriormente il microkernel.</li>
+</ul>
+<h3 id="funzioni-minime-del-microkernel">Funzioni minime del MicroKernel<a class="headerlink" href="#funzioni-minime-del-microkernel" title="Link permanente">⚓︎</a></h3>
+<h4 id="gestione-primitiva-della-memoria">Gestione primitiva della memoria<a class="headerlink" href="#gestione-primitiva-della-memoria" title="Link permanente">⚓︎</a></h4>
+<p>Un modulo esterno al microkernel mappa pagine virtuali in pagine fisiche, il
+mapping è conservato in memoria principale.</p>
+<ul>
+<li>un'applicazione che accede ad una pagina che non si trova in memoria genera
+  un <em>page fault</em>;</li>
+<li>l'esecuzione passa al microKernel che invia un messaggio al paginatore
+  comunicando la pagina richiesta;</li>
+<li>la pagina viene caricata: il paginatore e il kernel collaborano per il mapping
+  memoria reale-virtuale;</li>
+<li>quando viene caricata la pagina il pager invia un messaggio all'applicazione.</li>
+</ul>
+<h4 id="comunicazione-tra-processi">Comunicazione tra processi<a class="headerlink" href="#comunicazione-tra-processi" title="Link permanente">⚓︎</a></h4>
+<p>Il messaggio è composto nel seguente modo:</p>
+<div class="arithmatex">\[ \bnf{messaggio} \Coloneqq \bnf{intestazione} + \bnf{corpo} + \bnf{puntatore} \]</div>
+<p>dove l'intestazione è composta da mittente e ricevente, il corpo contiene i dati
+del messaggio e il puntatore contiene le informazioni di controllo del processo
+e il blocco dati.</p>
+<p>Associata ad ogni processo c'è una <strong>porta</strong>: una <em>capability list</em> indica chi
+può inviare messaggi. Tale porta è amministrata dal Kernel.</p>
+<h4 id="gestione-degli-interrupt-e-dellio">Gestione degli Interrupt e dell'I/O<a class="headerlink" href="#gestione-degli-interrupt-e-dellio" title="Link permanente">⚓︎</a></h4>
+<p>Il microkernel riconosce gli interrupt ma non li gestisce direttamente,
+<strong>trasforma l'interrupt in messaggio a livello utente</strong>, che invia al processo
+che gestisce l'interrupt</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Text Only</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>driver thread:
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>ESEGUI
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>    wait(msg, mittente)
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>    SE (mittente = mio_interrupt_hardware)
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a>        ALLORA
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>            leggi/scrivi le porte di I/O
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a>            azzera l&#39;output hardware
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a>        ALTRIMENTI
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>            &gt;&gt; ....
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a>    FINE
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>FINE
+</code></pre></div></td></tr></table></div>
+<p>﻿*[ASCII]: American Standard Code for Information Interchange</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Ultimo aggiornamento:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+        <br>
+        Creata:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Torna su
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Piede" >
+        
+          
+          <a href="SO1_so_processi_scheduling.html" class="md-footer__link md-footer__link--prev" aria-label="Precedente: Sistema operativo, gestione dei processi e scheduling" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Precedente
+              </span>
+              <div class="md-ellipsis">
+                Sistema operativo, gestione dei processi e scheduling
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="SO3_gestione_risorse_problemi.html" class="md-footer__link md-footer__link--next" aria-label="Prossimo: Gestione delle risorse e problematiche annesse" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Prossimo
+              </span>
+              <div class="md-ellipsis">
+                Gestione delle risorse e problematiche annesse
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:<fsimone2002@proton.me>" target="_blank" rel="noopener" title="Mandami una mail" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sRavioli" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/who.dat.boy___" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "toc.follow", "navigation.top", "navigation.footer", "search.suggest", "search.share", "header.autohide", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiato", "clipboard.copy": "Copia", "search.result.more.one": "1 altro in questa pagina", "search.result.more.other": "# altri in questa pagina", "search.result.none": "Nessun documento trovato", "search.result.one": "1 documento trovato", "search.result.other": "# documenti trovati", "search.result.placeholder": "Scrivi per iniziare a cercare", "search.result.term.missing": "Non presente", "select.version": "Seleziona la versione"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../../javascripts/mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

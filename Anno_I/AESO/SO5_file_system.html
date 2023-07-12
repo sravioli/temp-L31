@@ -1,0 +1,2372 @@
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Raccolta di appunti, file, slides, etc. relativi al corso di Informatica L31, A.A. 2021-22, dell'Università di Bari "Aldo Moro".">
+      
+      
+        <meta name="author" content="Simone Fidanza">
+      
+      
+        <link rel="canonical" href="https://sravioli.github.io/L31/Anno_I/AESO/SO5_file_system.html">
+      
+      
+        <link rel="prev" href="SO4_gestione_memoria.html">
+      
+      
+        <link rel="next" href="../Laboratorio_di_Informatica/00_introduzione.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+    
+    
+      
+        <title>Il file system - Appunti di Informatica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Montserrat";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#il-file-system" class="md-skip">
+          Vai al contenuto
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Intestazione">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-header__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Appunti di Informatica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Il file system
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Passa alla modalità chiara"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità chiara" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="purple"  aria-label="Passa alla modalità scura"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Passa alla modalità scura" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Condividi" aria-label="Condividi" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Cancella" aria-label="Cancella" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inizializza la ricerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-tabs__link md-tabs__link--active">
+        Anno I
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigazione" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://sravioli.github.io/L31/" title="Appunti di Informatica" class="md-nav__button md-logo" aria-label="Appunti di Informatica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M9.4 86.6c-12.5-12.5-12.5-32.7 0-45.2s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+
+    </a>
+    Appunti di Informatica
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sRavioli/L31" title="Apri repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M216.29 158.39H137C97 147.9 6.51 150.63 6.51 233.18c0 30.09 15 51.23 35 61-25.1 23-37 33.85-37 49.21 0 11 4.47 21.14 17.89 26.81C8.13 383.61 0 393.35 0 411.65c0 32.11 28.05 50.82 101.63 50.82 70.75 0 111.79-26.42 111.79-73.18 0-58.66-45.16-56.5-151.63-63l13.43-21.55c27.27 7.58 118.7 10 118.7-67.89 0-18.7-7.73-31.71-15-41.07l37.41-2.84zm-63.42 241.9c0 32.06-104.89 32.1-104.89 2.43 0-8.14 5.27-15 10.57-21.54 77.71 5.3 94.32 3.37 94.32 19.11zm-50.81-134.58c-52.8 0-50.46-71.16 1.2-71.16 49.54 0 50.82 71.16-1.2 71.16zm133.3 100.51v-32.1c26.75-3.66 27.24-2 27.24-11V203.61c0-8.5-2.05-7.38-27.24-16.26l4.47-32.92H324v168.71c0 6.51.4 7.32 6.51 8.14l20.73 2.84v32.1zm52.45-244.31c-23.17 0-36.59-13.43-36.59-36.61s13.42-35.77 36.59-35.77c23.58 0 37 12.62 37 35.77s-13.42 36.61-37 36.61zM512 350.46c-17.49 8.53-43.1 16.26-66.28 16.26-48.38 0-66.67-19.5-66.67-65.46V194.75c0-5.42 1.05-4.06-31.71-4.06V154.5c35.78-4.07 50-22 54.47-66.27h38.63c0 65.83-1.34 61.81 3.26 61.81H501v40.65h-60.56v97.15c0 6.92-4.92 51.41 60.57 26.84z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sRavioli/L31
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Anno I
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Anno I
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          AESO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          AESO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE1_dati_rappresentazione.html" class="md-nav__link">
+        Tipi di dato e la loro rappresentazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE4_expr_booleane_karnaugh.html" class="md-nav__link">
+        Espressioni logiche booleane e mappe di Karnaugh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AE5_istruzioni_indirizzamento.html" class="md-nav__link">
+        Formati di istruzioni e indirizzamento
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO1_so_processi_scheduling.html" class="md-nav__link">
+        Sistema operativo, gestione dei processi e scheduling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO2_thread_smp_microkernel.html" class="md-nav__link">
+        Thread, SMP e Microkernel
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO3_gestione_risorse_problemi.html" class="md-nav__link">
+        Gestione delle risorse e problematiche annesse
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SO4_gestione_memoria.html" class="md-nav__link">
+        Gestione della memoria centrale
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Il file system
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="SO5_file_system.html" class="md-nav__link md-nav__link--active">
+        Il file system
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-file" class="md-nav__link">
+    I file
+  </a>
+  
+    <nav class="md-nav" aria-label="I file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#struttura" class="md-nav__link">
+    Struttura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tipi-e-formati" class="md-nav__link">
+    Tipi e formati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accesso" class="md-nav__link">
+    Accesso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operazioni" class="md-nav__link">
+    Operazioni
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-mappati-in-memoria" class="md-nav__link">
+    File mappati in memoria
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-directory" class="md-nav__link">
+    Le directory
+  </a>
+  
+    <nav class="md-nav" aria-label="Le directory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operazioni_1" class="md-nav__link">
+    Operazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementazione-del-file-system" class="md-nav__link">
+    Implementazione del file system
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementazione del file system">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-contigua" class="md-nav__link">
+    Allocazione contigua
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-a-lista-concatenata" class="md-nav__link">
+    Allocazione a lista concatenata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-a-lista-concatenata_1" class="md-nav__link">
+    Allocazione a lista concatenata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-mediante-uso-di-tabelle-i-node" class="md-nav__link">
+    Allocazione mediante uso di tabelle i-node
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestione-dello-spazio-su-disco-dimensione-dei-blocchi" class="md-nav__link">
+    Gestione dello spazio su disco: dimensione dei blocchi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestione-dello-spazio-libero-su-disco" class="md-nav__link">
+    Gestione dello spazio libero su disco
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#affidabilita-del-file-system" class="md-nav__link">
+    Affidabilità del File System
+  </a>
+  
+    <nav class="md-nav" aria-label="Affidabilità del File System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backup" class="md-nav__link">
+    Backup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prestazioni" class="md-nav__link">
+    Prestazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identificazione-degli-utenti" class="md-nav__link">
+    Identificazione degli utenti
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Laboratorio di Informatica
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Laboratorio di Informatica
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/00_introduzione.html" class="md-nav__link">
+        Introduzione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/01_test_debugging.html" class="md-nav__link">
+        Test e Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+          Goose game
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Goose game
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/index.html" class="md-nav__link">
+        Gioco dell'oca
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/goose_game/CHANGELOG.html" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-02-2023.html" class="md-nav__link">
+        Appunti del 02-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-08-2023.html" class="md-nav__link">
+        Appunti del 08-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-09-2023.html" class="md-nav__link">
+        Appunti del 09-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-16-2023.html" class="md-nav__link">
+        Appunti del 16-03-2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-23-2023.html" class="md-nav__link">
+        Appunti del 23/03/23
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-29-2023.html" class="md-nav__link">
+        Appunti del 29/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/03-30-2023.html" class="md-nav__link">
+        Appunti del 30/03/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-20-2023.html" class="md-nav__link">
+        Appunti del 20/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/04-26-2023.html" class="md-nav__link">
+        Appunti del 26/04/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/05-10-23.html" class="md-nav__link">
+        Appunti del 10/05/2023
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Laboratorio_di_Informatica/notes/consegna0.html" class="md-nav__link">
+        Correzione della prima consegna
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Linguaggi di Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linguaggi di Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/00_introduzione.html" class="md-nav__link">
+        Linguaggi di Programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/01_intro_linguaggi.html" class="md-nav__link">
+        Introduzione ai linguaggi di programmazione
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/02_teoria_linguaggi.html" class="md-nav__link">
+        Introduzione alla teoria dei linguaggi formali
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/03_grammatiche_linguaggi.html" class="md-nav__link">
+        Grammatiche e Linguaggi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linguaggi_di_Programmazione/04_linguaggi_CF_e_non.html" class="md-nav__link">
+        Linguaggi liberi da contesto e linguaggi dipendenti da contesto
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Matematica Discreta temp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Matematica Discreta temp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+          !miei appunti mat dis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          !miei appunti mat dis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Matematica_Discreta_temp/%21miei%20appunti%20mat%20dis/INDEX.html" class="md-nav__link">
+        INDICE SOMMARIO    <!-- rifarsi a questo per l'indicizzazione degli appunti -->
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Programmazione
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Programmazione
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/00_intro_calcolatori.html" class="md-nav__link">
+        Introduzione ai calcolatori
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/01_problem_solving.html" class="md-nav__link">
+        Problem Solving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/02_algoritmo_euclide.html" class="md-nav__link">
+        Algoritmo di Euclide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/03_notazione_lineare.html" class="md-nav__link">
+        Notazione Lineare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/04_algebra_booleana.html" class="md-nav__link">
+        Algebra Booleana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/05_dati.html" class="md-nav__link">
+        I Dati
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/06_metodologia_TD.html" class="md-nav__link">
+        Metodologia Top-Down
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/07_funzioni_procedure.html" class="md-nav__link">
+        Funzioni e procedure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/08_tipi_semplici.html" class="md-nav__link">
+        Tipi semplici
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/10_array.html" class="md-nav__link">
+        Array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_11" id="__nav_2_5_11_label" tabindex="0">
+          Exercises
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Exercises
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/08.10.21.html" class="md-nav__link">
+        Esercizi del 08/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/14.10.21.html" class="md-nav__link">
+        Esercizio del 14/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/21.10.21.html" class="md-nav__link">
+        Esercizi del 21/10/2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Programmazione/exercises/28.10.21.html" class="md-nav__link">
+        Esercizio del 28/10/21
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-file" class="md-nav__link">
+    I file
+  </a>
+  
+    <nav class="md-nav" aria-label="I file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#struttura" class="md-nav__link">
+    Struttura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tipi-e-formati" class="md-nav__link">
+    Tipi e formati
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accesso" class="md-nav__link">
+    Accesso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operazioni" class="md-nav__link">
+    Operazioni
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-mappati-in-memoria" class="md-nav__link">
+    File mappati in memoria
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-directory" class="md-nav__link">
+    Le directory
+  </a>
+  
+    <nav class="md-nav" aria-label="Le directory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operazioni_1" class="md-nav__link">
+    Operazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementazione-del-file-system" class="md-nav__link">
+    Implementazione del file system
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementazione del file system">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-contigua" class="md-nav__link">
+    Allocazione contigua
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-a-lista-concatenata" class="md-nav__link">
+    Allocazione a lista concatenata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-a-lista-concatenata_1" class="md-nav__link">
+    Allocazione a lista concatenata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocazione-mediante-uso-di-tabelle-i-node" class="md-nav__link">
+    Allocazione mediante uso di tabelle i-node
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestione-dello-spazio-su-disco-dimensione-dei-blocchi" class="md-nav__link">
+    Gestione dello spazio su disco: dimensione dei blocchi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestione-dello-spazio-libero-su-disco" class="md-nav__link">
+    Gestione dello spazio libero su disco
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#affidabilita-del-file-system" class="md-nav__link">
+    Affidabilità del File System
+  </a>
+  
+    <nav class="md-nav" aria-label="Affidabilità del File System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backup" class="md-nav__link">
+    Backup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prestazioni" class="md-nav__link">
+    Prestazioni
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identificazione-degli-utenti" class="md-nav__link">
+    Identificazione degli utenti
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/sRavioli/L31/edit/main/docs/Anno_I/AESO/SO5_file_system.md" title="Modifica" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/sRavioli/L31/raw/main/docs/Anno_I/AESO/SO5_file_system.md" title="Vedi il sorgente di questa pagina" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="il-file-system">Il file system<a class="headerlink" href="#il-file-system" title="Link permanente">⚓︎</a></h1>
+<p>Le applicazioni su un calcolatore hanno bisogno di memorizzare e rintracciare
+informazioni. Le informazioni memorizzate nello spazio degli indirizzi di un
+processo vengono perse al termine dell'esecuzione del processo.</p>
+<p>Un processo può utilizzare il suo spazio degli indirizzi per memorizzare un
+quantitativo limitato di informazioni. Può essere necessario che le informazioni
+siano memorizzate per lungo tempo. Più processi possono aver bisogno delle stesse
+informazioni contemporaneamente per cui è necessario che queste e la loro
+allocazione siano indipendenti dal processo. Per memorizzare grandi quantità di
+informazioni, rendere la memoria permanente e dare la possibilità a più processi
+di accedere alle stesse informazioni è necessario registrare tali informazioni
+in dischi o altri supporti in unità dette file.</p>
+<h2 id="i-file">I file<a class="headerlink" href="#i-file" title="Link permanente">⚓︎</a></h2>
+<p>Il sistema operativo consente la gestione dei file mediante il modulo di
+gestione del File System.</p>
+<p>Oltre al contenuto proprio del file, il file system gestisce informazioni
+complementari relative al file come:</p>
+<ul>
+<li>struttura;</li>
+<li>nome;</li>
+<li>tipo di accesso;</li>
+<li>protezione, ecc.</li>
+</ul>
+<p>Il nome del file si suddivide generalmente in:</p>
+<div class="arithmatex">\[ \bnf{nome}\,.\bnf{estensione} \]</div>
+<p>entrambi con un numero variabile di caratteri e varia utilizzazione del
+minuscolo/maiuscolo. Spesso l'estensione indica un particolare tipo di file.</p>
+<h3 id="struttura">Struttura<a class="headerlink" href="#struttura" title="Link permanente">⚓︎</a></h3>
+<p>I file, in genere, contengono le informazioni in tre tipi di strutture:</p>
+<ul>
+<li><strong>sequenza non strutturata di byte</strong>: consente la massima flessibilità al
+  programma utente. Dos e Unix utilizzano questa struttura (a); Accesso diretto
+  ai singoli byte:</li>
+<li><strong>sequenza di record a lunghezza fissa</strong>: ha perso popolarità con il tempo (b);</li>
+<li><strong>albero di record con campo chiave</strong>: ancora in uso sui grossi mainframe usati per
+  l'elaborazione di dati commerciali &copy;.
+1 Byte
+(a)
+(b)
+1 Record
+Chiave
+Chiave
+Chiave
+Chiave
+Chiave
+Chiave
+Chiave
+&copy;
+3</li>
+</ul>
+<h3 id="tipi-e-formati">Tipi e formati<a class="headerlink" href="#tipi-e-formati" title="Link permanente">⚓︎</a></h3>
+<p>Tipi di file:</p>
+<ul>
+<li><strong>file regolari</strong>: contengono le informazioni dell'utente, un programma
+  eseguibile, ecc:</li>
+<li><strong>directory</strong>: conservano la struttura del file system ed informazioni sui
+  file regolari;</li>
+<li><strong>file speciali a caratteri</strong>: usati per modellare unità di input/output
+  seriali come video, stampanti, reti, ecc;</li>
+<li><strong>file speciali a blocchi</strong>: usati per modellare unità di input/output a
+  blocchi come i dischi.</li>
+</ul>
+<p>Le informazioni nei file sono generalmente contenute in due formati:</p>
+<ul>
+<li><strong>codice ASCII</strong> (o UNICODE, ecc.)<ul>
+<li>utilizza <span class="arithmatex">\(8 \bbit\)</span> di cui uno di controllo: <span class="arithmatex">\(7 \bbit = 128\)</span> configurazioni</li>
+<li>UNICODE: Codice a <span class="arithmatex">\(16 \bbit\)</span> (codifica i caratteri usati in quasi tutte le
+    lingue vive e in alcune lingue morte, nonché simboli matematici e chimici,
+    cartografici, l'alfabeto Braille, ideogrammi, ecc);</li>
+<li>i file programma sorgente ed i documenti sono generalmente registrati in questo
+    formato.</li>
+</ul>
+</li>
+<li><strong>codice Binario</strong>:<ul>
+<li>le sequenze di codici sono "illeggibili";</li>
+<li>di solito i file memorizzati in questa modalità hanno una struttura interna.
+  4</li>
+</ul>
+</li>
+</ul>
+<h3 id="accesso">Accesso<a class="headerlink" href="#accesso" title="Link permanente">⚓︎</a></h3>
+<ul>
+<li>Accesso Sequenziale: i byte o i record che costituiscono il file sono letti
+  uno dopo l'altro, dall'inizio alla fine;</li>
+<li>Accesso Casuale (diretto).<ul>
+<li>l'accesso al blocco di informazioni avviene in maniera diretta;</li>
+<li>l'avvento dei dischi ha consentito l'introduzione di questo metodo di
+    accesso;</li>
+<li>meccanismo utilizzato dalle basi di dati</li>
+<li>generalmente l'accesso è diretto al blocco e sequenziale all'interno del
+    blocco.</li>
+</ul>
+</li>
+</ul>
+<p>I sistemi operativi associano ai file altre informazioni come:</p>
+<ul>
+<li>data e ora della creazione;</li>
+<li>proprietario;</li>
+<li>dimensione, ecc.
+I File (attributi)…</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protezione</td>
+<td>Chi può accedere al file e in che modo</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>Parola d'ordine necessaria per accedere al file</td>
+</tr>
+<tr>
+<td>Flag di sola lettura</td>
+<td>0 per lettura/scrittura, 1 per sola lettura</td>
+</tr>
+<tr>
+<td>Flag di sistema</td>
+<td>0 per file normale, 1 per file di sistema</td>
+</tr>
+<tr>
+<td>Flag ASCII/binario</td>
+<td>0 per file ASCII, 1 per file binario</td>
+</tr>
+<tr>
+<td>Lunghezza record</td>
+<td>Numero di byte in un record</td>
+</tr>
+<tr>
+<td>Tempo di creazione</td>
+<td>Data e ora del momento in cui è stato creato il file</td>
+</tr>
+<tr>
+<td>Dimensione attuale</td>
+<td>Numero di byte nel file</td>
+</tr>
+<tr>
+<td>Dimensione massima</td>
+<td>Dimensione massima che il file può raggiungere</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operazioni">Operazioni<a class="headerlink" href="#operazioni" title="Link permanente">⚓︎</a></h3>
+<p>Il sistema operativo pone a disposizione dell'utente comandi di alto livello e
+chiamate di sistema per la gestione dei file. Alcune chiamate di sistema più
+comuni sono:</p>
+<ul>
+<li><strong>create</strong>: creazione del file;</li>
+<li><strong>delete</strong>: cancellazione del file;</li>
+<li><strong>open</strong>: apertura del file con varie modalità (read-only, append, ecc.);</li>
+<li><strong>close</strong>: chiusura del file;</li>
+<li><strong>read</strong>: lettura di blocchi di dati;</li>
+<li><strong>write</strong>: scrittura di blocchi di dati;</li>
+<li><strong>append</strong>: aggiunta, in coda al file, di nuovi dati;</li>
+<li><strong>seek</strong>: posizionamento del puntatore all'interno del file.</li>
+</ul>
+<h3 id="file-mappati-in-memoria">File mappati in memoria<a class="headerlink" href="#file-mappati-in-memoria" title="Link permanente">⚓︎</a></h3>
+<p>Un file viene caricarlo tutto o in parte in memoria e gli vengono assegnati
+indirizzi virtuali.</p>
+<ul>
+<li>i processi possono accedere in maniera trasparente ai file (possono essere quindi
+  contenuti in memoria centrale per interi o per blocchi)</li>
+<li>si velocizzano le operazioni compiute sul file, soprattutto quando si riferiscono a
+  parti limitate e non all'intero file.</li>
+</ul>
+<p>La virtualizzazione dell'accesso comporta alcuni problemi :</p>
+<ul>
+<li>in caso di apertura contemporanea del file da parte di più processi alcune
+  informazioni possono risultare inconsistenti;</li>
+<li>quando il processo che sta usando il file termina, quest'ultimo viene riscritto sul
+  disco;</li>
+<li>in caso di caduta del sistema alcune informazioni possono essere perse.</li>
+</ul>
+<h2 id="le-directory">Le directory<a class="headerlink" href="#le-directory" title="Link permanente">⚓︎</a></h2>
+<p>I vecchi sistemi operativi prevedevano un'unica directory in cui confluivano
+tutti i file. Questo concetto è ormai superato dai sistemi gerarchici di directory.</p>
+<p>Tipicamente un elemento della directory contiene:</p>
+<ul>
+<li>il nome di un file ed eventualmente include anche gli attributi del file;</li>
+<li>in alternativa, il nome di un file ed un puntatore ad un'altra struttura in
+  cui si trovano gli attributi e gli indirizzi del disco.</li>
+</ul>
+<p>Ogni directory può contenere:</p>
+<ul>
+<li>file regolari;</li>
+<li>altre directory.</li>
+</ul>
+<p>In questo modo, a partire da una directory radice (root directory) è possibile
+generare un albero di directory e subdirectory.</p>
+<p>Il tipo di organizzazione dell'albero delle directory dipende dalle scelte
+dell'amministratore di sistema. Un tipico esempio prevede:</p>
+<ul>
+<li>la root directory include alcune directory di sistema come etc, bin, lib,
+  tmp, ecc.;</li>
+<li>la directory usr contiene una subdirectory per ogni utente ed ogni utente
+  organizza il proprio sottoalbero nel modo che ritiene più efficiente e
+  comodo per il tipo di attività che svolge.</li>
+</ul>
+<p>Si ha inoltre:</p>
+<ul>
+<li><strong>path name assoluto</strong>: cammino dalla directory radice al file. I componenti
+  del cammino sono separati da opportuni simboli di separazione come "/" in Unix;</li>
+<li><strong>path name relativo</strong>: si usa congiuntamente al concetto di directory di
+  lavoro. Un utente può definire una directory come directory di lavoro corrente.
+  In questo caso tutti i path name che non iniziano con la directory radice sono
+  considerati relativi alla directory di lavoro.</li>
+</ul>
+<h3 id="operazioni_1">Operazioni<a class="headerlink" href="#operazioni_1" title="Link permanente">⚓︎</a></h3>
+<p>Alcune tipiche chiamate di sistema per la gestione delle directory sono:</p>
+<ul>
+<li><strong>create</strong>: crea una directory vuota<ul>
+<li><code>mkdir &lt;nome-directory&gt;</code></li>
+<li>directory nidificate: <code>mkdir -p &lt;nome-dir1&gt;/&lt;nome-dir2&gt;</code></li>
+</ul>
+</li>
+<li><strong>delete</strong>: cancella una directory;<ul>
+<li>directory vuota: <code>rmdir &lt;nome-directory&gt;</code>;</li>
+<li>directory non vuota: <code>rm –rf &lt;nome-directory&gt;</code>.</li>
+</ul>
+</li>
+<li>Spostarsi tra le directory:<ul>
+<li><code>cd newdir</code>;</li>
+<li><code>cd ..</code> (directory precedente);</li>
+<li><code>cd</code> (directory home);</li>
+<li><code>cd ~bill</code> (directory home dell'utente bill).</li>
+</ul>
+</li>
+<li><strong>rename</strong>: rinomina una directory: <code>mv &lt;nome-directory&gt; &lt;nuovo-nome&gt;</code>;</li>
+<li>Elencazione file:<ul>
+<li><code>ls</code>;</li>
+<li><code>ls -l</code>, elenco dettagliato.</li>
+</ul>
+</li>
+</ul>
+<h2 id="implementazione-del-file-system">Implementazione del file system<a class="headerlink" href="#implementazione-del-file-system" title="Link permanente">⚓︎</a></h2>
+<p>Un fattore chiave nell'implementazione della memorizzazione dei file è tener
+traccia di quali blocchi del disco associare a ciascun file.</p>
+<p>Le modalità di allocazione dei blocchi e del relativo reperimento sono:</p>
+<ul>
+<li>Allocazione contigua;</li>
+<li>Allocazione a lista concatenata;</li>
+<li>Allocazione a lista concatenata con indice;</li>
+<li>Allocazione mediante uso di tabelle i-node.</li>
+</ul>
+<h3 id="allocazione-contigua">Allocazione contigua<a class="headerlink" href="#allocazione-contigua" title="Link permanente">⚓︎</a></h3>
+<p>Memorizza il file in blocchi di disco consecutivi.</p>
+<p>Pregi:</p>
+<ul>
+<li>semplice da implementare: occorre tenere traccia dell'indirizzo di inizio del
+  file e della sua lunghezza;</li>
+<li>efficiente perché permette di leggere l'intero file con una sola operazione.</li>
+</ul>
+<p>Difetti:</p>
+<ul>
+<li>è necessario conoscere la dimensione massima del file;</li>
+<li>il disco risulta frammentato (frammentazione esterna) e molto spazio viene
+  sprecato;</li>
+<li>Difficoltà di reperire spazio libero: Best fit, First fit, Worst fit.</li>
+</ul>
+<h3 id="allocazione-a-lista-concatenata">Allocazione a lista concatenata<a class="headerlink" href="#allocazione-a-lista-concatenata" title="Link permanente">⚓︎</a></h3>
+<p>Ogni blocco associato al file contiene:</p>
+<ul>
+<li>dati veri e propri;</li>
+<li>il numero del blocco successivo assegnato al file.</li>
+</ul>
+<p>Pregi:</p>
+<ul>
+<li>non implica spreco di spazio perché i blocchi vengono allocati dinamicamente;</li>
+<li>no frammentazione esterna;</li>
+<li>nell'elemento della directory viene memorizzato l'indirizzo del primo blocco e
+  dell'ultimo blocco.</li>
+</ul>
+<p>Difetti:</p>
+<ul>
+<li>la lettura sequenziale del file è semplice, ma l'accesso diretto ai blocchi è
+  estremamente lento;</li>
+<li>ogni blocco deve contenere il puntatore al blocco successivo. Tale area deve
+  essere non accessibile ai programmi utenti (protezione).</li>
+</ul>
+<h3 id="allocazione-a-lista-concatenata_1">Allocazione a lista concatenata<a class="headerlink" href="#allocazione-a-lista-concatenata_1" title="Link permanente">⚓︎</a></h3>
+<ul>
+<li>I blocchi di disco assegnati al file non sono necessariamente contigui;</li>
+<li>L'elenco dei blocchi assegnati al file è mantenuto mediante una tabella (sezione
+  su disco all'inizio di ciascuna partizione);</li>
+<li>L'elemento della tabella indicizzato dal numero di blocco contiene il numero
+  di blocco successivo del file. L'ultimo blocco punta a NULL;</li>
+<li>Blocchi vuoti sono indicati da NULL;</li>
+<li>L'elemento directory contiene il numero del primo blocco del file.</li>
+</ul>
+<p>Questo tipo di allocazione è utilizzata nel sistema operativo MS-DOS: FAT (File
+Allocation Table) con indice.</p>
+<p>Pregi:</p>
+<ul>
+<li>l'intero blocco è disponibile per i dati;</li>
+<li>l'accesso diretto ad un blocco è rapido;</li>
+</ul>
+<p>Difetti:</p>
+<ul>
+<li>ad un gran numero di blocchi di disco corrisponde una tabella grande che
+  occupa molto spazio in memoria centrale;</li>
+<li>la lettura della FAT può causare numerosi spostamenti della testina.
+  Soluzione: FAT in cache.</li>
+</ul>
+<h3 id="allocazione-mediante-uso-di-tabelle-i-node">Allocazione mediante uso di tabelle i-node<a class="headerlink" href="#allocazione-mediante-uso-di-tabelle-i-node" title="Link permanente">⚓︎</a></h3>
+<p>Allocazione indicizzata: tutti i puntatori ai blocchi di un file sono raggruppati
+in una sola locazione: <ins>blocco indice</ins>. Ogni file ha il proprio blocco indice
+L'elemento directory contiene l'indirizzo del blocco indice.</p>
+<p>Allocazione utilizzata in Unix.</p>
+<p>Gli <ins>i-node</ins> sono piccole tabelle che contengono:</p>
+<ul>
+<li>gli attributi del file;</li>
+<li>gli indirizzi dei primi quindici blocchi assegnati al file:<ul>
+<li>i primi 12 puntano a blocchi diretti: contengono direttamente l'indirizzo
+    dei blocchi del file;</li>
+<li>gli altri 3 puntano a blocchi indiretti.<ul>
+<li>Blocco indiretto singolo: il blocco indirizzato non contiene dati
+    ma indirizzi di altri blocchi i quali contengono dati;</li>
+<li>Blocco indiretto doppio;</li>
+<li>Blocco indiretto triplo;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Pregi:</p>
+<ul>
+<li>l'elemento di directory contiene solo il nome del file ed il numero di i-node;</li>
+<li>consente di mantenere in memoria gli i-node dei file aperti sprecando poco
+  spazio;</li>
+<li>consente di indirizzare un numero enorme di blocchi di disco;</li>
+<li>per i file di piccole dimensioni consente di reperire rapidamente l'indirizzo
+  dei primi blocchi di disco.</li>
+</ul>
+<h2 id="gestione-dello-spazio-su-disco-dimensione-dei-blocchi">Gestione dello spazio su disco: dimensione dei blocchi<a class="headerlink" href="#gestione-dello-spazio-su-disco-dimensione-dei-blocchi" title="Link permanente">⚓︎</a></h2>
+<p>Blocco molto grande:</p>
+<ul>
+<li>rende più veloce il tempo di lettura (seek+rotational+transfert)</li>
+<li>provoca maggior spreco di spazio (frammentazione interna).</li>
+</ul>
+<p>Blocco molto piccolo:</p>
+<ul>
+<li>causa numerosi accessi ai blocchi per leggere i dati</li>
+<li>consente una gestione più efficiente dello spazio.</li>
+</ul>
+<p><ins>L'efficienza nel tempo e nello spazio sono intrinsecamente in conflitto</ins>.</p>
+<p>Confrontando la velocità di trasferimento dei dati e l'efficienza dello spazio
+su disco risulta che a una buona utilizzazione dello spazio corrisponde una bassa
+percentuale di dati e viceversa.</p>
+<p>COMPROMESSO:
+Dimensione blocco di allocazione: <span class="arithmatex">\(512 \byte\)</span>, <span class="arithmatex">\(1 \KB\)</span>, <span class="arithmatex">\(2 \KB\=, \(4 \KB\)</span>,
+<span class="arithmatex">\(8 \KB\)</span>.</p>
+<p>Il settore è la minima unità fisica leggibile dal disco. La dimensione del settore
+sul disco è generalmente di <span class="arithmatex">\(512 \byte\)</span> e la lettura di un blocco di allocazione
+di <span class="arithmatex">\(1 K\)</span> causerà sempre la lettura di due settori di disco.</p>
+<h2 id="gestione-dello-spazio-libero-su-disco">Gestione dello spazio libero su disco<a class="headerlink" href="#gestione-dello-spazio-libero-su-disco" title="Link permanente">⚓︎</a></h2>
+<p>I metodi usati comunemente sono due:</p>
+<ul>
+<li>lista concatenata: tutti i blocchi liberi sono concatenati ed un puntatore
+  indica il primo blocco libero. Necessità di proteggere il puntatore al primo
+  blocco libero.</li>
+<li>mappa di bit: un disco di <span class="arithmatex">\(n\)</span> blocchi richiede una mappa di <span class="arithmatex">\(n\)</span> bit. I
+  blocchi liberi si rappresentano con <span class="arithmatex">\(1\)</span> sulla mappa, i blocchi allocati con
+  <span class="arithmatex">\(0\)</span> (o viceversa).</li>
+</ul>
+<p>Bit map richiede extra space. Es.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Text Only</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>block size = 212 bytes (4KB)
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>disk size = 29230 bytes (500 gigabyte)
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>n = 239/212 = 227 bits (or 16M bytes)
+</code></pre></div></td></tr></table></div>
+<p>Il metodo della lista concatenata è più efficiente se il disco è quasi pieno,
+poiché il numero di blocchi è molto limitato. Inoltre in queste condizioni, la
+mappa di bit potrebbe risultare spesso piena e richiedere continui accessi ad
+altre parti di mappa per assegnare blocchi liberi.</p>
+<p>Se c'è abbastanza memoria principale per contenere la mappa di bit, è generalmente
+preferibile quest'ultimo metodo.</p>
+<h2 id="affidabilita-del-file-system">Affidabilità del File System<a class="headerlink" href="#affidabilita-del-file-system" title="Link permanente">⚓︎</a></h2>
+<p>Il file system può contenere dati che non possono essere persi poiché di difficile
+o costoso recupero.</p>
+<p>L'affidabilità del file system va perseguita spesso anche a scapito dell'efficienza
+o di economie.</p>
+<p>I dispositivi di memorizzazione presentano spesso blocchi inutilizzabili:</p>
+<ul>
+<li>difetti di fabbricazione;</li>
+<li>usura;</li>
+<li>urti violenti.</li>
+</ul>
+<p>I blocchi inutilizzabili non devono essere assegnati a nessun file, necessità
+di una gestione appropriata.</p>
+<p>Gestione dei blocchi danneggiati:</p>
+<ul>
+<li>soluzione hardware<ul>
+<li>una parte di disco è riservata per tenere traccia dei blocchi rovinati
+    e contiene dei blocchi di riserva;</li>
+<li>in fase di inizializzazione il controllore del dispositivo legge questi
+    blocchi e li sostituisce con blocchi di riserva, memorizzandone
+    l'avvenuta sostituzione;</li>
+<li>soluzione trasparente al file system.</li>
+</ul>
+</li>
+<li>soluzione software<ul>
+<li>il file system tiene traccia dei blocchi rovinati assegnandoli tutti ad
+    un file speciale da non utilizzare.</li>
+</ul>
+</li>
+</ul>
+<h3 id="backup">Backup<a class="headerlink" href="#backup" title="Link permanente">⚓︎</a></h3>
+<p>Nella pianificazione delle operazioni di backup vanno valutati principalmente:</p>
+<ul>
+<li>la frequenza con cui effettuare le copie di backup;</li>
+<li>i file che presentano la maggior necessità di essere copiati;</li>
+<li>la tecnica migliore per effettuare il backup.</li>
+</ul>
+<p>Frequenza: la scelta va pianificata in base alla quantità di lavoro svolta nel
+tempo ed al costo di ripristino. Generalmente la frequenza è di tipo:</p>
+<ul>
+<li>giornaliero;</li>
+<li>settimanale;</li>
+<li>mensile;</li>
+<li>annuale (solo per archivi storici).</li>
+</ul>
+<p>Scelta dei file: la scelta va pianificata in base al contenuto dei file ed al
+costo di ripristino. Ad esempio: i file critici potrebbero essere raggruppati
+in directory dedicate delle quali si effettua copia con maggiore frequenza;
+la duplicazione di alcuni file critici può essere opportuna se il quantitativo
+di memoria sprecato è giustificabile.</p>
+<p>Tecnica di backup: la scelta va pianificata in base al tempo disponibile ed al
+costo sopportabile per i supporti. Le tecniche di backup possono essere:</p>
+<ul>
+<li>backup su nastri dell'intero file system;</li>
+<li>backup incrementale (copia solo dei file nuovi o modificati dall'ultimo
+  backup);</li>
+<li>duplicazione incrociata dei dati su due dispositivi: metà di ogni disco
+  contiene i propri dati e l'altra metà contiene i dati dell'altro disco.</li>
+</ul>
+<h3 id="prestazioni">Prestazioni<a class="headerlink" href="#prestazioni" title="Link permanente">⚓︎</a></h3>
+<p>Accesso a disco operazione lenta. Molti file system prevedono tecniche per
+ridurre il numero di accessi al disco:</p>
+<ul>
+<li>caching;</li>
+<li>riduzione dei movimenti del braccio del disco (soluzione soft);</li>
+<li>riduzione dei movimenti del braccio del disco (soluzione hard).</li>
+</ul>
+<p>block cache: un certo numero di blocchi in memoria vengono riservati per
+contenere blocchi di disco.</p>
+<ul>
+<li>ad ogni richiesta di un blocco viene scandita la tabella dei blocchi in
+  memoria per verificarne la presenza;</li>
+<li>se non è presente il blocco viene caricato dal disco, copiato nella
+  chache e poi reso disponibile alle richieste;</li>
+<li>la lista può essere gestita con normali algoritmi di
+  rimpiazzamento delle pagine come <abbr title="First In, First Out">FIFO</abbr> e <abbr title="Least Recently Used">LRU</abbr>;</li>
+</ul>
+<p>UNIX ogni 30 secondi riscrive tutti i blocchi modificati su disco (oppure a
+richiesta dell'utente), WINDOWS riscrive immediatamente ogni blocco modificato.</p>
+<p>Riduzione dei movimenti del braccio del disco (soluzione soft):</p>
+<ul>
+<li>raggruppamento di blocchi in uso. Andando a stimare i blocchi a cui si accede
+  con maggiore probabilità in sequenza al fine di ridurre i movimenti della
+  testina;</li>
+<li>posizione dell'indice dei blocchi . La lettura di un file richiede comunque
+  almeno 2 accessi (uno all'i-node ed uno al blocco). Il posizionamento degli
+  i-node o della tabella di allocazione dei file al centro del disco per ridurre
+  la distanza tra questi ed i blocchi a cui questi fanno riferimento;</li>
+<li>partizioni aperte. Si tende ad avvicinare il più possibile gli i-node ai
+  blocchi cui fanno riferimento nel seguente modo:<ul>
+<li>divisione del disco in gruppi di cilindri, ognuno con i propri i-node e
+    la propria lista dei blocchi liberi;</li>
+<li>quando una partizione esaurisce i blocchi, un blocco può essere allocato
+    in una partizione diversa.</li>
+</ul>
+</li>
+</ul>
+<p>Interleave.
+un processo richiede un tempo tb per richiedere e recuperare un blocco.
+In situazioni (frequenti) di richieste consecutive di blocchi sequenziali
+può accadere che:</p>
+<ul>
+<li>il blocco richiesto può essere già passato sotto la testina;</li>
+<li>bisogna attendere una rotazione intera.</li>
+</ul>
+<p>La tecnica di interleaving alloca i blocchi fisici del disco in ordine non
+sequenziale stretto, ma sequenziale con salti (fattore di interleaving).</p>
+<p>La riduzione dei movimenti del braccio del disco (soluzione hard) avviene
+mediante la schedulazione del braccio del disco. Il tempo necessario per leggere
+un blocco di disco dipende da:</p>
+<ul>
+<li>seek time: spostamento della testina sul cilindro;</li>
+<li>latency time: tempo di rotazione per raggiungere il settore richiesto;</li>
+<li>transfer time: tempo di trasferimento.</li>
+</ul>
+<p>Il ritardo predominante è dato dal seek time. Algoritmi per ottimizzare il
+movimento del braccio:</p>
+<ul>
+<li>FCFS (First Come First Served):<ul>
+<li>serve le richieste nell'ordine in cui giungono;</li>
+<li>non richiede nessun specifico supporto hardware o
+    software;</li>
+<li>è l'algoritmo più corretto nei riguardi delle richieste</li>
+<li>non ottimale;</li>
+</ul>
+</li>
+<li>
+<p>SSF (Shortest Seek First):</p>
+<ul>
+<li>mantenendo in tabella tutte le richieste pendenti, l'SSF si sposta sempre
+    sulla richiesta più vicina a quella appena servita;</li>
+<li>riduce di circa la metà gli spostamenti sul disco rispetto al FCFS;</li>
+<li>presenta un problema di localizzazione delle richieste.</li>
+</ul>
+</li>
+<li>
+<p>algoritmo dell'ascensore:</p>
+<ul>
+<li>mantiene in tabella le richieste pendenti;</li>
+<li>un bit up/down indica la direzione attuale del braccio del disco;</li>
+<li>serve le richieste più vicine proseguendo sempre nella stessa direzione;</li>
+<li>cambia direzione quando raggiunge l'estremità o quando non ci sono più
+    richieste nella direzione attuale;</li>
+</ul>
+</li>
+</ul>
+<h2 id="identificazione-degli-utenti">Identificazione degli utenti<a class="headerlink" href="#identificazione-degli-utenti" title="Link permanente">⚓︎</a></h2>
+<p>I meccanismi di protezione degli archivi sono basati sul presupposto della
+sicura identificazione degli utenti.</p>
+<ul>
+<li>nei sistemi interattivi multi-utente, il progenitore di tutti i processi di
+  un generico utente è quello che viene generato quando esso si connette al
+  sistema attraverso un terminale.</li>
+<li>per ogni processo diverso dal progenitore, la responsabilità di definire il
+  proprietario spetta esclusivamente al sistema operativo</li>
+<li>la sicurezza degli archivi è fondata sulla corretta definizione del
+  proprietario del processo progenitore, che a sua volta dipende dalla
+  sicura identificazione dell'utente che si connette attraverso il terminale.</li>
+<li>la tecnica comunemente usata è quella della parola d'ordine (password),</li>
+</ul>
+<p>﻿*[ASCII]: American Standard Code for Information Interchange</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Ultimo aggiornamento:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+        <br>
+        Creata:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 12, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Torna su
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Piede" >
+        
+          
+          <a href="SO4_gestione_memoria.html" class="md-footer__link md-footer__link--prev" aria-label="Precedente: Gestione della memoria centrale" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Precedente
+              </span>
+              <div class="md-ellipsis">
+                Gestione della memoria centrale
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Laboratorio_di_Informatica/00_introduzione.html" class="md-footer__link md-footer__link--next" aria-label="Prossimo: Introduzione" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Prossimo
+              </span>
+              <div class="md-ellipsis">
+                Introduzione
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Simone Fidanza – CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:<fsimone2002@proton.me>" target="_blank" rel="noopener" title="Mandami una mail" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sRavioli" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/who.dat.boy___" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "toc.follow", "navigation.top", "navigation.footer", "search.suggest", "search.share", "header.autohide", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiato", "clipboard.copy": "Copia", "search.result.more.one": "1 altro in questa pagina", "search.result.more.other": "# altri in questa pagina", "search.result.none": "Nessun documento trovato", "search.result.one": "1 documento trovato", "search.result.other": "# documenti trovati", "search.result.placeholder": "Scrivi per iniziare a cercare", "search.result.term.missing": "Non presente", "select.version": "Seleziona la versione"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../../javascripts/mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

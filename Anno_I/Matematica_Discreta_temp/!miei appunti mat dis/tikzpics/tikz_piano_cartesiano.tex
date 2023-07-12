@@ -1,0 +1,28 @@
+% !TEX root = ../Matematica discreta.tex
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}
+        % draw the axis
+        \draw[-latex] (-1, 0) -- (3, 0);   % x axis
+        \draw[-latex] (0, -1) -- (0, 3);   % y axis
+
+        % where 1 and origin is on axis
+        \node (1-x) [below]    at (1, 0) {\(1\)};
+        \node (1-y) [left]     at (0, 1) {\(1\)};
+        \node (0) [below left] at (0, 0) {\(0\)};
+
+        % x0 and y0 coords
+        \node (x0) [below] at (2, 0) {\(x_0\)};
+        \node (y0) [left]  at (0, 2) {\(y_0\)};
+
+        % the meeting point
+        \coordinate (x0-y0) at (2, 2);
+        \node at (x0-y0) [above right] {\((x_0, y_0)\)};
+
+        % draw lines and dot
+        \draw[dashed, thin] (x0) -- (x0-y0) -- (y0);
+        \filldraw[black] (x0-y0) circle (1pt);
+    \end{tikzpicture}
+\caption{Generico punto di coordinate \((x_0, y_0)\) all'interno del piano cartesiano \(\R \times \R\)}\label{fig:punto_piano_cartesiano}
+\end{figure}

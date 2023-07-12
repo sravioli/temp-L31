@@ -1,0 +1,241 @@
+ESERCITAZIONE DEL 14/05/2023
+============================
+
+FUNZIONE main()
+===============
+
+INPUT:
+- nullo, non ha input.
+
+OUTPUT:
+- nullo, non ha output.
+
+LAVORO:
+- filename, nome del file da cui leggere i numeri, stringa;
+- nums, lista di numeri da riempire con il valori presenti nel file, Numbers.
+
+ALGORITMO:
+filename := "file.txt"
+ret := read_binary_numbers_from_file_and_sum(filename, nums)
+StampareAVideo("sum result: ")
+StampareAVideo(ret)
+
+
+
+NUMBERS
+=======
+
+Il tipo di dato Numbers deve essere rappresentato come un record composto da:
+- un vettore di interi a una dimensione che contenga i valori dei singoli numeri;
+- un numero intero che rappresenti il numero di numeri nel vettore.
+
+
+RECORD Numbers:
+- values, lista di numeri, array a una dimensione;
+- dimension, numero di numeri presenti nell'array, intero maggiore di zero.
+
+funzioni di accesso
+===================
+
+Le funzioni di accesso al tipo di dato Numbers sono le seguenti:
+
+FUNZIONE set_dimension()
+========================
+
+INPUT:
+- numbers, lista di numeri di cui aggiornare il campo dimension, Numbers;
+- dim, dimensione da impostare, intero;
+
+OUTPUT:
+- numbers, lista di numeri col campo dimension aggiornato, Numbers.
+
+ALGORITMO:
+valore del campo dimension di numbers := dim
+
+FUNZIONE get_dimension()
+========================
+
+INPUT:
+- numbers, lista di numeri di cui leggere il campo dimension, Numbers.
+
+OUTPUT:
+- dimension, valore della dimensione di numbers, intero.
+
+ALGORITMO:
+dimension := valore del campo dimension di numbers
+
+FUNZIONE set_value()
+====================
+
+INPUT:
+- numbers, lista di numeri di cui aggiornare il campo value, Numbers;
+- value, valore da impostare, intero;
+- index, indice al quale impostare il valore value, intero maggiore di zero.
+
+OUTPUT:
+- numbers, lista di numeri col campo value aggiornato, Numbers.
+
+ALGORITMO:
+valore del campo value alla posizione index di numbers := value
+
+FUNZIONE get_value()
+====================
+
+INPUT:
+- numbers, lista di numeri di cui leggere un numero, Numbers.
+- index, indice al quale leggere il valore, intero maggiore di zero.
+
+OUTPUT:
+- value, valore letto dal campo value in posizione index, intero.
+
+ALGORITMO:
+value := valore del campo value alla posizione index di numbers
+
+
+FUNZIONE sum_numbers()
+======================
+
+INPUT:
+- numbers, lista di numeri, Numbers.
+
+OUTPUT:
+- sum, valore della somma di tutti i numeri, intero.
+
+LAVORO:
+- name, description, type;
+
+ALGORITMO:
+somma := 0
+i := 0
+MENTRE (i < get_dimension(numbers))
+  somma := somma + get_value(numbers, i)
+  i := i + 1
+FINE
+
+
+FUNZIONE str_to_int()
+=====================
+
+Converte una stringa contenente un numero in forma di intero.
+
+INPUT:
+- str, la stringa contenente il numero da convertire, stringa.
+
+OUTPUT:
+- int, il numero convertito in forma di intero, intero.
+
+LAVORO:
+- sign, il segno del numero, intero;
+- i, contatore per iterare sui caratteri della stringa, intero.
+
+ALGORITMO:
+SE ((primo carattere di str = '-') OR (primo carattere di str = '+'))
+  ALLORA
+    SE (primo carattere di str = '-')
+      ALLORA sign := -1
+      ALTRIMENTI sign := 1
+    FINE
+    str := rm_first_char(str)
+  ALTRIMENTI sign := 1
+FINE
+
+i := 0
+MENTRE (i < str_length(str))
+  digit := elemento in posizione i di str - '0'
+  int := int * 10 + digit
+  i := i + 1
+FINE
+int := int * sign // Applica il segno al numero convertito
+
+
+FUNZIONE pow()
+==============
+
+Calcola l'elevamento a potenza di una base all'esponente specificato.
+
+INPUT:
+- base, base della potenza, intero;
+- exponent, esponente della potenza, intero;
+
+OUTPUT:
+- result, risultato della potenza, intero;
+
+ALGORITMO:
+// Check for special cases
+SE (exponent = 0)
+  ALLORA result := 1
+  ALTRIMENTI SE (exponent = 1)
+    ALLORA result := base
+    ALTRIMENTI SE (exponent < 0)
+      ALLORA result := 1 / pow(base, -exponent)
+    FINE
+  FINE
+FINE
+
+// General case: use repeated squaring
+result := 1
+MENTRE (exponent > 0)
+  SE (mod(exponent, 1) = 1)
+    ALLORA result := result * base
+  FINE
+  base := base * base
+  exponentonent := exponent / 2
+FINE
+
+
+FUNZIONE bin_to_dec()
+=====================
+
+Converte un numero binario in forma decimale
+
+INPUT:
+- binary, numero in forma binaria, numero binario.
+
+OUTPUT:
+- decimal, numero in forma decimale, intero.
+
+LAVORO:
+- base, base della cifra binaria corrispondente, intero;
+- digit, cifra del numero binario, numero binario.
+
+ALGORITMO:
+decimal := 0
+base := 1
+
+MENTRE (binary > 0)
+  digit := mod(binary, 10)
+  decimal := decimal + (digit * base)
+  binary := binary / 10
+  base := base * 2
+FINE
+
+
+FUNZIONE read_binary_numbers_from_file_and_sum()
+================================================
+
+Legge i numeri binari da un file, li converte in numeri decimali e li somma.
+Prende in input il nome del file da leggere e una lista di numeri che verranno
+riempiti con i numeri letti dal file. Restituisce la somma dei numeri convertiti
+come un intero.
+
+INPUT:
+- filename, nome del file da cui leggere i numeri, stringa;
+- nums, lista di numeri da riempire con quelli letti da file, Numbers.
+
+OUTPUT:
+- result, risultato dell'operazione di lettura e somma, intero;
+
+LAVORO:
+- buffer, stringa usata per salvare il numero letto, stringa;
+- index, indice del numero letto, intero maggiore o uguale a zero.
+
+ALGORITMO:
+file = ApriFile(filename)
+SE (file non esiste)
+  ALLORA
+    result := -1 // il file non esiste
+  ALTRIMENTI
+    nums := LeggereDaFile(filename)
+    ChiudiFile(file)
+    result := sum_numbers(nums)
+FINE

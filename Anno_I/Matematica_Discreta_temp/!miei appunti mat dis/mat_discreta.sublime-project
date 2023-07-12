@@ -1,0 +1,32 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"python\" -u \"$file\"",
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "C:\\Users\\pc\\Documents\\UNI\\LaTeX",
+		},
+		{
+			"path": "C:\\Users\\pc\\Documents\\Esame Simone",
+		},
+		{
+			"path": "C:\\Users\\pc\\Documents\\UNI\\LaTeX\\.regex",
+		},
+		{
+			"path": "C:\\Users\\pc\\Documents\\LaTeX vari",
+		},
+		{
+			"path": "C:\\Users\\pc\\Documents\\Relazioni Esperimentazioni",
+		},
+		{
+			"path": ".",
+		},
+	],
+}
