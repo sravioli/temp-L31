@@ -23,6 +23,15 @@ così via. Ogni voce di menù ha una lettera tra parentesi quadre che indica che
 tasto premere per selezionare quella voce. Non è necessario premere invio in questi
 casi.
 
+## Compilazione
+
+Per compilare e eseguire:
+
+```sh
+cd .\src
+gcc .\main.c .\common\impl\*.c .\common\impl\types\*.c .\core\*.c -o .\bin\main.exe && .\bin\main.exe
+```
+
 ## Logger
 
 L'implementazione in C contiene un logger basilare per facilitare il debugging del
